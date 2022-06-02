@@ -62,7 +62,7 @@ class Bookings extends BaseController
             $conditions['returnType'] = 'count'; 
             $conditions['userid'] = $userid; 
             $conditions['form_type'] = $form_type; 
-            $totalRec = $this->booking_model->getRows($conditions); 
+            $totalRec = $this->customer_model->getRows($conditions); 
                 
         if($form_type=='inquiry')
         {
