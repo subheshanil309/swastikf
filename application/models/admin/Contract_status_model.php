@@ -6,15 +6,16 @@
 
 
 
-class Product_model extends Base_model
-
+class Contract_status_model extends Base_model
 {
 
-    public $table = "z_product";
+    public $table = "z_contract_status";
 
-    var $column_order = array(null, 'image1','name','price','no_item','status','date_at'); //set column field database for datatable orderable
+    //set column field database for datatable orderable
+    var $column_order = array(null, 'name', 'status'); 
 
-    var $column_search = array('image1','name','price','no_item','status','date_at'); //set column field database for datatable searchable 
+    //set column field database for datatable searchable 
+    var $column_search = array('name','status' ); 
 
     var $order = array('id' => 'asc'); // default order
 
@@ -58,144 +59,29 @@ class Product_model extends Base_model
 
     }
 
-	
-
-	
-
-	// cart product
-
-	public function cart_product($data) {
-
-			
-
-			//$this->db->select('*');
-
-			$this->db->from($this->table);
-
-			foreach($data as $k=>$v)
-
-			{
-
-				
-
-				if(isset($where))
-
-				{
-
-					$where .= " OR id='".$k."'";
-
-				}
-
-				else
-
-					$where = "id='".$k."'";
-
-			}
-
-			
-
-			$this->db->where($where);
-
-			
-
-			$query = $this->db->get();
-
-           if ($query->num_rows() > 0) {
 
 
 
-               $result = $query->result();
-
-               $temp = $query->result();
-
-			   foreach($temp as $k=>$v)
-
-			   {
-
-				   $result[$k]->no_item = $data[$v->id]; 
-
-			   }
-
-			   return $result;
-
-			}
-
-			else {
 
 
 
-                return array();
-
-
-
-            }
-
-
-
-			exit;
-
-            
-
-
-
-        }
-
-		
-
-		// Find
-
-	public function find($id) {
-
-
-
+    public function find($id) {
             $query = $this->db->select('*')
-
-
-
                     ->from($this->table)
-
-
-
                     ->where('id', $id)
-
-
-
                     ->get();
 
-
-
             if ($query->num_rows() > 0) {
-
-
-
                 $result = $query->result();
-
-
-
                 return $result[0];
-
-
-
             } else {
-
-
-
                 return array();
-
-
-
             }
-
-
-
         }
-
-
 
        // Get  List
 
         function get_datatables()
-
         {
 
             $this->_get_datatables_query();
@@ -213,7 +99,6 @@ class Product_model extends Base_model
         // Get Database 
 
          public function _get_datatables_query()
-
         {     
 
             $this->db->from($this->table);
@@ -253,7 +138,6 @@ class Product_model extends Base_model
              
 
             if(isset($_POST['order'])) // here order processing
-
             {
 
                 $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
@@ -277,7 +161,6 @@ class Product_model extends Base_model
         // Count  Filtered
 
         function count_filtered()
-
         {
 
             $this->_get_datatables_query();
@@ -291,7 +174,6 @@ class Product_model extends Base_model
         // Count all
 
         public function count_all()
-
         {
 
             $this->db->from($this->table);

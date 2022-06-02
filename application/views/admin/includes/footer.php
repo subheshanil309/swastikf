@@ -25,6 +25,7 @@
 
         <!-- Right bar overlay-->
         <div class="rightbar-overlay"></div>
+        <div id="loader"></div>
 
         <!-- JAVASCRIPT -->
         <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
@@ -43,6 +44,17 @@
 
         <!-- App js -->
         <script src="<?php echo base_url(); ?>assets/admin/js/app.js"></script>
+
+        <script type="text/javascript">
+            function show_loader()
+            {
+                $("#loader").css("display","block");
+            }
+            function hide_loader()
+            {
+             $("#loader").css("display","none");   
+            }
+        </script>>
     </body>
 
 

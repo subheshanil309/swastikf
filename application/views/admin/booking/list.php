@@ -1,4 +1,26 @@
 <div class="page-content">
+  <div class="container-fluid">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card">
+            <h5 class="card-header  bg-primary text-white border-bottom p-0">
+                 <div class="row ">
+                 <div class="col-sm-12">
+                  <div class="d-flex flex-wrap gap-2 table-responsive">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/create">Add Booking</a>
+                        <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/import">Import Booking</a>
+                        <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/export">Export Booking</a>
+                        <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/advance">Advance Search</a> 
+                    </div>
+                  </div>
+                 </div>
+               </div>
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
    <div class="container-fluid">
       <div class="row">
           <div class="col-xl-12">
@@ -21,6 +43,7 @@
                  </div>
                </div>
              </h5>
+
 
  
                      
@@ -49,6 +72,7 @@
                                     <th class="align-middle bg-success text-white">Choose Product</th>
                                     <th class="align-middle bg-success text-white">Primary Number</th>
                                     <th class="align-middle bg-success text-white">Number</th>
+                                    <th class="align-middle bg-success text-white">Billing Address</th>
                                     <th class="align-middle bg-success text-white">Choose State</th>
                                     <th class="align-middle bg-success text-white">Choose District</th>
                                     <th class="align-middle bg-success text-white">Choose Tehsil</th>
@@ -161,6 +185,9 @@
                                       <input class="form-control-sm" type="text" name="customer_alter_mobile" id="customer_alter_mobile" placeholder="Number">
                                     </th>
                                     <th class="align-middle bg-success text-white">
+                                      <input class="form-control-sm" type="text" name="address" id="address" placeholder="Address" style="width:400px;">
+                                    </th>
+                                    <th class="align-middle bg-success text-white">
                                       <select class=" form-control select2 " id="state2" name="state2" aria-label="Floating label select example" style="width: 150px;" onchange="stateChange2()">
                                         <option value="" selected>Choose State</option>
                                           <?php
@@ -190,43 +217,58 @@
                                       </select>
                                       <input type="text" name="other_city2" id="other_city2"  style="display: none;" class="form-control form-control-sm mb-2" placeholder="Please Enter Tehsil Name" />
                                     </th>
+                                     <th class="align-middle bg-success text-white">
+                                      <input class="form-control-sm" type="text" name="pincode" id="pincode" placeholder="Pincode">
+                                    </th>
+                                    <th class="align-middle bg-success text-white"></th>
+                                    <th class="align-middle bg-success text-white"></th>
+                                    <th class="align-middle bg-success text-white"></th>
+                                     <th class="align-middle bg-success text-white">
+                                      <input class="form-control-sm" type="text" name="quantity" id="quantity" placeholder="Plant Booked">
+                                    </th>
                                     <th class="align-middle bg-success text-white">
-                                      <select class=" form-control  form-control-sm" id="call_direction2" name="call_direction2" aria-label="Floating label select example"  style="width: 75px;"  >
-                                     <option value="">CallDirection</option>
+                                      <input class="form-control-sm" type="text" name="unit_price" id="unit_price" placeholder="Plant Rate">
+                                    </th>
+                                    <th class="align-middle bg-success text-white"></th>
+                                    <th class="align-middle bg-success text-white">
+                                      <input class="form-control-sm" type="text" name="discount" id="discount" placeholder="Discount">
+                                    </th>
+                                   
+                                    <th class="align-middle bg-success text-white"></th>
+                                     <th class="align-middle bg-success text-white">
+                                      <input class="form-control-sm" type="text" name="outstanding_amount" id="outstanding_amount" placeholder="Outstanding Amount">
+                                    </th>
+                                    <th class="align-middle bg-success text-white">
+                                      <input class="form-control-sm" type="date" name="req_delivery_date" id="req_delivery_date"  >
+                                    </th>
+                                    <th class="align-middle bg-success text-white">
+                                      <input class="form-control-sm" type="date" name="delivery_date" id="delivery_date"  >
+                                    </th> 
+                                    <th class="align-middle bg-success text-white">
+                                      <input class="form-control-sm" type="text" name="vehicle_no" id="vehicle_no"  >
+                                    </th>
+                                    <th class="align-middle bg-success text-white">
+                                      <select class=" form-control  form-control-sm" id="contract" name="contract" aria-label="Floating label select example"  style="width: 115px;"  >
+                                     <option value="">Contract Status</option>
                                     <?php
-                                       if(!empty($calldirections))
+                                       if(!empty($contracts_status))
                                        {
-                                           foreach ($calldirections as $calldirection) {
+                                           foreach ($contracts_status as $contract_status ) {
                                                ?>
-                                    <option value="<?php echo $calldirection->id;?>"><?php echo $calldirection->title;?></option>
+                                     <option value="<?php echo $contract_status->slug;?>"><?php echo $contract_status->title;?></option>
                                     <?php
                                        }
                                        }
                                        ?>
                                  </select>
                                </th>
-                                    <th class="align-middle bg-success text-white">
-                                      <select class=" form-control  form-control-sm" id="call_type2" name="call_type2" aria-label="Floating label select example"  style="width: 75px;" >
-                                         <option value="">CallType</option>
-                                        <?php
-                                           if(!empty($calltypes))
-                                           {
-                                               foreach ($calltypes as $calltype) {
-                                                   ?>
-                                        <option value="<?php echo $calltype->id;?>"><?php echo $calltype->title;?></option>
-                                        <?php
-                                           }
-                                           }
-                                           ?>
-                                      </select>
-                                    </th>
-                                    
-                               <th class="align-middle bg-success text-white" >Followup date</th>
-                               <th class="align-middle bg-success text-white" >Assigned to</th>
-                               <th class="align-middle bg-success text-white" >Entry made by</th>
-                               <th class="align-middle bg-success text-white" >Entry Date</th>
-                               <th class="align-middle bg-success text-white" >Last Follower</th>
-                               <th class="align-middle bg-success text-white" >Last Call Type</th>
+                                     
+                               <th class="align-middle bg-success text-white" ></th>
+                               <th class="align-middle bg-success text-white" ></th>
+                               <th class="align-middle bg-success text-white" ></th>
+                               <th class="align-middle bg-success text-white" ></th>
+                               <th class="align-middle bg-success text-white" ></th>
+                                
                                </tr>
                               </thead>
                               <tbody>
@@ -303,6 +345,8 @@
       </div>
     </div>
 </div>
+<script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
+
   <script type="text/javascript">
     jQuery(document).ready(function(){
         //$('#example').DataTable();
@@ -434,9 +478,10 @@ function cityChange2(district_code = '',selected_city = '') {
 var table;
  
 $(document).ready(function() {
- 
+
+ $("#query-pagination li.page-item a").addClass('page-link');
     //datatables
-    table = $('#example').DataTable({ 
+   /* table = $('#example').DataTable({ 
  
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
@@ -457,13 +502,15 @@ $(document).ready(function() {
         ],
  
     });
- 
+ */
 });
 </script>
 
 <!-- Status Change -->
   <script type="text/javascript">
     jQuery(document).ready(function(){
+
+
          jQuery(document).on("change", ".statusBtn", function(){
 
           var userId = $(this).attr("data-id");

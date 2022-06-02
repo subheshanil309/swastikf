@@ -308,6 +308,13 @@ class Product extends BaseController
         else { echo(json_encode(array('status'=>FALSE))); }
     }
 
+    public function single($id='')
+    {
+        $this->isLoggedIn();
+        $single_arr = $this->product_model->find($id);
+        echo  json_encode($single_arr);
+    }
+
     
     
     

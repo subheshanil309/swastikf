@@ -860,6 +860,39 @@ echo "</pre>";
         
     }
 
+    public function single($id='')
+    {
+        $this->isLoggedIn();
+        $customer_id    = $this->input->get('customer_id');
+        $mobile         = $this->input->get('mobile');
+
+        $single_arr  = array();
+        if(isset($customer_id) || isset($mobile))
+        {
+            $where = array();
+            $where['status'] = '1'; 
+            if($customer_id !=='')
+            {
+                $where['sku_id'] = $customer_id; 
+            }
+
+            if($mobile !=='')
+            {
+                $where['customer_mobile'] = $mobile; 
+            }
+
+             $result = $this->customer_model->findDynamic($where);
+             if(!empty( $result))
+             {
+              $single_arr= $result[0];  
+             }
+                      
+        }else
+        {
+             $single_arr = $this->customer_model->find($id);
+        }
+        echo  json_encode($single_arr);
+    }
     
     
     

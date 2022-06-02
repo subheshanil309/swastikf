@@ -9,7 +9,7 @@
 class Agent_model extends Base_model
 {
 
-    public $table = "rc_rel_agent";
+    public $table = "z_agent";
 
     //set column field database for datatable orderable
     var $column_order = array(null, 'name', 'slug', 'status'); 
