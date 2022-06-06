@@ -1,12 +1,14 @@
 <style type="text/css">
   .table>:not(caption)>*>* {
        border: 1px solid #3a863e;
+       padding: 1px 1px;
+      font-size: 12px;
+      color: #000;
 }
 .mytablestyle{
   min-height: 500px;
 }
 </style>
-
 <div class="page-content">
   <div class="container-fluid">
       <div class="row">
@@ -18,9 +20,9 @@
                   <div class="d-flex flex-wrap gap-2 table-responsive">
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/create">Add Booking</a>
-                        <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/import">Import Booking</a>
+                        <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/import" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg2">Import Booking</a>
                         <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/export">Export Booking</a>
-                        <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/advance">Advance Search</a> 
+                        <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/advance" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-filter" aria-hidden="true"></i>Advance Search</a> 
                     </div>
                   </div>
                  </div>
@@ -31,6 +33,37 @@
       </div>
     </div>
    <div class="container-fluid">
+    <div class="row">
+               <div class="col-12">
+                  <?php $this->load->helper('form'); ?>
+                  <div class="row">
+                     <div class="col-md-12">
+                        <?php echo validation_errors('<div class="alert alert-danger alert-dismissible fade show " role="alert" >', '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'); ?>
+                     </div>
+                  </div>
+                  <?php
+                     $this->load->helper('form');
+                     $error = $this->session->flashdata('error');
+                     if($error)
+                     {
+                         ?>
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                     <?php echo $error; ?> 
+                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                  <?php }
+                     $success = $this->session->flashdata('success');
+                     if($success)
+                     {
+                         ?>
+                  <div class="alert alert-success  alert-dismissible fade show" role="alert">
+                     <?php echo $success; ?> 
+                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                  <?php }
+                     ?>
+               </div>
+            </div>
       <div class="row">
           <div class="col-xl-12">
             
@@ -47,45 +80,67 @@
                            
                            <div class="col-sm-3">
                             <a href="<?php echo base_url()?>admin/bookings" class="btn btn-info btn-sm">Clear</a> 
-                            <button type="submit" class="btn btn-primary btn-sm"> <i class="fa fa-search"></i> Submit Filter</button>
+ 
+
+                          <button id="daterange" class="btn btn-info btn-sm">
+                          <i class="fa fa-calendar"></i>
+                          <span>July 12, 2020 - July 12, 2020</span> <i class="fas fa-caret-down"></i>
+                          </button>
+
+
                             <input name="form_type" type="hidden" value="inquiry">
                            </div>
                          </div>
                        </h5>
                        <div class="card">
                           <div class="card-body">
-                            
-                            <div class="d-flex flex-wrap gap-2">
-                                <?php
-                                    
-                                 
-                                             if(!empty($filter_bookings_status))
-                                             {
-                                                     foreach ($filter_bookings_status as $filter_booking_status) {
-                                                         ?>
-                                                     <a class="btn btn-light waves-effect waves-light" href="<?php echo base_url()?>admin/bookings?booking_status=<?php echo $filter_booking_status['slug']?>">
-                                              <span class="badge bg-warning text-white"><?php echo $filter_booking_status['count_booking']?></span> <?php echo $filter_booking_status['title']?>
-                                            </a>
-                                              <?php
-                                                 }
-                                             }
-                                             ?>
-                               
+                            <div class="row">
+                            <div class="col-sm-12 ">
+                              <div class="d-flex flex-wrap gap-2 table-responsive">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                   
+                                   <?php
+                                      
+                                   
+                                               if(!empty($filter_bookings_status))
+                                               {
+                                                 
+                                                       foreach ($filter_bookings_status as $filter_booking_status) 
+                                                       {
+                                                         $active = "";
+                                                         
+                                                        if(isset($_GET['booking_status']) && $_GET['booking_status'] ==$filter_booking_status['slug'])
+                                                        {
+                                                          $active = "active";
+
+
+                                                        }
+
+
+
+                                                           ?>
+                                                       <a class="btn btn-outline-primary <?php echo $active ;?>" href="<?php echo base_url()?>admin/bookings?booking_status=<?php echo $filter_booking_status['slug']?>"><span class="badge bg-warning text-white"><?php echo $filter_booking_status['count_booking']?></span><?php echo $filter_booking_status['title']?>
+                                              </a>
+                                                <?php
+                                                   }
+                                               }
+                                               ?>
+
+                                </div>
                               </div>
+                            </div>
+                              
+                            </div>
                           </div>
                        </div>
 
                        <div class="card-body">
                         
                         <div class="table-responsive mytablestyle">
-                           <style type="text/css">
-                              .table>:not(caption)>*>* {
-                              padding: 1px 1px;
-                              font-size: 10px;
-                              color: #000;
-                              }
-                           </style>
-                          <form method="GET" action="<?php echo base_url()?>admin/bookings">
+                           
+                          <form method="GET" action="<?php echo base_url()?>admin/bookings" id="booking_filter">
+                            <input type="text" name="start_date"  id="start_date" hidden >
+                            <input type="text" name="end_date"  id="end_date"  hidden  >
                            <table class="table table-striped align-middle table-nowrap mb-0" id="example">
                               <thead class="table-light">
                                  <tr>
@@ -129,10 +184,10 @@
                                     <th class="align-middle bg-success text-white"></th>
                                     <th class="align-middle bg-success text-white"></th>
                                     <th class="align-middle bg-success text-white">
-                                        <input class="form-control-sm" type="text" name="booking_number" id="search_booking_number" placeholder="Booking Number"  style="width: 70px;">
+                                        <input class="form-control-sm" type="text" name="booking_no" id="booking_no" placeholder="Booking Number"  style="width: 70px;">
                                     </th>
                                     <th class="align-middle bg-success text-white">
-                                        <input class="form-control-sm" type="text" name="booking_date" id="booking_date" placeholder="Booking Date"  style="width: 70px;">
+                                        <input class="form-control-sm" type="date" name="booking_date" id="booking_date" placeholder="Booking Date"  style="width: 70px;" >
                                     </th>
                                     <th class="align-middle bg-success text-white">
 
@@ -268,7 +323,8 @@
                                       <input class="form-control-sm" type="text" name="outstanding_amount" id="outstanding_amount" placeholder="Outstanding Amount">
                                     </th>
                                     <th class="align-middle bg-success text-white">
-                                      <input class="form-control-sm" type="date" name="req_delivery_date" id="req_delivery_date"  >
+                                       <input class="form-control-sm" type="text" name="req_delivery_date" id="req_delivery_date" hidden  >
+                                      <input class="form-control-sm" type="text" name="req_delivery_date_label" id="req_delivery_date_label"  >
                                     </th>
                                     <th class="align-middle bg-success text-white">
                                       <input class="form-control-sm" type="date" name="delivery_date" id="delivery_date"  >
@@ -317,15 +373,20 @@
                                             Action<i class="mdi mdi-chevron-down"></i>
                                             </span>
                                             <div class="dropdown-menu" style="">
-                                            <a class="dropdown-item btn side_modal" data-userid="<?php echo $bookings['id']; ?>">View</a>
+                                            <a class="dropdown-item btn side_modal" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-wrench" aria-hidden="true"></i> Change Status</a>
+                                            <a class="dropdown-item btn side_modal" data-bs-toggle="modal" data-bs-target="#exampleModalFullscreen" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-history" aria-hidden="true"></i> View History</a>
+                                            <a class="dropdown-item btn" href="<?php echo base_url()?>admin/bookings/receipt/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Generate Receipt</a>
+                                            <a class="dropdown-item btn" href="<?php echo base_url()?>admin/bookings/view/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-eye" aria-hidden="true"></i> View Order Details</a>
+                                            <a class="dropdown-item btn" href="<?php echo base_url()?>admin/bookings/agreement/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-file-excel" aria-hidden="true"></i> Generate Agreement</a>
+                                            <a class="dropdown-item btn text-danger" href="<?php echo base_url()?>admin/bookings/<?php echo $bookings['id']; ?>/return" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-undo" aria-hidden="true"></i> Return Booking</a>
+                                            <a class="dropdown-item btn" href="<?php echo base_url()?>admin/bookings/<?php echo $bookings['id']; ?>/edit" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Order</a>
                                             <?php
 
                                               $userid = $this->session->userdata('role');
                                               if($userid==1)
                                               {
                                                 ?>
-                                                  <a class="dropdown-item btn editbtn" href="#" data-userid="<?php echo $bookings['id']; ?>">Edit</a>
-                                                  <a class="dropdown-item text-danger deletebtn" href="#" data-userid="<?php echo $bookings['id']; ?>">Delete</a>
+                                                <a class="dropdown-item text-danger deletebtn" href="#" data-userid="<?php echo $bookings['id']; ?>">Delete</a>
                                                   
                                                 <?php    
                                               }
@@ -339,7 +400,7 @@
                                           <span class="badge bg-<?php echo (isset($bookings['stage']) && $bookings['stage']=='Created')?'primary':'warning';?> text-white"><?php echo $bookings['stage'];?></span></td>
                                         <td><?php echo $bookings['id'];?></td>
                                         <td><?php echo ($bookings['booking_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['booking_date'])) :'-/-/-';?></td>
-                                        <td><span class="badge bg-<?php echo $bookings['booked_badges'];?> text-white"><?php echo $bookings['booked_status'];?></span></td>
+                                        <td><span class="text-dark badge bg-<?php echo $bookings['booked_badges'];?> "><?php echo $bookings['booked_status'];?></span></td>
                                         <td><?php echo $bookings['cropstatusname'];?></td>
                                         <td><?php echo $bookings['customer_id'];?></td>
                                         <td><?php echo $bookings['customer_name'];?></td>
@@ -362,13 +423,17 @@
                                         <td><?php echo $bookings['discount'];?></td>
                                         <td><?php echo $bookings['advance'];?></td>
                                         <td> </td>
-                                        <td><?php echo ($bookings['req_delivery_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['req_delivery_date'])) :'-/-/-';?> </td>
+                                        <td>
+                                          <?php 
+                                          echo ($bookings['delivery_expect_start_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_expect_start_date'])) :'-/-/-';?> To <?php 
+                                          echo ($bookings['delivery_expect_end_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_expect_end_date'])) :'-/-/-';?>
+                                        </td>
                                         <td><?php echo ($bookings['delivery_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_date'])) :'-/-/-';?> </td>
                                         
                                         <td><?php echo $bookings['vehicle_no'];?></td>
                                         <td><?php echo $bookings['contractstatusname'];?></td>
                                         <td><?php echo $bookings['productive_plants'];?></td>
-                                        <td><?php echo $bookings['document'];?></td>
+                                        <td><a target="_BLANK"  class="text-dark" href="<?php echo base_url()?>uploads/admin/document/<?php echo $bookings['document'];?>"><?php echo $bookings['document'];?><a></td>
                                         <td><?php echo $bookings['assignedto'];?></td>
                                         <td><?php echo $bookings['createdby'];?></td>
                                         <td><?php echo ($bookings['date_at']!=='0000-00-00')? date('d M Y',strtotime($bookings['date_at'])) :'-/-/-';?> </td>
@@ -402,10 +467,187 @@
       </div>
     </div>
 </div>
-<script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
 
-  <script type="text/javascript">
+<!--  Large modal example -->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myLargeModalLabel">Large modal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Cras mattis consectetur purus sit amet fermentum.
+                        Cras justo odio, dapibus ac facilisis in,
+                        egestas eget quam. Morbi leo risus, porta ac
+                        consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque
+                        nisl consectetur et. Vivamus sagittis lacus vel
+                        augue laoreet rutrum faucibus dolor auctor.</p>
+                    <p class="mb-0">Aenean lacinia bibendum nulla sed consectetur.
+                        Praesent commodo cursus magna, vel scelerisque
+                        nisl consectetur et. Donec sed odio dui. Donec
+                        ullamcorper nulla non metus auctor
+                        fringilla.</p>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--  Large modal example -->
+    <div class="modal fade bs-example-modal-lg2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myLargeModalLabel">Large modal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Cras mattis consectetur purus sit amet fermentum.
+                        Cras justo odio, dapibus ac facilisis in,
+                        egestas eget quam. Morbi leo risus, porta ac
+                        consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque
+                        nisl consectetur et. Vivamus sagittis lacus vel
+                        augue laoreet rutrum faucibus dolor auctor.</p>
+                    <p class="mb-0">Aenean lacinia bibendum nulla sed consectetur.
+                        Praesent commodo cursus magna, vel scelerisque
+                        nisl consectetur et. Donec sed odio dui. Donec
+                        ullamcorper nulla non metus auctor
+                        fringilla.</p>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+<!-- sample modal content -->
+                                            <div id="exampleModalFullscreen" class="modal fade" tabindex="-1" aria-labelledby="#exampleModalFullscreenLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-fullscreen">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header bg-success">
+                                                            <h5 class="modal-title  text-white " id="exampleModalFullscreenLabel">Fullscreen Modal</h5>
+                                                            <button type="button" class="btn-close  text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                             <p>
+                                                              table goes here
+                                                             </p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light">Save changes</button>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div><!-- /.modal -->
+ 
+
+<script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/moment/min/moment.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/daterange/daterangepicker.js"></script>
+
+   <script type="text/javascript">
+
+
+    var start = moment('01/01/1970');
+        var end = moment();
+                
+        //Date range as a button
+        $('#daterange').daterangepicker({
+            ranges: {
+                'All time': [moment('1970-01-01'), moment()],
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf(
+                    'month')]
+            },
+            // startDate: moment().subtract(29, 'days'),
+            // endDate  : moment()
+            startDate: start,
+            endDate: end,
+            autoUpdateInput: false,
+        });
+        $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+            var start = picker.startDate;
+            var end = picker.endDate;
+            if (start.format('DD/MM/YYYY') == '01/01/1970') {
+                $('#daterange span').html('All time');
+            } else {
+                $('#daterange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            }
+            $('#start_date').val(start.format('Y-MM-DD'));
+            $('#end_date').val(end.format('Y-MM-DD'));
+            if ('' != start.format('Y-MM-DD')) {
+                $('#booking_filter').submit();
+            }
+        });
+        cb(start, end);
+
+        function cb(start, end) {
+            if (start.format('DD/MM/YYYY') == '01/01/1970') {
+                $('#daterange span').html('All time');
+            } else {
+                $('#daterange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            }
+            // $('#start_date').val(start.format('Y-MM-DD') );
+            // $('#end_date').val(end.format('Y-MM-DD') );
+        }
+        var deliveryStart = moment();
+        var deliveryEnd = moment();
+        var dateOptions = {
+            autoUpdateInput: false,
+            startDate: deliveryStart,
+            endDate: deliveryEnd,
+        };
+         var dateFormat = 'MM/DD/YYYY';
+        $('#req_delivery_date_label').daterangepicker(dateOptions);
+        $('#req_delivery_date_label').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format(dateFormat) + ' - ' + picker.endDate.format(dateFormat));
+            $('#req_delivery_date').val(picker.startDate.format('YYYY-MM-DD') + ':' + picker.endDate.format(
+                'YYYY-MM-DD'));
+        });
+        $('#req_delivery_date_label').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
+
+
+
+
     jQuery(document).ready(function(){
+
+      
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //$('#example').DataTable();
             $(".select2").select2();
 
@@ -566,6 +808,11 @@ $(document).ready(function() {
 <!-- Status Change -->
   <script type="text/javascript">
     jQuery(document).ready(function(){
+       $('#booking_date, #booking_status, #crop_status, #delivery_status, #contract, #agent_id, #product_id, #req_delivery_date, #delivery_date').on(
+            'change',
+            function() {
+                $('#booking_filter').submit();
+            });
 
 
          jQuery(document).on("change", ".statusBtn", function(){
@@ -591,6 +838,17 @@ $(document).ready(function() {
     });
     });
    
+
+    window.addEventListener("keydown", checkKeyPressed, false);
+
+    function checkKeyPressed(e)
+    {
+      if (e.keyCode == "13")
+      {
+
+        $('#booking_filter').submit();
+      }
+    }
 </script>
 
 

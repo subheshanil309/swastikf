@@ -249,7 +249,8 @@
                            <div class="row">
                               <label for="req_delivery_date" class="col-sm-4 col-form-label">Requested Delivery Date</label>
                               <div class="col-sm-8"> 
-                                 <input type="date" class="form-control form-control-sm" id="req_delivery_date" name="req_delivery_date"  value="" />
+                                 <input type="text" id="req_delivery_date" name="req_delivery_date"  hidden />
+                                 <input type="text" class="form-control form-control-sm" id="req_delivery_date_label" name="req_delivery_date_label"  placeholder="mm/dd/yy"/>
                               </div>
                            </div>
                             
@@ -579,7 +580,33 @@
    <!-- /.modal-dialog -->
 </div>
 <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
+
+<script src="<?php echo base_url(); ?>assets/admin/libs/moment/min/moment.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/daterange/daterangepicker.js"></script>
  <script type="text/javascript">
+
+
+
+var deliveryStart = moment();
+        var deliveryEnd = moment();
+        var dateOptions = {
+            autoUpdateInput: false,
+            startDate: deliveryStart,
+            endDate: deliveryEnd,
+        };
+         var dateFormat = 'MM/DD/YYYY';
+        $('#req_delivery_date_label').daterangepicker(dateOptions);
+        $('#req_delivery_date_label').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format(dateFormat) + ' - ' + picker.endDate.format(dateFormat));
+            $('#req_delivery_date').val(picker.startDate.format('YYYY-MM-DD') + ':' + picker.endDate.format(
+                'YYYY-MM-DD'));
+        });
+        $('#req_delivery_date_label').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
+
+
+
 
   var centerState  = 33;
    function stateChange(state_code = '',selected_district = '') {

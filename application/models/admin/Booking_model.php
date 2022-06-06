@@ -243,7 +243,7 @@ class Booking_model extends Base_model
                      
                     foreach($params['where'] as $key => $val){ 
                    // $this->db->where('c.'.$key, $val); 
-                    if($key =='customer_title')
+                    if($key =='customer_name' || $key =='billing_address' || $key =='other_city' ||$key =='other_district' || $key =='other_state' || $key =='req_delivery_date' || $key =='start_date' || $key =='end_date' )
                     {
 
                     
@@ -253,16 +253,65 @@ class Booking_model extends Base_model
 
                 } 
 
-                  if(isset($params['where']['customer_title']))
+                  if(isset($params['where']['customer_name']))
                 {
-                    if(!empty($where))
-                    {
-                       // $where.=" AND ";
-                    }
-                    $this->db->or_like('customer_title', $params['where']['customer_title']);
+                     
+                    $this->db->or_like('customer_name', $params['where']['customer_name']);
+                     //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
+                } 
+
+                if(isset($params['where']['billing_address']))
+                {
+                     
+                    $this->db->or_like('billing_address', $params['where']['billing_address']);
+                     //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
+                } 
+                if(isset($params['where']['other_city']))
+                {
+                     
+                    $this->db->or_like('other_city', $params['where']['other_city']);
                      //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
                 }
+                if(isset($params['where']['other_district']))
+                {
+                     
+                    $this->db->or_like('other_city', $params['where']['other_district']);
+                     //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
+                }
+                if(isset($params['where']['other_state']))
+                {
+                     
+                    $this->db->or_like('other_city', $params['where']['other_state']);
+                     //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
+                } 
+                if(isset($params['where']['req_delivery_date']))
+                {
+                    $str = $params['where']['req_delivery_date'];
+                    $exploded_data = explode(":",$str);
 
+                    $start_date = $exploded_data[0];
+                    $end_date = $exploded_data[1];
+                     
+                       /* $this->db->where('order_date >=', $first_date);
+                        $this->db->where('order_date <=', $second_date);*/
+
+                        $where.= " AND ( c.delivery_expect_start_date  >='".$start_date."' AND c.delivery_expect_end_date  <='".$end_date."' )";
+                }
+                if(isset($params['where']['start_date']) && isset($params['where']['end_date']))
+                {
+                    
+
+                    $start_date = $params['where']['start_date'];
+                    $end_date = $params['where']['end_date'];
+                     
+                       /* $this->db->where('order_date >=', $first_date);
+                        $this->db->where('order_date <=', $second_date);*/
+
+                        $where.= " AND ( c.date_at  >='".$start_date."' AND c.date_at  <='".$end_date."' )";
+                }
+
+
+                
  
                      
                 }

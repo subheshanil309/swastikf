@@ -64,19 +64,114 @@ class Bookings extends BaseController
             $conditions['form_type'] = $form_type; 
             $totalRec = $this->booking_model->getRows($conditions); 
                 
-        if($form_type=='inquiry')
-        {
+        
 
                 $where_search =  array();
-                $search_customer_id  = @$this->input->get('search_customer_id');
-                $search_name         = @$this->input->get('search_name');
-                $search_mobile       = @$this->input->get('search_mobile');
-                $search_alt_mobile   = @$this->input->get('search_alt_mobile');
+                $search_customer_id  = @$this->input->get('customer_id');
+                $search_name         = @$this->input->get('customer_name');
+                $search_mobile       = @$this->input->get('customer_mobile');
+                $search_alt_mobile   = @$this->input->get('customer_alter_mobile');
                 $state2              = @$this->input->get('state2');
+                $other_state         = @$this->input->get('other_state');
                 $district2           = @$this->input->get('district2');
+                $other_district      = @$this->input->get('other_district');
                 $city2               = @$this->input->get('city2');
+                $other_city          = @$this->input->get('other_city');
                 $call_direction2     = @$this->input->get('call_direction2');
                 $call_type2          = @$this->input->get('call_type2'); 
+                $booking_no          = @$this->input->get('booking_no'); 
+                $booking_date        = @$this->input->get('booking_date'); 
+                $booking_status      = @$this->input->get('booking_status'); 
+                $crop_status         = @$this->input->get('crop_status'); 
+                $agent_id            = @$this->input->get('agent_id'); 
+                $product_id          = @$this->input->get('product_id'); 
+                $address             = @$this->input->get('address'); 
+                $pincode             = @$this->input->get('pincode'); 
+                $quantity            = @$this->input->get('quantity'); 
+                $unit_price          = @$this->input->get('unit_price'); 
+                $discount            = @$this->input->get('discount'); 
+                $req_delivery_date   = @$this->input->get('req_delivery_date'); 
+                $delivery_date       = @$this->input->get('delivery_date'); 
+                $vehicle_no          = @$this->input->get('vehicle_no'); 
+                $contract            = @$this->input->get('contract'); 
+                $start_date            = @$this->input->get('start_date'); 
+                $end_date            = @$this->input->get('end_date'); 
+                if(!empty($start_date))
+                {
+                     $where_search['start_date'] =  $start_date;
+                 } if(!empty($end_date))
+                {
+                     $where_search['end_date'] =  $end_date;
+                 } if(!empty($contract))
+                {
+                     $where_search['contract'] =  $contract;
+                 }
+                 if(!empty($vehicle_no))
+                {
+                     $where_search['vehicle_no'] =  $vehicle_no;
+                 }
+                 if(!empty($delivery_date))
+                {
+                     $where_search['delivery_date'] =  $delivery_date;
+                 }
+                 if(!empty($quantity))
+                {
+                     $where_search['quantity'] =  $quantity;
+                 }
+                 if(!empty($discount))
+                {
+                     $where_search['discount'] =  $discount;
+                 }if(!empty($unit_price))
+                {
+                     $where_search['price'] =  $unit_price;
+                 }
+                 if(!empty($pincode))
+                {
+                     $where_search['pincode'] =  $pincode;
+                 }
+                 if(!empty($other_state))
+                {
+                     $where_search['other_state'] =  $other_state;
+                 }
+                 if(!empty($other_district))
+                {
+                     $where_search['other_district'] =  $other_district;
+                 }
+                   if(!empty($other_city))
+                {
+                     $where_search['other_city'] =  $other_city;
+                 }
+
+                 if(!empty($address))
+                {
+                     $where_search['billing_address'] =  $address;
+                 }
+                 if(!empty($product_id))
+                {
+                     $where_search['product_id'] =  $product_id;
+                 }
+                
+                if(!empty($agent_id))
+                {
+                     $where_search['agent_id'] =  $agent_id;
+                      
+                }
+                if(!empty($crop_status))
+                {
+                      $where_search['crop_status'] =  $crop_status;
+                }
+                if(!empty($booking_status) && $booking_status !=='all')
+                {
+                     $where_search['booking_status'] =  $booking_status;
+                }
+                if(!empty($booking_date))
+                {
+                     $where_search['booking_date'] =  $booking_date;
+                }
+                if(!empty($booking_no))
+                {
+                    $where_search['id'] =  $booking_no;
+                }
                 if(!empty($search_customer_id))
                 {
                     $where_search['customer_id'] =  $search_customer_id;
@@ -119,7 +214,7 @@ class Bookings extends BaseController
                     $where_search['last_call_type'] =  $call_type2;
                 }*/
 
-        } 
+         
 
 
 
@@ -202,11 +297,10 @@ class Bookings extends BaseController
  
                    
 
- 
-/*   echo "<pre>";
+/* 
+  echo "<pre>";
 print_r($this->db->last_query());  
-echo "</pre>"; */
- 
+echo "</pre>";  */
 
 
 
@@ -784,6 +878,37 @@ echo "</pre>";
 
                             $insertData = array();
 
+
+                              if(isset($_FILES['document_file']['name']) && $_FILES['document_file']['name'] != '') {
+
+                                    $f_name         =$_FILES['document_file']['name'];
+                                    $f_tmp          =$_FILES['document_file']['tmp_name'];
+                                    $f_size         =$_FILES['document_file']['size'];
+                                    $f_extension    =explode('.',$f_name);
+                                    $f_extension    =strtolower(end($f_extension));
+                                    $f_newfile      =uniqid().'.'.$f_extension;
+                                    $store          ="uploads/admin/document/".$f_newfile;
+                                
+                                    if(!move_uploaded_file($f_tmp,$store))
+                                    {
+                                        $this->session->set_flashdata('error', 'Image Upload Failed .');
+                                    }
+                                    else
+                                    {
+                                       $insertData['document'] = $f_newfile;
+                                       
+                                    }
+                                 }
+
+
+                                 $str = $form_data['req_delivery_date'];
+                            $exploded_data = explode(":",$str);
+
+                            $start_date = $exploded_data[0];
+                            $end_date = $exploded_data[1];
+
+
+
                             $insertData['customer_id']                = $get_customerid;
                             $insertData['customer_name']              = $form_data['customer_name'];
                             $insertData['customer_mobile']            = $form_data['customer_mobile'];
@@ -799,6 +924,8 @@ echo "</pre>";
                             $insertData['pincode']                      = $form_data['pincode'];
                             $insertData['booking_date']                 = (isset($form_data['booking_date']) && $form_data['booking_date'] !=='')?$form_data['booking_date']:date("Y-m-d H:i:s");
                             $insertData['req_delivery_date']            = $form_data['req_delivery_date'];
+                            $insertData['delivery_expect_start_date']   = $start_date;
+                            $insertData['delivery_expect_end_date']     = $end_date;
                             $insertData['delivery_date']                = $form_data['delivery_date'];
                             $insertData['req_delivery_date']            = $form_data['req_delivery_date'];
                             $insertData['delivery_date']                = $form_data['delivery_date'];
@@ -855,11 +982,10 @@ echo "</pre>";
                             $insertData['product_set']                  = json_encode($product_set);
                              
                              $result_insert = $this->booking_model->save($insertData);
-                        print_r($result_insert);
-
+                         
 
  
-                if(empty($result_insert))
+                if(!empty($result_insert))
                 {
                      $this->session->set_flashdata('success', 'Booking successfully Added');
 

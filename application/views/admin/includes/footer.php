@@ -44,7 +44,7 @@
 
         <!-- App js -->
         <script src="<?php echo base_url(); ?>assets/admin/js/app.js"></script>
-
+        
         <script type="text/javascript">
             function show_loader()
             {
