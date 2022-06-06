@@ -62,10 +62,11 @@ class Bookings extends BaseController
             $conditions['returnType'] = 'count'; 
             $conditions['userid'] = $userid; 
             $conditions['form_type'] = $form_type; 
-            $totalRec = $this->customer_model->getRows($conditions); 
+            $totalRec = $this->booking_model->getRows($conditions); 
                 
         if($form_type=='inquiry')
         {
+
                 $where_search =  array();
                 $search_customer_id  = @$this->input->get('search_customer_id');
                 $search_name         = @$this->input->get('search_name');
@@ -78,7 +79,7 @@ class Bookings extends BaseController
                 $call_type2          = @$this->input->get('call_type2'); 
                 if(!empty($search_customer_id))
                 {
-                    $where_search['sku_id'] =  $search_customer_id;
+                    $where_search['customer_id'] =  $search_customer_id;
                 }
                 if(!empty($search_name))
                 {
@@ -109,14 +110,14 @@ class Bookings extends BaseController
                 {
                     $where_search['city'] =  $city2;
                 }
-                if(!empty($call_direction2))
+               /* if(!empty($call_direction2))
                 {
                     $where_search['last_call_direction'] =  $call_direction2;
                 } 
                 if(!empty($call_type2))
                 {
                     $where_search['last_call_type'] =  $call_type2;
-                }
+                }*/
 
         } 
 
@@ -196,16 +197,16 @@ class Bookings extends BaseController
                     /* echo "<pre>";
                     print_r( $conditions);
                     echo "</pre>"; */
-                $data['customers'] = $this->customer_model->getRows($conditions); 
+                $data['bookings'] = $this->booking_model->getRows($conditions); 
                 $data['pagination'] = $this->pagination->create_links(); 
  
                    
 
  
-/*  echo "<pre>";
+/*   echo "<pre>";
 print_r($this->db->last_query());  
-echo "</pre>"; 
- */
+echo "</pre>"; */
+ 
 
 
 
@@ -295,13 +296,18 @@ echo "</pre>";
 
         $where = array();
         $where['status'] = '1';
-        $where['orderby'] = 'title';
+        $where['orderby'] = 'id';
         $data['calltypes'] = $this->call_type_model->findDynamic($where);
 
-         $where = array();
+        $where = array();
         $where['status'] = '1';
         $where['orderby'] = 'title';
-        $data['bookings_status'] = $this->booking_status_model->findDynamic($where);
+        $data['bookings_status'] = $this->booking_status_model->findDynamic($where); 
+
+        $where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'title';
+        $data['all_agents'] = $this->agent_model->findDynamic($where);
         
 
         $where = array();
@@ -313,6 +319,42 @@ echo "</pre>";
         $where['status'] = '1';
         $where['orderby'] = 'title';
         $data['contracts_status'] = $this->contract_status_model->findDynamic($where);
+
+
+        $filter_bookings_status =  array();
+        $result_bookings_status =  array();
+        if(!empty($data['bookings_status']))
+        {
+            $bookingwhere  = array();
+            $bookingwhere['status']  = 1;
+            $bookingwhere['field']  = 'id';
+
+            $count_booking =  $this->booking_model->findDynamic($bookingwhere); 
+            $filter_bookings_status = array();
+            $filter_bookings_status['title'] = 'All' ;
+            $filter_bookings_status['slug'] = 'all';
+            $filter_bookings_status['count_booking'] = count($count_booking) ;
+            $result_bookings_status[] = $filter_bookings_status;
+
+
+            foreach ($data['bookings_status'] as $bookingstatus)
+            {
+                $bookingwhere  = array();
+                $bookingwhere['status']  = 1;
+                $bookingwhere['field']  = 'id';
+                $bookingwhere['booking_status']  = $bookingstatus->slug;
+                
+                   $count_booking =  $this->booking_model->findDynamic($bookingwhere); 
+
+                    $filter_bookings_status = array();
+                    $filter_bookings_status['title'] = $bookingstatus->title ;
+                    $filter_bookings_status['slug'] = $bookingstatus->slug ;
+                    $filter_bookings_status['count_booking'] = count($count_booking) ;
+                    $result_bookings_status[] = $filter_bookings_status;
+            }
+        }
+
+        $data['filter_bookings_status'] = $result_bookings_status;
 
 
 
@@ -600,7 +642,7 @@ echo "</pre>";
 
         $where = array();
         $where['status'] = '1';
-        $where['orderby'] = 'title';
+        $where['orderby'] = 'id';
         $data['calltypes'] = $this->call_type_model->findDynamic($where);
 
          $where = array();
@@ -717,7 +759,7 @@ echo "</pre>";
                             $insertData['status']                = '1';
                             $insertData['date_at']               = date("Y-m-d H:i:s");
                             $insertData['created_by']            = $this->session->userdata('userId');
-                            $insertData['assigned_to']           = $this->session->userdata('userId');;
+                            $insertData['assigned_to']           = $this->session->userdata('userId');
                             $insertData['last_call_direction']   = 0;
                             $insertData['last_call_type']        = 0;
                             $insertData['last_follow_date']      = date("Y-m-d H:i:s");
@@ -755,7 +797,7 @@ echo "</pre>";
                             $insertData['other_city']                   = $form_data['other_city'];
                             $insertData['village']                      = $form_data['village'];
                             $insertData['pincode']                      = $form_data['pincode'];
-                            $insertData['booking_date']                 = $form_data['booking_date'];
+                            $insertData['booking_date']                 = (isset($form_data['booking_date']) && $form_data['booking_date'] !=='')?$form_data['booking_date']:date("Y-m-d H:i:s");
                             $insertData['req_delivery_date']            = $form_data['req_delivery_date'];
                             $insertData['delivery_date']                = $form_data['delivery_date'];
                             $insertData['req_delivery_date']            = $form_data['req_delivery_date'];
@@ -794,6 +836,8 @@ echo "</pre>";
                             $insertData['discount']                     = $form_data['discount'];
                             $insertData['total']                        = $form_data['total'];
                             $insertData['pending_bill']                 = $form_data['pending_bill'];
+                            $insertData['created_by']                   = $this->session->userdata('userId');
+                            $insertData['assigned_to']                  = $this->session->userdata('userId');
 
                                         $product_set = array();
                                         $product_set['product_id']                   = $form_data['product_id'];

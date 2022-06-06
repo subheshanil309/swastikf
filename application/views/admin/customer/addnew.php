@@ -202,7 +202,7 @@ print_r($customer_call_dtl);  */
                            <div class="row">
                               <label for="call_type" class="col-sm-4 col-form-label">Call Type*</label>
                               <div class="col-sm-8">
-                                 <select class=" form-control  form-control-sm" id="call_type" name="call_type" aria-label="Floating label select example">
+                                 <select class=" form-control  form-control-sm" id="call_type" name="call_type"  onchange="select_calltype()" aria-label="Floating label select example">
                                      
                                     <?php
                                        if(!empty($calltypes))
@@ -608,7 +608,7 @@ print_r($customer_call_dtl);  */
                                           </div>
                                           </div></td>
                                         <td><?php echo $customer['date_at'];?></td>
-                                        <td><?php echo $customer['sku_id'];?></td>
+                                        <td><?php echo $customer['id'];?></td>
                                         <td><?php echo $customer['customer_title'];?></td>
                                         <td><?php echo $customer['customer_mobile'];?></td>
                                         <td><?php echo $customer['customer_alter_mobile'];?></td>
@@ -692,6 +692,20 @@ print_r($customer_call_dtl);  */
 <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
  
 <script type="text/javascript">
+  function select_calltype()
+  {
+     $('#call_back_date').attr('readonly', false);
+    var call_type =  $('#call_type').val();
+   
+    if(call_type==2)
+    {
+      $('#call_back_date').val(''); 
+      $('#call_back_date').attr('readonly', true);
+
+    }
+
+    
+  }
   function stateChange(state_code = '',selected_district = '') {
       
     var stateCode = state_code ? state_code : $('#state').val();
@@ -977,10 +991,7 @@ function districtChange2(district_code = '',selected_city = '') {
   {
     get_cutomer_call_detail(id,'example233');
   }
-
-
-   
-   
+  
 </script>
 <?php
   

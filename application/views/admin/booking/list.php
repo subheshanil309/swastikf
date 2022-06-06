@@ -1,3 +1,12 @@
+<style type="text/css">
+  .table>:not(caption)>*>* {
+       border: 1px solid #3a863e;
+}
+.mytablestyle{
+  min-height: 500px;
+}
+</style>
+
 <div class="page-content">
   <div class="container-fluid">
       <div class="row">
@@ -28,25 +37,44 @@
             <div class="row">
                <div class="col-lg-12">
                   <div class="card">
-                    <form method="GET" action="<?php echo base_url()?>admin/bookings">
+                   
 
                       <h5 class="card-header bg-success text-white border-bottom ">
-               <div class="row ">
-                 <div class="col-sm-9">
-                  Inquiries
-                 </div>
-                 
-                 <div class="col-sm-3">
-                  <a href="<?php echo base_url()?>admin/bookings" class="btn btn-info btn-sm">Clear</a> 
-                  <button type="submit" class="btn btn-primary btn-sm"> <i class="fa fa-search"></i> Submit Filter</button>
-                  <input name="form_type" type="hidden" value="inquiry">
-                 </div>
-               </div>
-             </h5>
+                         <div class="row ">
+                           <div class="col-sm-9">
+                            Booking Status
+                           </div>
+                           
+                           <div class="col-sm-3">
+                            <a href="<?php echo base_url()?>admin/bookings" class="btn btn-info btn-sm">Clear</a> 
+                            <button type="submit" class="btn btn-primary btn-sm"> <i class="fa fa-search"></i> Submit Filter</button>
+                            <input name="form_type" type="hidden" value="inquiry">
+                           </div>
+                         </div>
+                       </h5>
+                       <div class="card">
+                          <div class="card-body">
+                            
+                            <div class="d-flex flex-wrap gap-2">
+                                <?php
+                                    
+                                 
+                                             if(!empty($filter_bookings_status))
+                                             {
+                                                     foreach ($filter_bookings_status as $filter_booking_status) {
+                                                         ?>
+                                                     <a class="btn btn-light waves-effect waves-light" href="<?php echo base_url()?>admin/bookings?booking_status=<?php echo $filter_booking_status['slug']?>">
+                                              <span class="badge bg-warning text-white"><?php echo $filter_booking_status['count_booking']?></span> <?php echo $filter_booking_status['title']?>
+                                            </a>
+                                              <?php
+                                                 }
+                                             }
+                                             ?>
+                               
+                              </div>
+                          </div>
+                       </div>
 
-
- 
-                     
                        <div class="card-body">
                         
                         <div class="table-responsive mytablestyle">
@@ -57,7 +85,8 @@
                               color: #000;
                               }
                            </style>
-                           <table class="table align-middle table-nowrap mb-0" id="example">
+                          <form method="GET" action="<?php echo base_url()?>admin/bookings">
+                           <table class="table table-striped align-middle table-nowrap mb-0" id="example">
                               <thead class="table-light">
                                  <tr>
                                     <th class="align-middle bg-success text-white">Action</th>
@@ -148,11 +177,11 @@
                                       <select class="form-control form-control-sm "  name="agent_id" id="agent_id" aria-label="Floating label select example" style="width: 150px;"  >
                                         <option value="" selected >Choose Executive</option>
                                           <?php
-                                             if(!empty($states))
+                                             if(!empty($all_agents))
                                              {
-                                                     foreach ($states as $state) {
+                                                     foreach ($all_agents as $executive) {
                                                          ?>
-                                              <option value="<?php echo $state->id;?>"><?php echo $state->name;?></option>
+                                              <option value="<?php echo $executive->id;?>"><?php echo $executive->title;?></option>
                                               <?php
                                                  }
                                              }
@@ -277,7 +306,10 @@
 
                                   print_r($_SESSION);
                                   echo "</pre>";*/
-                                 if(!empty($customers)){ foreach($customers as $customer){ ?>
+
+
+                                 if(!empty($bookings)){
+                                   foreach($bookings as $bookings){ ?>
                                       <tr>
                                         <td>
                                           <div class="btn-group">
@@ -285,38 +317,62 @@
                                             Action<i class="mdi mdi-chevron-down"></i>
                                             </span>
                                             <div class="dropdown-menu" style="">
-                                            <a class="dropdown-item btn side_modal" data-userid="<?php echo $customer['id']; ?>">View</a>
+                                            <a class="dropdown-item btn side_modal" data-userid="<?php echo $bookings['id']; ?>">View</a>
                                             <?php
 
                                               $userid = $this->session->userdata('role');
                                               if($userid==1)
                                               {
                                                 ?>
-                                                  <a class="dropdown-item btn editbtn" href="#" data-userid="<?php echo $customer['id']; ?>">Edit</a>
-                                                  <a class="dropdown-item text-danger deletebtn" href="#" data-userid="<?php echo $customer['id']; ?>">Delete</a>
+                                                  <a class="dropdown-item btn editbtn" href="#" data-userid="<?php echo $bookings['id']; ?>">Edit</a>
+                                                  <a class="dropdown-item text-danger deletebtn" href="#" data-userid="<?php echo $bookings['id']; ?>">Delete</a>
                                                   
                                                 <?php    
                                               }
                                             ?>
                                             
                                           </div>
-                                          </div></td>
-                                        <td><?php echo $customer['date_at'];?></td>
-                                        <td><?php echo $customer['sku_id'];?></td>
-                                        <td><?php echo $customer['customer_title'];?></td>
-                                        <td><?php echo $customer['customer_mobile'];?></td>
-                                        <td><?php echo $customer['customer_alter_mobile'];?></td>
-                                        <td><?php echo (isset($customer['other_state']) && !empty($customer['other_state']))?($customer['other_state']):($customer['state']);?></td>
-                                        <td><?php echo (isset($customer['other_district']) && !empty($customer['other_district']))?($customer['other_district']):($customer['district']);?></td>
-                                        <td><?php echo (isset($customer['other_city']) && !empty($customer['other_city']))?($customer['other_city']):($customer['city']);?></td>
-                                        <td><?php echo $customer['calldir'];?></td>
-                                        <td><?php echo $customer['calltype'];?></td>
-                                        <td><?php echo date('d M Y',strtotime($customer['last_follow_date']));?></td>
-                                        <td><?php echo $customer['assignedto'];?></td>
-                                        <td><?php echo $customer['createdby'];?></td>
-                                        <td><?php echo date('d M Y',strtotime($customer['date_at']));?></td>
-                                        <td><?php echo $customer['lastfollower'];?></td>
-                                        <td><?php echo $customer['lastcalltype'];?></td>
+                                          </div>
+                                        </td>
+                                         <td>
+                                            
+                                          <span class="badge bg-<?php echo (isset($bookings['stage']) && $bookings['stage']=='Created')?'primary':'warning';?> text-white"><?php echo $bookings['stage'];?></span></td>
+                                        <td><?php echo $bookings['id'];?></td>
+                                        <td><?php echo ($bookings['booking_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['booking_date'])) :'-/-/-';?></td>
+                                        <td><span class="badge bg-<?php echo $bookings['booked_badges'];?> text-white"><?php echo $bookings['booked_status'];?></span></td>
+                                        <td><?php echo $bookings['cropstatusname'];?></td>
+                                        <td><?php echo $bookings['customer_id'];?></td>
+                                        <td><?php echo $bookings['customer_name'];?></td>
+                                         <td><?php echo $bookings['executive'];?></td>
+                                         <td><?php echo $bookings['productname'];?></td>
+                                        <td><?php echo $bookings['customer_mobile'];?></td>
+                                        <td><?php echo $bookings['customer_alter_mobile'];?></td>
+                                        <td><?php echo $bookings['billing_address'];?></td>
+                                       
+                                        <td><?php echo (isset($bookings['other_state']) && !empty($bookings['other_state']))?($bookings['other_state']):($bookings['state']);?></td>
+                                        <td><?php echo (isset($bookings['other_district']) && !empty($bookings['other_district']))?($bookings['other_district']):($bookings['district']);?></td>
+                                        <td><?php echo (isset($bookings['other_city']) && !empty($bookings['other_city']))?($bookings['other_city']):($bookings['city']);?></td>
+                                        <td><?php echo $bookings['pincode'];?></td>
+                                        <td><?php echo $bookings['paymentmodename'];?></td>
+                                        <td><?php echo $bookings['bank_trans_id'];?></td>
+                                        <td><?php echo $bookings['crates'];?></td>
+                                        <td><?php echo $bookings['quantity'];?></td>
+                                        <td><?php echo $bookings['price'];?></td>
+                                        <td><?php echo $bookings['total'];?></td>
+                                        <td><?php echo $bookings['discount'];?></td>
+                                        <td><?php echo $bookings['advance'];?></td>
+                                        <td> </td>
+                                        <td><?php echo ($bookings['req_delivery_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['req_delivery_date'])) :'-/-/-';?> </td>
+                                        <td><?php echo ($bookings['delivery_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_date'])) :'-/-/-';?> </td>
+                                        
+                                        <td><?php echo $bookings['vehicle_no'];?></td>
+                                        <td><?php echo $bookings['contractstatusname'];?></td>
+                                        <td><?php echo $bookings['productive_plants'];?></td>
+                                        <td><?php echo $bookings['document'];?></td>
+                                        <td><?php echo $bookings['assignedto'];?></td>
+                                        <td><?php echo $bookings['createdby'];?></td>
+                                        <td><?php echo ($bookings['date_at']!=='0000-00-00')? date('d M Y',strtotime($bookings['date_at'])) :'-/-/-';?> </td>
+                                        
                                       </tr>
                               <?php } }else{ ?>
                                    <tr>
@@ -327,6 +383,7 @@
                              
                               </tbody>
                            </table>
+                           </form>
                         </div>
                         <div class="row">
                           <div class="col-sm-12">
@@ -337,7 +394,7 @@
                       </div>
                         <!-- end table-responsive -->
                      </div>
-                     </form>
+                     
                   </div>
                </div>
             </div>

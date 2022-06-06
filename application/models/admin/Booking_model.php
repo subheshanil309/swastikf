@@ -195,18 +195,23 @@ class Booking_model extends Base_model
           /*  $this->db->select('*'); 
             $this->db->from($this->table); */
 
-                $this->db->select('c.*, cit.city as city, sta.name as state, dist.name as district, ctype.title as calltype,   calldirection.title as calldir,   admin.title as createdby,   admin2.title as assignedto,   admin3.title as lastfollower,   admin3.title as lastfollower,   last_ctype.title as lastcalltype');
+                $this->db->select('c.*, cit.city as city, sta.name as state, dist.name as district,    admin.title as createdby, bookstatus.title as booked_status, bookstatus.badges as booked_badges, executive.title as executive, product.title as productname, paymentmode.title as paymentmodename, contractstatus.title as contractstatusname,admin2.title as assignedto, cropstatus.title as cropstatusname');
                 $this->db->from($this->table. ' as c'); 
                 $this->db->join('z_states as sta', 'sta.id = c.state', 'left');
                 $this->db->join('z_district as dist', 'dist.id = c.district', 'left');
                 $this->db->join('z_cities as cit', 'cit.id = c.city', 'left');
-                $this->db->join('z_call_type as ctype', 'ctype.id = c.last_call_type', 'left');
+                $this->db->join('z_crop_status as cropstatus', 'cropstatus.slug = c.crop_status', 'left'); 
+                $this->db->join('z_booking_status as bookstatus', 'bookstatus.slug = c.booking_status', 'left'); 
+                $this->db->join('z_contract_status as contractstatus', 'contractstatus.slug = c.contract', 'left'); 
+                $this->db->join('z_payment_mode as paymentmode', 'paymentmode.slug = c.payment_mode', 'left'); 
+                $this->db->join('z_agent as executive', 'executive.id = c.agent_id', 'left'); 
+                $this->db->join('z_product as product', 'product.id = c.product_id', 'left'); 
                  
-                $this->db->join('z_call_direction as calldirection', 'calldirection.id = c.last_call_direction', 'left');
+                /*$this->db->join('z_call_direction as calldirection', 'calldirection.id = c.last_call_direction', 'left');*/
                 $this->db->join('z_admin as admin', 'admin.id = c.created_by', 'left');
                 $this->db->join('z_admin as admin2', 'admin2.id = c.assigned_to', 'left');
-                $this->db->join('z_admin as admin3', 'admin3.id = c.last_follower', 'left');
-                $this->db->join('z_call_type as last_ctype', 'last_ctype.id = c.last_follow_call_type', 'left');
+               /* $this->db->join('z_admin as admin3', 'admin3.id = c.last_follower', 'left');*/
+                /*$this->db->join('z_call_type as last_ctype', 'last_ctype.id = c.last_follow_call_type', 'left');*/
 
                 $where  = '';
                 $userid = $this->session->userdata('userId');

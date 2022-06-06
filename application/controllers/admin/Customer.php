@@ -88,7 +88,7 @@ class Customer extends BaseController
                 $call_type2          = @$this->input->get('call_type2'); 
                 if(!empty($search_customer_id))
                 {
-                    $where_search['sku_id'] =  $search_customer_id;
+                    $where_search['id'] =  $search_customer_id;
                 }
                 if(!empty($search_name))
                 {
@@ -242,7 +242,7 @@ echo "</pre>";
                 {   
                     $isserch = true;
 
-                     $where['sku_id'] = $customer_id;
+                     $where['id'] = $customer_id;
                 }
 
                 if(!empty($mobile))
@@ -312,7 +312,7 @@ echo "</pre>";
 
         $where = array();
         $where['status'] = '1';
-        $where['orderby'] = 'title';
+        $where['orderby'] = 'id';
         $data['calltypes'] = $this->call_type_model->findDynamic($where);
 
         $where = array();
@@ -342,7 +342,6 @@ echo "</pre>";
         
         $this->form_validation->set_rules('call_type','call_type','trim|required');
         $this->form_validation->set_rules('assign_to','assign_to','trim|required');
-        $this->form_validation->set_rules('call_back_date','call_back_date','trim|required');
         $this->form_validation->set_rules('call_direction','call_direction','trim|required');
         
         
@@ -637,7 +636,7 @@ echo "</pre>";
 
         $where = array();
         $where['status'] = '1';
-        $where['orderby'] = 'title';
+        $where['orderby'] = 'id';
         $data['calltypes'] = $this->call_type_model->findDynamic($where);
 
         $where = array();
@@ -678,7 +677,7 @@ echo "</pre>";
         $this->form_validation->set_rules('customer_mobile','customer_mobile','trim|required');
         
         
-        $this->form_validation->set_rules('call_type','call_type','trim|required');
+         
         $this->form_validation->set_rules('assign_to','assign_to','trim|required');
         $this->form_validation->set_rules('call_back_date','call_back_date','trim|required');
         $this->form_validation->set_rules('call_direction','call_direction','trim|required');
@@ -873,7 +872,7 @@ echo "</pre>";
             $where['status'] = '1'; 
             if($customer_id !=='')
             {
-                $where['sku_id'] = $customer_id; 
+                $where['id'] = $customer_id; 
             }
 
             if($mobile !=='')
