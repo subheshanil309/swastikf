@@ -18,6 +18,7 @@
         <link href="<?php echo base_url(); ?>assets/admin/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url(); ?>assets/admin/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url(); ?>assets/admin/libs/daterange/daterangepicker.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo base_url(); ?>assets/admin/libs/toastr/build/toastr.min.css" rel="stylesheet" type="text/css" />
         <style type="text/css">
             #loader {
               display: none;

@@ -6,10 +6,10 @@
 
 
 
-class Booking_model extends Base_model
+class Booking_log_model extends Base_model
 {
 
-    public $table = "z_booking";
+    public $table = "z_booking_log";
 
     //set column field database for datatable orderable
     var $column_order = array(null, 'c.date_at', 'c.sku_id', 'c.customer_title','c.customer_mobile','c.customer_alter_mobile',  'sta.name', 'dist.name', 'cit.city', 'ctype.name', 'calldirection.name'); 
@@ -218,24 +218,8 @@ class Booking_model extends Base_model
                  $role = $this->session->userdata('role');
                 
 
+                 $where.= "( c.status = 1 )";
                 
-                if($role==1)
-                {
-                    if(isset($params['form_type']) && $params['form_type']=='inquiry')
-                    {
-                        $where.= "( c.created_by = '".$params['userid']."' OR c.assigned_to='".$params['userid']."')";       
-                    }else
-                    {
-                        $where.= "( c.status = 1 )";    
-                    }
-                    //$where.= "( c.status = '1' )";
-                    
-                }else
-                {
-                     $where.= "( c.created_by = '".$userid."' OR c.assigned_to='".$userid."')";
-
-                }
-                    
 
             if(array_key_exists("where", $params)){
                 if(!empty($params['where']))
@@ -243,72 +227,13 @@ class Booking_model extends Base_model
                      
                     foreach($params['where'] as $key => $val){ 
                    // $this->db->where('c.'.$key, $val); 
-                    if($key =='customer_name' || $key =='billing_address' || $key =='other_city' ||$key =='other_district' || $key =='other_state' || $key =='req_delivery_date' || $key =='start_date' || $key =='end_date' )
-                    {
-
-                    
-                    }else{
+                     
                         $where.= " AND ( c.".$key." = '".$val."' )";
-                    }
-
-                } 
-
-                  if(isset($params['where']['customer_name']))
-                {
-                     
-                    $this->db->or_like('customer_name', $params['where']['customer_name']);
-                     //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
-                } 
-
-                if(isset($params['where']['billing_address']))
-                {
-                     
-                    $this->db->or_like('billing_address', $params['where']['billing_address']);
-                     //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
-                } 
-                if(isset($params['where']['other_city']))
-                {
-                     
-                    $this->db->or_like('other_city', $params['where']['other_city']);
-                     //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
-                }
-                if(isset($params['where']['other_district']))
-                {
-                     
-                    $this->db->or_like('other_city', $params['where']['other_district']);
-                     //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
-                }
-                if(isset($params['where']['other_state']))
-                {
-                     
-                    $this->db->or_like('other_city', $params['where']['other_state']);
-                     //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
-                } 
-                if(isset($params['where']['req_delivery_date']))
-                {
-                    $str = $params['where']['req_delivery_date'];
-                    $exploded_data = explode(":",$str);
-
-                    $start_date = $exploded_data[0];
-                    $end_date = $exploded_data[1];
-                     
-                       /* $this->db->where('order_date >=', $first_date);
-                        $this->db->where('order_date <=', $second_date);*/
-
-                        $where.= " AND ( c.delivery_expect_start_date  >='".$start_date."' AND c.delivery_expect_end_date  <='".$end_date."' )";
-                }
-                if(isset($params['where']['start_date']) && isset($params['where']['end_date']))
-                {
                     
 
-                    $start_date = $params['where']['start_date'];
-                    $end_date = $params['where']['end_date'];
-                     
-                       /* $this->db->where('order_date >=', $first_date);
-                        $this->db->where('order_date <=', $second_date);*/
+                } 
 
-                        $where.= " AND ( c.date_at  >='".$start_date."' AND c.date_at  <='".$end_date."' )";
-                }
+                  
 
 
                 
@@ -407,14 +332,15 @@ class Booking_model extends Base_model
     }
 
 
-    public function booking_log($id)
+    public function booking_log($single_arr)
     {
-        $single_arr = $this->find($id);
+       
         if(!empty($single_arr))
         {
             $single = $single_arr;
             $insertData = array();
-            $insertData['customer_id']                  = $get_customerid;
+            $insertData['booking_id']                   = $single->id;
+            $insertData['customer_id']                  = $single->customer_id;
             $insertData['customer_name']                = $single->customer_name;
             $insertData['customer_mobile']              = $single->customer_mobile;
             $insertData['customer_alter_mobile']        = $single->customer_alter_mobile;
@@ -429,8 +355,8 @@ class Booking_model extends Base_model
             $insertData['pincode']                      = $single->pincode;
             $insertData['booking_date']                 = $single->booking_date;
             $insertData['req_delivery_date']            = $single->req_delivery_date;
-            $insertData['delivery_expect_start_date']   = $start_date;
-            $insertData['delivery_expect_end_date']     = $end_date;
+            $insertData['delivery_expect_start_date']   = $single->delivery_expect_start_date;
+            $insertData['delivery_expect_end_date']     = $single->delivery_expect_end_date;
             $insertData['delivery_date']                = $single->delivery_date;
             $insertData['req_delivery_date']            = $single->req_delivery_date;
             $insertData['delivery_date']                = $single->delivery_date;
@@ -487,11 +413,9 @@ class Booking_model extends Base_model
 
             $insertData['product_set']                  = json_encode($product_set);
              
-             $result_insert = $this->booking_model->save($insertData);
+             $result_insert = $this->save($insertData);
         }
     }
-
-    
 
 
 

@@ -11,7 +11,9 @@ class Bookings extends BaseController
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('admin/company_model');
         $this->load->model('admin/booking_model');
+        $this->load->model('admin/booking_log_model');
         $this->load->model('admin/booking_status_model');
         $this->load->model('admin/crop_status_model');
         $this->load->model('admin/contract_status_model');
@@ -51,18 +53,14 @@ class Bookings extends BaseController
             
             
  
+            $conditions = array(); 
+            $where_search = array();
 
             $data['edit_data'] = array();
             $data['customer_call_dtl'] = array();
 
             $form_type  = $this->input->get('form_type');
-            $conditions = array(); 
-            $where_search = array();
-
-            $conditions['returnType'] = 'count'; 
-            $conditions['userid'] = $userid; 
-            $conditions['form_type'] = $form_type; 
-            $totalRec = $this->booking_model->getRows($conditions); 
+            
                 
         
 
@@ -201,10 +199,7 @@ class Bookings extends BaseController
                 if(!empty($city2))
                 {
                     $where_search['city'] =  $city2;
-                } if(!empty($city2))
-                {
-                    $where_search['city'] =  $city2;
-                }
+                }  
                /* if(!empty($call_direction2))
                 {
                     $where_search['last_call_direction'] =  $call_direction2;
@@ -214,8 +209,15 @@ class Bookings extends BaseController
                     $where_search['last_call_type'] =  $call_type2;
                 }*/
 
-         
+            
 
+            $conditions['returnType'] = 'count'; 
+            $conditions['userid'] = $userid; 
+            $conditions['form_type'] = $form_type; 
+            $conditions['where'] = $where_search; 
+            $totalRec = $this->booking_model->getRows($conditions);
+
+             
 
 
 
@@ -280,20 +282,26 @@ class Bookings extends BaseController
                     $offset = ($offset-1) * $this->perPage;
                 }
 
+ 
                 // Get records 
                 $conditions = array( 
                 'start' => $offset, 
                 'where' => $where_search, 
+                'userid' =>  $userid, 
+                'form_type' => $form_type, 
                 'limit' => $this->perPage 
                 ); 
 
-                $conditions['userid'] = $userid;
-                $conditions['form_type'] = $form_type; 
-                    /* echo "<pre>";
+                
+                    /*$conditions['userid'] = $userid;
+                $conditions['form_type'] = $form_type;  echo "<pre>";
                     print_r( $conditions);
                     echo "</pre>"; */
-                $data['bookings'] = $this->booking_model->getRows($conditions); 
+
+                 $data['bookings']   = $this->booking_model->getRows($conditions); 
                 $data['pagination'] = $this->pagination->create_links(); 
+ 
+                $data['pagination_total_count'] =  $totalRec;
  
                    
 
@@ -420,10 +428,9 @@ echo "</pre>";  */
         if(!empty($data['bookings_status']))
         {
             $bookingwhere  = array();
-            $bookingwhere['status']  = 1;
-            $bookingwhere['field']  = 'id';
+            $bookingwhere['title']  = 'all';
 
-            $count_booking =  $this->booking_model->findDynamic($bookingwhere); 
+            $count_booking =  $this->booking_model->get_booking_data($bookingwhere,$userid); 
             $filter_bookings_status = array();
             $filter_bookings_status['title'] = 'All' ;
             $filter_bookings_status['slug'] = 'all';
@@ -433,18 +440,15 @@ echo "</pre>";  */
 
             foreach ($data['bookings_status'] as $bookingstatus)
             {
-                $bookingwhere  = array();
-                $bookingwhere['status']  = 1;
-                $bookingwhere['field']  = 'id';
-                $bookingwhere['booking_status']  = $bookingstatus->slug;
-                
-                   $count_booking =  $this->booking_model->findDynamic($bookingwhere); 
+                $bookingwhere  = array(); 
+                $bookingwhere['title']  = $bookingstatus->slug;
+                $count_booking =  $this->booking_model->get_booking_data($bookingwhere,$userid); 
 
-                    $filter_bookings_status = array();
-                    $filter_bookings_status['title'] = $bookingstatus->title ;
-                    $filter_bookings_status['slug'] = $bookingstatus->slug ;
-                    $filter_bookings_status['count_booking'] = count($count_booking) ;
-                    $result_bookings_status[] = $filter_bookings_status;
+                $filter_bookings_status = array();
+                $filter_bookings_status['title'] = $bookingstatus->title ;
+                $filter_bookings_status['slug'] = $bookingstatus->slug ;
+                $filter_bookings_status['count_booking'] = count($count_booking) ;
+                $result_bookings_status[] = $filter_bookings_status;
             }
         }
 
@@ -981,7 +985,12 @@ echo "</pre>";
 
                             $insertData['product_set']                  = json_encode($product_set);
                              
-                             $result_insert = $this->booking_model->save($insertData);
+                                $result_insert  = $this->booking_model->save($insertData);
+                                $single_arr     = $this->booking_model->find($result_insert);
+                                $logged         = $this->booking_log_model->booking_log($single_arr);
+
+
+
                          
 
  
@@ -1388,6 +1397,107 @@ echo "</pre>";
         }
         echo $html_content;
         
+    }
+
+    public function change_booking_status($id)
+    {
+
+        
+        $this->isLoggedIn();
+        $update_booking_status  = $this->input->post('update_booking_status');
+        $insertData                 = array();
+        $insertData['id']           = $id;
+        $insertData['booking_status']= $update_booking_status;
+        $result = $this->booking_model->save($insertData);
+        $single_arr     = $this->booking_model->find($id);
+        $logged         = $this->booking_log_model->booking_log($single_arr);
+
+        $response_result = array(
+                'status'=>0,
+                'message'=>''
+        );
+
+        if($result)
+        {
+            $response_result = array(
+                'status'=>1,
+                'message'=>'Update Changes Successfully !'
+            );
+        }else
+        {
+            $response_result = array(
+                'status'=>0,
+                'message'=>'Failed Update Changes!'
+            );
+        }
+
+        echo json_encode($response_result);
+
+
+         
+    }
+
+
+    public function single($id='')
+    {
+         $this->isLoggedIn();
+        $single_arr = $this->booking_model->find($id);
+         
+        echo  json_encode($single_arr);
+    }
+    public function booking_logs($id='')
+    {
+         $this->isLoggedIn();
+         $userid = $this->session->userdata('userId');
+         $where_search['booking_id'] = $id;
+         $conditions = array( 
+                    'where' => $where_search, 
+                    'userid' =>  $userid, 
+                 ); 
+        $booking_log = $this->booking_log_model->getRows($conditions);
+        echo  json_encode($booking_log);
+    }
+
+    public function receipt($id)
+    {
+
+        $this->isLoggedIn();
+
+        $data = array();
+         $userid = $this->session->userdata('userId');
+         $where_search['id'] = $id;
+         $conditions = array( 
+                    'where' => $where_search 
+                 ); 
+        $booked = $this->booking_model->getRows($conditions);
+         $data['company_details'] = '';
+         $data['receipt_dtl'] = '';
+        if(!empty($booked))
+        {
+            $receipt_dtl = $booked[0];
+
+            $where_search =  array();
+            $where_search['id'] = $receipt_dtl['company_id'];
+            $conditions = array( 
+                'where' => $where_search 
+            ); 
+
+             $data['receipt_dtl'] = $receipt_dtl;
+             $company_details = $this->company_model->findCompanyDetail($conditions);
+
+            if(!empty($company_details))
+            {
+                $data['company_details'] =   $company_details[0];   
+            }
+           
+
+            
+        }
+        
+ 
+        $this->global['pageTitle'] = 'Booking Receipt';
+        $this->loadViews("admin/booking/booking-reciept", $this->global, $data , NULL);
+
     }
 
 

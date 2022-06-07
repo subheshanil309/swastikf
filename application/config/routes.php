@@ -140,6 +140,10 @@ $route['buy-now'] = 'cart';
 //$route['front/login/resetPasswordConfirmUser/(:any)'] = 'front/login/resetPasswordConfirmUser/$1';
 
 $route['admin'] = 'admin/dashboard';
+//booking routs
+$route['admin/bookings/(:num)/status'] 	= 'admin/bookings/change_booking_status/$1';
+$route['admin/bookings/(:num)/logs'] 	= 'admin/bookings/booking_logs/$1';
+
 $route['user'] 	= 'user/dashboard';
 $route['vendor']= 'vendor/dashboard';
 

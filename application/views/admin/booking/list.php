@@ -373,8 +373,8 @@
                                             Action<i class="mdi mdi-chevron-down"></i>
                                             </span>
                                             <div class="dropdown-menu" style="">
-                                            <a class="dropdown-item btn side_modal" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-wrench" aria-hidden="true"></i> Change Status</a>
-                                            <a class="dropdown-item btn side_modal" data-bs-toggle="modal" data-bs-target="#exampleModalFullscreen" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-history" aria-hidden="true"></i> View History</a>
+                                            <a class="dropdown-item btn changestatusbtn" data-bs-toggle="modal" data-bs-target="#exampleModal"  data-userid="<?php echo $bookings['id']; ?>" data-status_title="<?php echo $bookings['booked_status'];?>"  ><i class="fa fa-wrench" aria-hidden="true"></i> Change Status</a>
+                                            <a class="dropdown-item btn historybooking" data-bs-toggle="modal" data-bs-target="#exampleModalFullscreen" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-history" aria-hidden="true"></i> View History</a>
                                             <a class="dropdown-item btn" href="<?php echo base_url()?>admin/bookings/receipt/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Generate Receipt</a>
                                             <a class="dropdown-item btn" href="<?php echo base_url()?>admin/bookings/view/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-eye" aria-hidden="true"></i> View Order Details</a>
                                             <a class="dropdown-item btn" href="<?php echo base_url()?>admin/bookings/agreement/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-file-excel" aria-hidden="true"></i> Generate Agreement</a>
@@ -400,7 +400,7 @@
                                           <span class="badge bg-<?php echo (isset($bookings['stage']) && $bookings['stage']=='Created')?'primary':'warning';?> text-white"><?php echo $bookings['stage'];?></span></td>
                                         <td><?php echo $bookings['id'];?></td>
                                         <td><?php echo ($bookings['booking_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['booking_date'])) :'-/-/-';?></td>
-                                        <td><span class="text-dark badge bg-<?php echo $bookings['booked_badges'];?> "><?php echo $bookings['booked_status'];?></span></td>
+                                        <td><span class="badge bg-<?php echo $bookings['booked_badges'];?> "><?php echo $bookings['booked_status'];?></span></td>
                                         <td><?php echo $bookings['cropstatusname'];?></td>
                                         <td><?php echo $bookings['customer_id'];?></td>
                                         <td><?php echo $bookings['customer_name'];?></td>
@@ -451,7 +451,15 @@
                            </form>
                         </div>
                         <div class="row">
-                          <div class="col-sm-12">
+                          <div class="col-sm-3">
+                            <ul class="pagination  justify-content-left mt-4"  >
+                              <li class=""><p>Total <?php echo @$pagination_total_count; ?> Bookings</p>
+                              </li>
+                            </ul>
+                            
+
+                          </div>
+                          <div class="col-sm-9">
                             <?php echo @$pagination; ?>  
                           </div>
                         </div>
@@ -526,29 +534,144 @@
                                                 <div class="modal-dialog modal-fullscreen">
                                                     <div class="modal-content">
                                                         <div class="modal-header bg-success">
-                                                            <h5 class="modal-title  text-white " id="exampleModalFullscreenLabel">Fullscreen Modal</h5>
+                                                            <h5 class="modal-title  text-white " id="exampleModalFullscreenLabel">Booking History</h5>
                                                             <button type="button" class="btn-close  text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                             <p>
-                                                              table goes here
-                                                             </p>
+                                                          <div class="table table-responsive">
+                                                             <table class="table table-responsive">
+                                                                  <thead>
+                                                                    <tr>
+                                                                     <th class="align-middle bg-success text-white">Stage</th>
+                                                                    <th class="align-middle bg-success text-white">Booking&nbsp;No.</th>
+                                                                    <th class="align-middle bg-success text-white">Booking&nbsp;Date.</th>
+                                                                    <th class="align-middle bg-success text-white">Order&nbsp;Status</th>
+                                                                    <th class="align-middle bg-success text-white">Crop&nbsp;Status</th>
+                                                                    <th class="align-middle bg-success text-white">Customer&nbsp;ID</th>
+                                                                    <th class="align-middle bg-success text-white">Customer&nbsp;Name</th>
+                                                                    <th class="align-middle bg-success text-white">Executive</th>
+                                                                    <th class="align-middle bg-success text-white">Choose&nbsp;Product</th>
+                                                                    <th class="align-middle bg-success text-white">Primary&nbsp;Number</th>
+                                                                    <th class="align-middle bg-success text-white">Number</th>
+                                                                    <th class="align-middle bg-success text-white">Billing&nbsp;Address</th>
+                                                                    <th class="align-middle bg-success text-white">Choose&nbsp;State</th>
+                                                                    <th class="align-middle bg-success text-white">Choose&nbsp;District</th>
+                                                                    <th class="align-middle bg-success text-white">Choose&nbsp;Tehsil</th>
+                                                                    <th class="align-middle bg-success text-white">Pin&nbsp;Code</th>
+                                                                    <th class="align-middle bg-success text-white">Payment&nbsp;Mode</th>
+                                                                    <th class="align-middle bg-success text-white">Bank&nbsp;Trxn&nbsp;ID</th>
+                                                                    <th class="align-middle bg-success text-white">Crates</th>
+                                                                    <th class="align-middle bg-success text-white">Plant&nbsp;Booked</th>
+                                                                    <th class="align-middle bg-success text-white">Plant&nbsp;Rate</th>
+                                                                    <th class="align-middle bg-success text-white">Total&nbsp;Billed&nbsp;Amount</th>
+                                                                    <th class="align-middle bg-success text-white">Discrount&nbsp;Amount</th>
+                                                                    <th class="align-middle bg-success text-white">Recieved&nbsp;Amount</th>
+                                                                    <th class="align-middle bg-success text-white">Out&nbsp;standing&nbsp;Amount</th>
+                                                                    <th class="align-middle bg-success text-white">Expected&nbsp;Delivery&nbsp;Date</th>
+                                                                    <th class="align-middle bg-success text-white">Actual&nbsp;Delivery&nbsp;Date</th>
+                                                                    <th class="align-middle bg-success text-white">Vehicle&nbsp;No.</th>
+                                                                    <th class="align-middle bg-success text-white">Contract&nbsp;Status</th>
+                                                                    <th class="align-middle bg-success text-white">Productive&nbsp;Plants</th>
+                                                                    <th class="align-middle bg-success text-white">Document</th>
+                                                                    <th class="align-middle bg-success text-white">Assigned&nbsp;To</th>
+                                                                    <th class="align-middle bg-success text-white">Entry&nbsp;made&nbsp;by</th>
+                                                                    <th class="align-middle bg-success text-white">Entry&nbsp;Date</th>
+                                                                  </tr>
+                                                                  </thead>
+                                                                  <tbody id="booking_history">
+                                                                    <tr>
+                                                                      <td colspan="100">
+                                                                        No record found..
+                                                                      </td>
+                                                                    </tr>
+                                                                  </tbody>
+                                                             </table>
+                                                          </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-primary waves-effect waves-light">Save changes</button>
-                                                        </div>
+                                                         </div>
                                                     </div><!-- /.modal-content -->
                                                 </div><!-- /.modal-dialog -->
                                             </div><!-- /.modal -->
+
+                                            <!-- status update modal sample modal content -->
+                                            <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModal" aria-modal="true" role="dialog">
+                                                <div class="modal-dialog ">
+                                                   <form class="change_booking_status" method="post" id="change_booking_status" action="<?php echo base_url();?>admin/bookings/1212/status">
+                                                    <div class="modal-content border-success">
+                                                        <div class="modal-header bg-success">
+                                                            <h5 class="modal-title text-white" id="exampleModalLabel">Change booking status</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                           
+                                                                <div class="mb-3 row">
+                                                                    <label for="example-text-input" class="col-md-5 col-form-label">Current Status:</label>
+                                                                    <div class="col-md-7">
+                                                                         <div class="form-control form-control-sm"> <strong id="current_status">Cancel</strong></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3 row">
+                                                                    <label for="example-text-input" class="col-md-5 col-form-label">Update Status:*</label>
+                                                                    <div class="col-md-7">
+                                                                         <select class=" form-control form-control-sm " id="update_booking_status" name="update_booking_status" aria-label="Floating label select example"  >
+                                                                            <option value="" selected>Booking Status</option>
+                                                                              <?php
+                                                                                 if(!empty($bookings_status))
+                                                                                 {
+                                                                                         foreach ($bookings_status as $booking_status) {
+                                                                                             ?>
+                                                                                  <option value="<?php echo $booking_status->slug;?>"><?php echo $booking_status->title;?></option>
+                                                                                  <?php
+                                                                                     }
+                                                                                 }
+                                                                                 ?>
+                                                                          </select>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                             
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                                            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                  </form>
+                                                </div>
+                                            </div>
  
 
 <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/daterange/daterangepicker.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/toastr/build/toastr.min.js"></script>
 
+     
    <script type="text/javascript">
 
+          toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "10000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+          }
+   </script>
+   <script type="text/javascript">
+    
+ 
 
     var start = moment('01/01/1970');
         var end = moment();
@@ -618,37 +741,7 @@
 
 
     jQuery(document).ready(function(){
-
-      
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //$('#example').DataTable();
+    //$('#example').DataTable();
             $(".select2").select2();
 
 
@@ -675,6 +768,171 @@
             });
           }
     });
+
+         // change status steps start
+         jQuery(document).on("click", ".changestatusbtn", function(){
+
+          var userId  = $(this).data("userid");
+          var status_title  = $(this).data("status_title");
+          var form_action      = "<?php echo base_url() ?>admin/bookings/"+userId+"/status";
+          var hitURL = "<?php echo base_url() ?>admin/bookings/single/"+userId;
+          show_loader();
+
+          jQuery.ajax({
+            type      : "POST",
+            dataType  : "json",
+            url       : hitURL,
+            data      : { id : userId } 
+          }).done(function(response){
+            hide_loader();
+
+            if(response)
+            {
+              var data = response;
+              
+              $('#change_booking_status').attr('action', form_action);
+              $('#exampleModal').modal('show');
+              $('#update_booking_status').val(data.booking_status);
+              $('#current_status').text(status_title);
+
+            }
+          });
+
+          
+
+           
+           
+         
+    });
+
+
+          jQuery("#change_booking_status").on('submit',function(e){
+             e.preventDefault();
+               
+              
+              var form = $(this);
+              var hitURL = form.attr('action');
+               var formValues= $(this).serialize();
+              show_loader();
+           
+              jQuery.ajax({
+                type : "POST",
+                dataType : "json",
+                url : hitURL,
+                data : formValues 
+              }).done(function(data){
+                hide_loader();
+                if(data.status==1)
+                {
+                  
+
+                  $('#exampleModal').modal('hide');
+                  toastr.success(data.message);
+                     window.location.reload(true);
+
+                
+                }else{
+
+                  toastr.error(data.message);
+
+                }
+              });
+           
+        });
+
+
+
+
+
+         $("#exampleModal").on('hide.bs.modal', function(){
+          $('#change_booking_status').attr('action','');
+          $('#update_booking_status').val('');
+           $('#current_status').text('');
+        });
+
+
+
+         // change status steps end
+
+
+
+ //get history  start
+         jQuery(document).on("click", ".historybooking", function(){
+
+          var userId  = $(this).data("userid");
+           var hitURL      = "<?php echo base_url() ?>admin/bookings/"+userId+"/logs";
+           show_loader();
+
+          jQuery.ajax({
+            type      : "POST",
+            dataType  : "json",
+            url       : hitURL,
+            data      : { id : userId } 
+          }).done(function(response){
+            hide_loader();
+
+            if(response)
+            {
+              var data = response;
+              var html_content = '';
+              console.log(response);
+              for (var i = 0; i < data.length; i++)
+              {
+                content = data[i];
+                  html_content+= '<tr>';
+                  html_content+="<td>"+content.stage+"</td>";
+                  html_content+="<td>"+content.booking_id+"</td>"; 
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+="<td></td>";
+                  html_content+= '</tr>';
+                 
+              }
+              $('#booking_history').html(html_content);
+              
+              /*alert(data.length);
+              console.log(data);*/
+
+            }
+          });
+
+          
+
+           
+           
+         
+    });
+
+
     });
 
     function stateChange2(state_code = '',selected_district = '') {

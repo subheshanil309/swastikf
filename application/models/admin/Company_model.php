@@ -9,7 +9,7 @@
 class Company_model extends Base_model
 {
 
-    public $table = "agency_company";
+    public $table = "z_company";
 
     //set column field database for datatable orderable
     var $column_order = array(null, 'StaffName', null, 'StaffEmail','StaffPrimaryTextFirst','StaffSecondaryTextFirst','StaffTeam',null, null, null); 
@@ -182,6 +182,40 @@ class Company_model extends Base_model
 
         }
 
+    public function findCompanyDetail($params)
+    {
+                $this->db->select('c.*, cit.city as city, sta.name as state, dist.name as district');
+                $this->db->from($this->table. ' as c'); 
+                $this->db->join('z_states as sta', 'sta.id = c.state', 'left');
+                $this->db->join('z_district as dist', 'dist.id = c.district', 'left');
+                $this->db->join('z_cities as cit', 'cit.id = c.city', 'left');
+
+                $where  = '';
+                $where.= "( c.status = 1 )"; 
+
+                if(array_key_exists("where", $params)){
+                    if(!empty($params['where']))
+                    {
+
+                    foreach($params['where'] as $key => $val){ 
+
+                        $where.= " AND ( c.".$key." = '".$val."' )";
+                         
+
+                        } 
+                    } 
+                } 
+                $this->db->where($where); 
+
+
+                $query = $this->db->get(); 
+                $result = ($query->num_rows() > 0)?$query->result_array():array(); 
+                 return $result; 
+
+
+
+
+    }
 
 
 }
