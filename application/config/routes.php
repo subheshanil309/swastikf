@@ -143,6 +143,7 @@ $route['admin'] = 'admin/dashboard';
 //booking routs
 $route['admin/bookings/(:num)/status'] 	= 'admin/bookings/change_booking_status/$1';
 $route['admin/bookings/(:num)/logs'] 	= 'admin/bookings/booking_logs/$1';
+$route['admin/bookings/(:num)/edit'] 	= 'admin/bookings/edit/$1';
 
 $route['user'] 	= 'user/dashboard';
 $route['vendor']= 'vendor/dashboard';

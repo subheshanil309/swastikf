@@ -1,11 +1,141 @@
 
 <style type="text/css">
+
+    .invoice
+    {
+            background: #fff;
+            border: 1px solid rgba(0,0,0,.125);
+            position: relative;
+    }
+
+     
+
+    @media print {
+ 
+    
+
+      body * {
+        visibility: hidden;
+    }
+
+    .cart-table th,
+    .table th,
+    .cart-table td,
+    .table td {
+        /* border-color: #000; */
+        color: #000;
+    }
+
+  
+    .section-to-print,
+    .section-to-print * {
+        visibility: visible;
+
+    }
+
+    .section-to-print p
+    {
+        margin: 0;
+    }
+    .section-to-print {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+    }
+
+    
+
+    .row>* {
+    position: unset;
+}
+ } 
   .mtable {
     width: 100%;
     margin-bottom: 0;
     color: #212529;
     background-color: transparent;
 }
+
+.mtable td,
+.mtable th {
+    padding: 0;
+    border: 1px solid #212529;
+}
+
+.mtable .noborder td,
+.mtable .noborder th {
+    border: 0;
+    padding: 0;
+}
+
+
+ 
+ @page  {
+            size: auto;
+            /* auto is the initial value */
+            margin: 0;
+            border: 1px solid #666;
+        }
+
+        @media  print {
+
+            html,
+            body,
+            div,
+            span,
+            applet,
+            object,
+            iframe,
+            p,
+            blockquote,
+            pre,
+            a,
+            abbr,
+            acronym,
+            address,
+            big,
+            cite,
+            code,
+            del,
+            dfn,
+            em,
+            font,
+            ins,
+            kbd,
+            q,
+            s,
+            samp,
+            small,
+            strike,
+            strong,
+            sub,
+            sup,
+            tt,
+            var,
+            dl,
+            dt,
+            dd,
+            ol,
+            ul,
+            li,
+            fieldset,
+            form,
+            label,
+            legend,
+            table,
+            caption,
+            tbody,
+            tfoot,
+            thead,
+            tr,
+            th,
+            td {
+                font-size: 14px !important;
+            }
+
+        }
+
 </style>
 <div class="page-content">
   <div class="container-fluid">
@@ -24,8 +154,8 @@
                                                     
 
                           <div class="btn-group" role="group" aria-label="Basic example">
-                              <a href="javascript:void(0);" class="btn btn-outline-primary active" aria-current="page">Left</a>
-                               <a href="javascript:void(0);" class="btn btn-outline-primary">Right</a>
+                              <a href="javascript:void(0);" class="btn btn-sm  btn-outline-primary active" id="print_with_seal" aria-current="page">With Seal</a>
+                               <a href="javascript:void(0);" class="btn btn-sm btn-outline-primary" id="print_without_seal">Without Seal</a>
                           </div>
                       </div>
                     </div>
@@ -33,14 +163,14 @@
                 </div>
         </div>
         <!-- /.card-header -->
-        <div class="card-body">
-            <div id="booking_receipt" class="section-to-print invoice mt-3" style="/* max-width: 920px; */">
+        <div class="card-body " style='border: 1px solid #ccc; '>
+            <div id="booking_receipt" class="section-to-print invoice " style="max-width: 920px;">
                 <div>
                     <div class="row">
                         <div class="col-md-12 text-center mt-5">
                             <h1 class="text-danger fw-bold"><?php echo strtoupper(@$company_details['title']);?></h1>
                             <p>
-                                 <?php echo  @$company_details['address'];?>
+                                 <?php echo  @$company_details['office_address'];?>
                                 <br>Phone: <?php echo  @$company_details['phone'];?>, Email: <?php echo  @$company_details['email'];?>, Website:
                                 <?php echo  @$company_details['website'];?>
                             </p>
@@ -69,7 +199,8 @@
                                         <p>Booking No: 2962</p>
                                     </div>
                                     <div class="col">
-                                        <p class="text-right">Booking Date: 07 June 2022</p>
+                                        
+                                        <p class="text-right">Booking Date: <?php echo ($receipt_dtl['booking_date']=='0000-00-00' || $receipt_dtl['booking_date']==null)?'': date('d M Y',strtotime($receipt_dtl['booking_date'])); ?></p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -83,31 +214,35 @@
                                             <div class="col-10">
                                               <?php
                                                 $bill_address = '';
-                                                if(isset( $receipt_dtl['village']))
+                                                if(isset($receipt_dtl['village']) && $receipt_dtl['village'] !=='')
                                                 {
-                                                  $bill_address.= "Village - ".$receipt_dtl['village'];  
+                                                  $bill_address.= "Village - ".$receipt_dtl['village'].",";  
                                                 }
-                                                if(isset( $receipt_dtl['city']))
+                                                 
+                                                if(isset($receipt_dtl['city']) && $receipt_dtl['city'] !=='')
                                                 {
                                                      
-                                                      $bill_address.=", Tehsil - ".($receipt_dtl['city']=='Other')?$receipt_dtl['other_city']:$receipt_dtl['city'];  
+                                                      $bill_address.=" Tehsil - ".(($receipt_dtl['city']=='Other')?$receipt_dtl['other_city']:$receipt_dtl['city']).",";  
                                                     
                                                   
                                                 }
-                                                if(isset( $receipt_dtl['district']))
+                                                
+                                                if(isset($receipt_dtl['district']) && $receipt_dtl['district'] !=='')
                                                 {
                                                    
-                                                      $bill_address.=", District - ".($receipt_dtl['district']=='Other')?$receipt_dtl['other_district']:$receipt_dtl['district']; 
+                                                      $bill_address.=" District - ".(($receipt_dtl['district']=='Other')?$receipt_dtl['other_district']:$receipt_dtl['district']).","; 
                                                 } 
-                                                if(isset( $receipt_dtl['state']))
+                                                 
+                                                if(isset($receipt_dtl['state']) && $receipt_dtl['state'] !=='')
                                                 {
                                                    
-                                                      $bill_address.=", State - ".($receipt_dtl['state']=='Other')?$receipt_dtl['other_state']:$receipt_dtl['state']; 
+                                                      $bill_address.=" State - ".(($receipt_dtl['state']=='Other')?$receipt_dtl['other_state']:$receipt_dtl['state']).","; 
                                                 }
-                                                if(isset( $receipt_dtl['pincode']))
+                                                 
+                                                if(isset($receipt_dtl['pincode']) && $receipt_dtl['pincode'] !=='')
                                                 {
                                                    
-                                                      $bill_address.=", Pincode - ".($receipt_dtl['pincode']); 
+                                                      $bill_address.=" Pincode - ".($receipt_dtl['pincode']).","; 
                                                 }
                                                 
                                                 echo  $bill_address;
@@ -194,9 +329,23 @@
                                 <div class="row no-gutters">
                                     <div class="col-8">
                                         <ul class="mt-3">
-                                            <li>Delivery Date: 01 September 2022
-                                                                                                    to 30 September 2022
-                                                                                            </li>
+                                            <?php 
+                                                if(isset($receipt_dtl['delivery_expect_start_date']) && isset($receipt_dtl['delivery_expect_end_date']) && $receipt_dtl['delivery_expect_start_date'] !=='0000-00-00' && $receipt_dtl['delivery_expect_end_date'] !=='0000-00-00')
+                                                {
+                                                 ?>
+                                                    <li>Delivery Date:  
+                                                        <?php echo date('d M Y',strtotime($receipt_dtl['delivery_expect_start_date']));?>
+                                                        To 
+                                                        <?php echo date('d M Y',strtotime($receipt_dtl['delivery_expect_end_date']));?>
+                                                    
+                                                        </li>
+                                                                                            <?php   
+                                                }
+                                            ?>
+                                            
+
+
+                                            
                                             <li>Mode of payment: Online transfer </li>
                                             <li>Outstanding amount must be cleared before 15 Days of Delivery</li>
                                             <li><strong>Bank Details:</strong><br> <strong>Bank:</strong> <?php echo  @$company_details['bank_name'];?><br>
@@ -220,7 +369,7 @@
                                             <div class="text-center float-right" style="width: 224px;">
                                                 <div>For <?php echo strtoupper(@$company_details['title']);?></div>
                                                 <div style="min-height: 130px">
-                                                    <img class="seal-img d-print-block d-block" style="max-width: 206px;" src="<?php echo base_url()?>assets/admin/images/seal-logo.png" alt="seal-logo">
+                                                    <img class="seal-img d-print-block d-block" style="max-width: 206px;" src="<?php echo base_url()?>assets/admin/images/<?php echo @$company_details['seal_logo'];?>" alt="seal-logo">
                                                 </div>
                                                 <p style="margin-top: 20px;">Authorised Signatory</p>
                                             </div>
@@ -249,10 +398,14 @@
 <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
   <script>
             $('#print_without_seal').on('click', function() {
+                $('#print_without_seal').addClass('active');
+                $('#print_with_seal').removeClass('active');
                 $('.seal-img').addClass('hidden-print d-none');
                 $('.seal-img').removeClass('d-print-block d-block');
             });
             $('#print_with_seal').on('click', function() {
+                $('#print_with_seal').addClass('active');
+                $('#print_without_seal').removeClass('active');
                 $('.seal-img').removeClass('hidden-print d-none');
                 $('.seal-img').addClass('d-print-block d-block');
             });
@@ -264,3 +417,4 @@
 
              
         </script>
+

@@ -544,16 +544,16 @@
                                                                     <tr>
                                                                      <th class="align-middle bg-success text-white">Stage</th>
                                                                     <th class="align-middle bg-success text-white">Booking&nbsp;No.</th>
-                                                                    <th class="align-middle bg-success text-white">Booking&nbsp;Date.</th>
+                                                                    <th class="align-middle bg-success text-white"  style="min-width: 80px">Booking&nbsp;Date.</th>
                                                                     <th class="align-middle bg-success text-white">Order&nbsp;Status</th>
                                                                     <th class="align-middle bg-success text-white">Crop&nbsp;Status</th>
                                                                     <th class="align-middle bg-success text-white">Customer&nbsp;ID</th>
-                                                                    <th class="align-middle bg-success text-white">Customer&nbsp;Name</th>
-                                                                    <th class="align-middle bg-success text-white">Executive</th>
-                                                                    <th class="align-middle bg-success text-white">Choose&nbsp;Product</th>
+                                                                    <th class="align-middle bg-success text-white" style="min-width: 200px;"  >Customer&nbsp;Name</th>
+                                                                    <th class="align-middle bg-success text-white" style="min-width: 200px;" >Executive</th>
+                                                                    <th class="align-middle bg-success text-white" style="min-width: 200px;" >Choose&nbsp;Product</th>
                                                                     <th class="align-middle bg-success text-white">Primary&nbsp;Number</th>
                                                                     <th class="align-middle bg-success text-white">Number</th>
-                                                                    <th class="align-middle bg-success text-white">Billing&nbsp;Address</th>
+                                                                    <th class="align-middle bg-success text-white" style="min-width: 300px;" >Billing&nbsp;Address</th>
                                                                     <th class="align-middle bg-success text-white">Choose&nbsp;State</th>
                                                                     <th class="align-middle bg-success text-white">Choose&nbsp;District</th>
                                                                     <th class="align-middle bg-success text-white">Choose&nbsp;Tehsil</th>
@@ -567,15 +567,15 @@
                                                                     <th class="align-middle bg-success text-white">Discrount&nbsp;Amount</th>
                                                                     <th class="align-middle bg-success text-white">Recieved&nbsp;Amount</th>
                                                                     <th class="align-middle bg-success text-white">Out&nbsp;standing&nbsp;Amount</th>
-                                                                    <th class="align-middle bg-success text-white">Expected&nbsp;Delivery&nbsp;Date</th>
-                                                                    <th class="align-middle bg-success text-white">Actual&nbsp;Delivery&nbsp;Date</th>
+                                                                    <th class="align-middle bg-success text-white" style="min-width: 170px;">Expected&nbsp;Delivery&nbsp;Date</th>
+                                                                    <th class="align-middle bg-success text-white"  style="min-width: 80px">Actual&nbsp;Delivery&nbsp;Date</th>
                                                                     <th class="align-middle bg-success text-white">Vehicle&nbsp;No.</th>
                                                                     <th class="align-middle bg-success text-white">Contract&nbsp;Status</th>
                                                                     <th class="align-middle bg-success text-white">Productive&nbsp;Plants</th>
                                                                     <th class="align-middle bg-success text-white">Document</th>
                                                                     <th class="align-middle bg-success text-white">Assigned&nbsp;To</th>
                                                                     <th class="align-middle bg-success text-white">Entry&nbsp;made&nbsp;by</th>
-                                                                    <th class="align-middle bg-success text-white">Entry&nbsp;Date</th>
+                                                                    <th class="align-middle bg-success text-white" style="min-width: 80px">Entry&nbsp;Date</th>
                                                                   </tr>
                                                                   </thead>
                                                                   <tbody id="booking_history">
@@ -856,6 +856,7 @@
 
 
 
+
  //get history  start
          jQuery(document).on("click", ".historybooking", function(){
 
@@ -882,38 +883,38 @@
                   html_content+= '<tr>';
                   html_content+="<td>"+content.stage+"</td>";
                   html_content+="<td>"+content.booking_id+"</td>"; 
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
-                  html_content+="<td></td>";
+                  html_content+="<td>"+content.booking_date+"</td>"; 
+                  html_content+="<td><span class='badge bg-"+content.booked_badges+"'>"+content.booked_status+"</span></td>"; 
+                  html_content+="<td><span class='badge bg-success'>"+content.cropstatusname+"</span></td>"; 
+                  html_content+="<td>"+content.customer_id+"</td>"; 
+                  html_content+="<td>"+content.customer_name+"</td>"; 
+                  html_content+="<td>"+content.executive+"</td>"; 
+                  html_content+="<td>"+content.productname+"</td>"; 
+                  html_content+="<td>"+content.customer_mobile+"</td>"; 
+                  html_content+="<td>"+content.customer_alter_mobile+"</td>"; 
+                  html_content+="<td>"+content.billing_address+"</td>"; 
+                  html_content+="<td>"+((content.state=='Other') ? (content.other_state) : (content.state))+"</td>"; 
+                  html_content+="<td>"+((content.district=='Other') ? (content.other_district) : (content.district))+"</td>"; 
+                  html_content+="<td>"+((content.city=='Other') ? (content.other_city) : (content.city))+"</td>"; 
+                  html_content+="<td>"+content.pincode+"</td>";
+                  html_content+="<td>"+content.payment_mode+"</td>";
+                  html_content+="<td>"+content.bank_trans_id+"</td>";
+                  html_content+="<td>"+content.crates+"</td>";
+                  html_content+="<td>"+content.quantity+"</td>";
+                  html_content+="<td>"+content.price+"</td>";
+                  html_content+="<td>"+content.total+"</td>";
+                  html_content+="<td>"+content.discount+"</td>";
+                  html_content+="<td>"+content.advance+"</td>";
+                  html_content+="<td>"+0+"</td>";
+                  html_content+="<td>"+((content.delivery_expect_start_date !=='' && content.delivery_expect_end_date !=='') ? (content.delivery_expect_start_date+" To "+content.delivery_expect_end_date) :'NA') +"</td>";
+                  html_content+="<td>"+content.delivery_date+"</td>";
+                  html_content+="<td>"+content.vehicle_no+"</td>";
+                  html_content+="<td>"+content.contractstatusname+"</td>";
+                  html_content+="<td>"+content.productive_plants+"</td>";
+                  html_content+="<td>"+content.document+"</td>";
+                  html_content+="<td>"+content.assignedto+"</td>";
+                  html_content+="<td>"+content.createdby+"</td>";
+                  html_content+="<td>"+content.create_date+"</td>";
                   html_content+= '</tr>';
                  
               }
