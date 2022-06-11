@@ -373,21 +373,21 @@ $config['waterMarkText']  = 'Preview';
 // SMTP
 $config['SMTP_ACTIVE'] = 'YES'; // YES or NO (YES : send mail , NO : to stop mail service)
 $config['SMTP_MODE'] = 'LIVE'; // LIVE or TEST (when live then actual mail send else send a mail to TEST_MAIL)
-$config['SMTP_HOST'] = 'smtp.sendgrid.net';
-$config['SMTP_PORT'] = '587';
-$config['SMTP_USER_NAME'] = 'ourfund';
+$config['SMTP_HOST'] = 'info-service.in';
+$config['SMTP_PORT'] = '465';
+$config['SMTP_USER_NAME'] = 'swastikfarming@info-service.in';
 $config['SMTP_PASSWORD'] = 'admin2017';
-$config['TEST_MAIL'] = 'mishragkmishra@gmail.com';
+$config['TEST_MAIL'] = 'anilkumarm309@gmail.com';
 
-$config['support_no'] = '+1-844-889-2537';
-$config['admin_email_id'] = 'makkarnitin78@gmail.com';
+$config['support_no'] = '';
+$config['admin_email_id'] = 'anilkumarm309@gmail.com';
 
 //$config['admin_email_id'] = 'bkvishwakarma113311@gmail.com';
 
 /* Test Stripe Config*/
-$config['secret_key'] = 'sk_test_51HEQGCFzpPfVgDLq7Qdck8xKoWvZghc48x1xVzwhcJHMZoh1MVSPvs4g1FVIQLFDd14b1h3lOA1QsU3LvAkatNxo001TCvbBtR';
-$config['publishable_key'] = 'pk_test_51HEQGCFzpPfVgDLqAUOelZfJiGz8DIqTIISrxGYRIbTxjxCMvlJA8aFBxxtOSEnBM9fjS5JMseMYcaB5jbj0YccY00RmVx8Zbu';
-$config['plan_key'] = 'price_1HHSsWFzpPfVgDLqCYdPCOFB';
+$config['secret_key'] = '';
+$config['publishable_key'] = '';
+$config['plan_key'] = '';
 
 /* BK Test Stripe Config*/
 // $config['secret_key'] = 'sk_test_Zu8s6e7KihZ1VXgpjeXPrKr500QHBRbmi0';
