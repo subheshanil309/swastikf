@@ -9,15 +9,15 @@
 class Country_model extends Base_model
 {
 
-    public $table = "rc_rel_country";
+    public $table = "z_countries";
 
     //set column field database for datatable orderable
-    var $column_order = array(null, 'name', 'code','phone_code','status'); 
+    var $column_order = array(null, 'name', 'countryCode', 'status'); 
 
     //set column field database for datatable searchable 
-    var $column_search = array('name','code'); 
+    var $column_search = array('name', 'countryCode', 'status'); 
 
-    var $order = array('id' => 'asc'); // default order
+    var $order = array('id' => 'desc'); // default order
 
 
 

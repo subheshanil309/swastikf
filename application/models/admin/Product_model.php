@@ -12,11 +12,15 @@ class Product_model extends Base_model
 
     public $table = "z_product";
 
-    var $column_order = array(null, 'image1','name','price','no_item','status','date_at'); //set column field database for datatable orderable
+ 
 
-    var $column_search = array('image1','name','price','no_item','status','date_at'); //set column field database for datatable searchable 
 
-    var $order = array('id' => 'asc'); // default order
+
+    var $column_order = array(null,  'c.name','p.title','p.hsn','p.price','p.usage_unit','p.tax_rate','p.discount','p.source','p.date_at','p.status'); //set column field database for datatable orderable
+
+    var $column_search = array('c.name','p.title','p.hsn','p.price','p.usage_unit','p.tax_rate','p.discount','p.source','p.date_at','p.status'); //set column field database for datatable searchable 
+
+    var $order = array('p.id' => 'asc'); // default order
 
 
 
@@ -197,7 +201,7 @@ class Product_model extends Base_model
         function get_datatables()
 
         {
-
+             $this->db->select('p.*,c.name as category'); 
             $this->_get_datatables_query();
 
             if(isset($_POST['length']) && $_POST['length'] != -1)
@@ -216,7 +220,10 @@ class Product_model extends Base_model
 
         {     
 
-            $this->db->from($this->table);
+ 
+             $this->db->from($this->table. ' as p');  
+            $this->db->join('z_product_category as c', 'c.id = p.category_id','left');
+
 
             $i = 0;     
 

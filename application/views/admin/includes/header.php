@@ -297,16 +297,33 @@
                                     <li><a   href="#" key="t-products">Manuals</a></li>
                                   </ul>
                             </li>
+                            <?php 
+
+                             $role = $this->session->userdata('role');
+
+                             if($role==1)
+                             {
+
+                             
+                              ?>
+
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect">
                                     
                                     <span key="t-ecommerce">Settings</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a   href="#" key="t-products">Product</a></li>
+                                    <li><a   href="<?php echo base_url('admin/product');?>" key="t-products">Product</a></li>
                                     <li><a   href="#" key="t-products">Access Mgt</a></li>
+                                    <li><a   href="<?php echo base_url('admin/country');?>" key="t-products">Country</a></li>
+                                    <li><a   href="<?php echo base_url('admin/state');?>" key="t-products">State</a></li>
+                                    <li><a   href="<?php echo base_url('admin/district');?>" key="t-products">District</a></li>
+                                    <li><a   href="<?php echo base_url('admin/city');?>" key="t-products">City</a></li>
                                   </ul>
                             </li> 
+                            <?php
+                                }
+                            ?>
                             <li hidden>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect">
                                     

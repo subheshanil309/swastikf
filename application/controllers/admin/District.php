@@ -3,12 +3,13 @@
 require APPPATH . '/libraries/BaseController.php';
 
 
-class State extends BaseController
+class District extends BaseController
 {
    
     public function __construct()
     {
         parent::__construct();
+       $this->load->model('admin/district_model');
        $this->load->model('admin/state_model');
        $this->load->model('admin/country_model');
     }
@@ -19,8 +20,8 @@ class State extends BaseController
         $this->isLoggedIn();
 
         $data = array();
-        $this->global['pageTitle'] = 'State : Ale-izba';
-        $this->loadViews("admin/state/list", $this->global, $data , NULL);
+        $this->global['pageTitle'] = 'District';
+        $this->loadViews("admin/district/list", $this->global, $data , NULL);
         
     }
 
@@ -37,8 +38,8 @@ class State extends BaseController
             $data['countryList'] = $this->country_model->findDynamic($where);
         
 
-        $this->global['pageTitle'] = 'Add New State';
-        $this->loadViews("admin/state/addnew", $this->global, $data , NULL);
+        $this->global['pageTitle'] = 'Add New District';
+        $this->loadViews("admin/district/addnew", $this->global, $data , NULL);
         
     } 
 
@@ -68,9 +69,10 @@ class State extends BaseController
             $where = array();
             $where['name']          =  $form_data['name'];
             $where['country_id']    = $form_data['country_id'];
- 
+            $where['name !=']          = "Other";
 
-            $returnData = $this->state_model->findDynamic($where);
+
+            $returnData = $this->district_model->findDynamic($where);
            /* print_r($this->db->last_query());
              print_r( $returnData );die;*/
              if($form_data['name']== "Other")
@@ -86,7 +88,7 @@ class State extends BaseController
                 $insertData['status'] = $form_data['status'];
     			
                  
-    			$result = $this->state_model->save($insertData);
+    			$result = $this->district_model->save($insertData);
                 if($result > 0)
                 {
                     $this->session->set_flashdata('success', 'State successfully Added');
@@ -96,7 +98,7 @@ class State extends BaseController
                     $this->session->set_flashdata('error', 'State Addition failed');
                 }
             }// check already    
-            redirect(base_url().'admin/state/addnew');
+            redirect(base_url().'admin/district/addnew');
           }  
         
     }
@@ -105,9 +107,8 @@ class State extends BaseController
     // Member list
     public function ajax_list()
     {
-        
-
-		$list = $this->state_model->get_datatables();
+         
+		$list = $this->district_model->get_datatables();
 		
 		$data = array();
         $no =(isset($_POST['start']))?$_POST['start']:'';
@@ -123,13 +124,15 @@ class State extends BaseController
             $no++;
             $row = array();
             $row[] = $no;
-            $row[] =  $currentObj->country;
+           $row[] = $currentObj->country;
+           $row[] = $currentObj->state;
 
-            $edit_btn =  (isset($currentObj->name) && $currentObj->name =='Other')?'':'<a class="btn btn-sm btn-info" href="'.base_url().'admin/state/edit/'.$currentObj->id.'" title="Edit" ><i class="fa fa-pen"></i></a>&nbsp;';
+            $edit_btn =  (isset($currentObj->name) && $currentObj->name =='Other')?'':'<a class="btn btn-sm btn-info" href="'.base_url().'admin/district/edit/'.$currentObj->id.'" title="Edit" ><i class="fa fa-pen"></i></a>&nbsp;';
             $delete_btn =  (isset($currentObj->name) && $currentObj->name =='Other')?'':'<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';
 
             $status_btn =  (isset($currentObj->name) && $currentObj->name =='Other')?'':$btn;
-             $row[] = $currentObj->name;
+            $status_btn =  (isset($currentObj->name) && $currentObj->name =='Other')?'':$btn;
+            $row[] = $currentObj->name;
             $row[] =$status_btn;
             $row[] = $edit_btn.$delete_btn;;
             $data[] = $row;
@@ -137,8 +140,8 @@ class State extends BaseController
  
         $output = array(
                         "draw" => (isset($_POST['draw']))?$_POST['draw']:'',
-                        "recordsTotal" => $this->state_model->count_all(),
-                        "recordsFiltered" => $this->state_model->count_filtered(),
+                        "recordsTotal" => $this->district_model->count_all(),
+                        "recordsFiltered" => $this->district_model->count_filtered(),
                         "data" => $data,
                 );
         //output to json format
@@ -158,7 +161,7 @@ class State extends BaseController
 
         $insertData['id'] = $_POST['id'];
         $insertData['status'] = $_POST['status'];
-        $result = $this->state_model->save($insertData);
+        $result = $this->district_model->save($insertData);
         
         if ($result > 0) { echo(json_encode(array('status'=>TRUE))); }
         else { echo(json_encode(array('status'=>FALSE))); }
@@ -179,12 +182,12 @@ class State extends BaseController
         $where  = array();
         $where['table']  = 'z_countries';
         $where['field']  = 'id,name';
-        $data['countryList'] = $this->state_model->findDynamic($where);
+        $data['countryList'] = $this->district_model->findDynamic($where);
         
 
-        $data['edit_data'] = $this->state_model->find($id);
+        $data['edit_data'] = $this->district_model->find($id);
         $this->global['pageTitle'] = 'State ';
-        $this->loadViews("admin/state/edit", $this->global, $data , NULL);
+        $this->loadViews("admin/district/edit", $this->global, $data , NULL);
         
     } 
 
@@ -195,7 +198,7 @@ class State extends BaseController
         $this->isLoggedIn();
         $delId = $this->input->post('id');  
         
-        $result = $this->state_model->delete($delId); 
+        $result = $this->district_model->delete($delId); 
             
         if ($result > 0) { echo(json_encode(array('status'=>TRUE))); }
         else { echo(json_encode(array('status'=>FALSE))); }
@@ -236,7 +239,7 @@ class State extends BaseController
                     $insertData['status'] = $form_data['status1'];
                     
 
-                    $result = $this->state_model->save($insertData);
+                    $result = $this->district_model->save($insertData);
                     
 
                     if($result > 0)
@@ -251,7 +254,7 @@ class State extends BaseController
 
 
            
-            redirect('admin/state/edit/'.$form_data['id']);
+            redirect('admin/district/edit/'.$form_data['id']);
           }  
         
     }

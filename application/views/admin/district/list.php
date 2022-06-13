@@ -47,14 +47,14 @@
                       <h5 class="card-header bg-success text-white border-bottom ">
                          <div class="row ">
                            <div class="col-sm-9">
-                            State List
+                            District List
                            </div>
                            
                            <div class="col-sm-3 ">
   
 
                           
-                         <a class="btn btn-primary  float-end btn-sm" href="<?php echo base_url(); ?>admin/state/addnew"><i class="fa fa-plus"></i> Add New</a>
+                         <a class="btn btn-primary  float-end btn-sm" href="<?php echo base_url(); ?>admin/district/addnew"><i class="fa fa-plus"></i> Add New</a>
 
                             </div>
                          </div>
@@ -70,6 +70,7 @@
                                     <th  style="width: 60px;">S.No.</th>
                                     <th>Country</th>                                            
                                     <th>State</th>                                            
+                                    <th>District</th>                                            
                                      <th  style="width: 60px;">Status</th>                                            
                                     <th class="text-center"  style="width: 60px;">Actions</th>
                                   </tr>
@@ -104,7 +105,7 @@
          jQuery(document).on("click", ".deletebtn", function(){
 
           var userId = $(this).data("userid"),
-            hitURL = "<?php echo base_url() ?>admin/state/delete",
+            hitURL = "<?php echo base_url() ?>admin/district/delete",
             currentRow = $(this);
           
           var confirmation = confirm("Are you sure to delete this State ?");
@@ -143,7 +144,7 @@ $(document).ready(function() {
  
         // Load data for the table's content from an Ajax source
         "ajax": {
-            "url": "<?php echo site_url('admin/state/ajax_list')?>",
+            "url": "<?php echo site_url('admin/district/ajax_list')?>",
             "type": "POST"
         },
  
@@ -168,7 +169,7 @@ $(document).ready(function() {
           var userId = $(this).attr("data-id");
           var value  = $(this).val();
 
-            hitURL = "<?php echo base_url() ?>admin/state/statusChange",
+            hitURL = "<?php echo base_url() ?>admin/district/statusChange",
             currentRow = $(this);
           
             jQuery.ajax({

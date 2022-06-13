@@ -11,13 +11,16 @@ class State_model extends Base_model
 
     public $table = "z_states";
 
-    //set column field database for datatable orderable
-    var $column_order = array(null, 'country_id', 'name', 'code','zip', 'slug', 'status'); 
+   /* //set column field database for datatable orderable
+    var $column_order = array(null, 'country_id', 'name', 'status'); 
 
     //set column field database for datatable searchable 
-    var $column_search = array('name','code', 'zip'); 
+    var $column_search = array('country_id', 'name', 'status'); */
 
-    var $order = array('id' => 'asc'); // default order
+     var $column_order = array(null, 'c.name','st.name' ,'st.status'); //set column field database for datatable orderable
+    var $column_search = array( 'c.name','st.name' ,'st.status'); //set column field database for datatable searchable 
+
+    var $order = array('st.id' => 'desc'); // default order
 
 
 
@@ -83,7 +86,7 @@ class State_model extends Base_model
 
         function get_datatables()
         {
-
+             $this->db->select('st.*,c.name as country');
             $this->_get_datatables_query();
 
             if(isset($_POST['length']) && $_POST['length'] != -1)
@@ -101,7 +104,10 @@ class State_model extends Base_model
          public function _get_datatables_query()
         {     
 
-            $this->db->from($this->table);
+            //$this->db->from($this->table);
+
+            $this->db->from($this->table. ' as st');  
+            $this->db->join('z_countries as c', 'c.id = st.country_id');
 
             $i = 0;     
 
@@ -149,9 +155,8 @@ class State_model extends Base_model
             {
 
                 $order = $this->order;
-
                 $this->db->order_by(key($order), $order[key($order)]);
-
+ 
             }
 
         }

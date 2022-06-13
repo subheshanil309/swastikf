@@ -11,13 +11,16 @@ class District_model extends Base_model
 
     public $table = "z_district";
 
-    //set column field database for datatable orderable
-    var $column_order = array(null, 'state_id', 'name', 'code','zip', 'slug', 'status'); 
+   /* //set column field database for datatable orderable
+    var $column_order = array(null, 'country_id', 'name', 'status'); 
 
     //set column field database for datatable searchable 
-    var $column_search = array('name','code', 'zip'); 
+    var $column_search = array('country_id', 'name', 'status'); */
 
-    var $order = array('id' => 'asc'); // default order
+     var $column_order = array(null, 'c.name','st.name' ,'dt.name' ,'dt.status'); //set column field database for datatable orderable
+    var $column_search = array( 'c.name','st.name' ,'dt.name' ,'dt.status'); //set column field database for datatable searchable 
+
+    var $order = array('dt.id' => 'desc'); // default order
 
 
 
@@ -83,7 +86,7 @@ class District_model extends Base_model
 
         function get_datatables()
         {
-
+             $this->db->select('dt.*,c.name as country,st.name as state');
             $this->_get_datatables_query();
 
             if(isset($_POST['length']) && $_POST['length'] != -1)
@@ -101,7 +104,11 @@ class District_model extends Base_model
          public function _get_datatables_query()
         {     
 
-            $this->db->from($this->table);
+            //$this->db->from($this->table);
+
+            $this->db->from($this->table. ' as dt');  
+            $this->db->join('z_countries as c', 'c.id = dt.country_id');
+            $this->db->join('z_states as st', 'st.id = dt.state_id');
 
             $i = 0;     
 
@@ -149,9 +156,8 @@ class District_model extends Base_model
             {
 
                 $order = $this->order;
-
                 $this->db->order_by(key($order), $order[key($order)]);
-
+ 
             }
 
         }
@@ -186,3 +192,14 @@ class District_model extends Base_model
 
 }
 
+
+
+
+
+
+
+
+
+
+
+  

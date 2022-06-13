@@ -17,7 +17,9 @@ class Product extends BaseController
     {
        parent::__construct();
        $this->load->model('admin/product_model');
+       $this->load->model('admin/category_model');
     }
+
 
     /**
      * Index Page for this controller.
@@ -25,7 +27,7 @@ class Product extends BaseController
     public function index()
     {
         $this->isLoggedIn();
-        $this->global['pageTitle'] = 'Ale-izba : Product';
+        $this->global['pageTitle'] = 'Product';
         $this->loadViews("admin/product/list", $this->global, NULL , NULL);
         
     }
@@ -34,9 +36,14 @@ class Product extends BaseController
     public function addnew()
     {
 		$this->isLoggedIn();
-		// category
-		$data = array();
-        $this->global['pageTitle'] = 'Ale-izba : Add New Product';
+        $data = array();
+        // category  
+        $where['status'] = '1'; 
+        $category_list = $this->category_model->findDynamic($where);
+         $data['category_lists'] =  $category_list;
+
+		 
+        $this->global['pageTitle'] = 'Add New Product';
         $this->loadViews("admin/product/addnew", $this->global, $data , NULL);
         
     } 
@@ -74,9 +81,12 @@ class Product extends BaseController
 		 
 		$this->load->library('form_validation');            
         $this->form_validation->set_rules('name','Product Name','trim|required');
+        $this->form_validation->set_rules('category_id','Category Name','trim|required');
+        $this->form_validation->set_rules('hsn','HSN','trim|required');
         $this->form_validation->set_rules('price','Price','trim|required');
-        $this->form_validation->set_rules('no_item','Number Or item','trim|required');
-        //form data 
+        $this->form_validation->set_rules('usage_unit','UOM','trim|required');
+         
+         //form data 
         $form_data  = $this->input->post();
         if($this->form_validation->run() == FALSE)
         {
@@ -84,49 +94,31 @@ class Product extends BaseController
         }
         else
         {
-	        // href url change 
-            $temp = explode('<a target="_blank"  href="',$form_data['hreflink']);
-            if(isset($temp[1]))
-            {
-                $hrefurl = explode('"', $temp[1])[0];    
-            }
-            else
-            {
-                $hrefurl = $form_data['hreflink'];       
-            }
+	       
+                // check already exist
+            $form_data['name'] = ucfirst($form_data['name']);
+            $where = array();
+            $where['name']          =  $form_data['name'];
+            $where['country_id']    = $form_data['country_id'];
+ 
 
-            $insertData['name'] = base64_encode($form_data['name']);
-            $insertData['price'] = $form_data['price'];
-            $insertData['no_item'] = $form_data['no_item'];
-            //$insertData['image1'] = $form_data['image1'];
-            $insertData['status'] = $form_data['status'];
-            $insertData['renewal'] = base64_encode($form_data['renewal']);
-            $insertData['date_at'] = date("Y-m-d H:i:s");
-            $i = 1;
-            while($i == 1)
-            {
-                if(isset($_FILES['image'.$i]['name']) && $_FILES['image'.$i]['name'] != '') {
+            $returnData = $this->state_model->findDynamic($where);
 
-                    $f_name         =$_FILES['image'.$i]['name'];
-                    $f_tmp          =$_FILES['image'.$i]['tmp_name'];
-                    $f_size         =$_FILES['image'.$i]['size'];
-                    $f_extension    =explode('.',$f_name);
-                    $f_extension    =strtolower(end($f_extension));
-                    $f_newfile      =uniqid().'.'.$f_extension;
-                    $store          ="uploads/product/".$f_newfile;
-                
-                    if(!move_uploaded_file($f_tmp,$store))
-                    {
-                        $this->session->set_flashdata('error', 'Image Upload Failed .');
-                    }
-                    else
-                    {
-                       $insertData['image'.$i] = $f_newfile;
-                       
-                    }
-                 }
-                 $i++;
-            }
+
+            
+
+
+                    $insertData['name']             = $form_data['name'];
+                    $insertData['category_id']      = $form_data['category_id'];
+                    $insertData['hsn']              = $form_data['hsn'];
+                    $insertData['price']            = $form_data['price'];
+                    $insertData['usage_unit']       = $form_data['usage_unit'];
+                    $insertData['tax_rate']       = $form_data['tax_rate'];
+                    $insertData['discount']       = $form_data['discount'];
+                    $insertData['status']           = $form_data['status1'];
+                    $insertData['date_at']          = date("Y-m-d H:i:s");
+             
+            
 			
             $result = $this->product_model->save($insertData);
             if($result > 0)
@@ -157,15 +149,29 @@ class Product extends BaseController
             $date_at = date("d-m-Y", strtotime($temp_date));
             $no++;
             $row = array();
-            $row[] = (!empty($currentObj->hreflink))?$no.' <i class="fa fa-check text-success"></i> ':$no;
-            $row[] = '<img src ="'.base_url('uploads/product/').$currentObj->image1.'" width="50" alt = "Ale-izba"/>';
-            $row[] = base64_decode($currentObj->name).'<span class="text-info">'.base64_decode($currentObj->renewal).'</span>';
-            $row[] = "$".$currentObj->price;
-            $row[] = $currentObj->status==1?'Active':'InActive';
+              // $temp_date = $currentObj->date_at;
+            $selected = ($currentObj->status == 0)?" selected ":"";
+            $btn = '<select class="statusBtn form-control form-control-sm " name="statusBtn" data-id="'.$currentObj->id.'">';
+            $btn .= '<option value="1" '.(($currentObj->status ==1)?" selected ":"").' >Active</option>';
+            $btn .= '<option value="0" '.(($currentObj->status ==0)?" selected ":"").'  >Inactive</option>';
+            $btn .= '</select>';
+            
+
+
+            $row[] =  $currentObj->id;
+            $row[] =  $currentObj->category;
+            $row[] =  $currentObj->title;
+            $row[] =  $currentObj->hsn;
+            $row[] =  $currentObj->price;
+            $row[] =  $currentObj->usage_unit;
+            $row[] =  $currentObj->tax_rate;
+            $row[] =  $currentObj->discount;
+            $row[] =  $currentObj->source;
+            $row[] =   $btn;;
             $row[] = $date_at;
             
             
-            $row[] = '<a class="btn btn-sm btn-info" href="'.base_url().'admin/product/edit/'.$currentObj->id.'"><i class="fa fa-pencil"></i></a> <a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';
+            $row[] = '<a class="btn btn-sm btn-info" href="'.base_url().'admin/product/edit/'.$currentObj->id.'"><i class="fa fa-pen"></i></a> <a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';
             $data[] = $row;
         }
  
@@ -284,9 +290,9 @@ class Product extends BaseController
 		
         $this->isLoggedIn();
         $delId = $this->input->post('id');  
-		$db_data = $this->product_model->find($delId);
+		/*$db_data = $this->product_model->find($delId);*/
 		//print_r($db_data);
-		if(!empty($db_data))
+		/*if(!empty($db_data))
 		{
 			$i = 1;
 			while($i <= 3)
@@ -300,7 +306,7 @@ class Product extends BaseController
 				}
 				$i++;
 			}
-		}
+		}*/
 	
         $result = $this->product_model->delete($delId); 
 			
@@ -315,7 +321,25 @@ class Product extends BaseController
         echo  json_encode($single_arr);
     }
 
-    
+          // Status Change
+ 
+    public function statusChange($id = NULL)
+    {
+        $this->isLoggedIn();
+        if($_POST['id'] == null)
+        {
+            redirect('admin/product');
+        }
+
+        $insertData['id'] = $_POST['id'];
+        $insertData['status'] = $_POST['status'];
+        $result = $this->product_model->save($insertData);
+         if ($result > 0) { echo(json_encode(array('status'=>TRUE))); }
+        else { echo(json_encode(array('status'=>FALSE))); }
+        exit;
+        
+    } 
+
     
     
 }

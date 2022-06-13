@@ -499,7 +499,7 @@ print_r($customer_call_dtl);  */
                               color: #000;
                               }
                            </style>
-                           <table class="table align-middle table-nowrap mb-0" id="example">
+                           <table class="table align-middle table-nowrap mb-0 table-striped" id="example">
                               <thead class="table-light">
                                  <tr>
                                     <th class="align-middle bg-success text-white">Action</th>
@@ -609,7 +609,7 @@ print_r($customer_call_dtl);  */
                                           </div></td>
                                         <td><?php echo $customer['date_at'];?></td>
                                         <td><?php echo $customer['id'];?></td>
-                                        <td><?php echo $customer['customer_title'];?></td>
+                                        <td><a class="side_modal"  data-userid="<?php echo $customer['id']; ?>" href="javascript:void(0)"><?php echo $customer['customer_title'];?></a></td>
                                         <td><?php echo $customer['customer_mobile'];?></td>
                                         <td><?php echo $customer['customer_alter_mobile'];?></td>
                                         <td><?php echo (isset($customer['other_state']) && !empty($customer['other_state']))?($customer['other_state']):($customer['state']);?></td>
@@ -887,6 +887,10 @@ function districtChange2(district_code = '',selected_city = '') {
    jQuery(document).ready(function(){
 
 
+       $('#exampleModalScrollable').on("hidden.bs.modal",function(){
+          
+           $('#example233').html('');
+       });
        //$('#example').DataTable();
    
         jQuery(document).on("click", ".side_modal", function(){
