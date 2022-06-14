@@ -321,7 +321,7 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="4" class="pr-2 text-right">Outstanding Amount </td>
-                                                <td class="pr-2 text-right">0.00</td>
+                                                <td class="pr-2 text-right"><?php echo number_format($receipt_dtl['balance'],2);?></td>
                                             </tr>
                                         </tbody></table>
                                     </div>

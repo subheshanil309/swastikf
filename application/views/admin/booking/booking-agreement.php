@@ -227,20 +227,25 @@
         <div class="card-body " style='max-width: 920px; border: 1px solid #ccc; '>
             <div id="booking_agreement" class="section-to-print invoice mt-3">
                 <div class="text-center image-header">
-                    <img class="seal-img d-print-block " style="max-width: 120PX;" src="<?php echo base_url()?>assets/admin/images/<?php echo @$company_details['logo'];?>" alt="logo">
+                    <table style="text-align: center;display: inline;">
+                        <tr>
+                            <td style="text-align: center;"><img class="seal-img d-print-block " style="max-width: 120PX;" src="<?php echo base_url()?>assets/admin/images/<?php echo @$company_details['logo'];?>" alt="logo"></td>
+                        </tr>
+                    </table>
+                    
                     <br>
                     <br>
                     <h4>अनुबंध/एग्रीमेंट</h4>
                     <br>
                 </div>
                 <p>यह एग्रीमेंट <strong><?php echo strtoupper(@$company_details['title']);?></strong> (जैसा कि यहाँ पर “कंपनी” निर्दिष्ट
-                    किया गया है) प्रथम पक्ष, और श्री/ श्रीमति/ मिस <strong><?php echo  @$receipt_dtl['customer_name'];?></strong>
+                    किया गया है) प्रथम पक्ष, और श्री/ श्रीमति/ मिस <strong><?php echo  ucwords($receipt_dtl['customer_name']);?></strong>
                     <?php
                         if(!empty($receipt_dtl['father_name']))
                         {
                             ?>
                     पुत्र/ पुत्री श्री/ श्रीमति
-                    <strong><?php echo  @$receipt_dtl['father_name'];?></strong>   
+                    <strong><?php echo  ucwords($receipt_dtl['father_name']);?></strong>   
                             <?php
                         }
                     ?>
@@ -460,13 +465,13 @@
                         <ol>
                             <li>
                                 यह करार दिनांक (<strong> <?php echo @date('d M Y',strtotime($receipt_dtl['booking_date']));?> </strong>) को पक्षकारों ने अपनी मुहर/हस्ताक्षर के साथ खूब सोच समझकर, शांत चित्त मन से, अपने नफे नुकसान को ध्यान में रखकर अपने-अपने गवाहों की उपस्थिति में हस्ताक्षरित किया है। कम्पनी की तरफ से निदेशक श्री नीरज कुमार जो कि कम्पनी के द्वारा अधिकृत किये गए है, और दूसरी तरफ <strong>श्री/</strong> <strong>श्रीमति/</strong>
-                                <strong>मिस </strong><?php echo  @$receipt_dtl['customer_name'];?>  
+                                <strong>मिस </strong><?php echo  ucwords($receipt_dtl['customer_name']);?>  
                                <p> <?php
                         if(!empty($receipt_dtl['father_name']))
                         {
                             ?>
                     पुत्र/ पुत्री श्री/ श्रीमति
-                    <strong><?php echo  @$receipt_dtl['father_name'];?></strong>   
+                    <strong><?php echo  ucwords($receipt_dtl['father_name']);?></strong>   
                             <?php
                         }
                     ?> के द्वारा हस्ताक्षर/मुुहर किया गया है। </p>
@@ -487,7 +492,7 @@
                 </div>
                 <div class="row">
                     <div class="col-7">
-                        <p><?php echo @$company_details['title'];?></p>
+                        <p><?php echo ucwords($company_details['title']);?></p>
                     </div>
                     <div class="col-5">
                         <div>किसान</div>

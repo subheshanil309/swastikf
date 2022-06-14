@@ -1,7 +1,11 @@
  
  <link href="<?php echo base_url(); ?>assets/admin/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo base_url(); ?>assets/admin/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
- 
+ <style type="text/css">
+   table.dataTable td, table.dataTable th {
+    padding: 1px 2px !important;
+}
+ </style>
 <div class="page-content">
   
    <div class="container-fluid">
@@ -66,7 +70,7 @@
                         <div class="table-responsive mytablestyle">
                              <table class="display table table-striped align-middle table-nowrap mb-0" cellspacing="0" width="100%" id="example">
                                   <thead>
-                                 <tr>
+                                 <tr class=" bg-success">
                                     <th  style="width: 60px;">S.No.</th>
                                     <th>Country</th>                                            
                                     <th>State</th>                                            
@@ -137,7 +141,7 @@ $(document).ready(function() {
  
     //datatables
     table = $('#example').DataTable({ 
- 
+         "pageLength": 25,
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
         "order": [], //Initial no order.

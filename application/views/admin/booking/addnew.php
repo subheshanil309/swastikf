@@ -23,7 +23,7 @@
                               <label for="customer_id" class="col-sm-4 col-form-label text-right">Cust ID:</label>
                               <div class="col-sm-8">
                                  <div class="input-group input-group-sm">
-                                    <input class="form-control form-control-sm  " id="customer_id" name="customer_id" type="text">
+                                    <input class="form-control form-control-sm  " id="customer_id" name="customer_id" type="text" onkeypress="return onlyNumberKey(event)">
                                      
                                  </div>
                               </div>
@@ -34,7 +34,7 @@
                               <label for="mobile" class="col-sm-4 col-form-label text-right">Mobile No.:</label>
                               <div class="col-sm-8">
                                  <div class="input-group input-group-sm">
-                                    <input class="form-control form-control-sm  " id="mobile" name="mobile" type="text"   >
+                                    <input class="form-control form-control-sm  " id="mobile" name="mobile" type="text"   onkeypress="return onlyNumberKey(event)" >
                                      
                                  </div>
                               </div>
@@ -92,7 +92,7 @@
             <div class="card">
                <h5 class="card-header bg-success text-white border-bottom p-1">Add New Booking</h5>
                <div class="card card-body">
-                <form action="<?php echo base_url() ?>admin/bookings/insertnow" method="post" role="form" enctype="multipart/form-data" id="booking_form" class="custom-validation">
+                <form autocomplete="off" action="<?php echo base_url() ?>admin/bookings/insertnow" method="post" role="form" enctype="multipart/form-data" id="booking_form" class="custom-validation">
                <div class="row">
                   <div class="col-sm-3">
                     
@@ -100,14 +100,14 @@
                            <div class="row">
                               <label for="customer_mobile" class="col-sm-4 col-form-label">Reg Mob No<span class="text-danger">*</span></label>
                               <div class="col-sm-8"> 
-                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="customer_mobile"  name="customer_mobile"  placeholder="Customer Mobile*"  value="" required  />
+                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="customer_mobile"  name="customer_mobile"  placeholder="Customer Mobile*"  value="" required onkeypress="return onlyNumberKey(event)"/>
                               </div>
                            </div>
 
                             <div class="row">
                               <label for="customer_alter_mobile" class="col-sm-4 col-form-label">ALT Mobile</label>
                               <div class="col-sm-8">
-                                 <input type="text" class="form-control form-control-sm" id="customer_alter_mobile" placeholder="ALT Mobile" name="customer_alter_mobile" value="" >
+                                 <input type="text" class="form-control form-control-sm" id="customer_alter_mobile" placeholder="ALT Mobile" name="customer_alter_mobile" value=""  onkeypress="return onlyNumberKey(event)">
                               </div>
                            </div>
                            <div class="row">
@@ -225,7 +225,7 @@
                            <div class="row">
                               <label for="pincode" class="col-sm-4 col-form-label">Pincode</label>
                               <div class="col-sm-8">
-                                 <input type="text" class="form-control form-control-sm" id="pincode" name="pincode" placeholder="Pincode"   value="">
+                                 <input type="text" class="form-control form-control-sm" id="pincode" name="pincode" placeholder="Pincode"   value="" onkeypress="return onlyNumberKey(event)">
                               </div>
                            </div>
                             <div class="row">
@@ -275,7 +275,7 @@
                            <div class="row">
                               <label for="vehicle_no" class="col-sm-4 col-form-label">Vehicle No.</label>
                               <div class="col-sm-8"> 
-                                 <input type="text" class="form-control form-control-sm" id="vehicle_no" name="vehicle_no" placeholder="Farmers Name*" value="" />
+                                 <input type="text" class="form-control form-control-sm" id="vehicle_no" name="vehicle_no" placeholder="Vehicle No" value="" />
                               </div>
                            </div>
                            <div class="row">
@@ -331,16 +331,10 @@
                      
                   </div>
                   <div class="col-sm-3">
-                     <div class=" ">
-                       
-                        <div class=" ">
+                    
+                         
                             
-                            <div class="row">
-                              <label for="pending-bill" class="col-sm-4 col-form-label">Pending Bill</label>
-                              <div class="col-sm-8">
-                                <h6 class="bg-warning"> Rs<span class="pending-bill">0.00</span></h6>
-                              </div>
-                           </div> 
+                             
                            <div class="row">
                               <label for="productive_plants" class="col-sm-4 col-form-label">Productive Plants</label>
                               <div class="col-sm-8">
@@ -355,9 +349,7 @@
                            </div>
                           
                          
-                    
-                  </div>
-               </div>
+                  
                </div>
                </div>
                <div class="row">
@@ -419,10 +411,10 @@
                             <input type="text" class="form-control form-control-sm" id="uom" name="uom" readonly>
                           </td>
                           <td>
-                            <input type="text" class="form-control form-control-sm" id="price" name="price" >
+                            <input type="number" class="form-control form-control-sm" id="price" name="price" >
                           </td>
                           <td>
-                            <input type="text" class="form-control form-control-sm" id="quantity" name="quantity" >
+                            <input type="number" class="form-control form-control-sm" id="quantity" name="quantity"  >
                           </td>
                           <td>
                             <span id="cgst">0.00 (0%)</span>
@@ -447,7 +439,7 @@
                             <input type="hidden" name="igst_amount" id="igst_amount" value="0">
                           </td>
                           <td>
-                            <input type="text" class="form-control form-control-sm" id="discount" name="discount" >
+                            <input type="number" class="form-control form-control-sm" id="discount" name="discount" >
                           </td>
                           <td>
                           <div class="totalCart">0.00</div>  
@@ -473,7 +465,7 @@
                      <div class="row">
                               <label for="advance" class="col-sm-4 col-form-label">Advance</label>
                               <div class="col-sm-8">
-                                 <input type="text" class="form-control form-control-sm" id="advance" name="advance">
+                                 <input type="number" class="form-control form-control-sm" id="advance" name="advance" >
                               </div>
                            </div>
                   </div>
@@ -549,8 +541,10 @@
                         <div class="card-body ">
                             <input id="pending_bill" name="pending_bill" type="hidden" value="0">
                             <input id="gst" name="gst" type="hidden">
-                           <button type="submit" class="btn btn-primary w-md float-end">Save Details</button>
+                             <a  href="<?php echo base_url()?>admin/bookings" class="btn btn-warning w-md float-end">Cancel</a>
+                             <button type="submit" class="btn btn-primary w-md float-end mr-1">Save Details</button>
                            <input type="hidden" name="id" value="<?php if(isset($edit_data->id)){echo $edit_data->id;} ?>"/>
+
                         </div>
                      </div>
                   </div>
@@ -1242,10 +1236,18 @@ function renderCart(centerState) {
 
     var balance = (totalCart - advance) + pendingBill;
     $('#balance').val(Number(balance).toFixed(2));
-    $('.pending-bill').text(Number(pendingBill).toFixed(2));
+   // $('.pending-bill').text(Number(pendingBill).toFixed(2));
 }
 
-
+ function onlyNumberKey(evt) {
+          
+        // Only ASCII character in that range allowed
+        var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+         
+        if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+            return false;
+        return true;
+    }
 
 
 </script>

@@ -11,10 +11,11 @@ class Bookings extends BaseController
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('admin/company_model');
+         $this->load->model('admin/company_model');
         $this->load->model('admin/booking_model');
         $this->load->model('admin/booking_log_model');
         $this->load->model('admin/booking_status_model');
+        $this->load->model('admin/booking_payments_model');
         $this->load->model('admin/crop_status_model');
         $this->load->model('admin/contract_status_model');
         $this->load->model('admin/payment_mode_model');
@@ -410,8 +411,9 @@ echo "</pre>";  */
 
         $where = array();
         $where['status'] = '1';
+        $where['admin_type'] = '2';
         $where['orderby'] = 'title';
-        $data['all_agents'] = $this->agent_model->findDynamic($where);
+        $data['all_agents'] = $this->admin_model->findDynamic($where);
         
 
         $where = array();
@@ -485,242 +487,15 @@ echo "</pre>";  */
             $this->isLoggedIn();
             
             $data = array();
+            $userid = $this->session->userdata('userId');
 
-            $uid         = $this->input->get('uid');
-            if(isset($uid) && $uid !=='')
-            {
-                 $userid   = $uid;
-            }else
-            {
-                $userid = $this->session->userdata('userId');
-            }
-
-            
-            
- 
-
-            $data['edit_data'] = array();
-            $data['customer_call_dtl'] = array();
-
-            $form_type  = $this->input->get('form_type');
-            $conditions = array(); 
-            $where_search = array();
-
-            $conditions['returnType'] = 'count'; 
-            $conditions['userid'] = $userid; 
-            $conditions['form_type'] = $form_type; 
-            $totalRec = $this->customer_model->getRows($conditions); 
-                
-        if($form_type=='inquiry')
-        {
-                $where_search =  array();
-                $search_customer_id  = @$this->input->get('search_customer_id');
-                $search_name         = @$this->input->get('search_name');
-                $search_mobile       = @$this->input->get('search_mobile');
-                $search_alt_mobile   = @$this->input->get('search_alt_mobile');
-                $state2              = @$this->input->get('state2');
-                $district2           = @$this->input->get('district2');
-                $city2               = @$this->input->get('city2');
-                $call_direction2     = @$this->input->get('call_direction2');
-                $call_type2          = @$this->input->get('call_type2'); 
-                if(!empty($search_customer_id))
-                {
-                    $where_search['sku_id'] =  $search_customer_id;
-                }
-                if(!empty($search_name))
-                {
-                    $where_search['customer_title'] =  $search_name;
-                } 
-                
-                if(!empty($search_mobile))
-                {
-                    $where_search['customer_mobile'] =  $search_mobile;
-                }
-                if(!empty($search_alt_mobile))
-                {
-                    $where_search['customer_alter_mobile'] =  $search_alt_mobile;
-                }
-                if(!empty($state2))
-                {
-                    $where_search['state'] =  $state2;
-                }
-                
-                if(!empty($district2))
-                {
-                    $where_search['district'] =  $district2;
-                }
-                if(!empty($city2))
-                {
-                    $where_search['city'] =  $city2;
-                } if(!empty($city2))
-                {
-                    $where_search['city'] =  $city2;
-                }
-                if(!empty($call_direction2))
-                {
-                    $where_search['last_call_direction'] =  $call_direction2;
-                } 
-                if(!empty($call_type2))
-                {
-                    $where_search['last_call_type'] =  $call_type2;
-                }
-
-        } 
-
-
-
-
-
-            $this->load->library('pagination'); 
-
-                $conditions = array(); 
-                
-                $uriSegment = 4; 
-
-                // Get record count 
-                
-
-                // Pagination configuration 
-                $config['base_url']    = base_url().'admin/customer/addnew/'; 
-                $config['uri_segment'] = $uriSegment; 
-                $config['total_rows']  = $totalRec; 
-                $config['per_page']    = $this->perPage; 
-                $config['use_page_numbers'] = TRUE;
-                $config['reuse_query_string'] = TRUE;
-             
-
- 
-  
-
-
-            $config['full_tag_open'] = ' <ul class="pagination  justify-content-center mt-4" id="query-pagination">';
-            $config['full_tag_close'] = '</ul> ';
-             
-            $config['first_link'] = 'First&nbsp;Page';
-            $config['first_tag_open'] = '<li class="page-item">  ';
-            $config['first_tag_close'] = '</li>';
-             
-            $config['last_link'] = 'Last&nbsp;Page';
-            $config['last_tag_open'] ='<li class="page-item">  ';
-            $config['last_tag_close'] = '</li>';
-             
-            $config['next_link'] = 'Next';
-            $config['next_tag_open'] = '<li class="page-item"> ';
-            $config['next_tag_close'] = ' </li>';
- 
-            $config['prev_link'] = 'Previous';
-            $config['prev_tag_open'] = '<li class="page-item"> ';
-            $config['prev_tag_close'] = '</li>';
- 
-            $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link active">';
-            $config['cur_tag_close'] = '</a></li>';
- 
-            $config['num_tag_open'] = '<li class="page-item"> ';
-            $config['num_tag_close'] = ' </li>';
-
-                // Initialize pagination library 
-                $this->pagination->initialize($config); 
-                
-              
-
-                // Define offset 
-                $page = $this->uri->segment($uriSegment); 
-                $offset = (!$page)?0:$page; 
-
-                if($offset != 0){
-                    $offset = ($offset-1) * $this->perPage;
-                }
-
-                // Get records 
-                $conditions = array( 
-                'start' => $offset, 
-                'where' => $where_search, 
-                'limit' => $this->perPage 
-                ); 
-
-                $conditions['userid'] = $userid;
-                $conditions['form_type'] = $form_type; 
-                    /* echo "<pre>";
-                    print_r( $conditions);
-                    echo "</pre>"; */
-                $data['customers'] = $this->customer_model->getRows($conditions); 
-                $data['pagination'] = $this->pagination->create_links(); 
- 
-                   
-
- 
-/*  echo "<pre>";
-print_r($this->db->last_query());  
-echo "</pre>"; 
- */
-
-
-
-         $form_type  = $this->input->get('form_type');
-         if($form_type =='search')
-         {
-            $customer_id    = $this->input->get('customer_id');
-            $mobile         = $this->input->get('mobile');
-
-            
-
-            if($customer_id !=='' || $mobile !=='')
-            {   
-                $isserch = false;
-                $where = array();
-                if(!empty($customer_id))
-                {   
-                    $isserch = true;
-
-                     $where['sku_id'] = $customer_id;
-                }
-
-                if(!empty($mobile))
-                {
-                    $isserch = true;
-                     $where['customer_mobile'] = $mobile;
-                }
-
-                if($isserch)
-                {
-
-                    $customer = $this->customer_model->findDynamic($where);
-                    if(!empty($customer))
-                    {
-                        $data['edit_data'] = $customer[0];
-
-
-                        $where = array();
-                        $where['customer'] = $data['edit_data']->id;
-                        //$data['customer_call_dtl'] =$this->customer_call_detail($data['edit_data']->id);
-                       // $data['customer_call_dtl'] = $this->customer_call_model->findDynamic($where);
-                    }
-                    
-
-
-                     
-                }
-
-
-
-                
-                 
-                 
-                
-            }
-
-         }
-         
-
-
-
-        $where = array();
+            $where = array();
         $where['status'] = '1';
         $where['field'] = 'id,customer_name,customer_title,sku_id';
         $data['all_customers'] = $this->customer_model->findDynamic($where);
         
         $where = array();
-        $where['status'] = '1';
+        $where['status'] = '1'; 
         $where['field'] = 'id,name,title';
         $data['all_users'] = $this->admin_model->findDynamic($where);
 
@@ -778,8 +553,9 @@ echo "</pre>";
 
         $where = array();
         $where['status'] = '1';
+        $where['admin_type'] = '2';
         $where['orderby'] = 'title';
-        $data['all_agents'] = $this->agent_model->findDynamic($where);
+        $data['all_agents'] = $this->admin_model->findDynamic($where);
 
 
         $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid); 
@@ -951,7 +727,6 @@ echo "</pre>";
                             $insertData['advance']                      = $form_data['advance'];
                             $insertData['create_date']                  = date("Y-m-d H:i:s");
                             $insertData['balance']                      = $form_data['balance'];
-                            $insertData['balance']                      = $form_data['balance'];
                             $insertData['payment_mode']                 = $form_data['payment_mode'];
                             $insertData['cheque_no']                    = $form_data['cheque_no'];
                             $insertData['bank_name']                    = $form_data['bank_name'];
@@ -999,6 +774,32 @@ echo "</pre>";
  
                 if(!empty($result_insert))
                 {
+                    if($form_data['advance']  >0)
+                    {
+                        $insertData = array();
+                        $insertData['amount']                      = $form_data['advance'];
+                        $insertData['date_at']                      = date("Y-m-d H:i:s");
+                        $insertData['payment_date']                 =  $form_data['create_date'];
+                        $insertData['created_by']                 =  $this->session->userdata('userId');
+                        $insertData['booking_id']                   = $result_insert;
+                        $insertData['customer_id']                  = $get_customerid;
+                        $insertData['payment_mode']                 = $form_data['payment_mode'];
+                        $insertData['cheque_no']                    = $form_data['cheque_no'];
+                        $insertData['bank_name']                    = $form_data['bank_name'];
+                        $insertData['bank_branch']                  = $form_data['bank_branch'];
+                        $insertData['company_id']                  = 1;
+                         $this->booking_payments_model->save($insertData);
+                    }
+                        
+
+
+                        //booking_payments_model
+
+
+
+
+
+
                      $this->session->set_flashdata('success', 'Booking successfully Added');
 
                     
@@ -1170,6 +971,7 @@ echo "</pre>";
         
         $where = array();
         $where['status'] = '1';
+
         $where['field'] = 'id,name,title';
         $data['all_users'] = $this->admin_model->findDynamic($where);
 
@@ -1227,11 +1029,14 @@ echo "</pre>";
 
         $where = array();
         $where['status'] = '1';
+         $where['admin_type'] = '2';
         $where['orderby'] = 'title';
-        $data['all_agents'] = $this->agent_model->findDynamic($where);
+        $data['all_agents'] = $this->admin_model->findDynamic($where);
 
 
          $data['edit_data'] = $this->booking_model->find($id); 
+          
+            $data['payment_details']    = $this->booking_payments_model->getPaymentDetail($id); 
 
 
         $this->global['pageTitle'] = 'Edit New Booking';

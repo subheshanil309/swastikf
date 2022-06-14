@@ -8,7 +8,7 @@
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a  href="<?php echo base_url()?>admin">Dashboard</a></li>
-                                            <li class="breadcrumb-item"><a   href="<?php echo base_url()?>admin/state">Product List</a></li>
+                                            <li class="breadcrumb-item"><a   href="<?php echo base_url()?>admin/product">Product List</a></li>
                                             <li class="breadcrumb-item active">Add New Product</li>
                                         </ol>
                                     </div>
@@ -53,7 +53,7 @@
             
             <div class="row">
                <div class="col-lg-12">
-                 <form  action="<?php echo base_url() ?>admin/state/insertnow" method="post" role="form" enctype="multipart/form-data"  >
+                 <form  action="<?php echo base_url() ?>admin/product/insertnow" method="post" role="form" enctype="multipart/form-data"  >
                   <div class="card">
                    
 
@@ -100,9 +100,9 @@
                  <div class="col-sm-3">
                     
                             <div class="row">
-                              <label for="hsn" class="col-sm-4 col-form-label">HSN<span class="text-danger">*</span></label>
+                              <label for="hsn" class="col-sm-4 col-form-label">HSN </label>
                               <div class="col-sm-8"> 
-                                 <input type="text" class="form-control form-control-sm" id="hsn" name="hsn" placeholder="Enter HSN"  required="">
+                                 <input type="text" class="form-control form-control-sm" id="hsn" name="hsn" placeholder="Enter HSN"   >
                               </div>
                            </div>
                        </div>
@@ -119,24 +119,18 @@
                    <div class="col-sm-3">
                     
                             <div class="row">
-                              <label for="usage_unit" class="col-sm-4 col-form-label">UOM<span class="text-danger">*</span></label>
+                              <label for="usage_unit" class="col-sm-4 col-form-label">UOM </label>
                               <div class="col-sm-8"> 
-                                 <input type="text" class="form-control form-control-sm" id="usage_unit" name="usage_unit" placeholder="Enter UOM"  required="">
+                                 <input type="text" class="form-control form-control-sm" id="usage_unit" name="usage_unit" placeholder="Enter UOM"   >
                               </div>
                            </div>
                        </div>
-                 
-                   
-              
-                   
-
-                      
-                 <div class="col-sm-3">
+                       <div class="col-sm-3">
                     
                             <div class="row">
-                              <label for="tax_rate" class="col-sm-4 col-form-label">GST<span class="text-danger">*</span></label>
+                              <label for="tax_rate" class="col-sm-4 col-form-label">GST </label>
                               <div class="col-sm-8"> 
-                                 <input type="text" class="form-control form-control-sm" id="tax_rate" value="0" name="tax_rate" placeholder="Enter GST"  required="">
+                                 <input type="text" class="form-control form-control-sm" id="tax_rate" value="0" name="tax_rate" placeholder="Enter GST"  >
                               </div>
                            </div>
                        </div>
@@ -145,16 +139,16 @@
                             <div class="row">
                               <label for="discount" class="col-sm-4 col-form-label">Discount </label>
                               <div class="col-sm-8"> 
-                                 <input type="text" class="form-control form-control-sm" id="discount" name="discount" placeholder="Enter Discount"   >
+                                 <input type="text" class="form-control form-control-sm" id="discount" name="discount" placeholder="Enter Discount"  value="0" >
                               </div>
                            </div>
                        </div>
                         <div class="col-sm-3">
                     
                             <div class="row">
-                              <label for="discount" class="col-sm-4 col-form-label">Source </label>
+                              <label for="source" class="col-sm-4 col-form-label">Source </label>
                               <div class="col-sm-8"> 
-                                 <input type="text" class="form-control form-control-sm" id="discount" name="discount" placeholder="Enter Discount"  >
+                                 <input type="text" class="form-control form-control-sm" id="source" name="source" placeholder="Source" value="Unknown" >
                               </div>
                            </div>
                        </div>

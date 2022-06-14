@@ -8,22 +8,29 @@
             position: relative;
     }
 
-     
+tbody, td, tfoot, th, thead, tr {
+    border: 1px solid #ccc;
+}     
 
     @media print {
  
-    
+        
 
       body * {
         visibility: hidden;
     }
 
+tbody, td, tfoot, th, thead, tr {
+    border: 1px solid #ccc;
+}
     .cart-table th,
     .table th,
     .cart-table td,
     .table td {
         /* border-color: #000; */
         color: #000;
+        padding: 2px;
+        font-size: 10px;
     }
 
   
@@ -49,92 +56,43 @@
     .row>* {
     position: unset;
 }
- } 
-  .mtable {
-    width: 100%;
-    margin-bottom: 0;
-    color: #212529;
-    background-color: transparent;
+
+strong,.text-muted{
+    font-size: 11px;
 }
 
-.mtable td,
-.mtable th {
-    padding: 0;
-    border: 1px solid #212529;
+
+ a[href]:after {
+        content: none !important;
+    }
+}
+strong,.text-muted{
+    font-size: 11px;
 }
 
-.mtable .noborder td,
-.mtable .noborder th {
-    border: 0;
-    padding: 0;
+
+ @media print {
+    @page {
+         
+        margin-bottom: 0;
+    }
+    body {
+        padding-top: 72px;
+        padding-bottom: 72px ;
+    }
+    .productname
+    {
+        width: 400px;
+    }
 }
 
+ .productname
+    {
+        width: 400px;
+    }
 
  
- @page  {
-            size: auto;
-            /* auto is the initial value */
-            margin: 0;
-            border: 1px solid #666;
-        }
-
-        @media  print {
-
-            html,
-            body,
-            div,
-            span,
-            applet,
-            object,
-            iframe,
-            p,
-            blockquote,
-            pre,
-            a,
-            abbr,
-            acronym,
-            address,
-            big,
-            cite,
-            code,
-            del,
-            dfn,
-            em,
-            font,
-            ins,
-            kbd,
-            q,
-            s,
-            samp,
-            small,
-            strike,
-            strong,
-            sub,
-            sup,
-            tt,
-            var,
-            dl,
-            dt,
-            dd,
-            ol,
-            ul,
-            li,
-            fieldset,
-            form,
-            label,
-            legend,
-            table,
-            caption,
-            tbody,
-            tfoot,
-            thead,
-            tr,
-            th,
-            td {
-                font-size: 14px !important;
-            }
-
-        }
+ 
 
 </style>
 <div class="page-content">
@@ -156,121 +114,67 @@
                 <h3 class="mt-2 d-print text-center">Booking Order Details</h3>
 
                 <div class="card">
-                    <div class="card-header p-2">
-                        <h3 class="card-title">Order Details</h3>
-                    </div>
+                    
+                     
                     <div class="card-body p-2">
-                        <div class="row">
-                            <div class="col">
-                                <strong>Booking Order No.</strong>
-                                <div class="text-muted">
-                                    <?php echo (@$receipt_dtl['id']);?>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <strong>Booking Date</strong>
-                                <div class="text-muted">
-                                    <?php echo ($receipt_dtl['booking_date']=='0000-00-00' || $receipt_dtl['booking_date']==null)?'': date('d M Y',strtotime($receipt_dtl['booking_date'])); ?>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <strong>Booking Status</strong>
-                                <div class="text-muted">
-                                    <div><?php echo (@$receipt_dtl['booked_status']);?></div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <strong>Req. Delivery Date</strong>
-                                <div class="text-muted">
-                                    <div><?php echo ($receipt_dtl['delivery_expect_start_date']=='0000-00-00' || $receipt_dtl['delivery_expect_start_date']==null)?'': date('d M Y',strtotime($receipt_dtl['delivery_expect_start_date'])); ?></div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <strong>Transportation by</strong>
-                                <div class="text-muted">
-                                    <div></div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <strong>Vehicle No.</strong>
-                                <div class="text-muted">
-                                    <div><?php echo (@$receipt_dtl['vehicle_no']);?></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <strong>Delivery Date</strong>
-                                <div class="text-muted">
-                                    <div><?php echo ($receipt_dtl['delivery_date']=='0000-00-00' || $receipt_dtl['delivery_date']==null)?'': date('d M Y',strtotime($receipt_dtl['delivery_date'])); ?></div>
-                                </div>
-                                <div>
-                                    <strong>Driver Name</strong>
-                                    <div class="text-muted">
-                                        <div><?php echo (@$receipt_dtl['driver_name']);?></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <strong>Agent Name</strong>
-                                <div class="text-muted">
-                                    <div><?php echo (@$receipt_dtl['executive']);?></div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <strong>Entered by</strong>
-                                <div class="text-muted">
-                                    <?php echo (@$receipt_dtl['createdby']);?>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <strong>Entry date and Time</strong>
-                                <div class="text-muted"> <?php echo date('d/m/Y h:i a',strtotime($receipt_dtl['date_at']));?>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <strong>Approved by</strong>
-                                <div class="text-muted">
-
-                                </div>
-                            </div>
-                            <div class="col">
-                                <strong>Approval Date and time</strong>
-                                <div class="text-muted">
-
-                                </div>
-                            </div>
-                        </div>
+                        <table class=""  style="width: 100%">
+                        <tr>
+                            <td colspan="6"><h3 class="card-title">Order Details</h3></td>
+                        </tr>
+                        <tr>
+                            <td> <strong>Booking Order No.</strong></td>
+                            <td>Booking&nbsp;Date</td>
+                            <td>Booking&nbsp;Status</td>
+                            <td>Req.&nbsp;Delivery&nbsp;Date</td>
+                            <td>Transportation&nbsp;by</td>
+                            <td>Vehicle&nbsp;No.</td>
+                            
+                        </tr>
+                        <tr>
+                            <td> <?php echo (@$receipt_dtl['id']);?></td>
+                            <td> <?php echo ($receipt_dtl['booking_date']=='0000-00-00' || $receipt_dtl['booking_date']==null)?'': date('d M Y',strtotime($receipt_dtl['booking_date'])); ?></td>
+                            <td><?php echo (@$receipt_dtl['booked_status']);?></td>
+                            <td><?php echo ($receipt_dtl['delivery_expect_start_date']=='0000-00-00' || $receipt_dtl['delivery_expect_start_date']==null)?'': date('d M Y',strtotime($receipt_dtl['delivery_expect_start_date'])); ?></td>
+                            <td> </td>
+                            <td><?php echo (@$receipt_dtl['vehicle_no']);?></td>
+                            
+                        </tr>
+                        <tr>
+                            <td><strong>Delivery&nbsp;Date</strong></td>
+                            <td><strong>Driver&nbsp;Name</strong></td>
+                            <td><strong>Agent&nbsp;Name</strong></td>
+                            <td><strong>Entered&nbsp;by</strong></td>
+                            <td><strong>Entry&nbsp;date&nbsp;and&nbsp;Time</strong></td>
+                             
+                            <td> </td>
+                            
+                        </tr>
+                        <tr>
+                            <td><?php echo ($receipt_dtl['delivery_date']=='0000-00-00' || $receipt_dtl['delivery_date']==null)?'': date('d M Y',strtotime($receipt_dtl['delivery_date'])); ?></td>
+                            <td><?php echo (@$receipt_dtl['driver_name']);?></td>
+                            <td><?php echo (@$receipt_dtl['executive']);?></td>
+                            <td><?php echo (@$receipt_dtl['createdby']);?></td>
+                            <td><?php echo date('d/m/Y h:i a',strtotime($receipt_dtl['date_at']));?></td>
+                             
+                            <td></td>
+                            
+                        </tr>
+                    </table>
+                        
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header p-2">
-                        <h3 class="card-title">Customer Details</h3>
-                    </div>
+                    
+                     
                     <div class="card-body p-2">
-                        <div class="row">
-                            <div class="col-1">
-                                <strong>Customer Id</strong>
-                                <div class="text-muted">
-                                    <?php echo  @$receipt_dtl['customer_id'];?>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <strong>Customer Name</strong>
-                                <div class="text-muted">
-                                    <?php echo  @$receipt_dtl['customer_name'];?>
-                                </div>
-                            </div>
-                            <div class="col-1">
-                                <strong>Contact Details</strong>
-                                <div class="text-muted">
-                                    <?php echo  @$receipt_dtl['customer_mobile'];?>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <strong>Billing Address</strong>
-                                <div class="text-muted">
-                                     <?php
+                        <table class=""  style="width: 100%">
+                        <tr>
+                            <td colspan="6"><h3 class="card-title">Customer Details</h3></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20%;"> <strong>Customer Id</strong></td>
+                            <td style="width: 20%;" > <strong>Customer Name</strong></td>
+                             <?php
                                                 $bill_address = '';
                                                 if(isset($receipt_dtl['village']) && $receipt_dtl['village'] !=='')
                                                 {
@@ -303,10 +207,10 @@
                                                       $bill_address.=" Pincode - ".($receipt_dtl['pincode']).","; 
                                                 }
                                                 
-                                                echo  $bill_address;
+                                                
                                               ?>
-                                             
-                                    <?php echo  $bill_address;  
+
+                                               <?php   
 
                                         if(@$receipt_dtl['same_billing']=='yes')
                                         {
@@ -316,34 +220,50 @@
                                             $shiping_addres =  @$receipt_dtl['delivery_address'];
                                         }
                                     ?>
-                                </div>
-                            </div>
 
-                            <div class="col">
-                                <strong>Delivery Address</strong>
-                                <div class="text-muted">
-                                     <?php 
-                                        echo $shiping_addres;
-                                     ?>
-                                </div>
-                            </div>
-                        </div>
+                            <td colspan="2" style="width: 30%;"> <strong>Billing Address</strong></td>
+                            <td colspan="2" style="width: 30%;"> <strong>Delivery Address</strong></td>
+                             </tr>
+                        <tr>
+                            <td> <?php echo (@$receipt_dtl['id']);?></td>
+                            <td> <?php echo ($receipt_dtl['booking_date']=='0000-00-00' || $receipt_dtl['booking_date']==null)?'': date('d M Y',strtotime($receipt_dtl['booking_date'])); ?></td>
+                            <td colspan="2" rowspan="3"><?php echo (@$bill_address);?></td>
+                            
+                            <td  colspan="2" rowspan="3"><?php  echo $shiping_addres; ?></td>
+                             
+                            
+                        </tr>
+                        <tr>
+                            <td><strong>Contact Details</strong></td>
+                            <td><strong> </strong></td>
+                             
+                             
+                            
+                        </tr>
+                        <tr>
+                            <td><?php echo  @$receipt_dtl['customer_mobile'];?></td>
+                            <td></td>
+                             
+                             
+                            
+                        </tr>
+                    </table>
+                        
                     </div>
                 </div>
-
+                 
+ 
                 <div class="card">
                     <div class="card-header p-2">
                         <h3 class="card-title">Product Details</h3>
                     </div>
                     <div class="card-body p-2">
                                                 <div class="overlay-wrapper item-data">
-                            <div class="overlay">
-                                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
-                            </div>
+                             
                             <table id="cart_table" class="cart-table w-100">
                                 <thead>
-                                    <tr>
-                                        <th class="text-center">Crop (Product)</th>
+                                    <tr class="bg-success text-white">
+                                        <th class="text-center productname">Crop (Product)</th>
                                         <th class="text-center" style="width: 100px;">UOM</th>
                                         <th class="text-center" style="width: 100px;">Rate</th>
                                         <th class="text-center" style="width: 100px;">Quantity</th>
@@ -357,54 +277,54 @@
                                 <tbody class="cart-body">
                                     <tr>
                                         <td>
-                                            <div>Papaya–Red Lady Seedlings</div>
+                                            <div><?php echo @$receipt_dtl['productname'];?></div>
                                         </td>
                                         <td>
-                                            <div>Ps</div>
+                                            <div><?php echo @$receipt_dtl['uom'];?></div>
                                         </td>
                                         <td class="text-right">
-                                            <div>35.00</div>
+                                            <div><?php echo  number_format($receipt_dtl['price'],2);?></div>
                                         </td>
                                         <td>
-                                            <div>1500</div>
+                                            <div><?php echo @$receipt_dtl['quantity'];?></div>
                                         </td>
                                         <td class="text-right">
-                                            <span id="cgst">0.00</span>
+                                            <span id="cgst"><?php echo number_format($receipt_dtl['cgst_amount'],2);?></span>
                                         </td>
                                         <td class="text-right">
-                                            <span id="sgst">0.00</span>
+                                            <span id="sgst"><?php echo  number_format($receipt_dtl['sgst_amount'],2);?></span>
                                         </td><td class="text-right">
-                                            <span id="igst">0.00</span>
+                                            <span id="igst"><?php echo number_format($receipt_dtl['igst_amount'],2);?></span>
                                         </td>
                                         <td>
-                                            <div></div>
+                                            <div><?php echo number_format($receipt_dtl['discount'],2);?></div>
                                         </td>
                                         <td class="text-right">
                                             <div class="totalCart">
-                                                52,500.00
+                                                <?php echo number_format($receipt_dtl['total'],2);?>
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td class="text-right" colspan="8">Total</td>
+                                        <td class="text-right" colspan="8"><div class="float-end">Total :</div></td>
                                         <td class="text-right">
                                             <div class="totalCart">
-                                                52,500.00
+                                                <?php echo number_format($receipt_dtl['total'],2);?>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-right" colspan="8">Total Paid</td>
+                                        <td class="text-right" colspan="8"><div class="float-end">Total Paid :</div></td>
                                         <td class="text-right">
-                                            <div class="paidAmount">15,000.00</div>
+                                            <div class="paidAmount"><?php echo number_format($receipt_dtl['advance'],2);?></div>
                                         </td>
                                     </tr>
                                     <tr class="text-danger">
-                                        <td class="text-right" colspan="8">Pending Balance</td>
+                                        <td class="text-right" colspan="8"><div class="float-end">Pending Balance :</div></td>
                                         <td class="text-right">
-                                            <div id="pending_amount">37,500.00</div>
+                                            <div id="pending_amount"><?php echo number_format($receipt_dtl['balance'],2);?></div>
                                         </td>
                                     </tr>
                                                                     </tfoot>
@@ -415,11 +335,11 @@
                 <div class="card">
                     <div class="order-payments">
     <div class="card-header p-2">
-        <h3 class="card-title" style="font-size: 1.3rem;">Payment Details</h3>
+        <h3 class="card-title" >Payment Details</h3>
             </div>
     <table class="table table-striped table-bordered table-sm">
         <thead>
-            <tr>
+            <tr class="bg-success text-white">
                 <th>Date</th>
                 <th>Type</th>
                 <th>Amount</th>

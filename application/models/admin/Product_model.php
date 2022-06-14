@@ -20,7 +20,7 @@ class Product_model extends Base_model
 
     var $column_search = array('c.name','p.title','p.hsn','p.price','p.usage_unit','p.tax_rate','p.discount','p.source','p.date_at','p.status'); //set column field database for datatable searchable 
 
-    var $order = array('p.id' => 'asc'); // default order
+    var $order = array('p.id' => 'desc'); // default order
 
 
 

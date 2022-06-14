@@ -35,7 +35,15 @@ class District extends BaseController
             $where  = array();
             $where['status']  = '1';
             $where['field']  = 'id,name ';
+             $where['orderby'] = 'name';
             $data['countryList'] = $this->country_model->findDynamic($where);
+
+             $where  = array();
+            $where['status']        = '1';
+            $where['country_id']    = 105;
+            $where['field']         = 'id,name ';
+            $where['orderby'] = 'name';
+            $data['stateList'] = $this->state_model->findDynamic($where);
         
 
         $this->global['pageTitle'] = 'Add New District';
@@ -53,6 +61,7 @@ class District extends BaseController
 		$this->load->library('form_validation');            
         $this->form_validation->set_rules('name','name','trim|required');
         $this->form_validation->set_rules('country_id','Select Country','trim|required');
+        $this->form_validation->set_rules('state_id','Select State','trim|required');
          
         
         //form data 
@@ -65,11 +74,13 @@ class District extends BaseController
         {
 
             // check already exist
-            $form_data['name'] = ucfirst($form_data['name']);
+            $form_data['name'] = strtolower($form_data['name']);
+            $form_data['name'] = ucwords($form_data['name']);
             $where = array();
             $where['name']          =  $form_data['name'];
             $where['country_id']    = $form_data['country_id'];
-            $where['name !=']          = "Other";
+            $where['state_id']    = $form_data['state_id'];
+             
 
 
             $returnData = $this->district_model->findDynamic($where);
@@ -85,17 +96,19 @@ class District extends BaseController
 
                 $insertData['name'] = $form_data['name'];
                 $insertData['country_id'] = $form_data['country_id'];
-                $insertData['status'] = $form_data['status'];
+                $insertData['state_id'] = $form_data['state_id'];
+                $insertData['status'] = $form_data['status1'];
+                $insertData['date_at'] = date("Y-m-d H:i:s");;
     			
                  
     			$result = $this->district_model->save($insertData);
                 if($result > 0)
                 {
-                    $this->session->set_flashdata('success', 'State successfully Added');
+                    $this->session->set_flashdata('success', 'District successfully Added');
                 }
                 else
                 { 
-                    $this->session->set_flashdata('error', 'State Addition failed');
+                    $this->session->set_flashdata('error', 'District Addition failed');
                 }
             }// check already    
             redirect(base_url().'admin/district/addnew');
@@ -177,16 +190,26 @@ class District extends BaseController
         $this->isLoggedIn();
         if($id == null)
         {
-            redirect('admin/state');
+            redirect('admin/district');
         }
-        $where  = array();
-        $where['table']  = 'z_countries';
-        $where['field']  = 'id,name';
-        $data['countryList'] = $this->district_model->findDynamic($where);
+
+         $where  = array();
+            $where['status']  = '1';
+            $where['field']  = 'id,name ';
+             $where['orderby'] = 'name';
+            $data['countryList'] = $this->country_model->findDynamic($where);
+
+             $where  = array();
+            $where['status']        = '1';
+            $where['country_id']    = 105;
+            $where['field']         = 'id,name ';
+            $where['orderby'] = 'name';
+            $data['stateList'] = $this->state_model->findDynamic($where);
+        
         
 
         $data['edit_data'] = $this->district_model->find($id);
-        $this->global['pageTitle'] = 'State ';
+        $this->global['pageTitle'] = 'District';
         $this->loadViews("admin/district/edit", $this->global, $data , NULL);
         
     } 
@@ -210,9 +233,10 @@ class District extends BaseController
 		
         $this->isLoggedIn();
         $this->load->library('form_validation');            
-        $this->form_validation->set_rules('name','State','trim|required');
-        $this->form_validation->set_rules('country_id','Country','trim|required');
-        $this->form_validation->set_rules('id','Id','trim|required');
+        $this->form_validation->set_rules('name','name','trim|required');
+        $this->form_validation->set_rules('country_id','Select Country','trim|required');
+        $this->form_validation->set_rules('state_id','Select State','trim|required');
+        $this->form_validation->set_rules('id','ID','trim|required');
         
         //form data 
         $form_data  = $this->input->post();
@@ -223,6 +247,23 @@ class District extends BaseController
         }
         else
         {
+
+
+             // check already exist
+            $form_data['name'] = strtolower($form_data['name']);
+            $form_data['name'] = ucwords($form_data['name']);
+            $where = array();
+            $where['name']          =  $form_data['name'];
+            $where['country_id']    = $form_data['country_id'];
+            $where['state_id']    = $form_data['state_id'];
+            $where['id !=']    = $form_data['id'];
+             
+
+
+            $returnData = $this->district_model->findDynamic($where);
+
+
+
             $form_data['name'] = ucfirst($form_data['name']);
 
                  if($form_data['name']== "Other")
@@ -233,11 +274,13 @@ class District extends BaseController
                $this->session->set_flashdata('error', $form_data['name'].' already Exist.');
             }else
             {
-                 $insertData['id']   = $form_data['id'];
+                    $insertData = array();
+                    $insertData['id']   = $form_data['id'];
                     $insertData['name'] = $form_data['name'];
                     $insertData['country_id'] = $form_data['country_id'];
+                    $insertData['state_id'] = $form_data['state_id'];
                     $insertData['status'] = $form_data['status1'];
-                    
+                    $insertData['update_at'] = date("Y-m-d H:i:s");
 
                     $result = $this->district_model->save($insertData);
                     
@@ -254,7 +297,7 @@ class District extends BaseController
 
 
            
-            redirect('admin/district/edit/'.$form_data['id']);
+            redirect(base_url().'admin/district/edit/'.$form_data['id']);
           }  
         
     }

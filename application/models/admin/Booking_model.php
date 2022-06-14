@@ -204,12 +204,12 @@ class Booking_model extends Base_model
                 $this->db->join('z_booking_status as bookstatus', 'bookstatus.slug = c.booking_status', 'left'); 
                 $this->db->join('z_contract_status as contractstatus', 'contractstatus.slug = c.contract', 'left'); 
                 $this->db->join('z_payment_mode as paymentmode', 'paymentmode.slug = c.payment_mode', 'left'); 
-                $this->db->join('z_agent as executive', 'executive.id = c.agent_id', 'left'); 
                 $this->db->join('z_product as product', 'product.id = c.product_id', 'left'); 
-                 
-                /*$this->db->join('z_call_direction as calldirection', 'calldirection.id = c.last_call_direction', 'left');*/
+                $this->db->join('z_admin as executive', 'executive.id = c.agent_id', 'left'); 
                 $this->db->join('z_admin as admin', 'admin.id = c.created_by', 'left');
                 $this->db->join('z_admin as admin2', 'admin2.id = c.assigned_to', 'left');
+                /*$this->db->join('z_call_direction as calldirection', 'calldirection.id = c.last_call_direction', 'left');*/
+                
                /* $this->db->join('z_admin as admin3', 'admin3.id = c.last_follower', 'left');*/
                 /*$this->db->join('z_call_type as last_ctype', 'last_ctype.id = c.last_follow_call_type', 'left');*/
 

@@ -6,18 +6,18 @@
 
 
 
-class City_model extends Base_model
+class Booking_payments_model extends Base_model
 {
 
-    public $table = "z_cities";
+    public $table = "z_booking_payments";
 
+    //set column field database for datatable orderable
+    var $column_order = array(null, 'title', 'status');
 
-     var $column_order = array(null, 'c.name','st.name' ,'dt.name' ,'ct.city' ,'ct.status'); //set column field database for datatable orderable
-    var $column_search = array( 'c.name','st.name' ,'dt.name' ,'ct.city' ,'ct.status'); //set column field database for datatable searchable 
+    //set column field database for datatable searchable 
+    var $column_search = array('title', 'status'); 
 
-   
-
-    var $order = array('ct.id' => 'desc'); // default order
+    var $order = array('id' => 'desc'); // default order
 
 
 
@@ -83,7 +83,7 @@ class City_model extends Base_model
 
         function get_datatables()
         {
-            $this->db->select('ct.*,c.name as country,st.name as state,dt.name as district');
+
             $this->_get_datatables_query();
 
             if(isset($_POST['length']) && $_POST['length'] != -1)
@@ -101,11 +101,7 @@ class City_model extends Base_model
          public function _get_datatables_query()
         {     
 
- 
-             $this->db->from($this->table. ' as ct');  
-            $this->db->join('z_countries as c', 'c.id = ct.country_id');
-            $this->db->join('z_states as st', 'st.id = ct.state_id');
-            $this->db->join('z_district as dt', 'dt.id = ct.district_id');
+            $this->db->from($this->table);
 
             $i = 0;     
 
@@ -186,7 +182,35 @@ class City_model extends Base_model
 
         }
 
+        public function getPaymentDetail($id)
+        {
+            $result = array();
+            if(!empty($id))
+            {
+                $this->db->select('pay.*, petype.title as paynmenttype, pemtmode.title as paynmentmode');
+                $this->db->from($this->table. ' as pay'); 
+                $this->db->join('z_payment_type as petype', 'petype.slug = pay.payment_type', 'left');
+                $this->db->join('z_payment_mode as pemtmode', 'pemtmode.slug = pay.payment_mode', 'left');
+                $this->db->where('pay.booking_id', $id); 
+                $query = $this->db->get(); 
+                $result = ($query->num_rows() > 0)?$query->result_array():array(); 
+            }
+                
+        return $result; 
+        }
+
 
 
 }
 
+
+
+
+
+
+
+
+
+
+
+  

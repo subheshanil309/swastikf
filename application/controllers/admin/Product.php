@@ -82,10 +82,8 @@ class Product extends BaseController
 		$this->load->library('form_validation');            
         $this->form_validation->set_rules('name','Product Name','trim|required');
         $this->form_validation->set_rules('category_id','Category Name','trim|required');
-        $this->form_validation->set_rules('hsn','HSN','trim|required');
         $this->form_validation->set_rules('price','Price','trim|required');
-        $this->form_validation->set_rules('usage_unit','UOM','trim|required');
-         
+          
          //form data 
         $form_data  = $this->input->post();
         if($this->form_validation->run() == FALSE)
@@ -96,39 +94,66 @@ class Product extends BaseController
         {
 	       
                 // check already exist
-            $form_data['name'] = ucfirst($form_data['name']);
-            $where = array();
-            $where['name']          =  $form_data['name'];
-            $where['country_id']    = $form_data['country_id'];
+                $form_data['name'] = strtolower($form_data['name']);
+                $form_data['title'] = ucwords($form_data['name']);
+                $form_data['slug'] = clean_slug($form_data['name']);
+                $where = array();
+                $where['name']              =  $form_data['name'];
+                $where['category_id']       = $form_data['category_id'];
+                $where['status']            = $form_data['status1'];
  
 
-            $returnData = $this->state_model->findDynamic($where);
+                $returnData = $this->product_model->findDynamic($where);
+
+            if(!empty($returnData))
+            {
+                 $this->session->set_flashdata('error', $form_data['name'].' already exist.');
+            }else
+            {
+
+                        $where = array();
+                        $where['slug']            = $form_data['slug'];
+                        $returnExistSlug = $this->product_model->findDynamic($where);
+                        if(!empty($returnExistSlug))
+                        {
+                           $form_data['slug'] = $form_data['slug']."-".count($returnExistSlug);
+                        }else
+                        {
+                            $form_data['slug'] = $form_data['slug'];
+                        }
 
 
-            
-
-
+                    $insertData  = array();
                     $insertData['name']             = $form_data['name'];
+                    $insertData['title']             = $form_data['title'];
                     $insertData['category_id']      = $form_data['category_id'];
                     $insertData['hsn']              = $form_data['hsn'];
                     $insertData['price']            = $form_data['price'];
                     $insertData['usage_unit']       = $form_data['usage_unit'];
-                    $insertData['tax_rate']       = $form_data['tax_rate'];
-                    $insertData['discount']       = $form_data['discount'];
+                    $insertData['tax_rate']         = $form_data['tax_rate'];
+                    $insertData['discount']         = $form_data['discount'];
+                    $insertData['slug']             = $form_data['slug'];
                     $insertData['status']           = $form_data['status1'];
                     $insertData['date_at']          = date("Y-m-d H:i:s");
+                    $insertData['source']         = $form_data['source'];
+                    $insertData['created_by']          = $this->session->userdata('userId');
              
             
-			
-            $result = $this->product_model->save($insertData);
-            if($result > 0)
-            {
-                $this->session->set_flashdata('success', 'Product successfully Added');
+            
+                $result = $this->product_model->save($insertData);
+                if($result > 0)
+                {
+                    $this->session->set_flashdata('success', 'Product successfully Added');
+                }
+                else
+                { 
+                    $this->session->set_flashdata('error', 'Product Addition failed');
+                }
             }
-            else
-            { 
-                $this->session->set_flashdata('error', 'Product Addition failed');
-            }
+            
+
+
+                    
             redirect('admin/product/addnew');
           }  
         
@@ -171,7 +196,7 @@ class Product extends BaseController
             $row[] = $date_at;
             
             
-            $row[] = '<a class="btn btn-sm btn-info" href="'.base_url().'admin/product/edit/'.$currentObj->id.'"><i class="fa fa-pen"></i></a> <a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';
+            $row[] = '<a title="'.$currentObj->slug.'" class="btn btn-sm btn-info" href="'.base_url().'admin/product/edit/'.$currentObj->id.'"><i class="fa fa-pen"></i></a> <a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';
             $data[] = $row;
         }
  
@@ -196,9 +221,13 @@ class Product extends BaseController
             redirect('admin/product');
         }
 		$data = array();
+         // category  
+        $where['status'] = '1'; 
+        $category_list = $this->category_model->findDynamic($where);
+         $data['category_lists'] =  $category_list;
         // edit data 
         $data['edit_data'] = $this->product_model->find($id);
-      
+        
        
         $this->global['pageTitle'] = 'Ale-izba : Edit Product';
         $this->loadViews("admin/product/edit", $this->global, $data , NULL);
@@ -210,11 +239,10 @@ class Product extends BaseController
 		$form_data  = $this->input->post();
 		
         $this->isLoggedIn();
-        $this->load->library('form_validation');            
-        $this->form_validation->set_rules('id','Product Id Is Empty','required');
-		$this->form_validation->set_rules('name','Product Name','trim|required');
+        $this->load->library('form_validation');             
+        $this->form_validation->set_rules('name','Product Name','trim|required');
+        $this->form_validation->set_rules('category_id','Category Name','trim|required');
         $this->form_validation->set_rules('price','Price','trim|required');
-        $this->form_validation->set_rules('no_item','Number Or item','trim|required');
         
         //form data 
         $form_data  = $this->input->post();
@@ -225,60 +253,78 @@ class Product extends BaseController
         }
         else
         {
-            
-            $insertData['id'] = $form_data['id'];
-			$insertData['name'] = base64_encode( $form_data['name']);
-            $insertData['price'] = $form_data['price'];
-            $insertData['no_item'] = $form_data['no_item'];
-            $insertData['renewal'] = base64_encode($form_data['renewal']);
-            $insertData['status'] = $form_data['status'];
-            
-            $insertData['update_at'] = date("Y-m-d H:i:s");
-            
-			
-            $i = 1; 
-            while($i == 1)
-            {
-                if(isset($_FILES['image'.$i]['name']) && $_FILES['image'.$i]['name'] != '') {
 
-                    $f_name         =$_FILES['image'.$i]['name'];
-                    $f_tmp          =$_FILES['image'.$i]['tmp_name'];
-                    $f_size         =$_FILES['image'.$i]['size'];
-                    $f_extension    =explode('.',$f_name);
-                    $f_extension    =strtolower(end($f_extension));
-                    $f_newfile      =uniqid().'.'.$f_extension;
-                    $store          ="uploads/product/".$f_newfile;
-                
-                    if(!move_uploaded_file($f_tmp,$store))
-                    {
-                        $this->session->set_flashdata('error', 'Image Upload Failed .');
-                    }
-                    else
-                    {
-                        $file = "uploads/product/".$form_data['old_image'.$i];
-                        if(file_exists ( $file))
+
+            $form_data['name'] = strtolower($form_data['name']);
+                $form_data['title'] = ucwords($form_data['name']);
+                $form_data['slug'] = clean_slug($form_data['name']);
+                $where = array();
+                $where['name']              =  $form_data['name'];
+                $where['category_id']       = $form_data['category_id'];
+                $where['status']            = $form_data['status1'];
+                $where['id !=']            = $form_data['id'];
+ 
+
+                $returnData = $this->product_model->findDynamic($where);
+
+            if(!empty($returnData))
+            {
+                 $this->session->set_flashdata('error', $form_data['name'].' already exist.');
+            }else
+            {
+
+
+                        $where = array();
+                        $where['slug']            = $form_data['slug'];
+                        $where['id !=']            = $form_data['id'];
+                        $returnExistSlug = $this->product_model->findDynamic($where);
+                        if(!empty($returnExistSlug))
                         {
-                            unlink($file);
+                           $form_data['slug'] = $form_data['slug']."-".count($returnExistSlug);
+                        }else
+                        {
+                            $form_data['slug'] = $form_data['slug'];
                         }
-                        $insertData['image'.$i] = $f_newfile;
-                       
-                    }
-                 }
-                 $i++;
-            }
-            	
-            $result = $this->product_model->save($insertData);
-			
 
-            if($result > 0)
-            {
-                $this->session->set_flashdata('success', ' Product successfully Updated');
+                    $insertData  = array();
+                    $insertData['id'] = $form_data['id'];
+
+
+                    $insertData['name']             = $form_data['name'];
+                    $insertData['title']             = $form_data['title'];
+                    $insertData['category_id']      = $form_data['category_id'];
+                    $insertData['hsn']              = $form_data['hsn'];
+                    $insertData['price']            = $form_data['price'];
+                    $insertData['usage_unit']       = $form_data['usage_unit'];
+                    $insertData['tax_rate']         = $form_data['tax_rate'];
+                    $insertData['discount']         = $form_data['discount'];
+                    $insertData['source']         = $form_data['source'];
+                    $insertData['slug']             = $form_data['slug'];
+                    $insertData['status']           = $form_data['status1'];
+
+
+                    $insertData['update_at'] = date("Y-m-d H:i:s");
+
+                
+            
+                    
+                $result = $this->product_model->save($insertData);
+                
+
+                if($result > 0)
+                {
+                    $this->session->set_flashdata('success', ' Product successfully Updated');
+                }
+                else
+                { 
+                    $this->session->set_flashdata('error', 'Product Updation failed');
+                }
             }
-            else
-            { 
-                $this->session->set_flashdata('error', 'Product Updation failed');
-            }
-            redirect('admin/product/edit/'.$insertData['id']);
+
+
+            
+            
+            redirect(base_url().'admin/product/edit/'.$insertData['id']);
           }  
         
     }

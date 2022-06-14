@@ -22,7 +22,7 @@
                               <label for="customer_id" class="col-sm-4 col-form-label text-right">Cust ID:</label>
                               <div class="col-sm-8">
                                  <div class="input-group input-group-sm">
-                                    <input class="form-control form-control-sm  " id="customer_id" name="customer_id" type="text">
+                                    <input class="form-control form-control-sm  " id="customer_id" name="customer_id" type="text" onkeypress="return onlyNumberKey(event)">
                                      
                                  </div>
                               </div>
@@ -33,7 +33,7 @@
                               <label for="mobile" class="col-sm-4 col-form-label text-right">Mobile No.:</label>
                               <div class="col-sm-8">
                                  <div class="input-group input-group-sm">
-                                    <input class="form-control form-control-sm  " id="mobile" name="mobile" type="text"   >
+                                    <input class="form-control form-control-sm  " id="mobile" name="mobile" type="text"  onkeypress="return onlyNumberKey(event)" >
                                      
                                  </div>
                               </div>
@@ -99,14 +99,14 @@
                            <div class="row">
                               <label for="customer_mobile" class="col-sm-4 col-form-label">Reg Mob No<span class="text-danger">*</span></label>
                               <div class="col-sm-8"> 
-                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="customer_mobile"  name="customer_mobile"  placeholder="Customer Mobile*"  value="<?php echo @$edit_data->customer_mobile?>" required  />
+                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="customer_mobile"  name="customer_mobile"  placeholder="Customer Mobile*"  value="<?php echo @$edit_data->customer_mobile?>" required  onkeypress="return onlyNumberKey(event)"/>
                               </div>
                            </div>
 
                             <div class="row">
                               <label for="customer_alter_mobile" class="col-sm-4 col-form-label">ALT Mobile</label>
                               <div class="col-sm-8">
-                                 <input type="text" class="form-control customer_alter_mobile-control-sm" id="customer_alter_mobile" placeholder="ALT Mobile" name="customer_alter_mobile" value="<?php echo @$edit_data->customer_alter_mobile?>" >
+                                 <input type="text" class="form-control customer_alter_mobile-control-sm" id="customer_alter_mobile" placeholder="ALT Mobile" name="customer_alter_mobile" value="<?php echo @$edit_data->customer_alter_mobile?>" onkeypress="return onlyNumberKey(event)" >
                               </div>
                            </div>
                            <div class="row">
@@ -235,7 +235,7 @@
                            <div class="row">
                               <label for="pincode" class="col-sm-4 col-form-label">Pincode</label>
                               <div class="col-sm-8">
-                                 <input type="text" class="form-control form-control-sm" id="pincode" name="pincode" placeholder="Pincode"   value="<?php echo @$edit_data->pincode?>">
+                                 <input type="text" class="form-control form-control-sm" id="pincode" name="pincode" placeholder="Pincode"   value="<?php echo @$edit_data->pincode?>" onkeypress="return onlyNumberKey(event)" >
                               </div>
                            </div>
                             <div class="row">
@@ -285,7 +285,7 @@
                            <div class="row">
                               <label for="vehicle_no" class="col-sm-4 col-form-label">Vehicle No.</label>
                               <div class="col-sm-8"> 
-                                 <input type="text" class="form-control form-control-sm" id="vehicle_no" name="vehicle_no" placeholder="Farmers Name*"  value="<?php echo  @$edit_data->vehicle_no?>" />
+                                 <input type="text" class="form-control form-control-sm" id="vehicle_no" name="vehicle_no" placeholder="Vehicle No"  value="<?php echo  @$edit_data->vehicle_no?>" />
                               </div>
                            </div>
                            <div class="row">
@@ -341,16 +341,9 @@
                      
                   </div>
                   <div class="col-sm-3">
-                     <div class=" ">
-                       
-                        <div class=" ">
+                     
                             
-                            <div class="row">
-                              <label for="pending-bill" class="col-sm-4 col-form-label">Pending Bill</label>
-                              <div class="col-sm-8">
-                                <h6 class="bg-warning"> Rs<span class="pending-bill">0.00</span></h6>
-                              </div>
-                           </div> 
+                            
                            <div class="row">
                               <label for="productive_plants" class="col-sm-4 col-form-label">Productive Plants</label>
                               <div class="col-sm-8">
@@ -367,8 +360,7 @@
                          
                     
                   </div>
-               </div>
-               </div>
+               
                </div>
                <div class="row">
                   <div class="col-sm-6">
@@ -384,15 +376,18 @@
                         <h5 class="card-header bg-success text-white border-bottom p-1">Delivery Address 
                           <input type="checkbox" name="same_billing" id="same_billing" value="yes" <?php 
                           if(isset($edit_data->same_billing) && $edit_data->same_billing=='yes'){
+
                               $deliver_address = @$edit_data->billing_address;
                               echo 'checked';
-
+                              $delivery_address_readonly = 'readonly';
                         }else{
                               $deliver_address = @$edit_data->delivery_address;
+
+                              $delivery_address_readonly = '';
                         }
                         ?>> <small>Same as billing</small></h5>
                         <div class="card-body p-1">
-                            <textarea name="delivery_address" class="form-control form-control-sm" id="delivery_address" cols="50"><?php echo  @ $deliver_address;?></textarea>
+                            <textarea name="delivery_address" <?php echo $delivery_address_readonly;?> class="form-control form-control-sm" id="delivery_address" cols="50"><?php echo  @ $deliver_address;?></textarea>
                             
                         </div>
                      </div>
@@ -482,12 +477,27 @@
 
                             <input type="hidden" name="total" id="total" value="<?php echo  @($edit_data->total+0)?>"></td>
                         </tr>
+                        <tr>
+                          <td colspan="7"></td>
+                          <td><div class="pull-right">Total Paid </div></td>
+                          <td><span class=" "><?php echo  @($edit_data->advance+0)?></span></td>
+                        </tr>
+                        <tr>
+                          <td colspan="7"></td>
+                           <?php
+                                 $total = $edit_data->total;
+                                 $advance = $edit_data->advance;
+                                 $pending_balance = $total-$advance;
+                           ?>
+                          <td><div class="pull-right text-danger">Pending Balance</div></td>
+                          <td><span class="  text-danger"><?php echo $pending_balance;?></span></td>
+                        </tr>
                       </tfoot>
                     </table>
                     </div>
                   </div>
                </div>
-               <div class="row">
+               <!-- <div class="row">
                   <div class="col-sm-3">
                      <div class="row">
                               <label for="advance" class="col-sm-4 col-form-label">Advance</label>
@@ -532,8 +542,8 @@
                               </div>
                            </div>
                   </div>
-               </div>
-               <div class="row cheque-field" <?php if($edit_data->payment_mode=='cheque'){ }else{ ?>style="display: none;"<?php } ?> >
+               </div> -->
+            <!--    <div class="row cheque-field" <?php if($edit_data->payment_mode=='cheque'){ }else{ ?>style="display: none;"<?php } ?> >
                   <div class="col-sm-3">
                      <div class="row">
                               <label for="cheque_no" class="col-sm-4 col-form-label">Chq No</label>
@@ -561,20 +571,78 @@
                   <div class="col-sm-3">
                        
                   </div>
-               </div>
+               </div> -->
                <div class="row">
                   <div class="col-sm-12">
                      <div class="card">
-                        <div class="card-body ">
+                        <div class="card-body p-0">
+                           <input type="hidden" name="id" value="<?php if(isset($edit_data->id)){echo $edit_data->id;} ?>"/>
                             <input id="pending_bill" name="pending_bill" type="hidden" value="0">
                             <input id="gst" name="gst" type="hidden"  value="<?php if(isset($edit_data->tax_rate)){echo $edit_data->tax_rate;} ?>" >
-                           <button type="submit" class="btn btn-primary w-md float-end">Save Details</button>
-                           <input type="hidden" name="id" value="<?php if(isset($edit_data->id)){echo $edit_data->id;} ?>"/>
+                           <button type="submit" class="  btn-sm  btn btn-primary w-md">Save Details</button>
+                           <a class="btn btn-info btn-sm mr-2" target="_blank" href="<?php echo base_url()?>admin/bookings/receipt/<?php echo $edit_data->id;?>"><i class="fa fa-file-invoice"></i> Receipt</a>
+                            <a class="btn btn-warning btn-sm"   href="<?php echo base_url()?>admin/bookings"> Go Back</a>
                         </div>
                      </div>
                   </div>
                </div>
             </form>
+             
+                      <div class="row">
+                        <div class="col-sm-2">
+                           Payment Details
+                        </div>
+                      </div>
+                      </div>
+                      <div class="row">
+                           <div class="col-sm-12">
+                             <div class="table table-responsive">
+                               <table class="table table-responsive">
+                               <thead class="table-light" >
+                                 <tr class="p-0">
+                                   <th class="align-middle bg-success text-white p-1">Date</th>
+                                   <th class="align-middle bg-success text-white p-1">Type</th>
+                                   <th class="align-middle bg-success text-white p-1">Amount</th>
+                                   <th class="align-middle bg-success text-white p-1">Mode</th>
+                                   <th class="align-middle bg-success text-white p-1">Bank Trxn Id</th>
+                                   <th class="align-middle bg-success text-white p-1">Action</th>
+                                    
+                                 </tr>
+                               </thead>
+                               <tbody>
+                                 <?php
+
+                               /*  echo "<pre>";
+                                 print_r($payment_details);
+                                 echo "</pre>";*/
+                                    if(!empty($payment_details))
+                                    {
+                                       foreach ($payment_details as $key => $value) 
+                                       {
+                                           ?>
+                                                <tr>
+                                                   <td></td> 
+                                                   <td></td> 
+                                                   <td></td> 
+                                                   <td></td> 
+                                                   <td></td> 
+                                                   <td></td> 
+                                                </tr>
+                                           <?php
+                                       }
+                                    }
+                                 ?>
+                                 
+                                  
+                               </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+                   
+             
+
+
                </div>
             </div>
             
@@ -1269,12 +1337,20 @@ function renderCart(centerState) {
     $('.totalCart').text(totalCart.toFixed(2));
 
     var balance = (totalCart - advance) + pendingBill;
-    $('#balance').val(Number(balance).toFixed(2));
-    $('.pending-bill').text(Number(pendingBill).toFixed(2));
+    $('#balance').val(Number(balance).toFixed(2)); 
 }
 renderCart(centerState);
 
 
+ function onlyNumberKey(evt) {
+          
+        // Only ASCII character in that range allowed
+        var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+         
+        if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+            return false;
+        return true;
+    }
 
 
 </script>

@@ -832,6 +832,32 @@ echo "</pre>";
         echo $html_content;
         
     } 
+    public function country_change($country_id='',$selectedState='')
+    {
+          
+        $where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'name';
+        if(!empty($country_id))
+        {
+            $where['country_id'] = $country_id;
+        }
+        $states = $this->state_model->findDynamic($where);
+        $html_content = '<option value="">Choose State</option>';
+        if(!empty($states))
+        {
+            foreach ($states as $state ) {
+                $selected = '';
+                if(isset($selectedState) && $selectedState ==$state->id)
+                {
+                    $selected = 'selected';
+                }
+                $html_content.= '<option value="'.$state->id .'" '.$selected.'>'.$state->name .'</option>';
+            }    
+        }
+        echo $html_content;
+        
+    } 
     public function district_change($district_id='',$selected_city='')
     {
           

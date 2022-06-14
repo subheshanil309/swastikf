@@ -1,55 +1,106 @@
-<link rel="stylesheet" href="<?php echo base_url() ?>assets/css/jquery.dataTables.min.css" />
-<script src="<?php echo base_url() ?>assets/js/jquery.dataTables.min.js"></script>
+ 
+ <link href="<?php echo base_url(); ?>assets/admin/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url(); ?>assets/admin/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+ <style type="text/css">
+   table.dataTable td, table.dataTable th {
+    padding: 1px 2px !important;
+}
+ </style>
+<div class="page-content">
+  
+   <div class="container-fluid">
+    <div class="row">
+               <div class="col-12">
+                  <?php $this->load->helper('form'); ?>
+                  <div class="row">
+                     <div class="col-md-12">
+                        <?php echo validation_errors('<div class="alert alert-danger alert-dismissible fade show " role="alert" >', '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'); ?>
+                     </div>
+                  </div>
+                  <?php
+                     $this->load->helper('form');
+                     $error = $this->session->flashdata('error');
+                     if($error)
+                     {
+                         ?>
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                     <?php echo $error; ?> 
+                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                  <?php }
+                     $success = $this->session->flashdata('success');
+                     if($success)
+                     {
+                         ?>
+                  <div class="alert alert-success  alert-dismissible fade show" role="alert">
+                     <?php echo $success; ?> 
+                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                  <?php }
+                     ?>
+               </div>
+            </div>
+      <div class="row">
+          <div class="col-xl-12">
+            
+            <div class="row">
+               <div class="col-lg-12">
+                  <div class="card">
+                   
 
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-      <i class="fa fa-flag" aria-hidden="true"></i> State
-        <small>Add, Edit</small>
-      </h1>
-    </section>
-    <section class="content">
-        <div class="row">
-            <div class="col-xs-12 text-right">
-                <div class="form-group">
-                    <a class="btn btn-primary" href="<?php echo base_url(); ?>admin/city/addnew"><i class="fa fa-plus"></i> Add New</a>
-                </div>
+                      <h5 class="card-header bg-success text-white border-bottom ">
+                         <div class="row ">
+                           <div class="col-sm-9">
+                            City List
+                           </div>
+                           
+                           <div class="col-sm-3 ">
+  
+
+                          
+                         <a class="btn btn-primary  float-end btn-sm" href="<?php echo base_url(); ?>admin/city/addnew"><i class="fa fa-plus"></i> Add New</a>
+
+                            </div>
+                         </div>
+                       </h5>
+                      
+
+                       <div class="card-body">
+                        
+                        <div class="table-responsive mytablestyle">
+                             <table class="display table table-striped align-middle table-nowrap mb-0" cellspacing="0" width="100%" id="example">
+                                  <thead>
+                                 <tr class=" bg-success">
+                                    <th  style="width: 60px;">S.No.</th>
+                                    <th>Country</th>                                            
+                                    <th>State</th>                                            
+                                    <th>District</th>                                            
+                                    <th>City</th>                                            
+                                     <th  style="width: 60px;">Status</th>                                            
+                                    <th class="text-center"  style="width: 60px;">Actions</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  
+                                  </tbody>
+                                </table>
+                           
+                        </div>
+                        
+                      </div>
+                        <!-- end table-responsive -->
+                     </div>
+                     
+                  </div>
+               </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-              <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">State List</h3>
-                     <div class="box-tools">
-                         
-                    </div>
-                </div><!-- /.box-header -->
-                <div class="box-body table-responsive">
-                  <table class="display" cellspacing="0" width="100%" id="example">
-                    <thead>
-                    <tr>
-                      <th>S.No.</th>
-                      <th>Country</th>                                            
-                      <th>State</th>                                            
-                      <th>State Code</th> 
-                      <th>Status</th>                                            
-                      <th class="text-center">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    
-                    </tbody>
-                  </table>
-                  
-                </div><!-- /.box-body -->
-                
-              </div><!-- /.box -->
-            </div>
-        </div>
-    </section>
+         </div>
+      </div>
+    </div>
 </div>
+
+ 
+<script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
 
 <!-- Delete Script-->
   <script type="text/javascript">
@@ -62,7 +113,7 @@
             hitURL = "<?php echo base_url() ?>admin/city/delete",
             currentRow = $(this);
           
-          var confirmation = confirm("Are you sure to delete this State ?");
+          var confirmation = confirm("Are you sure to delete this city ?");
           
           if(confirmation)
           {
@@ -91,7 +142,7 @@ $(document).ready(function() {
  
     //datatables
     table = $('#example').DataTable({ 
- 
+         "pageLength": 25,
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
         "order": [], //Initial no order.

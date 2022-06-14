@@ -9,6 +9,9 @@ class City extends BaseController
     public function __construct()
     {
         parent::__construct();
+       $this->load->model('admin/state_model');
+       $this->load->model('admin/district_model');
+       $this->load->model('admin/country_model');
        $this->load->model('admin/city_model');
     }
 
@@ -18,7 +21,7 @@ class City extends BaseController
         $this->isLoggedIn();
 
         $data = array();
-        $this->global['pageTitle'] = 'State : Ale-izba';
+        $this->global['pageTitle'] = 'City';
         $this->loadViews("admin/city/list", $this->global, $data , NULL);
         
     }
@@ -30,14 +33,24 @@ class City extends BaseController
         $this->isLoggedIn();
         $data = array();
 
-        $where  = array();
-        $where['table']  = 'rc_rel_state';
-        $where['status']  = '1';
-        $where['field']  = 'id,name, code';
-        $data['stateList'] = $this->city_model->findDynamic($where);
+            $where  = array();
+            $where['status']  = '1';
+            $where['field']  = 'id,name ';
+             $where['orderby'] = 'name';
+            $data['countryList'] = $this->country_model->findDynamic($where);
+
+             $where  = array();
+            $where['status']        = '1';
+            $where['country_id']    = 105;
+            $where['field']         = 'id,name ';
+            $where['orderby'] = 'name';
+            $data['stateList'] = $this->state_model->findDynamic($where); 
+
+
+        
         
 
-        $this->global['pageTitle'] = 'Add New State : Ale-izba';
+        $this->global['pageTitle'] = 'Add New City';
         $this->loadViews("admin/city/addnew", $this->global, $data , NULL);
         
     } 
@@ -51,9 +64,10 @@ class City extends BaseController
 		
 		$this->load->library('form_validation');            
         $this->form_validation->set_rules('name','name','trim|required');
+        $this->form_validation->set_rules('country_id','Select Country','trim|required');
         $this->form_validation->set_rules('state_id','Select State','trim|required');
-        $this->form_validation->set_rules('zip','Zip Code','trim|required');
-        
+        $this->form_validation->set_rules('district_id','Select District','trim|required');
+         
         //form data 
         $form_data  = $this->input->post();
         if($this->form_validation->run() == FALSE)
@@ -63,33 +77,46 @@ class City extends BaseController
         else
         {
 
-            // check already exist
+
+                 // check already exist
+            $form_data['name'] = strtolower($form_data['name']);
+            $form_data['name'] = ucwords($form_data['name']);
             $where = array();
-            $where['name'] = $form_data['name'];
+            $where['city']          =  $form_data['name'];
+            $where['country_id']    = $form_data['country_id'];
+            $where['state_id']    = $form_data['state_id'];
+            $where['district_id']    = $form_data['district_id'];
+             
+
+
             $returnData = $this->city_model->findDynamic($where);
-            if(!empty($returnData)){
+ 
+             if($form_data['name']== "Other")
+             {
+                $this->session->set_flashdata('error', $form_data['name'].' Not Allow.');
+             }else if(!empty($returnData)){
                $this->session->set_flashdata('error', $form_data['name'].' already Exist.');
             }else{
 
-                $insertData['name'] = $form_data['name'];
+                $insertData['city'] = $form_data['name'];
+                $insertData['country_id'] = $form_data['country_id'];
                 $insertData['state_id'] = $form_data['state_id'];
-                $insertData['code'] = $form_data['code'];
-                $insertData['slug'] = $form_data['slug'];
-                $insertData['zip'] = $form_data['zip'];
-                $insertData['status'] = $form_data['status'];
+                $insertData['district_id'] = $form_data['district_id'];
+                $insertData['date_at'] = date("Y-m-d H:i:s");;
+                $insertData['status'] = $form_data['status1'];
     			
                  
     			$result = $this->city_model->save($insertData);
                 if($result > 0)
                 {
-                    $this->session->set_flashdata('success', 'State successfully Added');
+                    $this->session->set_flashdata('success', 'City successfully Added');
                 }
                 else
                 { 
-                    $this->session->set_flashdata('error', 'State Addition failed');
+                    $this->session->set_flashdata('error', 'City Addition failed');
                 }
             }// check already    
-            redirect('admin/city/addnew');
+            redirect(base_url().'admin/city/addnew');
           }  
         
     }
@@ -98,14 +125,7 @@ class City extends BaseController
     // Member list
     public function ajax_list()
     {
-        $where  = array();
-        $where['table']  = 'rc_rel_state';
-        $where['status']  = '1';
-        $where['field']  = 'id,name, code';
-        $TempstateList = $this->city_model->findDynamic($where);
-        foreach ($TempstateList as $value) {
-            $stateList[$value->id] = $value->name;
-        }
+         
 
 		$list = $this->city_model->get_datatables();
 		
@@ -123,11 +143,21 @@ class City extends BaseController
             $no++;
             $row = array();
             $row[] = $no;
-            $row[] = (isset($stateList[$currentObj->state_id]))?$stateList[$currentObj->state_id]:'';
-            $row[] = $currentObj->name;
-            $row[] = $currentObj->code;
+             
+           $row[] = $currentObj->country;
+           $row[] = $currentObj->state;
+           $row[] = $currentObj->district;
+            $edit_btn =  (isset($currentObj->name) && $currentObj->name =='Other')?'':'<a class="btn btn-sm btn-info" href="'.base_url().'admin/city/edit/'.$currentObj->id.'" title="Edit" ><i class="fa fa-pen"></i></a>&nbsp;';
+            $delete_btn =  (isset($currentObj->name) && $currentObj->name =='Other')?'':'<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';
+
+            $status_btn =  (isset($currentObj->name) && $currentObj->name =='Other')?'':$btn;
+            $status_btn =  (isset($currentObj->name) && $currentObj->name =='Other')?'':$btn;
+
+
+           $row[] = $currentObj->city;
             $row[] = $btn;
-            $row[] = '<a class="btn btn-sm btn-info" href="'.base_url().'admin/city/edit/'.$currentObj->id.'" title="Edit" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';
+            $row[] = $edit_btn.$delete_btn;;
+           /* $row[] = '<a class="btn btn-sm btn-info" href="'.base_url().'admin/city/edit/'.$currentObj->id.'" title="Edit" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';*/
             $data[] = $row;
         }
  
@@ -155,6 +185,8 @@ class City extends BaseController
         $insertData['id'] = $_POST['id'];
         $insertData['status'] = $_POST['status'];
         $result = $this->city_model->save($insertData);
+        if ($result > 0) { echo(json_encode(array('status'=>TRUE))); }
+        else { echo(json_encode(array('status'=>FALSE))); }
         exit;
     } 
 
@@ -169,14 +201,34 @@ class City extends BaseController
         {
             redirect('admin/city');
         }
+        $data = array();
+        $data['edit_data'] = $this->city_model->find($id);
+
+
         $where  = array();
-        $where['table']  = 'rc_rel_state';
-        $where['field']  = 'id,name, code';
-        $data['stateList'] = $this->city_model->findDynamic($where);
+            $where['status']  = '1';
+            $where['field']  = 'id,name ';
+             $where['orderby'] = 'name';
+            $data['countryList'] = $this->country_model->findDynamic($where);
+
+             $where  = array();
+            $where['status']        = '1';
+            $where['country_id']    = $data['edit_data']->country_id;
+            $where['field']         = 'id,name ';
+            $where['orderby'] = 'name';
+            $data['stateList'] = $this->state_model->findDynamic($where); 
+
+             $where  = array();
+            $where['status']        = '1';
+            $where['country_id']    =$data['edit_data']->country_id;
+            $where['state_id']    =$data['edit_data']->state_id;
+            $where['field']         = 'id,name ';
+            $where['orderby'] = 'name';
+            $data['districtList'] = $this->district_model->findDynamic($where);
         
 
-        $data['edit_data'] = $this->city_model->find($id);
-        $this->global['pageTitle'] = 'State ';
+        
+        $this->global['pageTitle'] = 'City';
         $this->loadViews("admin/city/edit", $this->global, $data , NULL);
         
     } 
@@ -200,10 +252,10 @@ class City extends BaseController
 		
         $this->isLoggedIn();
         $this->load->library('form_validation');            
-        $this->form_validation->set_rules('name','State','trim|required');
-        $this->form_validation->set_rules('zip','Zip Code','trim|required');
-        $this->form_validation->set_rules('slug','Slug','trim');
-        $this->form_validation->set_rules('id','Id','trim|required');
+        $this->form_validation->set_rules('name','name','trim|required');
+        $this->form_validation->set_rules('country_id','Select Country','trim|required');
+        $this->form_validation->set_rules('state_id','Select State','trim|required');
+        $this->form_validation->set_rules('district_id','Select District','trim|required');
         
         //form data 
         $form_data  = $this->input->post();
@@ -214,26 +266,55 @@ class City extends BaseController
         }
         else
         {
-            $insertData['id'] = $form_data['id'];
-            $insertData['name'] = $form_data['name'];
-            $insertData['code'] = $form_data['code'];
-            $insertData['zip'] = $form_data['zip'];
-            $insertData['slug'] = $form_data['slug'];
-            $insertData['status'] = $form_data['status'];
+                  // check already exist
+            $form_data['name'] = strtolower($form_data['name']);
+            $form_data['name'] = ucwords($form_data['name']);
+            $where = array();
+            $where['city']          =  $form_data['name'];
+            $where['country_id']    = $form_data['country_id'];
+            $where['state_id']    = $form_data['state_id'];
+            $where['district_id']    = $form_data['district_id'];
+            $where['id !=']    = $form_data['id'];
+             
+
+
+            $returnData = $this->city_model->findDynamic($where);
+ 
+             if($form_data['name']== "Other")
+             {
+                $this->session->set_flashdata('error', $form_data['name'].' Not Allow.');
+             }else if(!empty($returnData)){
+               $this->session->set_flashdata('error', $form_data['name'].' already Exist.');
+            }else{
+                    $insertData =  array();
+                     $insertData['id'] = $form_data['id'];
+                    $insertData['city'] = $form_data['name'];
+                    $insertData['country_id'] = $form_data['country_id'];
+                    $insertData['state_id'] = $form_data['state_id'];
+                    $insertData['district_id'] = $form_data['district_id'];
+                    $insertData['update_at'] = date("Y-m-d H:i:s");;
+                    $insertData['status'] = $form_data['status1'];
+
+                    $result = $this->city_model->save($insertData);
             
 
-            $result = $this->city_model->save($insertData);
-			
+                    if($result > 0)
+                    {
+                        $this->session->set_flashdata('success', ' State successfully Updated');
+                    }
+                    else
+                    { 
+                        $this->session->set_flashdata('error', 'State Updation failed');
+                    }
+                    
+                    
+            }
 
-            if($result > 0)
-            {
-                $this->session->set_flashdata('success', ' State successfully Updated');
-            }
-            else
-            { 
-                $this->session->set_flashdata('error', 'State Updation failed');
-            }
-            redirect('admin/city/edit/'.$insertData['id']);
+           
+            
+                redirect(base_url().'admin/city/edit/'.$form_data['id']);
+
+            
           }  
         
     }

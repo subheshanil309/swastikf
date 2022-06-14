@@ -153,3 +153,34 @@ ALTER TABLE `z_booking` CHANGE `date_at` `date_at` DATETIME NOT NULL DEFAULT CUR
 ALTER TABLE `z_booking` ADD `tax_rate` INT NOT NULL DEFAULT '0';
 
 
+
+
+
+
+
+
+
+--dated on  14-06-2020
+--
+
+ALTER TABLE `z_admin` CHANGE `admin_type` `admin_type` INT(11) NOT NULL COMMENT '1-Role Admin\r\n2-Role Agent\r\n3-Role User';
+
+
+DROP TABLE IF EXISTS `z_payment_type`;
+CREATE TABLE IF NOT EXISTS `z_payment_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `slug` varchar(200) NOT NULL,
+  `status` int(11) DEFAULT 1,
+  `date_at` date NOT NULL DEFAULT current_timestamp(),
+  `update_at` date NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `z_payment_type` (`id`, `name`, `title`, `slug`, `status`, `date_at`, `update_at`) VALUES
+(1, 'payment', 'Payment', 'payment', 1, '2022-06-01', '2022-06-01'),
+(2, 'refund', 'Refund', 'refund', 1, '2022-06-01', '2022-06-01'),
+(3, 'cancellation charge', 'Cancellation Charge', 'cancellation-charge', 1, '2022-06-01', '2022-06-01'),
+(4, 'other', 'other', 'other', 1, '2022-06-01', '2022-06-01');
+COMMIT;
