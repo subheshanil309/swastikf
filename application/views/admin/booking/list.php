@@ -421,8 +421,8 @@
                                         <td><?php echo $bookings['price'];?></td>
                                         <td><?php echo $bookings['total'];?></td>
                                         <td><?php echo $bookings['discount'];?></td>
-                                        <td><?php echo $bookings['advance'];?></td>
-                                        <td> </td>
+                                        <td><?php echo $bookings['total_paid_amount'];?></td>
+                                        <td><?php echo $bookings['outstanding_amount'];?></td>
                                         <td>
                                           <?php 
                                           echo ($bookings['delivery_expect_start_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_expect_start_date'])) :'-/-/-';?> To <?php 

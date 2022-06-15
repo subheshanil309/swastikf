@@ -184,3 +184,50 @@ INSERT INTO `z_payment_type` (`id`, `name`, `title`, `slug`, `status`, `date_at`
 (3, 'cancellation charge', 'Cancellation Charge', 'cancellation-charge', 1, '2022-06-01', '2022-06-01'),
 (4, 'other', 'other', 'other', 1, '2022-06-01', '2022-06-01');
 COMMIT;
+
+
+
+DROP TABLE IF EXISTS `z_booking_payments`;
+CREATE TABLE IF NOT EXISTS `z_booking_payments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `booking_id` int(11) DEFAULT NULL,
+  `payment_type` varchar(100) DEFAULT 'payment',
+  `payment_mode` varchar(100) DEFAULT NULL,
+  `payment_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `amount` int(11) NOT NULL,
+  `bank_transaction_id` varchar(200) NOT NULL,
+  `date_at` datetime NOT NULL,
+  `update_at` datetime NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `cheque_no` varchar(200) DEFAULT NULL,
+  `bank_name` varchar(200) DEFAULT NULL,
+  `bank_branch` varchar(200) DEFAULT NULL,
+  `company_id` int(11) DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+--date 15-06-2022--
+
+ALTER TABLE `z_booking` ADD `outstanding_amount` INT NULL DEFAULT '0' AFTER `balance`;
+ALTER TABLE `z_booking_log` ADD `outstanding_amount` INT NULL DEFAULT '0' AFTER `balance`;
+
+ALTER TABLE `z_booking` ADD `total_paid_amount` INT NOT NULL DEFAULT '0' AFTER `outstanding_amount`;
+ALTER TABLE `z_booking_log` ADD `total_paid_amount` INT NOT NULL DEFAULT '0' AFTER `outstanding_amount`;
+
+ALTER TABLE `z_booking_payments` CHANGE `payment_date` `payment_date` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE `z_booking_payments` ADD `update_by` INT NULL AFTER `created_by`;
+
+
+ ALTER TABLE `z_booking` ADD `refunded_amount` INT NOT NULL DEFAULT '0' AFTER `total_paid_amount`;
+ ALTER TABLE `z_booking_log` ADD `refunded_amount` INT NOT NULL DEFAULT '0' AFTER `total_paid_amount`;
+
+
+ ALTER TABLE `z_booking` ADD `cancellation_charge` INT NOT NULL , ADD `cancellation_reason` VARCHAR(400) NOT NULL , ADD `cancellation_date` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP  , ADD `cancel_by` INT NOT NULL;
+ ALTER TABLE `z_booking_log` ADD `cancellation_charge` INT NOT NULL , ADD `cancellation_reason` VARCHAR(400) NOT NULL , ADD `cancellation_date` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP  , ADD `cancel_by` INT NOT NULL;
+
+
+

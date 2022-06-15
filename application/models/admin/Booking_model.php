@@ -251,7 +251,10 @@ class Booking_model extends Base_model
                         $where.= " AND ( c.".$key." = '".$val."' )";
                     }
 
+                    
+
                 } 
+                
 
                   if(isset($params['where']['customer_name']))
                 {

@@ -11,7 +11,7 @@ class Bookings extends BaseController
     public function __construct()
     {
         parent::__construct();
-         $this->load->model('admin/company_model');
+        $this->load->model('admin/company_model');
         $this->load->model('admin/booking_model');
         $this->load->model('admin/booking_log_model');
         $this->load->model('admin/booking_status_model');
@@ -19,6 +19,7 @@ class Bookings extends BaseController
         $this->load->model('admin/crop_status_model');
         $this->load->model('admin/contract_status_model');
         $this->load->model('admin/payment_mode_model');
+        $this->load->model('admin/payment_type_model');
         $this->load->model('admin/agent_model');
         $this->load->model('admin/product_model');
         $this->load->model('admin/customer_model');
@@ -91,11 +92,12 @@ class Bookings extends BaseController
                 $quantity            = @$this->input->get('quantity'); 
                 $unit_price          = @$this->input->get('unit_price'); 
                 $discount            = @$this->input->get('discount'); 
+                $outstanding_amount  = @$this->input->get('outstanding_amount'); 
                 $req_delivery_date   = @$this->input->get('req_delivery_date'); 
                 $delivery_date       = @$this->input->get('delivery_date'); 
                 $vehicle_no          = @$this->input->get('vehicle_no'); 
                 $contract            = @$this->input->get('contract'); 
-                $start_date            = @$this->input->get('start_date'); 
+                $start_date          = @$this->input->get('start_date'); 
                 $end_date            = @$this->input->get('end_date'); 
                 if(!empty($start_date))
                 {
@@ -122,6 +124,9 @@ class Bookings extends BaseController
                  if(!empty($discount))
                 {
                      $where_search['discount'] =  $discount;
+                 }if(!empty($outstanding_amount))
+                {
+                     $where_search['outstanding_amount'] =  $outstanding_amount;
                  }if(!empty($unit_price))
                 {
                      $where_search['price'] =  $unit_price;
@@ -212,7 +217,7 @@ class Bookings extends BaseController
                     $where_search['last_call_type'] =  $call_type2;
                 }*/
 
-            
+             
 
             $conditions['returnType'] = 'count'; 
             $conditions['userid'] = $userid; 
@@ -725,6 +730,8 @@ echo "</pre>";  */
                             $insertData['same_billing']                 = (isset($form_data['same_billing'])?($form_data['same_billing']):'');
                             $insertData['delivery_address']             = $form_data['delivery_address'];
                             $insertData['advance']                      = $form_data['advance'];
+                            $insertData['outstanding_amount']           = $form_data['balance'];
+                            $insertData['total_paid_amount']            = $form_data['advance'];
                             $insertData['create_date']                  = date("Y-m-d H:i:s");
                             $insertData['balance']                      = $form_data['balance'];
                             $insertData['payment_mode']                 = $form_data['payment_mode'];
@@ -777,12 +784,13 @@ echo "</pre>";  */
                     if($form_data['advance']  >0)
                     {
                         $insertData = array();
-                        $insertData['amount']                      = $form_data['advance'];
+                        $insertData['amount']                       = $form_data['advance'];
                         $insertData['date_at']                      = date("Y-m-d H:i:s");
                         $insertData['payment_date']                 =  $form_data['create_date'];
-                        $insertData['created_by']                 =  $this->session->userdata('userId');
+                        $insertData['created_by']                   =  $this->session->userdata('userId');
                         $insertData['booking_id']                   = $result_insert;
                         $insertData['customer_id']                  = $get_customerid;
+                        $insertData['status']                       =1;
                         $insertData['payment_mode']                 = $form_data['payment_mode'];
                         $insertData['cheque_no']                    = $form_data['cheque_no'];
                         $insertData['bank_name']                    = $form_data['bank_name'];
@@ -1012,10 +1020,16 @@ echo "</pre>";  */
         $where['orderby'] = 'title';
         $data['contracts_status'] = $this->contract_status_model->findDynamic($where); 
 
-         $where = array();
+        $where = array();
         $where['status'] = '1';
         $where['orderby'] = 'title';
-        $data['payments_mode'] = $this->payment_mode_model->findDynamic($where);
+        $data['payments_modes'] = $this->payment_mode_model->findDynamic($where);
+
+
+        $where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'title';
+        $data['payments_types'] = $this->payment_type_model->findDynamic($where);
 
         $where = array();
         $where['status'] = '1';
@@ -1380,6 +1394,7 @@ echo "</pre>";  */
         $insertData['id']           = $id;
         $insertData['booking_status']= $update_booking_status;
         $result = $this->booking_model->save($insertData);
+
         $single_arr     = $this->booking_model->find($id);
         $logged         = $this->booking_log_model->booking_log($single_arr);
 
@@ -1402,6 +1417,345 @@ echo "</pre>";  */
             );
         }
 
+        echo json_encode($response_result);
+
+
+         
+    } 
+
+    public function delete_payment($id)
+    {
+
+        
+        $this->isLoggedIn();
+        $update_booking_status  = $this->input->post('update_booking_status');
+        $insertData                     = array();
+        $insertData['id']               = $id;
+        $insertData['status']           = 0;
+        $result                 = $this->booking_payments_model->save($insertData);
+  
+        $response_result = array(
+                'status'=>0,
+                'message'=>''
+        );
+
+        if($result)
+        {
+            $response_result = array(
+                'status'=>1,
+                'message'=>'Deleted Payment Successfully !'
+            );
+        }else
+        {
+            $response_result = array(
+                'status'=>0,
+                'message'=>'Failed Deleted Payment !'
+            );
+        }
+
+        echo json_encode($response_result);
+
+
+         
+    }
+
+    public function add_payment($id)
+    {
+
+        
+        $this->isLoggedIn();
+         $form_data  = $this->input->post();
+
+        $insertData = array();
+        $insertData['payment_date']     = $form_data['payment_create_date'];
+        $insertData['booking_id']       = $id;
+        $insertData['payment_type']     = 'payment';
+        $insertData['payment_mode']     = $form_data['payment_mode'];
+        $insertData['bank_transaction_id']= $form_data['payment_bank_transaction_id'];
+        $insertData['amount']           = $form_data['payment_amount'];
+        $insertData['status']           = 1;
+        $insertData['date_at']          = date("Y-m-d H:i:s");
+        $insertData['created_by']       = $this->session->userdata('userId');
+        $insertData['customer_id']      = $form_data['custID'];
+        $insertData['cheque_no']        = $form_data['cheque_no'];
+        $insertData['bank_name']        = $form_data['bank_name'];
+        $insertData['bank_branch']      = $form_data['bank_branch'];
+
+
+        //booking data fetch
+        $single_arr     = $this->booking_model->find($id);
+        $balance =  $single_arr->total;
+        $total_paid_amount = $single_arr->total_paid_amount + $form_data['payment_amount'];
+        $outstanding_amount = ($balance-$total_paid_amount);
+
+         
+        $result = $this->booking_payments_model->save($insertData);
+
+        $insertData  = array();
+        $insertData['total_paid_amount']  = $total_paid_amount;
+            $insertData['outstanding_amount']  = $outstanding_amount;
+        $insertData['id']  = $id;  
+        $price_updated    = $this->booking_model->save($insertData);
+
+        //get and update to log
+        $single_arr     = $this->booking_model->find($id);
+        $logged         = $this->booking_log_model->booking_log($single_arr);
+        //get and update to log end
+        $response_result = array(
+                'status'=>0,
+                'message'=>''
+        );
+
+        if($result)
+        {
+            $response_result = array(
+                'status'=>1,
+                'message'=>'Add Payment Successfully !'
+            );
+        }else
+        {
+            $response_result = array(
+                'status'=>0,
+                'message'=>'Failed Add Payment!'
+            );
+        }
+
+        echo json_encode($response_result);
+
+
+         
+    }
+
+    public function cancel_status($id)
+    {
+
+        
+        $this->isLoggedIn();
+         $form_data  = $this->input->post();
+
+        $insertData = array();
+        $insertData['payment_date']     = $form_data['payment_create_date'];
+        $insertData['booking_id']       = $id;
+        $insertData['payment_type']     = $form_data['payment_type'];
+         
+         
+        $insertData['amount']           = $form_data['cancel_charges'];
+        $insertData['status']           = 1;
+        $insertData['date_at']          = date("Y-m-d H:i:s");
+        $insertData['created_by']       = $this->session->userdata('userId');
+        $insertData['customer_id']      = $form_data['custID'];
+        
+        //booking data fetch
+        $single_arr     = $this->booking_model->find($id);
+        
+         
+        $result = $this->booking_payments_model->save($insertData);
+
+        $insertData  = array();
+        $insertData['cancellation_charge']      = $form_data['cancel_charges'];
+        $insertData['cancellation_reason']        = $form_data['cancel_reason'];
+        $insertData['cancellation_date']        =  $form_data['payment_create_date'];
+        $insertData['booking_status']        =  $form_data['booking_status'];
+        $insertData['cancel_by']        = $this->session->userdata('userId');;
+         
+        $insertData['id']  = $id;  
+        $price_updated    = $this->booking_model->save($insertData);
+
+        //get and update to log
+        $single_arr     = $this->booking_model->find($id);
+        $logged         = $this->booking_log_model->booking_log($single_arr);
+        //get and update to log end
+        $response_result = array(
+                'status'=>0,
+                'message'=>''
+        );
+
+        if($result)
+        {
+            $response_result = array(
+                'status'=>1,
+                'message'=>'Cancellation Saved Successfully Successfully !'
+            );
+        }else
+        {
+            $response_result = array(
+                'status'=>0,
+                'message'=>'Failed To Add Cancellation!'
+            );
+        }
+
+        echo json_encode($response_result);
+
+
+         
+    }
+
+    public function edit_payment($id)
+    {
+
+        
+        $this->isLoggedIn();
+         $form_data  = $this->input->post();
+
+         if($form_data['payment_amount'] ==$form_data['x_payment_amount'])
+         {
+            $response_result = array(
+                'status'=>0,
+                'message'=>'Update Some Amount !'
+            );
+
+         }else
+         {
+
+
+         $insertData = array();
+        $insertData['payment_date']     = $form_data['payment_create_date'];
+        $insertData['booking_id']       = $id;
+        $insertData['payment_type']     = form_data['payment_type'];
+        $insertData['payment_mode']     = $form_data['payment_mode'];
+        $insertData['bank_transaction_id']= $form_data['payment_bank_transaction_id'];
+        $insertData['amount']           = $form_data['payment_amount'];
+        $insertData['status']           = 1;
+        $insertData['date_at']          = date("Y-m-d H:i:s");
+        $insertData['created_by']       = $this->session->userdata('userId');
+        $insertData['update_by']        = $this->session->userdata('userId');
+        $insertData['customer_id']      = $form_data['custID'];
+        $insertData['cheque_no']        = $form_data['cheque_no'];
+        $insertData['bank_name']        = $form_data['bank_name'];
+        $insertData['bank_branch']      = $form_data['bank_branch'];
+
+
+        //booking data fetch
+        $single_arr         = $this->booking_model->find($id);
+        $balance            = $single_arr->total;
+        $total_paid_amount  = $single_arr->total_paid_amount + $form_data['payment_amount'];
+        $outstanding_amount = ($balance-$total_paid_amount);
+
+         
+        $result         =  $this->booking_payments_model->save($insertData);
+
+        $insertData  = array();
+        $insertData['total_paid_amount']  = $total_paid_amount;
+            $insertData['outstanding_amount']  = $outstanding_amount;
+        $insertData['id']  = $id;  
+        $price_updated    = $this->booking_model->save($insertData);
+
+        //get and update to log
+        $single_arr     = $this->booking_model->find($id);
+        $logged         = $this->booking_log_model->booking_log($single_arr);
+        //get and update to log end
+        $response_result = array(
+                'status'=>0,
+                'message'=>''
+        );
+
+        if($result)
+        {
+            $response_result = array(
+                'status'=>1,
+                'message'=>'Add Payment Successfully !'
+            );
+        }else
+        {
+            $response_result = array(
+                'status'=>0,
+                'message'=>'Failed Add Payment!'
+            );
+        }
+         }
+
+        
+
+        echo json_encode($response_result);
+
+
+         
+    }
+
+    public function add_refund($id)
+    {
+
+        
+        $this->isLoggedIn();
+         $form_data  = $this->input->post();
+
+        $insertData = array();
+        $insertData['payment_date']     = $form_data['payment_create_date'];
+        $insertData['booking_id']       = $id;
+        $insertData['payment_type']     = 'refund';
+        $insertData['payment_mode']     = $form_data['payment_mode'];
+        $insertData['bank_transaction_id']= $form_data['payment_bank_transaction_id'];
+        $insertData['amount']           = $form_data['payment_amount'];
+        $insertData['date_at']          = date("Y-m-d H:i:s");
+        $insertData['status']           = 1;
+        $insertData['created_by']       = $this->session->userdata('userId');
+        $insertData['customer_id']      = $form_data['custID'];
+        $insertData['cheque_no']        = $form_data['cheque_no'];
+        $insertData['bank_name']        = $form_data['bank_name'];
+        $insertData['bank_branch']      = $form_data['bank_branch'];
+
+         
+     $response_result = array(
+                    'status'=>0,
+                    'message'=>''
+            );
+
+         //booking data fetch outstanding_amount
+        $single_arr     = $this->booking_model->find($id);
+        $total_paid = $single_arr->total_paid_amount;
+        $refund = $form_data['payment_amount'];
+        if($total_paid >= $refund)
+        {
+            $balance =  $single_arr->total;
+             
+            $refunded_amount        =  $single_arr->refunded_amount;
+            $total_paid_amount      = ($single_arr->total_paid_amount-$form_data['payment_amount']);
+            $outstanding_amount     = ($balance+0) - ($total_paid_amount+0);
+            $outstanding_amount     = ($outstanding_amount) - ($form_data['payment_amount']);
+            $refunded_amount        = $refunded_amount + $form_data['payment_amount'];
+            $total_paid_amount      = $single_arr->total_paid_amount - $form_data['payment_amount'];
+
+
+             
+            $result = $this->booking_payments_model->save($insertData);
+
+            $insertData  = array();
+             
+           /* $insertData['total_paid_amount']  = $total_paid_amount;*/
+            $insertData['outstanding_amount']  = $outstanding_amount;
+            $insertData['refunded_amount']  = $refunded_amount;
+            $insertData['id']  = $id;  
+            $price_updated    = $this->booking_model->save($insertData);
+
+            //get and update to log
+            $single_arr     = $this->booking_model->find($id);
+            $logged         = $this->booking_log_model->booking_log($single_arr);
+            //get and update to log end
+            
+           
+
+            if($result)
+            {
+                $response_result = array(
+                    'status'=>1,
+                    'message'=>'Add Refund Successfully !'
+                );
+            }else
+            {
+                $response_result = array(
+                    'status'=>0,
+                    'message'=>'Failed Add Refund!'
+                );
+            }
+
+        }else
+        {
+             $response_result = array(
+                    'status'=>0,
+                    'message'=>"Your Refund Amount shout not Greater than Total Paid Amount"
+            );
+        }
+       
         echo json_encode($response_result);
 
 

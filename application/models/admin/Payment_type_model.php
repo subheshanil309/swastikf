@@ -6,16 +6,16 @@
 
 
 
-class Booking_payments_model extends Base_model
+class Payment_type_model extends Base_model
 {
 
-    public $table = "z_booking_payments";
+    public $table = "z_payment_type";
 
     //set column field database for datatable orderable
-    var $column_order = array(null, 'title', 'status');
+    var $column_order = array(null, 'name', 'status'); 
 
     //set column field database for datatable searchable 
-    var $column_search = array('title', 'status'); 
+    var $column_search = array('name','status' ); 
 
     var $order = array('id' => 'desc'); // default order
 
@@ -180,26 +180,6 @@ class Booking_payments_model extends Base_model
 
             return $this->db->count_all_results();
 
-        }
-
-        public function getPaymentDetail($id)
-        {
-            $result = array();
-            if(!empty($id))
-            {
-                $this->db->select('pay.*, petype.title as paynmenttype, pemtmode.title as paynmentmode');
-                $this->db->from($this->table. ' as pay'); 
-                $this->db->join('z_payment_type as petype', 'petype.slug = pay.payment_type', 'left');
-                $this->db->join('z_payment_mode as pemtmode', 'pemtmode.slug = pay.payment_mode', 'left');
-                $this->db->where('pay.status', 1); 
-                $this->db->where('pay.booking_id', $id); 
-                $this->db->order_by("pay.id", "asc");
-
-                $query = $this->db->get(); 
-                $result = ($query->num_rows() > 0)?$query->result_array():array(); 
-            }
-                
-        return $result; 
         }
 
 

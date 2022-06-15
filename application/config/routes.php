@@ -144,6 +144,10 @@ $route['admin'] = 'admin/dashboard';
 $route['admin/bookings/(:num)/status'] 	= 'admin/bookings/change_booking_status/$1';
 $route['admin/bookings/(:num)/logs'] 	= 'admin/bookings/booking_logs/$1';
 $route['admin/bookings/(:num)/edit'] 	= 'admin/bookings/edit/$1';
+$route['admin/bookings/(:num)/add_payment'] 	= 'admin/bookings/add_payment/$1';
+$route['admin/bookings/(:num)/add_refund'] 	= 'admin/bookings/add_refund/$1';
+$route['admin/bookings/(:num)/delete_payment'] 	= 'admin/bookings/delete_payment/$1';
+$route['admin/bookings/(:num)/cancel_status'] 	= 'admin/bookings/cancel_status/$1';
 
 $route['user'] 	= 'user/dashboard';
 $route['vendor']= 'vendor/dashboard';

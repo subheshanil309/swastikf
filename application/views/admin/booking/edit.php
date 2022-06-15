@@ -99,7 +99,7 @@
                            <div class="row">
                               <label for="customer_mobile" class="col-sm-4 col-form-label">Reg Mob No<span class="text-danger">*</span></label>
                               <div class="col-sm-8"> 
-                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="customer_mobile"  name="customer_mobile"  placeholder="Customer Mobile*"  value="<?php echo @$edit_data->customer_mobile?>" required  onkeypress="return onlyNumberKey(event)"/>
+                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="customer_mobile"  name="customer_mobile"  placeholder="Customer Mobile*"  value="<?php echo @$edit_data->customer_mobile?>" required readonly onkeypress="return onlyNumberKey(event)"/>
                               </div>
                            </div>
 
@@ -112,7 +112,7 @@
                            <div class="row">
                               <label for="customer_name" class="col-sm-4 col-form-label">Name<span class="text-danger">*</span></label>
                               <div class="col-sm-8"> 
-                                 <input type="text" class="form-control form-control-sm" id="customer_name" name="customer_name" placeholder="Farmers Name*" required value="<?php echo @$edit_data->customer_name?>"/>
+                                 <input type="text" class="form-control form-control-sm" id="customer_name" name="customer_name" placeholder="Farmers Name*" required value="<?php echo @$edit_data->customer_name?>" readonly/>
                               </div>
                            </div>
                            <div class="row">
@@ -255,7 +255,9 @@
                                        ?>
                                  </select>
                               </div>
-                           </div>
+                           </div> 
+                          
+                          
                            <div class="row">
                               <label for="req_delivery_date" class="col-sm-4 col-form-label">Requested Delivery Date</label>
                               <div class="col-sm-8"> 
@@ -291,7 +293,7 @@
                            <div class="row">
                               <label for="agent_id" class="col-sm-4 col-form-label">Agent Name</label>
                                <div class="col-sm-8"> 
-                                   <select class=" form-control form-control-sm " id="agent_id" name="agent_id" aria-label="Floating label select example" >
+                                   <select class=" form-control form-control-sm " id="agent_id" name="agent_id" aria-label="Floating label select example" disabled  readonly >
                                      
                                     <?php
                                        if(!empty($all_agents))
@@ -318,6 +320,7 @@
                                  <input type="text" class="form-control form-control-sm" id="bank_trans_id"  name="bank_trans_id"  value="<?php echo  @$edit_data->bank_trans_id?>">
                               </div>
                            </div>
+                             
                             <div class="row">
                               <label for="contract" class="col-sm-4 col-form-label">Contract</label>
                                <div class="col-sm-8"> 
@@ -356,6 +359,31 @@
                                  <input type="text" class="form-control form-control-sm" id="driver_name" name="driver_name" value="<?php echo  @$edit_data->driver_name?>">
                               </div>
                            </div>
+                            <?php
+                              if($edit_data->booking_status=='cancelled')
+                              {
+                                 ?>
+                                  <div class="row">
+                                       <label for="crop_status" class="col-sm-4 col-form-label">Cancel Date</label>
+                                       <div class="col-sm-8"> 
+                                             <p class="text-danger"><?php echo date('d M Y',strtotime($edit_data->cancellation_date));?></p>
+                                       </div>
+                                    </div>
+                                 <?php
+                              }
+                           ?><?php
+                              if($edit_data->booking_status=='cancelled')
+                              {
+                                 ?>
+                                  <div class="row">
+                                       <label for="crop_status" class="col-sm-4 col-form-label">Cancellation Reason </label>
+                                       <div class="col-sm-8"> 
+                                             <p class="text-danger"><?php echo $edit_data->cancellation_reason;?></p>
+                                       </div>
+                                    </div>
+                                 <?php
+                              }
+                           ?>
                           
                          
                     
@@ -480,18 +508,38 @@
                         <tr>
                           <td colspan="7"></td>
                           <td><div class="pull-right">Total Paid </div></td>
-                          <td><span class=" "><?php echo  @($edit_data->advance+0)?></span></td>
+                          <td><span class=" "><?php echo  @($edit_data->total_paid_amount+0)?></span></td>
                         </tr>
                         <tr>
                           <td colspan="7"></td>
                            <?php
-                                 $total = $edit_data->total;
-                                 $advance = $edit_data->advance;
-                                 $pending_balance = $total-$advance;
+                                 /*$total = $edit_data->total;
+                                 $advance = $edit_data->total_paid_amount;
+                                 $pending_balance = $total-$advance;*/
+
+                                /* print_r($edit_data);*/
+                                 $pending_balance =  $edit_data->outstanding_amount;
                            ?>
                           <td><div class="pull-right text-danger">Pending Balance</div></td>
                           <td><span class="  text-danger"><?php echo $pending_balance;?></span></td>
                         </tr>
+                        <?php 
+                           
+                        if($edit_data->refunded_amount>0){
+                           ?>
+                           <tr>
+                                <td colspan="7"></td>
+                                 <?php
+                                       
+                                       $refunded_amount = $edit_data->refunded_amount;
+                                 ?>
+                                <td><div class="pull-right text-danger">Refunded Amount</div></td>
+                                <td><span class="  text-danger"><?php echo @$refunded_amount;?></span></td>
+                              </tr>
+                           <?php
+                        }
+                        ?>
+                        
                       </tfoot>
                     </table>
                     </div>
@@ -587,17 +635,30 @@
                   </div>
                </div>
             </form>
-             
-                      <div class="row">
+         </div>
+           <div class="card">
+               <div class="card-body">
+                  <div class="row mb-2">
                         <div class="col-sm-2">
                            Payment Details
                         </div>
+                        <div class="col-sm-10">
+                           <div class="d-flex flex-wrap gap-2 float-end">
+                                                    
+
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <a href="javascript:void(0);" class="btn btn-outline-success paymentbtn addpayment" aria-current="page">Add Payment</a>
+                                                        <a href="javascript:void(0);" class="btn btn-outline-danger paymentbtn addrefunc">Add Refund</a>
+                                                         
+                                                    </div>
+                                                </div>
+                        </div>
                       </div>
-                      </div>
+
                       <div class="row">
                            <div class="col-sm-12">
                              <div class="table table-responsive">
-                               <table class="table table-responsive">
+                               <table class="table table-responsive table-striped" style="max-height: 300px;">
                                <thead class="table-light" >
                                  <tr class="p-0">
                                    <th class="align-middle bg-success text-white p-1">Date</th>
@@ -612,21 +673,33 @@
                                <tbody>
                                  <?php
 
-                               /*  echo "<pre>";
+                                /* echo "<pre>";
                                  print_r($payment_details);
-                                 echo "</pre>";*/
+                                 echo "</pre>"; */
                                     if(!empty($payment_details))
                                     {
                                        foreach ($payment_details as $key => $value) 
                                        {
+
                                            ?>
                                                 <tr>
-                                                   <td></td> 
-                                                   <td></td> 
-                                                   <td></td> 
-                                                   <td></td> 
-                                                   <td></td> 
-                                                   <td></td> 
+                                                   <td class="p-1"><?php echo  date('d M Y',strtotime($value['payment_date']))?></td> 
+                                                   <td class="p-1"><?php echo $value['paynmenttype']?></td> 
+                                                   <td class="p-1"><?php echo number_format($value['amount'],2)?></td> 
+                                                   <td class="p-1"><?php echo $value['paynmentmode']?></td> 
+                                                   <td class="p-1"><?php echo $value['bank_transaction_id']?></td>
+                                                   <td class="p-1">
+                                                      <div class="btn-group">
+                                                         <button class="btn btn-info dropdown-toggle btn-sm " type="button" data-bs-toggle="dropdown" aria-expanded="true">
+                                                             Small button <i class="mdi mdi-chevron-down"></i>
+                                                         </button>
+                                                         <div class="dropdown-menu " data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 30px);">
+                                                             <a class="dropdown-item editpayment" data-userid="<?php echo $value['id'] ?>" data-action_src="<?php echo base_url()?>admin/bookings/<?php echo $value['id'] ?>/edit_payment" href="javascript:void(0)"><i class="fa fa-pen" aria-hidden="true"></i> Edit Transaction</a>
+                                                             <a class="dropdown-item text-danger delete_booking_payment" data-action_src="<?php echo base_url()?>admin/bookings/<?php echo $value['id'] ?>/delete_payment" href="javascript:void(0)"><i class="fa fa-trash" aria-hidden="true"></i> Delete Transaction</a>
+                                                              
+                                                         </div>
+                                                     </div>
+                                                   </td> 
                                                 </tr>
                                            <?php
                                        }
@@ -639,6 +712,9 @@
                         </div>
                      </div>
                   </div>
+               </div>
+           </div>
+
                    
              
 
@@ -651,25 +727,388 @@
       </div>
    </div>
 </div>
-<div class="modal fade show" id="exampleModalScrollable" tabindex="-1" aria-labelledby="exampleModalScrollableTitle" aria-modal="true" role="dialog" style="display: none;">
-   <div class="modal-dialog modal-dialog-scrollable">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalScrollableTitle">Previous Conversation</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-         </div>
-         <div class="modal-body">
-            <div id="example233"></div>
-         </div>
+ 
+
+<!-- status update modal sample modal content -->
+  <div class="modal fade" id="addPaymentModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="addPaymentModal" aria-modal="true" role="dialog">
+      <div class="modal-dialog ">
+         <form class="add_booking_payment" method="post" id="add_booking_payment" action="<?php echo base_url();?>admin/bookings/<?php echo $edit_data->id;?>/add_payment">
+          <div class="modal-content border-success">
+              <div class="modal-header bg-success">
+                  <h5 class="modal-title text-white" id="addPaymentModalLabel">Add Payment</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                 
+                      <div class="row">
+                          <label for="payment_create_date" class="col-md-5 col-form-label">Payment Date</label>
+                          <div class="col-md-7">
+                                <input type="date" class="form-control form-control-sm" name="payment_create_date" id="payment_create_date" >
+                          </div>
+                      </div>
+                      <div class="row">
+                          <label for="payment_amount" class="col-md-5 col-form-label">Amount</label>
+                          <div class="col-md-7">
+                                <input type="number" class="form-control-sm form-control payment_amount" name="payment_amount" id="payment_amount" >
+                          </div>
+                      </div>
+                      <div class="row">
+                          <label for="payment_bank_transaction_id" class="col-md-5 col-form-label">Bank Trxn Id</label>
+                          <div class="col-md-7">
+                                <input type="text" class="form-control-sm form-control payment_bank_transaction_id" name="payment_bank_transaction_id" id="payment_bank_transaction_id" >
+                          </div>
+                      </div>
+                      <div class="row">
+                          <label for="payment_mode" class="col-md-5 col-form-label">Payment Mode</label>
+                          <div class="col-md-7">
+                           <select class=" form-control form-control-sm " id="payment_mode" name="payment_mode" aria-label="Floating label select example"  >
+                                     <?php
+                                       if(!empty($payments_modes))
+                                       {
+                                               foreach ($payments_modes as $payments_mode) {
+                                                   ?>
+                                        <option value="<?php echo $payments_mode->slug;?>"><?php echo $payments_mode->title;?></option>
+                                        <?php
+                                           }
+                                       }
+                                       ?>
+                                </select>
+
+                                
+                          </div>
+                      </div>
+                       <div class="row cheque-field" style="display: none;" >
+                           <div class="col-sm-12">
+                              <div class="row">
+                                       <label for="cheque_no" class="col-md-5 col-form-label">Chq No</label>
+                                       <div class="col-md-7">
+                                          <input type="text" class="form-control form-control-sm" id="cheque_no" name="cheque_no">
+                                       </div>
+                                    </div>
+                           </div>
+                           <div class="col-sm-12">
+                                <div class="row">
+                                       <label for="bank_name" class="col-md-5 col-form-label">Bank</label>
+                                       <div class="col-md-7">
+                                          <input type="text" class="form-control form-control-sm" id="bank_name" name="bank_name">
+                                       </div>
+                                    </div>
+                           </div>
+                           <div class="col-sm-12">
+                                <div class="row">
+                                       <label for="bank_branch" class="col-md-5 col-form-label">Branch</label>
+                                       <div class="col-md-7">
+                                          <input type="text" class="form-control form-control-sm" id="bank_branch" name="bank_branch"   >
+                                       </div>
+                                    </div>
+                           </div>
+                          
+                        </div>
+                   
+                      
+                   
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+
+                   <input type="hidden" id="custID"   name="custID" value="<?php echo @$edit_data->customer_id?>"  >
+              </div>
+          </div>
+        </form>
       </div>
-      <!-- /.modal-content -->
-   </div>
-   <!-- /.modal-dialog -->
-</div>
+  </div>
+
+  <div class="modal fade" id="addRefundModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="addRefundModal" aria-modal="true" role="dialog">
+      <div class="modal-dialog ">
+         <form class="add_booking_refund" method="post" id="add_booking_refund" action="<?php echo base_url();?>admin/bookings/<?php echo $edit_data->id;?>/add_refund">
+          <div class="modal-content border-success">
+              <div class="modal-header bg-success">
+                  <h5 class="modal-title text-white" id="addRefundModalLabel">Add Refund</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                 
+                      <div class="row">
+                          <label for="payment_create_date" class="col-md-5 col-form-label">Payment Date</label>
+                          <div class="col-md-7">
+                                <input type="date" class="form-control form-control-sm" name="payment_create_date" id="payment_create_date" >
+                          </div>
+                      </div>
+                      <div class="row">
+                          <label for="payment_amount" class="col-md-5 col-form-label">Amount</label>
+                          <div class="col-md-7">
+                                <input type="number" class="form-control-sm form-control payment_amount" name="payment_amount" id="payment_amount" >
+                          </div>
+                      </div>
+                      <div class="row">
+                          <label for="payment_bank_transaction_id" class="col-md-5 col-form-label">Bank Trxn Id</label>
+                          <div class="col-md-7">
+                                <input type="text" class="form-control-sm form-control payment_bank_transaction_id" name="payment_bank_transaction_id" id="payment_bank_transaction_id" >
+                          </div>
+                      </div>
+                      <div class="row">
+                          <label for="payment_mode" class="col-md-5 col-form-label">Payment Mode</label>
+                          <div class="col-md-7">
+                           <select class=" form-control form-control-sm " id="payment_mode" name="payment_mode" aria-label="Floating label select example"  >
+                                     <?php
+                                       if(!empty($payments_modes))
+                                       {
+                                               foreach ($payments_modes as $payments_mode) {
+                                                   ?>
+                                        <option value="<?php echo $payments_mode->slug;?>"><?php echo $payments_mode->title;?></option>
+                                        <?php
+                                           }
+                                       }
+                                       ?>
+                                </select>
+
+                                
+                          </div>
+                      </div>
+                       <div class="row cheque-field" style="display: none;" >
+                           <div class="col-sm-12">
+                              <div class="row">
+                                       <label for="cheque_no" class="col-md-5 col-form-label">Chq No</label>
+                                       <div class="col-md-7">
+                                          <input type="text" class="form-control form-control-sm" id="cheque_no" name="cheque_no">
+                                       </div>
+                                    </div>
+                           </div>
+                           <div class="col-sm-12">
+                                <div class="row">
+                                       <label for="bank_name" class="col-md-5 col-form-label">Bank</label>
+                                       <div class="col-md-7">
+                                          <input type="text" class="form-control form-control-sm" id="bank_name" name="bank_name">
+                                       </div>
+                                    </div>
+                           </div>
+                           <div class="col-sm-12">
+                                <div class="row">
+                                       <label for="bank_branch" class="col-md-5 col-form-label">Branch</label>
+                                       <div class="col-md-7">
+                                          <input type="text" class="form-control form-control-sm" id="bank_branch" name="bank_branch"   >
+                                       </div>
+                                    </div>
+                           </div>
+                          
+                        </div>
+                   
+                      
+                   
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+
+                   <input type="hidden" id="custID"   name="custID" value="<?php echo @$edit_data->customer_id?>"  >
+              </div>
+          </div>
+        </form>
+      </div>
+  </div>
+  <div class="modal fade" id="editPaymentModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="editPaymentModal" aria-modal="true" role="dialog">
+      <div class="modal-dialog ">
+         <form class="edit_booking_payment" method="post" id="edit_booking_payment" action="<?php echo base_url();?>admin/bookings/<?php echo $edit_data->id;?>/edit_payment">
+          <div class="modal-content border-success">
+              <div class="modal-header bg-success">
+                  <h5 class="modal-title text-white" id="editPaymentModalLabel">Edit Payment</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                 
+                      <div class="row">
+                          <label for="payment_create_date" class="col-md-5 col-form-label">Date</label>
+                          <div class="col-md-7">
+                                <input type="date" class="form-control form-control-sm" name="payment_create_date" id="payment_create_date" >
+                          </div>
+                      </div>
+                       <div class="row">
+                          <label for="payment_type" class="col-md-5 col-form-label">Payment Type</label>
+                          <div class="col-md-7">
+                           <select class=" form-control form-control-sm " id="payment_type" name="payment_type" aria-label="Floating label select example"  >
+                                     <?php
+                                       if(!empty($payments_types))
+                                       {
+                                               foreach ($payments_types as $payments_type) {
+                                                   ?>
+                                        <option value="<?php echo $payments_type->slug;?>"><?php echo $payments_type->title;?></option>
+                                        <?php
+                                           }
+                                       }
+                                       ?>
+                                </select>
+
+                                
+                          </div>
+                      </div>
+                      <div class="row">
+                          <label for="payment_amount" class="col-md-5 col-form-label">Amount</label>
+                          <div class="col-md-7">
+                                <input type="number" class="form-control-sm form-control payment_amount" name="payment_amount" id="payment_amount" >
+                                <input type="number" class="form-control-sm form-control" name="x_payment_amount" id="x_payment_amount" >
+                                <input type="number" class="form-control-sm form-control" name="id" id="id" >
+                          </div>
+                      </div>
+                      <div class="row">
+                          <label for="payment_bank_transaction_id" class="col-md-5 col-form-label">Bank Trxn Id</label>
+                          <div class="col-md-7">
+                                <input type="text" class="form-control-sm form-control payment_bank_transaction_id" name="payment_bank_transaction_id" id="payment_bank_transaction_id" >
+                          </div>
+                      </div>
+                      <div class="row">
+                          <label for="payment_mode" class="col-md-5 col-form-label">Payment Mode</label>
+                          <div class="col-md-7">
+                           <select class=" form-control form-control-sm " id="payment_mode" name="payment_mode" aria-label="Floating label select example"  >
+                                     <?php
+                                       if(!empty($payments_modes))
+                                       {
+                                               foreach ($payments_modes as $payments_mode) {
+                                                   ?>
+                                        <option value="<?php echo $payments_mode->slug;?>"><?php echo $payments_mode->title;?></option>
+                                        <?php
+                                           }
+                                       }
+                                       ?>
+                                </select>
+
+                                
+                          </div>
+                      </div>
+                       <div class="row cheque-field" style="display: none;" >
+                           <div class="col-sm-12">
+                              <div class="row">
+                                       <label for="cheque_no" class="col-md-5 col-form-label">Chq No</label>
+                                       <div class="col-md-7">
+                                          <input type="text" class="form-control form-control-sm" id="cheque_no" name="cheque_no">
+                                       </div>
+                                    </div>
+                           </div>
+                           <div class="col-sm-12">
+                                <div class="row">
+                                       <label for="bank_name" class="col-md-5 col-form-label">Bank</label>
+                                       <div class="col-md-7">
+                                          <input type="text" class="form-control form-control-sm" id="bank_name" name="bank_name">
+                                       </div>
+                                    </div>
+                           </div>
+                           <div class="col-sm-12">
+                                <div class="row">
+                                       <label for="bank_branch" class="col-md-5 col-form-label">Branch</label>
+                                       <div class="col-md-7">
+                                          <input type="text" class="form-control form-control-sm" id="bank_branch" name="bank_branch"   >
+                                       </div>
+                                    </div>
+                           </div>
+                          
+                        </div>
+                   
+                      
+                   
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+
+                   <input type="hidden" id="custID"   name="custID" value="<?php echo @$edit_data->customer_id?>"  >
+              </div>
+          </div>
+        </form>
+      </div>
+  </div>
+  <div class="modal fade" id="cancelBookingModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="cancelBookingModal" aria-modal="true" role="dialog">
+      <div class="modal-dialog ">
+         <form class="cancel_booking" method="post" id="cancel_booking" action="<?php echo base_url();?>admin/bookings/<?php echo $edit_data->id;?>/cancel_status">
+          <div class="modal-content border-success">
+              <div class="modal-header bg-success">
+                  <h5 class="modal-title text-white" id="cancelBookingLabel">Booking Cancellation</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                 
+                      <div class="row">
+                          <label for="payment_create_date" class="col-md-5 col-form-label">Cancelation Date</label>
+                          <div class="col-md-7">
+                                <input type="date" class="form-control form-control-sm" name="payment_create_date" id="payment_create_date"  value="<?php echo date('Y-m-d');?>">
+                          </div>
+                      </div>
+                       <div class="row">
+                          <label for="payment_type" class="col-md-5 col-form-label">Payment Type</label>
+                          <div class="col-md-7">
+                           <select class=" form-control form-control-sm " id="payment_type" name="payment_type" aria-label="Floating label select example"  >
+                                     <?php
+                                       if(!empty($payments_types))
+                                       {
+                                               foreach ($payments_types as $payments_type) {
+                                                   ?>
+                                        <option value="<?php echo $payments_type->slug;?>" <?php if($payments_type->slug=='cancellation-charge'){ echo "selected";}?>><?php echo $payments_type->title;?></option>
+                                        <?php
+                                           }
+                                       }
+                                       ?>
+                                </select>
+
+                                
+                          </div>
+                      </div>
+                      <div class="row">
+                          <label for="payment_amount" class="col-md-5 col-form-label">Cancellation Reason</label>
+                          <div class="col-md-7">
+                                <input type="text" class="form-control-sm form-control" name="cancel_reason" id="cancel_reason" >
+                             </div>
+                      </div>
+                       <div class="row">
+                          <label for="payment_amount" class="col-md-5 col-form-label">Cancellation Charge</label>
+                          <div class="col-md-7">
+                                <input type="number" class="form-control-sm form-control" name="cancel_charges" id="cancel_charges" >
+                                 
+                                 
+                          </div>
+                      </div>
+                      
+                        
+                      
+                   
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+
+                   <input type="hidden" id="booking_status"   name="booking_status"  >
+                   <input type="hidden" id="custID"   name="custID" value="<?php echo @$edit_data->customer_id?>"  >
+              </div>
+          </div>
+        </form>
+      </div>
+  </div>
+
+
 <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
 
 <script src="<?php echo base_url(); ?>assets/admin/libs/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/daterange/daterangepicker.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/toastr/build/toastr.min.js"></script>
+   
+   <script type="text/javascript">
+
+          toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "10000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+          }
+   </script>
  <script type="text/javascript">
 
 
@@ -844,7 +1283,7 @@ var deliveryStart = moment();
     
          jQuery(document).on("click", ".side_modal", function(){
              var userId = $(this).data("userid");
-             $("#exampleModalScrollable").modal('show');
+             $("#addPaymentModalScrollable").modal('show');
              single_cutomer_call_detail(userId);
    
          });
@@ -881,70 +1320,7 @@ var deliveryStart = moment();
     });
     
 </script>
-<script type="text/javascript">
-   function get_cutomer_call_detail(id,div_id)
-   {
-      
-       var userId = id,
-            hitURL = "<?php echo base_url() ?>admin/customer/customer_call_detail";
-          
-           
-           
-            jQuery.ajax({
-            type : "POST",
-            dataType : "json",
-            url : hitURL,
-            data : { id : userId } 
-            }).done(function(data){ 
-                var html_content= '<ul class="verti-timeline list-unstyled">';
-   
-              
-               
-             for (var i = 0; i < data.length; i++) {
-               
-                 
-                 
-   
-   
-               html_content+='<li class="event-list">';
-               html_content+='<div class="event-timeline-dot"><i class="bx bx-right-arrow-circle"></i></div>';
-   
-               html_content+='<div class="d-flex">';
-               html_content+='<div class="flex-shrink-0 me-3"><i class="text-primary"></i></div>';
-   
-               html_content+='<div class="flex-grow-1"><div><div class="card border border-primary">';
-               html_content+='<span class="bg-primary badge badge-primary border-radius-0">'+data[i].date_at+'</span>';
-   
-               html_content+='<div class="card-header bg-transparent border-bottom">';
-               html_content+=data[i].calltype+' <strong>By</strong> '+data[i].username;
-               
-               html_content+='</div>';
-               html_content+='<div class="card-body"><p class="p-0 m-0"><strong>Call Direction :</strong>'+data[i].calldirection+'<strong> Call Back Date :</strong>'+data[i].call_back_date+'</p><p><strong> Assigned To :</strong>'+data[i].username+'</p><hr class="p-0 m-0"><p>'+data[i].current_conversation+'</p>';
-   
-   
-               html_content+='</div></div></div></div></div></li>';
-   
-             }
-             html_content+='</ul>';
-   
-                 $('#'+div_id).html(html_content);
-                 
-            });
-           
-   }
-   function current_cutomer_call_detail()
-   {
-     get_cutomer_call_detail('<?php echo @$edit_data->id;?>','example23');
-   }
-   function single_cutomer_call_detail(id)
-   {
-     get_cutomer_call_detail(id,'example233');
-   }
-   
-   
-    
-    
-</script>
+ 
 <?php
    if(!empty($edit_data->id))
    {
@@ -956,7 +1332,7 @@ var deliveryStart = moment();
     var district = parseInt(<?=$edit_data->district?>);
     var city = parseInt(<?=$edit_data->city?>);
      
-      current_cutomer_call_detail();
+      
       stateChange(state, district);
       districtChange(district ,city);
    });
@@ -966,56 +1342,258 @@ var deliveryStart = moment();
    ?>
 <script type="text/javascript">
    var table;
+
+
+     
+
     $(document).ready(function() {
 
-     /* $("#booking_form").submit(function (e){
+
+
+
+          jQuery("#add_booking_payment").on('submit',function(e){
              e.preventDefault();
-             $("#booking_error").html('');
-             var message = '';
-             var validation = true;
-             var customer_mobile = $("#customer_mobile").val();
-             var customer_name = $("#customer_name").val();
-             var product_id = $("#product_id").val();
-             if(customer_mobile.length >0)
-             {
+               
+              
+              var form = $(this);
+              var hitURL = form.attr('action');
+               var formValues= $(this).serialize();
+              show_loader();
+           
+              jQuery.ajax({
+                type : "POST",
+                dataType : "json",
+                url : hitURL,
+                data : formValues 
+              }).done(function(data){
+                hide_loader();
+                if(data.status==1)
+                {
+                  
 
-             }else
-             {
-              validation =false;
-                message+='<p class="text-danger">Reg Mob No Is Required</p>';
-             }  
-             if(customer_name.length >0)
-             {
+                  $('#addPaymentModal').modal('hide');
+                  toastr.success(data.message);
+                  //window.location.reload(1);
+                     
+                     //window.location.reload(true);
 
-             }else
-             {
-              validation =false;
-                message+='<p  class="text-danger">Name* Is Required</p>';
-             }
+                
+                }else{
 
-             if(product_id.length >0)
-             {
+                  toastr.error(data.message);
 
-             }else
-             {
-              validation =false;
-                message+='<p  class="text-danger">Select Product one</p>';
-             }
+                }
+              });
+           
+        });
+         jQuery("#add_booking_refund").on('submit',function(e){
+             e.preventDefault();
+               
+              
+              var form = $(this);
+              var hitURL = form.attr('action');
+               var formValues= $(this).serialize();
+              show_loader();
+           
+              jQuery.ajax({
+                type : "POST",
+                dataType : "json",
+                url : hitURL,
+                data : formValues 
+              }).done(function(data){
+                hide_loader();
+                if(data.status==1)
+                {
+                  
 
-             $("#booking_error").html(message);
+                  $('#addRefundModal').modal('hide');
+                  toastr.success(data.message);
+                  //window.location.reload(1);
+
+                }else{
+
+                  toastr.error(data.message);
+
+                }
+              });
+           
+        });
+
+         jQuery(".delete_booking_payment").on('click',function(e){
+              
+               
+              
+              var form = $(this);
+              var hitURL = form.data('action_src');
+             
+                var make_confirm = confirm('Are You Sure Want To Delete !');
+               if(make_confirm)
+               {
+                      show_loader();
+           
+                          jQuery.ajax({
+                            type : "POST",
+                            dataType : "json",
+                            url : hitURL,
+                            data : {} 
+                          }).done(function(data){
+                            hide_loader();
+                            if(data.status==1)
+                            {
+                              toastr.success(data.message);
+                              window.location.reload(1);
+
+                            }else{
+
+                              toastr.error(data.message);
+
+                            }
+                          });
+               }
+             
+           
+        });
 
 
-             if(validation)
-             {
-              $("#booking_form").submit();
-             }
+
+        jQuery(document).on("click", ".addpayment", function(){
+             $('#addPaymentModal').modal('show');
+             $('.paymentbtn').removeClass('active');
+             $('.addpayment').addClass('active');
+        });
+         jQuery(document).on("click", ".addrefunc", function(){
+             $('#addRefundModal').modal('show');
+             $('.paymentbtn').removeClass('active');
+             $('.addrefunc').addClass('active');
+        });
+         jQuery(document).on("click", ".editpayment", function(){
+
+
+
+            var userId  = $(this).data("userid");
+           var form_action  = $(this).data('action_src');
+          var hitURL = "<?php echo base_url() ?>admin/booking_payment/single/"+userId;
+          show_loader();
+
+          jQuery.ajax({
+            type      : "POST",
+            dataType  : "json",
+            url       : hitURL,
+            data      : { id : userId } 
+          }).done(function(response){
+            hide_loader();
+
+            if(response)
+            {
+              var data = response;
+              console.log(data);
+              $('#edit_booking_payment').attr('action', form_action);
+              $('#editPaymentModal').modal('show');
+              var dated = data.payment_date;
+                
+              $('#editPaymentModal #payment_create_date').val(dated);
+              $('#editPaymentModal #payment_type').val(data.payment_type);
+              $('#editPaymentModal #payment_amount').val(data.amount);
+              $('#editPaymentModal #x_payment_amount').val(data.amount);
+              $('#editPaymentModal #payment_mode').val(data.payment_mode);
+              $('#editPaymentModal #id').val(data.id);
+               
+
+            }
+          });
+
+
 
               
-      });*/
+             
+              
+        });
+
+
+          jQuery("#edit_booking_payment").on('submit',function(e){
+             e.preventDefault();
+               
+              
+               var form = $(this);
+               var hitURL = form.attr('action');
+               var formValues= $(this).serialize();
+               show_loader();
+           
+              jQuery.ajax({
+                type : "POST",
+                dataType : "json",
+                url : hitURL,
+                data : formValues 
+              }).done(function(data){
+                hide_loader();
+                if(data.status==1)
+                {
+                  
+
+                  $('#editPaymentModal').modal('hide');
+                     toastr.success(data.message);
+                     //window.location.reload(true);
+
+                
+                }else{
+
+                  toastr.error(data.message);
+
+                }
+              });
+           
+        });
+            jQuery("#cancel_booking").on('submit',function(e){
+             e.preventDefault();
+               
+              
+               var form = $(this);
+               var hitURL = form.attr('action');
+               var formValues= $(this).serialize();
+               show_loader();
+           
+              jQuery.ajax({
+                type : "POST",
+                dataType : "json",
+                url : hitURL,
+                data : formValues 
+              }).done(function(data){
+                hide_loader();
+                if(data.status==1)
+                {
+                  
+
+                  $('#cancelBookingModal').modal('hide');
+                     toastr.success(data.message);
+                     //window.location.reload(true);
+
+                
+                }else{
+
+                  toastr.error(data.message);
+
+                }
+              });
+           
+        });
 
 
 
 
+     
+
+
+
+    $("#booking_status").change(function(){
+
+      if($(this).val()=='cancelled')
+      {
+         $('#cancelBookingModal').modal('show');   
+         $('#cancelBookingModal #booking_status').val($(this).val());   
+            
+      }
+      
+   });
     $("#product_id").change(function(){
         var product_id = $(this).val();
         if(product_id)
@@ -1110,8 +1688,7 @@ var deliveryStart = moment();
         
     });
 
-   $("#query-pagination li.page-item a").addClass('page-link');
-    $(".select2").select2();
+     $(".select2").select2();
     
      $('#booking_form #same_billing').on('change', function () {
 
@@ -1142,8 +1719,14 @@ var deliveryStart = moment();
         $('#advance').on('change', function() {
             renderCart(centerState);
         });
-        $('#payment_mode').on('change', function() {
-            renderChequeField();
+        $('#add_booking_refund #payment_mode').on('change', function() {
+            renderChequeField('#add_booking_refund');
+        });
+        $('#add_booking_payment #payment_mode').on('change', function() {
+            renderChequeField('#add_booking_payment');
+        });
+        $('#edit_booking_payment #payment_mode').on('change', function() {
+            renderChequeField('#edit_booking_payment');
         });
     
    });
@@ -1164,31 +1747,31 @@ var deliveryStart = moment();
     });
 }
 
-function renderChequeField() {
-    var paymentMode = $('#payment_mode').val();
+function renderChequeField(parent) {
+    var paymentMode = $(parent+' #payment_mode').val();
     if (paymentMode == 'cheque') {
-        $('.cheque-field').show();
+        $(parent+' .cheque-field').show();
     } else {
-        $('.cheque-field').hide();
-        $('#cheque_no').val('');
-        $('#bank_name').val('');
-        $('#bank_branch').val('');
+        $(parent+' .cheque-field').hide();
+        $(parent+' #cheque_no').val('');
+        $(parent+' #bank_name').val('');
+        $(parent+' #bank_branch').val('');
 
     }
     if (paymentMode == 'cash') {
-        $('.cash-field').show();
+        $(parent+' .cash-field').show();
     } else {
-        $('.cash-field').hide();
+        $(parent+' .cash-field').hide();
     }
     if (paymentMode == 'online-transfer') {
-        $('.online-field').show();
+        $(parent+' .online-field').show();
     } else {
-        $('.online-field').hide();
+        $(parent+' .online-field').hide();
     }
     if (paymentMode == 'other') {
-        $('.other-field').show();
+        $(parent+' .other-field').show();
     } else {
-        $('.other-field').hide();
+        $(parent+' .other-field').hide();
     }
 }
 
