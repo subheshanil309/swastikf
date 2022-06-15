@@ -1373,7 +1373,7 @@ var deliveryStart = moment();
 
                   $('#addPaymentModal').modal('hide');
                   toastr.success(data.message);
-                  //window.location.reload(1);
+                  window.location.reload(1);
                      
                      //window.location.reload(true);
 
@@ -1408,7 +1408,7 @@ var deliveryStart = moment();
 
                   $('#addRefundModal').modal('hide');
                   toastr.success(data.message);
-                  //window.location.reload(1);
+                  window.location.reload(1);
 
                 }else{
 
@@ -1532,7 +1532,7 @@ var deliveryStart = moment();
 
                   $('#editPaymentModal').modal('hide');
                      toastr.success(data.message);
-                     //window.location.reload(true);
+                     window.location.reload(true);
 
                 
                 }else{
@@ -1565,7 +1565,7 @@ var deliveryStart = moment();
 
                   $('#cancelBookingModal').modal('hide');
                      toastr.success(data.message);
-                     //window.location.reload(true);
+                     window.location.reload(true);
 
                 
                 }else{
