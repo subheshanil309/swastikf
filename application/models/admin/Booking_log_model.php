@@ -378,7 +378,12 @@ class Booking_log_model extends Base_model
             $insertData['update_at']                    = date("Y-m-d H:i:s");
             $insertData['balance']                      = $single->balance;
             $insertData['outstanding_amount']           = $single->outstanding_amount;
-            $insertData['total_paid_amount']           = $single->total_paid_amount;
+            $insertData['total_paid_amount']            = $single->total_paid_amount;
+            $insertData['refunded_amount']                  = $single->refunded_amount;
+            $insertData['cancellation_charge']           = $single->cancellation_charge;
+            $insertData['cancellation_reason']           = $single->cancellation_reason;
+            $insertData['cancellation_date']            = $single->cancellation_date;
+            $insertData['cancel_by']                    = $single->cancel_by;
             $insertData['payment_mode']                 = $single->payment_mode;
             $insertData['cheque_no']                    = $single->cheque_no;
             $insertData['bank_name']                    = $single->bank_name;

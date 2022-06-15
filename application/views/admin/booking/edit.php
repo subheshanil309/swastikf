@@ -1032,7 +1032,7 @@
                                 <input type="date" class="form-control form-control-sm" name="payment_create_date" id="payment_create_date"  value="<?php echo date('Y-m-d');?>">
                           </div>
                       </div>
-                       <div class="row">
+                       <div class="row hidden" hidden>
                           <label for="payment_type" class="col-md-5 col-form-label">Payment Type</label>
                           <div class="col-md-7">
                            <select class=" form-control form-control-sm " id="payment_type" name="payment_type" aria-label="Floating label select example"  >
