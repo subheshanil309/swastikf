@@ -131,7 +131,12 @@ strong,.text-muted{
                             
                         </tr>
                         <tr>
-                            <td> <?php echo (@$receipt_dtl['id']);?></td>
+                            <td> <?php 
+                                
+                                                     
+                                                    $booking_number =  str_pad((@$receipt_dtl['id']), 8, '0', STR_PAD_LEFT);
+                                        
+                            echo (@$booking_number);?></td>
                             <td> <?php echo ($receipt_dtl['booking_date']=='0000-00-00' || $receipt_dtl['booking_date']==null)?'': date('d M Y',strtotime($receipt_dtl['booking_date'])); ?></td>
                             <td><?php echo (@$receipt_dtl['booked_status']);?></td>
                             <td><?php echo ($receipt_dtl['delivery_expect_start_date']=='0000-00-00' || $receipt_dtl['delivery_expect_start_date']==null)?'': date('d M Y',strtotime($receipt_dtl['delivery_expect_start_date'])); ?></td>

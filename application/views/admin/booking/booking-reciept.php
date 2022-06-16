@@ -196,7 +196,11 @@
                             <div style="max-width: 90%; margin-left:auto;margin-right:auto;">
                                 <div class="row">
                                     <div class="col">
-                                        <p>Booking No: 2962</p>
+                                        <?php
+                                                     
+                                                    $booking_number =  str_pad((@$receipt_dtl['id']), 8, '0', STR_PAD_LEFT);
+                                        ?>
+                                        <p>Booking No: <?php echo $booking_number;?></p>
                                     </div>
                                     <div class="col">
                                         
