@@ -231,3 +231,12 @@ ALTER TABLE `z_booking_payments` ADD `update_by` INT NULL AFTER `created_by`;
 
 
 
+
+ ----16-06-2022
+
+
+ ALTER TABLE `z_customer` ADD `last_call_back_date` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+
+
+

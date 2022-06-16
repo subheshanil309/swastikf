@@ -191,7 +191,72 @@ class Customer_call_model extends Base_model
 
         }
 
-        public function getCallsummary($alltype, $userid)
+        
+
+
+        public function callSummary($data_param)
+        {
+            if(isset($data_param['userid']) && $data_param['userid'] !=='')
+            {
+                $userid = $data_param['userid'];
+            }else{
+                $userid  = $this->session->userdata('userId');
+            }
+
+            /*if(isset($data_param['stat_type']) && $data_param['stat_type'] =='')
+            {
+                $userid = $data_param['userid'];
+            }else{
+                $userid  = $this->session->userdata('userId');
+            }*/
+
+
+
+
+
+                $current_date  = date('Y-m-d');
+                $where     = array();
+                $this->db->select('z_customer.id');
+                $this->db->from('z_customer');
+
+                  $where = "( z_customer.created_by = '".$userid."' OR z_customer.assigned_to='".$userid."' ) ";
+
+                if(isset($data_param['stat_type']) && $data_param['stat_type'] =='call_type' && $data_param['call_type'] !=='' )
+                {
+                    $where.= " AND z_customer.last_call_type='".$data_param['call_type']."' AND z_customer.last_follow_date='".$current_date."'";
+
+                }else if(isset($data_param['stat_type']) &&  $data_param['stat_type'] =='followup' && $data_param['followup_type'] !=='')
+                {
+
+                    if($data_param['followup_type']=='yesterday')
+                    {
+                        $yesterday = date('Y-m-d',strtotime("-1 days"));
+                        $where.= "  AND z_customer.last_call_back_date='".$yesterday."'";    
+                    }else if($data_param['followup_type']=='today')
+                    {
+                        $yesterday = date('Y-m-d');
+                        $where.= "  AND z_customer.last_call_back_date='".$current_date."'";    
+                    }
+                    else if($data_param['followup_type']=='tomorrow')
+                    {
+                        $tomorrow = date('Y-m-d',strtotime("+1 days"));
+                        $where.= "  AND z_customer.last_call_back_date='".$tomorrow."'";    
+                    }
+                    
+                }
+             
+            
+
+              
+                $this->db->where($where); 
+
+
+                $query = $this->db->get();
+
+                return $result = $query->result();
+        }
+
+        public function getCallsummary($alltype, $userid, $stat_type)
         {
 
             $array = array();
@@ -199,37 +264,37 @@ class Customer_call_model extends Base_model
             foreach ($alltype as $key => $value) 
             {
                   
-                 $role      = $this->session->userdata('role');
-                 $where     = array();
-                     $this->db->select('z_customer.id');
-                   $this->db->from('z_customer');  
+                  
+               /* $current_date  = date('Y-m-d');
+                $where     = array();
+                $this->db->select('z_customer.id');
+                $this->db->from('z_customer');
+                $where = "( z_customer.created_by = '".$userid."' OR z_customer.assigned_to='".$userid."' ) AND z_customer.last_call_type='".$value->id."' AND z_customer.last_follow_date='".$current_date."'";
+                $this->db->where($where); 
 
-                   $where = "( z_customer.created_by = '".$userid."' OR z_customer.assigned_to='".$userid."' ) AND last_call_type='".$value->id."'";
-                     $this->db->where($where); 
-                 
 
-                  $query = $this->db->get();
+                $query = $this->db->get();
 
-                  $result = $query->result();
-
-                     
-                    $sec_arr['id']  = $value->id; 
-                    $sec_arr['title'] = $value->title; 
-                    $sec_arr['total_count_call'] = count($result);
-                    $array[] =$sec_arr;
-            }
+                $result = $query->result();*/
 
 
 
-
-
-             
-
+                $data_param = array();
+                $data_param['userid'] =  $userid;
+                $data_param['stat_type'] = $stat_type;
+                $data_param['call_type'] = $value->id;
                 
+                  $result =   $this->callSummary($data_param);
 
+                $sec_arr['id']  = $value->id; 
+                $sec_arr['title'] = $value->title; 
+                $sec_arr['total_count_call'] = count($result);
+                $array[] =$sec_arr;
 
-            return $array;
-            //return $query->result();
+ 
+            }
+             return $array;
+            
         } 
 
 

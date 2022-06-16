@@ -6,6 +6,12 @@
 }
  .row label {font-size: 11px;}
 
+
+.table-nowrap td, .table-nowrap th {
+    
+    border: 1px solid #39823b;
+    padding: 2px;
+}
 </style>
 <div class="page-content">
    <div class="container-fluid">
@@ -378,7 +384,7 @@ print_r($customer_call_dtl);  */
                                 {
                                      ?>
                                      <div class="flex-grow-1">
-                                        <a href="<?php echo base_url()?>admin/customer/addnew?form_type=inquiry&call_type2=<?php echo $value['id'].$uuid?>">
+                                        <a href="<?php echo base_url()?>admin/customer/addnew?form_type=inquiry&stat_type=call_type2&call_type2=<?php echo $value['id'].$uuid?>">
                                           <div class="float-end">
                                            <p class="text-primary mb-0"><?php echo $value['total_count_call'];?></p>
                                         </div>
@@ -410,29 +416,33 @@ print_r($customer_call_dtl);  */
                         <div class="card card-body pt-0">
                            <h4 class="card-title bg-success text-white  p-1 ">Follow up Summary</h4>
                            <div class="flex-grow-1">
-                              <div class="float-end">
-                                 <p class="text-primary mb-0">0</p>
+                               <a href="<?php echo base_url()?>admin/customer/addnew?form_type=inquiry&stat_type=followup&followup_type=yesterday<?php echo $uuid?>">
+                                <div class="float-end">
+                                 <p class="text-primary mb-0"><?php echo $follow_up_missed;?></p>
                               </div>
                               <p class="text-primary mb-0">Missed followup</p>
+                                </a>
+                              
                            </div>
                            <div class="flex-grow-1">
-                              <div class="float-end">
-                                 <p class="text-primary mb-0">0</p>
+                               <a href="<?php echo base_url()?>admin/customer/addnew?form_type=inquiry&stat_type=followup&followup_type=today<?php echo $uuid?>">
+                                <div class="float-end">
+                                 <p class="text-primary mb-0"><?php echo $follow_up_due_today;?></p>
                               </div>
                               <p class="text-primary mb-0">Due Today</p>
+                                </a>
+                              
                            </div>
                            <div class="flex-grow-1">
-                              <div class="float-end">
-                                 <p class="text-primary mb-0">0</p>
-                              </div>
-                              <p class="text-primary mb-0">Super Hot Call</p>
-                           </div>
-                           <div class="flex-grow-1">
-                              <div class="float-end">
-                                 <p class="text-primary mb-0">0</p>
+                               <a href="<?php echo base_url()?>admin/customer/addnew?form_type=inquiry&stat_type=followup&followup_type=tomorrow<?php echo $uuid?>">
+                                <div class="float-end">
+                                 <p class="text-primary mb-0"><?php echo $follow_up_due_tomorrow;?></p>
                               </div>
                               <p class="text-primary mb-0">Due Tomorrow</p>
+                                </a>
+                              
                            </div>
+                            
                         </div>
                      </div>
                      <div class="col-sm-4">
@@ -607,7 +617,7 @@ print_r($customer_call_dtl);  */
                                             
                                           </div>
                                           </div></td>
-                                        <td><?php echo $customer['date_at'];?></td>
+                                        <td><?php echo date('d M Y',strtotime($customer['last_follow_date']));?></td>
                                         <td><?php echo $customer['id'];?></td>
                                         <td><a class="side_modal"  data-userid="<?php echo $customer['id']; ?>" href="javascript:void(0)"><?php echo $customer['customer_title'];?></a></td>
                                         <td><?php echo $customer['customer_mobile'];?></td>
@@ -617,10 +627,10 @@ print_r($customer_call_dtl);  */
                                         <td><?php echo (isset($customer['other_city']) && !empty($customer['other_city']))?($customer['other_city']):($customer['city']);?></td>
                                         <td><?php echo $customer['calldir'];?></td>
                                         <td><?php echo $customer['calltype'];?></td>
-                                        <td><?php echo date('d M Y',strtotime($customer['last_follow_date']));?></td>
+                                        <td><?php echo date('d M Y',strtotime($customer['last_call_back_date']));?></td>
                                         <td><?php echo $customer['assignedto'];?></td>
                                         <td><?php echo $customer['createdby'];?></td>
-                                        <td><?php echo date('d M Y',strtotime($customer['date_at']));?></td>
+                                        <td><?php echo date('d M Y',strtotime($customer['last_follow_date']));?></td>
                                         <td><?php echo $customer['lastfollower'];?></td>
                                         <td><?php echo $customer['lastcalltype'];?></td>
                                       </tr>
@@ -635,7 +645,14 @@ print_r($customer_call_dtl);  */
                            </table>
                         </div>
                         <div class="row">
-                          <div class="col-sm-12">
+                          <div class="col-sm-3">
+                              <ul class="pagination  justify-content-left mt-4"  >
+                                 <li class="">
+                                    <p><?php echo @$pagination_total_count; ?> Inquiries. </p>
+                                 </li>
+                              </ul>
+                          </div>
+                          <div class="col-sm-9">
                             <?php echo $this->pagination->create_links(); ?>  
                           </div>
                         </div>

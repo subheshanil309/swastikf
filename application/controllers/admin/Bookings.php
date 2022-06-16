@@ -32,7 +32,7 @@ class Bookings extends BaseController
         $this->load->model('admin/user_model');
         $this->load->model('admin/admin_model');
 
-        $this->perPage =40; 
+        $this->perPage =100; 
     }
 
     

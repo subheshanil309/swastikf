@@ -19,7 +19,7 @@ class Customer extends BaseController
         $this->load->model('admin/user_model');
         $this->load->model('admin/admin_model');
 
-        $this->perPage =20; 
+        $this->perPage =100; 
     }
 
     
@@ -59,17 +59,8 @@ class Customer extends BaseController
             $data['customer_call_dtl'] = array();
 
             $form_type  = $this->input->get('form_type');
-            $conditions = array(); 
-            $where_search = array();
-
-            $conditions['returnType']   = 'count'; 
-            $conditions['userid']       = $userid; 
-            $conditions['form_type']    = $form_type; 
-            /*$conditions['other_state2'] = $this->input->get('other_state2');
-            $conditions['other_district2'] = $this->input->get('other_district2');
-            $conditions['other_city2']  = $this->input->get('other_city2');*/
-             
-            $totalRec = $this->customer_model->getRows($conditions); 
+              $conditions = array(); 
+                $where_search = array();
                 
         if($form_type=='inquiry')
         {
@@ -86,11 +77,17 @@ class Customer extends BaseController
                 $other_city2               = @$this->input->get('other_city2');
                 $call_direction2     = @$this->input->get('call_direction2');
                 $call_type2          = @$this->input->get('call_type2'); 
+                $stat_type          = @$this->input->get('stat_type'); 
+                $followup_type          = @$this->input->get('followup_type'); 
                 if(!empty($search_customer_id))
                 {
                     $where_search['id'] =  $search_customer_id;
                 }
-                if(!empty($search_name))
+                 if(!empty($stat_type))
+                {
+                    $where_search['stat_type'] =  $stat_type;
+                }
+                 if(!empty($search_name))
                 {
                     $where_search['customer_title'] =  $search_name;
                 } 
@@ -139,6 +136,18 @@ class Customer extends BaseController
         } 
 
 
+               
+
+                $conditions['returnType']   = 'count'; 
+                $conditions['userid']       = $userid; 
+                $conditions['where']       = $where_search;  
+                $conditions['form_type']    = $form_type;
+                $conditions['followup_type'] = @$followup_type;
+
+
+                $totalRec = $this->customer_model->getRows($conditions);
+
+ 
 
 
 
@@ -211,18 +220,12 @@ class Customer extends BaseController
 
                 $conditions['userid'] = $userid;
                 $conditions['form_type'] = $form_type; 
-                    /* echo "<pre>";
-                    print_r( $conditions);
-                    echo "</pre>"; */
+                $conditions['followup_type'] = @$followup_type; 
+                    
                 $data['customers'] = $this->customer_model->getRows($conditions); 
- 
+                $data['pagination_total_count'] =  $totalRec;
                    
-
  
-/*  echo "<pre>";
-print_r($this->db->last_query());  
-echo "</pre>"; 
- */
 
 
 
@@ -321,9 +324,40 @@ echo "</pre>";
         $data['calldirections'] = $this->call_direction_model->findDynamic($where);
 
 
-        $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid); 
+        $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type'); 
 
 
+
+            $data_param = array();
+            $data_param['userid']       =  $userid;
+            $data_param['stat_type']    = 'followup';
+            $data_param['followup_type']= 'yesterday'; 
+            $result =   $this->customer_call_model->callSummary($data_param);
+            $follow_up_missed = count($result);
+            $data['follow_up_missed'] = $follow_up_missed ; 
+             
+
+            $data_param = array();
+            $data_param['userid']       =  $userid;
+            $data_param['stat_type']    = 'followup';
+            $data_param['followup_type']= 'today'; 
+            $result =   $this->customer_call_model->callSummary($data_param);
+            $follow_up_due_today = count($result);
+              $data['follow_up_due_today'] = $follow_up_due_today ; 
+             
+            $data_param = array();
+            $data_param['userid']       =  $userid;
+            $data_param['stat_type']    = 'followup';
+            $data_param['followup_type']= 'tomorrow'; 
+            $result =   $this->customer_call_model->callSummary($data_param);
+             
+
+            $follow_up_due_tomorrow = count($result);
+            $data['follow_up_due_tomorrow'] = $follow_up_due_tomorrow ; 
+             
+
+            
+            
         $this->global['pageTitle'] = 'Add New customer';
         $this->loadViews("admin/customer/addnew", $this->global, $data , NULL);
         
@@ -417,6 +451,7 @@ echo "</pre>";
                 $insertData['last_follow_date']      = date("Y-m-d H:i:s");
                 $insertData['last_follower']         = $this->session->userdata('userId');
                 $insertData['last_follow_call_type'] = $form_data['call_type'];
+                $insertData['last_call_back_date']   = $form_data['call_back_date'];
 
                
                  

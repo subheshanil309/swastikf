@@ -209,12 +209,12 @@ class Customer_model extends Base_model
                 $this->db->join('z_call_type as last_ctype', 'last_ctype.id = c.last_follow_call_type', 'left');
 
                 $where  = '';
-                $userid = $this->session->userdata('userId');
+                $userid = $params['userid'];
                  $role = $this->session->userdata('role');
                 
-
+                 $where.= "( c.status = 1 )";  
                 
-                if($role==1)
+               /* if($role==1)
                 {
                     if(isset($params['form_type']) && $params['form_type']=='inquiry')
                     {
@@ -226,10 +226,10 @@ class Customer_model extends Base_model
                     //$where.= "( c.status = '1' )";
                     
                 }else
-                {
-                     $where.= "( c.created_by = '".$userid."' OR c.assigned_to='".$userid."')";
+                {*/
+                     $where.= " AND ( c.created_by = '".$userid."' OR c.assigned_to='".$userid."')";
 
-                }
+                /*}*/
 
 
                 /*if(isset($params['other_state2']) &&  $params['other_state2'] !=='')
@@ -254,7 +254,7 @@ class Customer_model extends Base_model
                      
                     foreach($params['where'] as $key => $val){ 
                    // $this->db->where('c.'.$key, $val); 
-                    if($key =='customer_title')
+                    if($key =='customer_title' || $key =='stat_type' || $key =='stat_type' )
                     {
 
                     
@@ -272,6 +272,44 @@ class Customer_model extends Base_model
                     }
                     $this->db->or_like('customer_title', $params['where']['customer_title']);
                      //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
+                }
+                if(isset($params['where']['stat_type']))
+                {
+                    if($params['where']['stat_type'] =='followup' && $params['followup_type']=='yesterday')
+                    {
+                         
+
+                        $back_date = date('Y-m-d',strtotime("-1 days"));
+                        $where.= "  AND c.last_call_back_date='".$back_date."'"; 
+
+
+                    }else if($params['where']['stat_type'] =='followup' && $params['followup_type']=='today')
+                    {
+                         
+
+                        $back_date = date('Y-m-d');
+                        $where.= "  AND c.last_call_back_date='".$back_date."'"; 
+
+
+                    }else if($params['where']['stat_type'] =='followup' && $params['followup_type']=='tomorrow')
+                    {
+                         
+
+                         $back_date = date('Y-m-d',strtotime("+1 days"));
+                        $where.= "  AND c.last_call_back_date='".$back_date."'"; 
+
+
+                    }else if($params['where']['stat_type'] =='call_type2')
+                    {
+                        $current_date = date('Y-m-d');
+                        $where.= " AND (c.last_follow_date='".$current_date."')";
+                    }
+                    /*if($params['where']['stat_type'] =='call_type2')
+                    {
+                        $current_date = date('Y-m-d');
+                        $where.= " AND (c.last_call_back_date='".$current_date."')";
+                    }*/
+                    
                 }
 
  
