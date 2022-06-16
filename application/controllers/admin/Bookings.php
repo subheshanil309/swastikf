@@ -1170,6 +1170,8 @@ echo "</pre>";  */
 
 
 
+
+
                 //$get_customerid
 
                             $insertData = array();
@@ -1205,13 +1207,14 @@ echo "</pre>";  */
 
 
 
-                            $insertData['id']                = $form_data['id'];
-                            $insertData['customer_id']                = $get_customerid;
-                            $insertData['customer_name']              = $form_data['customer_name'];
-                            $insertData['customer_mobile']            = $form_data['customer_mobile'];
-                            $insertData['customer_alter_mobile']      = $form_data['customer_alter_mobile'];
-                            $insertData['father_name']                = $form_data['father_name'];
-                            $insertData['state']                      = $form_data['state'];
+                            $insertData['id']                       = $form_data['id'];
+                            $insertData['stage']                        = "Update";
+                            $insertData['customer_id']                  = $get_customerid;
+                            $insertData['customer_name']                = $form_data['customer_name'];
+                            $insertData['customer_mobile']              = $form_data['customer_mobile'];
+                            $insertData['customer_alter_mobile']        = $form_data['customer_alter_mobile'];
+                            $insertData['father_name']                  = $form_data['father_name'];
+                            $insertData['state']                        = $form_data['state'];
                             $insertData['other_state']                  = $form_data['other_state'];
                             $insertData['district']                     = $form_data['district'];
                             $insertData['other_district']               = $form_data['other_district'];
@@ -1239,14 +1242,19 @@ echo "</pre>";  */
                             $insertData['billing_address']              = $form_data['billing_address'];
                             $insertData['same_billing']                 = (isset($form_data['same_billing'])?($form_data['same_billing']):'');
                             $insertData['delivery_address']             = $form_data['delivery_address'];
-                            $insertData['advance']                      = $form_data['advance'];
+                            /*$insertData['advance']                      = $form_data['advance'];
+                            */
                             $insertData['create_date']                  = date("Y-m-d H:i:s");
+                            /*$insertData['balance']                      = $form_data['balance'];
                             $insertData['balance']                      = $form_data['balance'];
-                            $insertData['balance']                      = $form_data['balance'];
-                            $insertData['payment_mode']                 = $form_data['payment_mode'];
-                            $insertData['cheque_no']                    = $form_data['cheque_no'];
+                                $insertData['payment_mode']                 = $form_data['payment_mode'];
+
+                                 $insertData['cheque_no']                    = $form_data['cheque_no'];
                             $insertData['bank_name']                    = $form_data['bank_name'];
                             $insertData['bank_branch']                  = $form_data['bank_branch'];
+                            */
+                            
+                           
                             $insertData['product_id']                   = $form_data['product_id'];
                             $insertData['uom']                          = $form_data['uom'];
                             $insertData['price']                        = $form_data['price'];
@@ -1280,6 +1288,56 @@ echo "</pre>";  */
                             $insertData['product_set']                  = json_encode($product_set);
                              
                                 $result_insert  = $this->booking_model->save($insertData);
+            /*ADDING TO OUTSTANDING AMOUNT*/
+
+                                $booking_id  = $form_data['id'];
+                                $where = array();
+                                $where['status'] = '1';
+                                $where['booking_id'] = $booking_id;
+ 
+                                $fetch_all_payment = $this->booking_payments_model->findDynamic($where);
+                                $total_paid_amount = 0;
+                                $total_refund_amount = 0;
+                                if(!empty($fetch_all_payment))
+                                {
+                                    foreach ($fetch_all_payment as $key => $value)
+                                    {
+                                         if($value->payment_type =='payment')
+                                         {
+                                            $total_paid_amount = $total_paid_amount + $value->amount;
+                                          }else if($value->payment_type =='refund')
+                                         { 
+                                            $total_refund_amount = $total_refund_amount + $value->amount;
+                                         } 
+                                    }
+                                }
+
+
+                                $single_arr         = $this->booking_model->find($booking_id);
+                               
+
+                                 
+
+                                    $total_paid_amount = $total_paid_amount + $form_data['payment_amount'];
+                                    $balance            =  $single_arr->total;
+                                    $outstanding_amount = ($balance-$total_paid_amount);
+                                 
+                                /*if($form_data['payment_type']=='refund')
+                                {
+                                   $total_refund_amount = $total_refund_amount + $form_data['payment_amount'];
+
+                                   $outstanding_amount = ($single_arr->total_paid_amount-$total_refund_amount);
+                                }*/
+
+                                $insertData                         = array();
+                                $insertData['total_paid_amount']    = $total_paid_amount;
+                                $insertData['refunded_amount']      = $total_refund_amount;
+                                $insertData['outstanding_amount']   = $outstanding_amount;
+                                $insertData['id']                   = $booking_id;  
+                                $price_updated                      = $this->booking_model->save($insertData);
+            /*ADDING TO OUTSTANDING AMOUNT END*/
+
+
                                 $single_arr     = $this->booking_model->find($form_data['id']);
                                 $logged         = $this->booking_log_model->booking_log($single_arr);
 
@@ -1922,6 +1980,7 @@ echo "</pre>";  */
                     $arra_empt2['igst_amount']           =$bookin_log['igst_amount'];
                     $arra_empt2['total_paid_amount']     =$bookin_log['total_paid_amount'];
                     $arra_empt2['outstanding_amount']    =$bookin_log['outstanding_amount'];
+                    $arra_empt2['cancellation_reason']    =$bookin_log['cancellation_reason'];
                     $arra_empt2['discount']              =number_format($bookin_log['discount'],2);
                     $arra_empt2['total']                 =number_format($bookin_log['total'],2);
                     $arra_empt2['pending_bill']          =$bookin_log['pending_bill'];

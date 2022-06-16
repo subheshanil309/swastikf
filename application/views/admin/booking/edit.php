@@ -611,8 +611,8 @@
                      <div class="col-sm-10">
                         <div class="d-flex flex-wrap gap-2 float-end">
                            <div class="btn-group" role="group" aria-label="Basic example">
-                              <a href="javascript:void(0);" class="btn btn-outline-success paymentbtn addpayment" aria-current="page">Add Payment</a>
-                              <a href="javascript:void(0);" class="btn btn-outline-danger paymentbtn addrefunc">Add Refund</a>
+                              <a href="javascript:void(0);" class="btn btn-outline-success btn-sm paymentbtn addpayment" aria-current="page">Add Payment</a>
+                              <a href="javascript:void(0);" class="btn btn-outline-danger btn-sm paymentbtn addrefunc">Add Refund</a>
                            </div>
                         </div>
                      </div>
@@ -648,7 +648,7 @@
                                              }else if($value['payment_type']=='cancellation-charge')
                                              {
                                     
-                                                $badged = 'bg-info';
+                                                $badged = 'bg-warning';
                                              }
                                     
                                               ?>
@@ -661,7 +661,7 @@
                                     <td class="p-1">
                                        <div class="btn-group">
                                           <button class="btn btn-info dropdown-toggle btn-sm " type="button" data-bs-toggle="dropdown" aria-expanded="true">
-                                          Small button <i class="mdi mdi-chevron-down"></i>
+                                          Action <i class="mdi mdi-chevron-down"></i>
                                           </button>
                                           <div class="dropdown-menu " data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 30px);">
                                              <a class="dropdown-item editpayment" data-userid="<?php echo $value['id'] ?>" data-action_src="<?php echo base_url()?>admin/bookings/<?php echo $value['id'] ?>/edit_payment" href="javascript:void(0)"><i class="fa fa-pen" aria-hidden="true"></i> Edit Transaction</a>

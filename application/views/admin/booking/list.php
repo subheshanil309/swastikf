@@ -368,7 +368,7 @@
                                           <span class="badge bg-<?php echo (isset($bookings['stage']) && $bookings['stage']=='Created')?'primary':'warning';?> text-white"><?php echo $bookings['stage'];?></span>
                                        </td>
                                        <td><?php echo $bookings['id'];?></td>
-                                       <td><?php echo ($bookings['booking_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['booking_date'])) :'-/-/-';?></td>
+                                       <td><?php echo ($bookings['booking_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['booking_date'])) :'';?></td>
                                        <td><span class="badge bg-<?php echo $bookings['booked_badges'];?> "><?php echo $bookings['booked_status'];?></span></td>
                                        <td><?php echo $bookings['cropstatusname'];?></td>
                                        <td><?php echo $bookings['customer_id'];?></td>
@@ -390,17 +390,29 @@
                                        <td><?php echo $bookings['total'];?></td>
                                        <td><?php echo $bookings['discount'];?></td>
                                        <td><?php echo $bookings['total_paid_amount'];?></td>
-                                       <td><?php echo $bookings['outstanding_amount'];?></td>
+                                       <td><span class='<?php if($bookings['outstanding_amount'] <0){ echo "text-danger";}?>'><?php echo $bookings['outstanding_amount'];?></span></td>
                                        <td>
                                           <?php 
-                                             echo ($bookings['delivery_expect_start_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_expect_start_date'])) :'-/-/-';?> To <?php 
-                                             echo ($bookings['delivery_expect_end_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_expect_end_date'])) :'-/-/-';?>
+                                            if(isset($bookings['delivery_expect_start_date']) && isset($bookings['delivery_expect_end_date']))
+                                            {
+                                              echo ($bookings['delivery_expect_start_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_expect_start_date'])) :'';?> To <?php 
+                                             echo ($bookings['delivery_expect_end_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_expect_end_date'])) :''; 
+                                            }
+                                             ?>
                                        </td>
-                                       <td><?php echo ($bookings['delivery_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_date'])) :'-/-/-';?> </td>
+                                       <td><?php echo ($bookings['delivery_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_date'])) :'';?> </td>
                                        <td><?php echo $bookings['vehicle_no'];?></td>
                                        <td><?php echo $bookings['contractstatusname'];?></td>
                                        <td><?php echo $bookings['productive_plants'];?></td>
-                                       <td><a target="_BLANK"  class="text-dark" href="<?php echo base_url()?>uploads/admin/document/<?php echo $bookings['document'];?>"><?php echo $bookings['document'];?><a></td>
+                                       <td>
+                                        <?php 
+                                          if($bookings['document'] !=='')
+                                          {
+                                            ?>
+                                              <a target="_BLANK" download class="text-primary"  href="<?php echo base_url()?>uploads/admin/document/<?php echo $bookings['document'];?>">Download <i class="fa fa-download" aria-hidden="true"></i><a>
+                                            <?php
+                                          }
+                                        ?></td>
                                        <td><?php echo $bookings['assignedto'];?></td>
                                        <td><?php echo $bookings['createdby'];?></td>
                                        <td><?php echo ($bookings['date_at']!=='0000-00-00')? date('d M Y',strtotime($bookings['date_at'])) :'-/-/-';?> </td>
@@ -546,6 +558,7 @@
                         <th class="align-middle bg-success text-white">Assigned&nbsp;To</th>
                         <th class="align-middle bg-success text-white">Entry&nbsp;made&nbsp;by</th>
                         <th class="align-middle bg-success text-white" style="min-width: 80px">Entry&nbsp;Date</th>
+                        <th class="align-middle bg-success text-white" style="min-width: 80px">Comment</th>
                      </tr>
                   </thead>
                   <tbody id="booking_history">
@@ -842,7 +855,7 @@
              {
                content = data[i];
                  html_content+= '<tr>';
-                 html_content+="<td>"+content.stage+"</td>";
+                 html_content+="<td><span class='badge bg-"+((content.stage=='Update')?'warning':'primary')+"'>"+content.stage+"</span></td>";
                  html_content+="<td>"+content.booking_id+"</td>"; 
                  html_content+="<td>"+content.booking_date+"</td>"; 
                  html_content+="<td><span class='badge bg-"+content.booked_badges+"'>"+content.booked_status+"</span></td>"; 
@@ -876,6 +889,7 @@
                  html_content+="<td>"+content.assignedto+"</td>";
                  html_content+="<td>"+content.createdby+"</td>";
                  html_content+="<td>"+content.create_date+"</td>";
+                 html_content+="<td>"+content.cancellation_reason+"</td>";
                  html_content+= '</tr>';
                 
              }

@@ -270,7 +270,7 @@
                                           <div class="float-end">Total Paid :</div>
                                        </td>
                                        <td class="text-right">
-                                          <div class="paidAmount"><?php echo number_format($receipt_dtl['advance'],2);?></div>
+                                          <div class="paidAmount"><?php echo number_format($receipt_dtl['total_paid_amount'],2);?></div>
                                        </td>
                                     </tr>
                                     <tr class="text-danger">
@@ -278,9 +278,26 @@
                                           <div class="float-end">Pending Balance :</div>
                                        </td>
                                        <td class="text-right">
-                                          <div id="pending_amount"><?php echo number_format($receipt_dtl['balance'],2);?></div>
+                                          <div id="pending_amount"><?php echo number_format($receipt_dtl['outstanding_amount'],2);?></div>
                                        </td>
                                     </tr>
+                                    <?php 
+                                        if($receipt_dtl['refunded_amount'] >0)
+                                        {
+                                            ?>
+                                            <tr class="text-danger">
+                                               <td class="text-right" colspan="8">
+                                                  <div class="float-end">Refunded Amount :</div>
+                                               </td>
+                                               <td class="text-right">
+                                                  <div id="pending_amount"><?php echo number_format($receipt_dtl['refunded_amount'],2);?></div>
+                                               </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                    ?>
+                                    
+
                                  </tfoot>
                               </table>
                            </div>
@@ -318,7 +335,7 @@
                                           }else if($value['payment_type']=='cancellation-charge')
                                           {
                                        
-                                             $badged = 'bg-info';
+                                             $badged = 'bg-warning';
                                           }
                                        
                                            ?>
