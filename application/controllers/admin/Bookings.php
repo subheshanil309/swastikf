@@ -32,7 +32,7 @@ class Bookings extends BaseController
         $this->load->model('admin/user_model');
         $this->load->model('admin/admin_model');
 
-        $this->perPage =20; 
+        $this->perPage =40; 
     }
 
     
@@ -124,10 +124,10 @@ class Bookings extends BaseController
                  if(!empty($discount))
                 {
                      $where_search['discount'] =  $discount;
-                 }if(!empty($outstanding_amount))
+                 }if(strlen($outstanding_amount) >0)
                 {
                      $where_search['outstanding_amount'] =  $outstanding_amount;
-                 }if(!empty($unit_price))
+                 }if(strlen($unit_price) >0)
                 {
                      $where_search['price'] =  $unit_price;
                  }
@@ -307,6 +307,10 @@ class Bookings extends BaseController
                     echo "</pre>"; */
 
                  $data['bookings']   = $this->booking_model->getRows($conditions); 
+
+
+                /* print_r($this->db->last_query()); */   
+
                 $data['pagination'] = $this->pagination->create_links(); 
  
                 $data['pagination_total_count'] =  $totalRec;
@@ -1483,19 +1487,19 @@ echo "</pre>";  */
 
 
         //booking data fetch
-        $single_arr     = $this->booking_model->find($id);
-        $balance =  $single_arr->total;
-        $total_paid_amount = $single_arr->total_paid_amount + $form_data['payment_amount'];
+        $single_arr         = $this->booking_model->find($id);
+        $balance            =  $single_arr->total;
+        $total_paid_amount  = $single_arr->total_paid_amount + $form_data['payment_amount'];
         $outstanding_amount = ($balance-$total_paid_amount);
 
          
         $result = $this->booking_payments_model->save($insertData);
 
-        $insertData  = array();
-        $insertData['total_paid_amount']  = $total_paid_amount;
-            $insertData['outstanding_amount']  = $outstanding_amount;
-        $insertData['id']  = $id;  
-        $price_updated    = $this->booking_model->save($insertData);
+        $insertData                         = array();
+        $insertData['total_paid_amount']    = $total_paid_amount;
+        $insertData['outstanding_amount']   = $outstanding_amount;
+        $insertData['id']                   = $id;  
+        $price_updated                      = $this->booking_model->save($insertData);
 
         //get and update to log
         $single_arr     = $this->booking_model->find($id);
@@ -1592,7 +1596,7 @@ echo "</pre>";  */
 
     public function edit_payment($id)
     {
-
+         
         
         $this->isLoggedIn();
          $form_data  = $this->input->post();
@@ -1606,42 +1610,89 @@ echo "</pre>";  */
 
          }else
          {
+                $booking_id  = $form_data['booking_id'];
+                $where = array();
+                $where['status'] = '1';
+                $where['booking_id'] = $booking_id;
+                $where['id !='] = $id;
 
+                $fetch_all_payment = $this->booking_payments_model->findDynamic($where);
+                $total_paid_amount = 0;
+                $total_refund_amount = 0;
+                if(!empty($fetch_all_payment))
+                {
+                    foreach ($fetch_all_payment as $key => $value)
+                    {
+                         if($value->payment_type =='payment')
+                         {
+                            $total_paid_amount = $total_paid_amount + $value->amount;
+                          }else if($value->payment_type =='refund')
+                         { 
+                            $total_refund_amount = $total_refund_amount + $value->amount;
+                         } 
+                    }
+                }
+
+
+                $single_arr         = $this->booking_model->find($booking_id);
+               
+
+                if($form_data['payment_type']=='payment')
+                {
+
+                    $total_paid_amount = $total_paid_amount + $form_data['payment_amount'];
+                    $balance            =  $single_arr->total;
+                    $outstanding_amount = ($balance-$total_paid_amount);
+                }
+                if($form_data['payment_type']=='refund')
+                {
+                   $total_refund_amount = $total_refund_amount + $form_data['payment_amount'];
+
+                   $outstanding_amount = ($single_arr->total_paid_amount-$total_refund_amount);
+                }
+
+
+
+
+
+
+
+
+           
 
          $insertData = array();
         $insertData['payment_date']     = $form_data['payment_create_date'];
-        $insertData['booking_id']       = $id;
-        $insertData['payment_type']     = form_data['payment_type'];
+        $insertData['id']               = $id;
+        $insertData['payment_type']     = $form_data['payment_type'];
         $insertData['payment_mode']     = $form_data['payment_mode'];
         $insertData['bank_transaction_id']= $form_data['payment_bank_transaction_id'];
         $insertData['amount']           = $form_data['payment_amount'];
         $insertData['status']           = 1;
-        $insertData['date_at']          = date("Y-m-d H:i:s");
-        $insertData['created_by']       = $this->session->userdata('userId');
+        $insertData['update_at']        = date("Y-m-d H:i:s");
         $insertData['update_by']        = $this->session->userdata('userId');
-        $insertData['customer_id']      = $form_data['custID'];
         $insertData['cheque_no']        = $form_data['cheque_no'];
         $insertData['bank_name']        = $form_data['bank_name'];
         $insertData['bank_branch']      = $form_data['bank_branch'];
 
 
-        //booking data fetch
-        $single_arr         = $this->booking_model->find($id);
-        $balance            = $single_arr->total;
-        $total_paid_amount  = $single_arr->total_paid_amount + $form_data['payment_amount'];
-        $outstanding_amount = ($balance-$total_paid_amount);
-
+        
          
-        $result         =  $this->booking_payments_model->save($insertData);
+       
+        /*$total_paid_amount  = $single_arr->total + $form_data['payment_amount'];
+        $outstanding_amount = ($balance-$total_paid_amount);*/
+ 
+         
+        $result = $this->booking_payments_model->save($insertData);
 
-        $insertData  = array();
-        $insertData['total_paid_amount']  = $total_paid_amount;
-            $insertData['outstanding_amount']  = $outstanding_amount;
-        $insertData['id']  = $id;  
-        $price_updated    = $this->booking_model->save($insertData);
+        $insertData                         = array();
+        $insertData['total_paid_amount']    = $total_paid_amount;
+        $insertData['refunded_amount']      = $total_refund_amount;
+        $insertData['outstanding_amount']   = $outstanding_amount;
+        $insertData['id']                   = $booking_id;  
+        $price_updated                      = $this->booking_model->save($insertData);
 
         //get and update to log
-        $single_arr     = $this->booking_model->find($id);
+        $single_arr     = $this->booking_model->find($booking_id);
         $logged         = $this->booking_log_model->booking_log($single_arr);
         //get and update to log end
         $response_result = array(
@@ -1700,11 +1751,42 @@ echo "</pre>";  */
                     'message'=>''
             );
 
-         //booking data fetch outstanding_amount
+            $where = array();
+                $where['status'] = '1';
+                $where['booking_id'] = $id; 
+
+                $fetch_all_payment = $this->booking_payments_model->findDynamic($where);
+                 $total_refund_amount = 0;
+                if(!empty($fetch_all_payment))
+                {
+                    foreach ($fetch_all_payment as $key => $value)
+                    {
+                         if($value->payment_type =='refund')
+                         { 
+                            $total_refund_amount = $total_refund_amount + $value->amount;
+                         } 
+                    }
+                }
+
+
+                $single_arr         = $this->booking_model->find($id);
+               
+
+               
+                 
+                   $total_refund_amount = $total_refund_amount + $form_data['payment_amount'];
+
+                   $outstanding_amount = ($single_arr->total_paid_amount-$total_refund_amount);
+                
+
+
+
+
+   /*      //booking data fetch outstanding_amount
         $single_arr     = $this->booking_model->find($id);
         $total_paid = $single_arr->total_paid_amount;
         $refund = $form_data['payment_amount'];
-        if($total_paid >= $refund)
+        /*if($total_paid >= $refund)
         {
             $balance =  $single_arr->total;
              
@@ -1715,7 +1797,7 @@ echo "</pre>";  */
             $refunded_amount        = $refunded_amount + $form_data['payment_amount'];
             $total_paid_amount      = $single_arr->total_paid_amount - $form_data['payment_amount'];
 
-
+*/
              
             $result = $this->booking_payments_model->save($insertData);
 
@@ -1723,7 +1805,7 @@ echo "</pre>";  */
              
            /* $insertData['total_paid_amount']  = $total_paid_amount;*/
             $insertData['outstanding_amount']  = $outstanding_amount;
-            $insertData['refunded_amount']  = $refunded_amount;
+            $insertData['refunded_amount']  = $total_refund_amount;
             $insertData['id']  = $id;  
             $price_updated    = $this->booking_model->save($insertData);
 
@@ -1748,14 +1830,14 @@ echo "</pre>";  */
                 );
             }
 
-        }else
+        /*}else
         {
              $response_result = array(
                     'status'=>0,
                     'message'=>"Your Refund Amount shout not Greater than Total Paid Amount"
             );
         }
-       
+       */
         echo json_encode($response_result);
 
 
@@ -1838,6 +1920,8 @@ echo "</pre>";  */
                     $arra_empt2['cgst_amount']           =$bookin_log['cgst_amount'];
                     $arra_empt2['sgst_amount']           =$bookin_log['sgst_amount'];
                     $arra_empt2['igst_amount']           =$bookin_log['igst_amount'];
+                    $arra_empt2['total_paid_amount']     =$bookin_log['total_paid_amount'];
+                    $arra_empt2['outstanding_amount']    =$bookin_log['outstanding_amount'];
                     $arra_empt2['discount']              =number_format($bookin_log['discount'],2);
                     $arra_empt2['total']                 =number_format($bookin_log['total'],2);
                     $arra_empt2['pending_bill']          =$bookin_log['pending_bill'];
@@ -1973,6 +2057,7 @@ echo "</pre>";  */
             ); 
 
              $data['receipt_dtl'] = $receipt_dtl;
+             $data['payment_details']    = $this->booking_payments_model->getPaymentDetail($id); 
              $company_details = $this->company_model->findCompanyDetail($conditions);
 
             if(!empty($company_details))
