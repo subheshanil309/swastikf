@@ -6,18 +6,18 @@
 
 
 
-class Customer_model extends Base_model
+class Farmers_model extends Base_model
 {
 
-    public $table = "z_customer";
+    public $table = "z_farmers";
 
-    //set column field database for datatable orderable
-    var $column_order = array(null, 'c.date_at', 'c.sku_id', 'c.customer_title','c.customer_mobile','c.customer_alter_mobile',  'sta.name', 'dist.name', 'cit.city', 'ctype.name', 'calldirection.name'); 
 
-    //set column field database for datatable searchable 
-    var $column_search = array('c.date_at', 'c.sku_id', 'c.customer_title','c.customer_mobile','c.customer_alter_mobile',  'sta.name', 'dist.name', 'cit.city', 'ctype.name', 'calldirection.name'); 
+     var $column_order = array('f.id', 'f.name', 'f.mobile', 'f.alt_mobile', 'f.father_name', 'f.whatsapp', 'f.village', 'f.address', 'st.name' ,'dt.name' ,'ct.city' , 'f.pincode', 'f.source','f.date_at','f.status'); //set column field database for datatable orderable
+    var $column_search = array( 'f.id', 'f.name', 'f.mobile', 'f.alt_mobile', 'f.father_name', 'f.whatsapp', 'f.village', 'f.address', 'st.name' ,'dt.name' ,'ct.city' , 'f.pincode', 'f.source','f.date_at','f.status');  
 
-    var $order = array('c.id' => 'desc'); // default order
+   
+
+    var $order = array('f.id' => 'desc'); // default order
 
 
 
@@ -83,7 +83,7 @@ class Customer_model extends Base_model
 
         function get_datatables()
         {
-            $this->db->select('c.*, cit.city as city, sta.name as state, dist.name as district, ctype.title as leatest_calltype,   calldirection.title as leatest_calldir');
+            $this->db->select('f.*,ct.city as city,st.name as state,dt.name as district');
             $this->_get_datatables_query();
 
             if(isset($_POST['length']) && $_POST['length'] != -1)
@@ -101,16 +101,12 @@ class Customer_model extends Base_model
          public function _get_datatables_query()
         {     
 
-            $this->db->from($this->table. ' as c'); 
-            $this->db->join('z_states as sta', 'sta.id = c.state', 'left');
-            $this->db->join('z_district as dist', 'dist.id = c.district', 'left');
-            $this->db->join('z_cities as cit', 'cit.id = c.city', 'left');
-            $this->db->join('z_call_type as ctype', 'ctype.id = c.last_call_type', 'left');
-            $this->db->join('z_call_direction as calldirection', 'calldirection.id = c.last_call_direction', 'left');
-
+ 
+             $this->db->from($this->table. ' as f');  
             
-            
-
+            $this->db->join('z_states as st', 'st.id = f.state_id');
+            $this->db->join('z_district as dt', 'dt.id = f.district_id');
+            $this->db->join('z_cities as ct', 'ct.id = f.city_id');
             $i = 0;     
 
             foreach ($this->column_search as $item) // loop column 
@@ -184,37 +180,30 @@ class Customer_model extends Base_model
         public function count_all()
         {
 
-            $this->db->from($this->table. ' as c');
+            $this->db->from($this->table);
 
             return $this->db->count_all_results();
 
         }
 
+
         function getRows($params = array())
         {
            
 
-                $this->db->select('c.*, cit.city as city, sta.name as state, dist.name as district, ctype.title as calltype,   calldirection.title as calldir,   admin.title as createdby,   admin2.title as assignedto,   admin3.title as lastfollower,   admin3.title as lastfollower,   last_ctype.title as lastcalltype');
-                $this->db->from($this->table. ' as c'); 
-                $this->db->join('z_states as sta', 'sta.id = c.state', 'left');
-                $this->db->join('z_district as dist', 'dist.id = c.district', 'left');
-                $this->db->join('z_cities as cit', 'cit.id = c.city', 'left');
-                $this->db->join('z_call_type as ctype', 'ctype.id = c.last_call_type', 'left');
+                $this->db->select('f.*, cit.city as city, sta.name as state, dist.name as district, source.title as source');
+                $this->db->from($this->table. ' as f'); 
+                $this->db->join('z_states as sta', 'sta.id = f.state_id', 'left');
+                $this->db->join('z_district as dist', 'dist.id = f.district_id', 'left');
+                $this->db->join('z_cities as cit', 'cit.id = f.city_id', 'left');
+                $this->db->join('z_lead_source as source', 'source.id = f.source', 'left');
                  
-                $this->db->join('z_call_direction as calldirection', 'calldirection.id = c.last_call_direction', 'left');
-                $this->db->join('z_admin as admin', 'admin.id = c.created_by', 'left');
-                $this->db->join('z_admin as admin2', 'admin2.id = c.assigned_to', 'left');
-                $this->db->join('z_admin as admin3', 'admin3.id = c.last_follower', 'left');
-                $this->db->join('z_call_type as last_ctype', 'last_ctype.id = c.last_follow_call_type', 'left');
+                 
 
                 $where  = '';
                 $userid = $params['userid'];
-                 $role = $this->session->userdata('role');
-                
-                 $where.= "( c.status = 1 )";  
-                
-                
-                     $where.= " AND ( c.created_by = '".$userid."' OR c.assigned_to='".$userid."')";
+               /* $where.= "( f.status = 1 )";*/
+                $where.= "   ( f.created_by = '".$userid."')";
 
                
                     
@@ -224,12 +213,12 @@ class Customer_model extends Base_model
                 {
                      
                     foreach($params['where'] as $key => $val){ 
-                     if($key =='customer_title' || $key =='stat_type' || $key =='stat_type' )
+                     if($key =='customer_title')
                     {
 
                     
                     }else{
-                        $where.= " AND ( c.".$key." = '".$val."' )";
+                        $where.= " AND ( f.".$key." = '".$val."' )";
                     }
 
                 } 
@@ -242,40 +231,7 @@ class Customer_model extends Base_model
                     }
                     $this->db->or_like('customer_title', $params['where']['customer_title']);
                  }
-                if(isset($params['where']['stat_type']))
-                {
-                    if($params['where']['stat_type'] =='followup' && $params['followup_type']=='yesterday')
-                    {
-                         
-
-                        $back_date = date('Y-m-d',strtotime("-1 days"));
-                        $where.= "  AND c.last_call_back_date='".$back_date."'"; 
-
-
-                    }else if($params['where']['stat_type'] =='followup' && $params['followup_type']=='today')
-                    {
-                         
-
-                        $back_date = date('Y-m-d');
-                        $where.= "  AND c.last_call_back_date='".$back_date."'"; 
-
-
-                    }else if($params['where']['stat_type'] =='followup' && $params['followup_type']=='tomorrow')
-                    {
-                         
-
-                         $back_date = date('Y-m-d',strtotime("+1 days"));
-                        $where.= "  AND c.last_call_back_date='".$back_date."'"; 
-
-
-                    }else if($params['where']['stat_type'] =='call_type2')
-                    {
-                        $current_date = date('Y-m-d');
-                        $where.= " AND (c.last_follow_date='".$current_date."')";
-                    }
-                     
-                    
-                }
+                 
 
  
                      
@@ -296,7 +252,7 @@ class Customer_model extends Base_model
                     $query = $this->db->get(); 
                     $result = $query->row_array(); 
                 }else{ 
-                    $this->db->order_by('c.id', 'desc'); 
+                    $this->db->order_by('f.id', 'desc'); 
                     if(array_key_exists("start",$params) && array_key_exists("limit",$params)){ 
 
                          $this->db->limit($params['limit'],$params['start']); 
@@ -314,16 +270,6 @@ class Customer_model extends Base_model
 
 
 
+
 }
 
-
-
-
-
-
-
-
-
-
-
-  

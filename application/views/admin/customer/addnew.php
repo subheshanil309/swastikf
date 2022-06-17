@@ -1,7 +1,7 @@
 
 <style type="text/css">
   .mytablestyle {
-    min-height: 455px;
+    max-height: 455px;
 
 }
  .row label {font-size: 11px;}
@@ -10,8 +10,15 @@
 .table-nowrap td, .table-nowrap th {
     
     border: 1px solid #39823b;
-    padding: 2px;
+    padding: 3px;
 }
+</style>
+<style type="text/css">
+  .table>:not(caption)>*>* {
+  padding: 2px 2px;
+  font-size: 10px;
+  color: #000;
+  }
 </style>
 <div class="page-content">
    <div class="container-fluid">
@@ -279,59 +286,21 @@ print_r($customer_call_dtl);  */
                            </div>
                         </div>
                      </div>
-                     <!-- <div class="card">
-                        <h5 class="card-header bg-success text-white border-bottom ">Send To Whatsapp</h5>
-                        <div class="card-body" >
-                           <div class="row " hidden>
-                              <div class="col-sm-6">
-                                 <?php 
-                                    for ($i=0; $i < 13; $i++) { 
-                                       ?>
-                                 <div class="form-check mb-1">
-                                    <input class="form-check-input" type="checkbox" id="horizontalLayout-Check">
-                                    <label class="form-check-label" for="horizontalLayout-Check">
-                                    Office address 
-                                    </label>
-                                 </div>
-                                 <?php
-                                    }
-                                    ?>
-                              </div>
-                              <div class="col-sm-6">
-                                 <?php 
-                                    for ($i=0; $i < 13; $i++) { 
-                                       ?>
-                                 <div class="form-check mb-1">
-                                    <input class="form-check-input" type="checkbox" id="horizontalLayout-Check">
-                                    <label class="form-check-label" for="horizontalLayout-Check">
-                                    Office address 2
-                                    </label>
-                                 </div>
-                                 <?php
-                                    }
-                                    ?>
-                              </div>
-                           </div>
-                           <div class="row">
-                              <label for="whatsapp_number" class="col-sm-4 col-form-label">WhatsApp No-</label>
-                              <div class="col-sm-8">
-                                 <input type="text" class="form-control form-control-sm" id="whatsapp_number" name="whatsapp_number" placeholder="WhatsApp No-">
-                              </div>
-                           </div>
-                        </div>
-                     </div> -->
-                  </div>
-               </div>
-               <div class="row">
-                  <div class="col-sm-12">
                      <div class="card">
-                        <div class="card-body ">
-                           <button type="submit" class="btn btn-primary w-md float-end">Save</button>
-                           <input type="hidden" name="id" value="<?php if(isset($edit_data->id)){echo $edit_data->id;} ?>"/>
+                         
+                        <div class="card-body">
+                           <div class="row ">
+                              <div class="col-sm-12">
+                                  <button type="submit" class="btn btn-primary w-md float-end">Save</button>
+                                  <input type="hidden" name="id" value="<?php if(isset($edit_data->id)){echo $edit_data->id;} ?>"/>
+                              </div>
+                           </div>
                         </div>
                      </div>
+                     
                   </div>
                </div>
+                
             </form>
          </div>
          <div class="col-xl-6">
@@ -502,13 +471,7 @@ print_r($customer_call_dtl);  */
                        <div class="card-body">
                         
                         <div class="table-responsive mytablestyle">
-                           <style type="text/css">
-                              .table>:not(caption)>*>* {
-                              padding: 1px 1px;
-                              font-size: 10px;
-                              color: #000;
-                              }
-                           </style>
+                          
                            <table class="table align-middle table-nowrap mb-0 table-striped" id="example">
                               <thead class="table-light">
                                  <tr>
@@ -627,7 +590,7 @@ print_r($customer_call_dtl);  */
                                         <td><?php echo (isset($customer['other_city']) && !empty($customer['other_city']))?($customer['other_city']):($customer['city']);?></td>
                                         <td><?php echo $customer['calldir'];?></td>
                                         <td><?php echo $customer['calltype'];?></td>
-                                        <td><?php echo date('d M Y',strtotime($customer['last_call_back_date']));?></td>
+                                        <td><?php if($customer['last_call_back_date'] !=='0000-00-00'){echo date('d M Y',strtotime($customer['last_call_back_date']));}?></td>
                                         <td><?php echo $customer['assignedto'];?></td>
                                         <td><?php echo $customer['createdby'];?></td>
                                         <td><?php echo date('d M Y',strtotime($customer['last_follow_date']));?></td>

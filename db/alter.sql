@@ -238,6 +238,63 @@ ALTER TABLE `z_booking_payments` ADD `update_by` INT NULL AFTER `created_by`;
  ALTER TABLE `z_customer` ADD `last_call_back_date` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP;
  ALTER TABLE `z_customer` CHANGE `other_state` `other_state` VARCHAR(100) NULL DEFAULT NULL, CHANGE `other_city` `other_city` VARCHAR(100) NULL DEFAULT NULL, CHANGE `other_district` `other_district` VARCHAR(100) NULL DEFAULT NULL;
 
+----17-06-2022
+
+
+DROP TABLE IF EXISTS `z_farmers`;
+CREATE TABLE IF NOT EXISTS `z_farmers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL,
+  `mobile` varchar(20) NOT NULL,
+  `alt_mobile` varchar(20) NOT NULL,
+  `father_name` varchar(200) NOT NULL,
+  `whatsapp` varchar(20) NOT NULL,
+  `village` varchar(200) NOT NULL,
+  `address` varchar(200) NOT NULL,
+  `state_id` int(11) DEFAULT NULL,
+  `district_id` int(11) DEFAULT NULL,
+  `city_id` int(11) DEFAULT NULL,
+  `pincode` int(11) DEFAULT NULL,
+  `source` int(11) DEFAULT NULL,
+  `date_at` date DEFAULT current_timestamp(),
+  `update_at` date DEFAULT current_timestamp(),
+  `created_by` int(11) NOT NULL DEFAULT 1,
+  `update_by` int(11) NOT NULL DEFAULT 1,
+  `company_id` int(11) NOT NULL DEFAULT 1,
+  `status` int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+DROP TABLE IF EXISTS `z_lead_source`;
+CREATE TABLE IF NOT EXISTS `z_lead_source` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `slug` varchar(200) NOT NULL,
+  `status` int(11) DEFAULT 1,
+  `date_at` date NOT NULL DEFAULT current_timestamp(),
+  `update_at` date NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+ALTER TABLE `z_farmers` ADD `other_state` VARCHAR(100) , ADD `other_district` VARCHAR(100) , ADD `other_city` VARCHAR(100);
+ALTER TABLE `z_farmers` CHANGE `source` `source` VARCHAR(100) NULL DEFAULT NULL;
+
+
+ALTER TABLE `z_admin` ADD `created_by` INT NULL DEFAULT NULL , ADD `update_by` INT NULL DEFAULT NULL;
+
+
+ALTER TABLE `z_admin` ADD `state_id` INT NULL , ADD `district_id` INT NULL , ADD `city_id` INT NULL , ADD `other_state` VARCHAR(100) NOT NULL , ADD `other_district` VARCHAR(100)NOT NULL; 
+
+ALTER TABLE `z_admin` ADD `other_city` VARCHAR(100) NULL ;
+
+
+ALTER TABLE `z_admin` CHANGE `created_by` `created_by` INT(11) NULL DEFAULT '1';
+
+ALTER TABLE `z_admin` ADD `pincode` INT(25) NOT NULL AFTER `other_city` ;
 
 
 

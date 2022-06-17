@@ -184,6 +184,89 @@ class Admin_model extends Base_model
 
 
 
+
+        function getRows($params = array())
+        {
+           
+
+                $this->db->select('a.*, cit.city as city, sta.name as state, dist.name as district ');
+                $this->db->from($this->table. ' as a'); 
+                $this->db->join('z_states as sta', 'sta.id = a.state_id', 'left');
+                $this->db->join('z_district as dist', 'dist.id = a.district_id', 'left');
+                $this->db->join('z_cities as cit', 'cit.id = a.city_id', 'left');
+                  
+                 
+
+                $where  = '';
+                $userid = $params['userid'];
+               /* $where.= "( a.status = 1 )";*/
+                $where.= "   ( a.created_by = '".$userid."')";
+
+               
+                    
+
+            if(array_key_exists("where", $params)){
+                if(!empty($params['where']))
+                {
+                     
+                    foreach($params['where'] as $key => $val){ 
+                     if($key =='customer_title')
+                    {
+
+                    
+                    }else{
+                        $where.= " AND ( a.".$key." = '".$val."' )";
+                    }
+
+                } 
+
+                  if(isset($params['where']['customer_title']))
+                {
+                    if(!empty($where))
+                    {
+                        
+                    }
+                    $this->db->or_like('customer_title', $params['where']['customer_title']);
+                 }
+                 
+
+ 
+                     
+                }
+                
+            }
+
+            $this->db->where($where); 
+           
+         if(array_key_exists("returnType",$params) && $params['returnType'] == 'count')
+         {
+                $result = $this->db->count_all_results(); 
+            }else{ 
+                if(array_key_exists("id", $params) || (array_key_exists("returnType", $params) && $params['returnType'] == 'single')){ 
+                    if(!empty($params['id'])){ 
+                        $this->db->where('id', $params['id']); 
+                    } 
+                    $query = $this->db->get(); 
+                    $result = $query->row_array(); 
+                }else{ 
+                    $this->db->order_by('a.id', 'desc'); 
+                    if(array_key_exists("start",$params) && array_key_exists("limit",$params)){ 
+
+                         $this->db->limit($params['limit'],$params['start']); 
+                    }elseif(!array_key_exists("start",$params) && array_key_exists("limit",$params)){ 
+                        $this->db->limit($params['limit']); 
+                    } 
+                     
+                    $query = $this->db->get(); 
+                    $result = ($query->num_rows() > 0)?$query->result_array():FALSE; 
+                } 
+            } 
+             
+             return $result; 
+    } 
+
+
+
 }
 
 
