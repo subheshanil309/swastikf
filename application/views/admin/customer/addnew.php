@@ -937,8 +937,12 @@ function districtChange2(district_code = '',selected_city = '') {
            url : hitURL,
            data : { id : userId } 
            }).done(function(data){           
-             currentRow.parents('tr').remove();
-             if(data.status = true) { alert("successfully deleted"); }
+             
+             if(data.status = true) {
+                currentRow.parents('tr').remove();
+              alert("successfully deleted"); 
+              window.location.reload(true);
+            }
              else if(data.status = false) { alert("deletion failed"); }
              else { alert("Access denied..!"); }
            });
