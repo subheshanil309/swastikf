@@ -480,7 +480,7 @@ echo "</pre>";  */
 
 
 
-        $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid); 
+        $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type'); 
 
          
         $this->global['pageTitle'] = 'Booking';

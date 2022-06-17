@@ -62,7 +62,7 @@
                            <div class="row">
                               <label for="customer_id" class="col-sm-4 col-form-label">Farmer ID</label>
                               <div class="col-sm-8">
-                                 <input type="text" class="form-control form-control-sm" id="customer_id" name="customer_id" placeholder="Customer ID" readonly value="<?php if(isset($edit_data->sku_id) && $edit_data->sku_id !==''){echo $edit_data->sku_id;} ?>">
+                                 <input type="text" class="form-control form-control-sm" id="customer_id" name="customer_id" placeholder="Customer ID" readonly value="<?php if(isset($edit_data->id) && $edit_data->id !==''){echo $edit_data->id;} ?>">
                               </div>
                            </div>
                            <div class="row">
@@ -106,7 +106,7 @@
                            <div class="row">
                               <label for="city" class="col-sm-4 col-form-label">District</label>
                               <div class="col-sm-8">
-                                 <select class=" form-control select2 " id="district" name="district" aria-label="Floating label select example" onchange="districtChange()">
+                                 <select class=" form-control select2" id="district" name="district" aria-label="Floating label select example" onchange="districtChange()">
                                     <option value="" selected>Choose District</option>
                                    
                                  </select>

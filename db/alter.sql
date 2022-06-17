@@ -236,6 +236,8 @@ ALTER TABLE `z_booking_payments` ADD `update_by` INT NULL AFTER `created_by`;
 
 
  ALTER TABLE `z_customer` ADD `last_call_back_date` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ ALTER TABLE `z_customer` CHANGE `other_state` `other_state` VARCHAR(100) NULL DEFAULT NULL, CHANGE `other_city` `other_city` VARCHAR(100) NULL DEFAULT NULL, CHANGE `other_district` `other_district` VARCHAR(100) NULL DEFAULT NULL;
+
 
 
 
