@@ -567,8 +567,7 @@ echo "</pre>";  */
         $data['all_agents'] = $this->admin_model->findDynamic($where);
 
 
-        $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid); 
-
+ 
 
         $this->global['pageTitle'] = 'Add New Booking';
         $this->loadViews("admin/booking/addnew", $this->global, $data , NULL);
@@ -2040,6 +2039,11 @@ echo "</pre>";  */
             {
                 $data['company_details'] =   $company_details[0];   
             }
+
+            $where = array();
+            $where['status'] = '1';
+            $where['orderby'] = 'title';
+            $data['payments_mode'] = $this->payment_mode_model->findDynamic($where);
            
 
             

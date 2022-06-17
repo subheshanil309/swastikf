@@ -350,7 +350,19 @@
 
 
                                             
-                                            <li>Mode of payment: Online transfer </li>
+                                            <li>Mode of payment: <?php 
+                                                if(!empty($payments_mode)){
+                                                    foreach ($payments_mode as $key => $value) {
+
+
+
+                                                    if($value->title !=='other')
+                                                    {
+                                                        echo $value->title .", ";
+                                                    }
+                                                    }
+                                                }else{ echo 'Online transfer';}
+                                            ?> </li>
                                             <li>Outstanding amount must be cleared before 15 Days of Delivery</li>
                                             <li><strong>Bank Details:</strong><br> <strong>Bank:</strong> <?php echo  @$company_details['bank_name'];?><br>
                                                 <strong>Account Number :</strong> <?php echo  @$company_details['bank_account_number'];?><br>
