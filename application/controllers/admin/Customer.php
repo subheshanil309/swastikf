@@ -1097,7 +1097,7 @@ class Customer extends BaseController
                 {
                     $farmer_details = $this->farmers_model->find($value['farmer_id']);
                     $where = array();
-                    $where['customer'] = $value['farmer_id'];
+                    $where['customer'] = $value['id'];
                     $where['field'] ='id';
 
                     $count_call  = $this->customer_call_model->findDynamic($where);
