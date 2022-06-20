@@ -21,7 +21,7 @@
   }
 </style>
 <div class="page-content">
-  <?php include APPPATH.'views\admin\menu-strive.php';?>
+  <?php include APPPATH.'views/admin/menu-strive.php';?>
 
   
    <div class="container-fluid">
