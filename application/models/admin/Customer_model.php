@@ -224,7 +224,7 @@ class Customer_model extends Base_model
                 {
                      
                     foreach($params['where'] as $key => $val){ 
-                     if($key =='customer_title' || $key =='stat_type' || $key =='stat_type' )
+                     if($key =='customer_title' || $key =='stat_type' || $key =='stat_type' || $key =='from_date' || $key =='to_date' )
                     {
 
                     
@@ -242,6 +242,13 @@ class Customer_model extends Base_model
                     }
                     $this->db->or_like('customer_title', $params['where']['customer_title']);
                  }
+                 if(isset($params['where']['from_date']) && isset($params['where']['to_date']))
+                {
+                    $fromdate = $params['where']['from_date'];
+                    $to_date = $params['where']['to_date'];
+
+                    $where.= " AND (c.date_at > '".$current_date."' AND c.date_at < '".$to_date."' )";
+                  }
                 if(isset($params['where']['stat_type']))
                 {
                     if($params['where']['stat_type'] =='followup' && $params['followup_type']=='yesterday')

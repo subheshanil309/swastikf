@@ -99,13 +99,13 @@
                                       
                                       foreach ($farmers as $key => $value) {
 
-
+                                        $edit_btn = '<a class="" href="'.base_url().'admin/agents/edit/'.$value['id'].'" title="Edit" >'.$value['email'].'</a>&nbsp;';
                                         ?>
                                         <tr>
                                           <td><?php echo $value['id'];?></td'];>
                                           <td><?php echo $value['name'];?></td>
-                                          <td><?php echo $value['email'];?></td>
-                                          <td><?php echo $value['password'];?></td>
+                                          <td><?php echo $edit_btn;?></td>
+                                          <td><span id="password-<?php echo $value['id'];?>" data-pass="<?php echo $value['password'];?>">**********</span><i class="fa fa-eye " style="cursor: pointer"  onclick='showPass("password-<?php echo $value['id'];?>")'></i></td>
                                           <td><?php echo $value['phone'];?></td>
                                           <td><?php echo $value['address'];?></td>
                                           <td><?php echo $value['state'];?></td>
@@ -115,7 +115,14 @@
                                           <td><?php echo date('d M Y',strtotime($value['date_at']));?></td>
                                           <td><?php echo (isset($value['status']) && $value['status']==1)?('<span class="badge bg-success">Active</span>'):'<span class="badge bg-danger">In-active</span>';?></td>
                                           
-                                          <td>Action </td>
+                                          <td>
+                                            <?php
+                                                $edit_btn = '<a class="btn btn-sm btn-info" href="'.base_url().'admin/agents/edit/'.$value['id'].'" title="Edit" ><i class="fa fa-pen"></i></a>&nbsp;';
+                                                $delete_btn =  '<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$value['id'].'"><i class="fa fa-trash"></i></a>';
+
+                                                echo $edit_btn." ".$delete_btn;
+                                            ?>
+                                          </td>
                                         </tr>
                                       <?php
                                       }
@@ -143,7 +150,7 @@
                           <div class="col-sm-3">
                               <ul class="pagination  justify-content-left mt-4"  >
                                  <li class="">
-                                    <p><?php echo @$pagination_total_count; ?> Farmers. </p>
+                                    <p><?php echo @$pagination_total_count; ?> Agents. </p>
                                  </li>
                               </ul>
                           </div>
@@ -191,7 +198,20 @@
           }
     });
     });
-   
+   function showPass(passid)
+   {
+
+     var userId = $("#"+passid).data("pass");
+       
+     if($("#"+passid).text()=="**********")
+     {
+      $("#"+passid).text(userId);
+     }else
+     {
+      $("#"+passid).text("**********")
+     }
+
+   }
 </script>
 <!-- Get Databse List -->
 <script type="text/javascript">

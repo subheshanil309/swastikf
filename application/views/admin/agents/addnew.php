@@ -151,6 +151,26 @@
                                     </div>
                                  </div>
                               </div>
+                                <div class="col-sm-3">
+                                 <div class="row">
+                                    <label for="company_id" class="col-sm-4 col-form-label">Company</label>
+                                    <div class="col-sm-8">
+                                       <select class=" form-control" id="company_id" name="company_id" aria-label="Floating label select example"  >
+                                           <?php
+                                             if(!empty($companies))
+                                             {
+                                                 foreach ($companies as $company) {
+                                                     ?>
+                                          <option value="<?php echo $company->id;?>" <?php if(set_value('company_id')==$company->id){echo 'selected';}?>  ><?php echo $company->name;?></option>
+                                          <?php
+                                             }
+                                             }
+                                             ?>
+                                       </select>
+                                        
+                                    </div>
+                                 </div>
+                              </div>
                               <div class="col-sm-3">
                                  <div class="row">
                                     <label for="status1" class="col-sm-4 col-form-label">Status</label>

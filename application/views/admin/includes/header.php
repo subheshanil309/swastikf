@@ -313,8 +313,10 @@
                                     <span key="t-ecommerce">Settings</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a   href="<?php echo base_url('admin/product');?>" key="t-products">Product</a></li>
                                     <li><a   href="#" key="t-products">Access Mgt</a></li>
+                                    <li><a   href="<?php echo base_url('admin/product');?>" key="t-products">Product</a></li>
+                                    <li><a   href="<?php echo base_url('admin/agents');?>" key="t-products">Agents Mgt</a></li>
+                                    <li><a   href="<?php echo base_url('admin/farmers');?>" key="t-products">Farmers Mgt</a></li>
                                     <li><a   href="<?php echo base_url('admin/country');?>" key="t-products">Country</a></li>
                                     <li><a   href="<?php echo base_url('admin/state');?>" key="t-products">State</a></li>
                                     <li><a   href="<?php echo base_url('admin/district');?>" key="t-products">District</a></li>

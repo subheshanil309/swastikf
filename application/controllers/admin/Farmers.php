@@ -14,7 +14,7 @@ class Farmers extends BaseController
        $this->load->model('admin/state_model');
        $this->load->model('admin/district_model');
        $this->load->model('admin/country_model');
-       $this->load->model('admin/city_model');
+       $this->load->model('admin/farmers_model');
 
        $this->perPage =100; 
     }
@@ -29,6 +29,36 @@ class Farmers extends BaseController
 
         //pagomatopm start
             $where_search = array();
+
+            $search_name            = @$this->input->get('name');
+            $farmer_id              = @$this->input->get('farmer_id');
+            $mobile                 = @$this->input->get('mobile');
+            $father_name            = @$this->input->get('father_name');
+            $whatsapp               = @$this->input->get('whatsapp');
+            $alt_mobile               = @$this->input->get('alt_mobile');
+
+
+
+                if(!empty($search_name))
+                {
+                    $where_search['name'] =  $search_name;
+                } 
+                if(!empty($farmer_id))
+                {
+                    $where_search['id'] =  $farmer_id;
+                } 
+                if(!empty($mobile))
+                {
+                    $where_search['mobile'] =  $mobile;
+                } 
+                if(!empty($whatsapp))
+                {
+                    $where_search['whatsapp'] =  $whatsapp;
+                } if(!empty($alt_mobile))
+                {
+                    $where_search['alt_mobile'] =  $alt_mobile;
+                } 
+
 
             $userid = $this->session->userdata('userId');
             $conditions['returnType']   = 'count'; 
@@ -91,6 +121,7 @@ class Farmers extends BaseController
                     $offset = ($offset-1) * $this->perPage;
                 }
 
+
                 // Get records 
                 $conditions = array( 
                 'start' => $offset, 
@@ -145,8 +176,7 @@ class Farmers extends BaseController
     {
         $this->isLoggedIn();
 		
-		
-		
+		$userid = $this->session->userdata('userId');
 		$this->load->library('form_validation');            
         $this->form_validation->set_rules('name','name','trim|required');
         $this->form_validation->set_rules('mobile','Mobile','trim|required');
@@ -192,7 +222,7 @@ class Farmers extends BaseController
             $insertData['status']       = $form_data['status1'];
             $insertData['village']      = $form_data['village'];
             $insertData['address']      = $form_data['address'];
-
+             $insertData['created_by']      = $userid;
                  
     			$result = $this->farmers_model->save($insertData);
                 if($result > 0)
@@ -274,7 +304,7 @@ class Farmers extends BaseController
         $this->isLoggedIn();
         if($_POST['id'] == null)
         {
-            redirect('admin/city');
+            redirect('admin/farmers');
         }
 
         $insertData['id'] = $_POST['id'];
@@ -294,36 +324,25 @@ class Farmers extends BaseController
         $this->isLoggedIn();
         if($id == null)
         {
-            redirect('admin/city');
+            redirect('admin/farmers');
         }
         $data = array();
         $data['edit_data'] = $this->farmers_model->find($id);
 
 
-        $where  = array();
-            $where['status']  = '1';
-            $where['field']  = 'id,name ';
-             $where['orderby'] = 'name';
-            $data['countryList'] = $this->country_model->findDynamic($where);
-
-             $where  = array();
+         $where  = array();
             $where['status']        = '1';
-            $where['country_id']    = $data['edit_data']->country_id;
+            $where['country_id']    = 105;
             $where['field']         = 'id,name ';
             $where['orderby'] = 'name';
-            $data['stateList'] = $this->state_model->findDynamic($where); 
-
-             $where  = array();
-            $where['status']        = '1';
-            $where['country_id']    =$data['edit_data']->country_id;
-            $where['state_id']    =$data['edit_data']->state_id;
-            $where['field']         = 'id,name ';
-            $where['orderby'] = 'name';
-            $data['districtList'] = $this->district_model->findDynamic($where);
+            $data['states'] = $this->state_model->findDynamic($where); 
         
+         $where  = array();
+            $where['status']        = '1'; 
+            $data['lead_sources'] = $this->lead_source_model->findDynamic($where); 
 
         
-        $this->global['pageTitle'] = 'City';
+        $this->global['pageTitle'] = 'Edit Farmers';
         $this->loadViews("admin/farmers/edit", $this->global, $data , NULL);
         
     } 
@@ -344,73 +363,72 @@ class Farmers extends BaseController
     // Update category*************************************************************
     public function update()
     {
-		
-        $this->isLoggedIn();
+		 $this->isLoggedIn();
+       
+        $userid = $this->session->userdata('userId');
         $this->load->library('form_validation');            
         $this->form_validation->set_rules('name','name','trim|required');
-        $this->form_validation->set_rules('country_id','Select Country','trim|required');
-        $this->form_validation->set_rules('state_id','Select State','trim|required');
-        $this->form_validation->set_rules('district_id','Select District','trim|required');
-        
+        $this->form_validation->set_rules('mobile','Mobile','trim|required');
+         
+         
         //form data 
         $form_data  = $this->input->post();
         if($this->form_validation->run() == FALSE)
         {
-			
-                $this->edit($form_data['id']);
+            $this->addnew();
         }
         else
         {
-                  // check already exist
-            $form_data['name'] = strtolower($form_data['name']);
-            $form_data['name'] = ucwords($form_data['name']);
-            $where = array();
-            $where['city']          =  $form_data['name'];
-            $where['country_id']    = $form_data['country_id'];
-            $where['state_id']    = $form_data['state_id'];
-            $where['district_id']    = $form_data['district_id'];
-            $where['id !=']    = $form_data['id'];
-             
+             $insertData = array();
 
-
-            $returnData = $this->farmers_model->findDynamic($where);
+                 // check already exist
+                $form_data['name'] = strtolower($form_data['name']);
+                $form_data['name'] = ucwords($form_data['name']);
+                $where = array();
+                 
+                $where['mobile']          =  $form_data['mobile'];
+                $where['id !=']          =  $form_data['id'];
+                
+                $returnData = $this->farmers_model->findDynamic($where);
  
-             if($form_data['name']== "Other")
-             {
-                $this->session->set_flashdata('error', $form_data['name'].' Not Allow.');
-             }else if(!empty($returnData)){
-               $this->session->set_flashdata('error', $form_data['name'].' already Exist.');
+              if(!empty($returnData)){
+               $this->session->set_flashdata('error', $form_data['mobile'].' already Exist.');
+               redirect(base_url().'admin/farmers/edit/'.$form_data['id']);
             }else{
-                    $insertData =  array();
-                     $insertData['id'] = $form_data['id'];
-                    $insertData['city'] = $form_data['name'];
-                    $insertData['country_id'] = $form_data['country_id'];
-                    $insertData['state_id'] = $form_data['state_id'];
-                    $insertData['district_id'] = $form_data['district_id'];
-                    $insertData['update_at'] = date("Y-m-d H:i:s");;
-                    $insertData['status'] = $form_data['status1'];
 
-                    $result = $this->farmers_model->save($insertData);
-            
+            $insertData['id']         = $form_data['id'];
+            $insertData['name']         = $form_data['name'];
+            $insertData['mobile']       = $form_data['mobile'];
+            $insertData['alt_mobile']   = $form_data['alt_mobile'];
+            $insertData['whatsapp']     = $form_data['whatsapp'];
+            $insertData['father_name']  = $form_data['father_name'];
+            $insertData['source']       = $form_data['source'];
+            $insertData['pincode']      = $form_data['pincode'];
+            $insertData['city_id']      = $form_data['city'];
+            $insertData['other_city']   = $form_data['other_city'];
+            $insertData['state_id']    = $form_data['state'];
+            $insertData['other_state'] = $form_data['other_state'];
+            $insertData['other_district']= $form_data['other_district'];
+            $insertData['district_id']  = $form_data['district'];
+            $insertData['update_at']      = date("Y-m-d H:i:s");;
+            $insertData['status']       = $form_data['status1'];
+            $insertData['village']      = $form_data['village'];
+            $insertData['address']      = $form_data['address'];
+             $insertData['update_by']      = $userid;
 
-                    if($result > 0)
-                    {
-                        $this->session->set_flashdata('success', ' State successfully Updated');
-                    }
-                    else
-                    { 
-                        $this->session->set_flashdata('error', 'State Updation failed');
-                    }
-                    
-                    
-            }
-
-           
-            
-                redirect(base_url().'admin/farmers/edit/'.$form_data['id']);
-
-            
-          }  
+                 
+                $result = $this->farmers_model->save($insertData);
+                if($result > 0)
+                {
+                    $this->session->set_flashdata('success', 'Farmer successfully Updated');
+                }
+                else
+                { 
+                    $this->session->set_flashdata('error', 'Farmer  Updated failed');
+                }
+            }// check already    
+            redirect(base_url().'admin/farmers');
+          } 
         
     }
 

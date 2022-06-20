@@ -78,6 +78,7 @@ class Login extends CI_Controller
                                             'email'=>$res->email,
                                             'phone'=>$res->phone,
                                             'name'=>$res->name,
+                                            'company_id'=>$res->company_id,
                                             'isLoggedIn' => TRUE
                                     );
                                     

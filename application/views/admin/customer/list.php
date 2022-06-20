@@ -2,6 +2,9 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.dataTables.min.js"></script>
 
 <div class="content-wrapper">
+  <?php 
+    include('./menu-strive.php');
+  ?>
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>

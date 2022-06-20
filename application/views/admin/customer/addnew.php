@@ -1,7 +1,7 @@
 
 <style type="text/css">
   .mytablestyle {
-    max-height: 455px;
+    min-height: 455px;
 
 }
  .row label {font-size: 11px;}
@@ -21,6 +21,9 @@
   }
 </style>
 <div class="page-content">
+  <?php include APPPATH.'views\admin\menu-strive.php';?>
+
+  
    <div class="container-fluid">
       <div class="row">
          <div class="col-xl-6">
@@ -31,10 +34,10 @@
                       <div class="row">
                         <div class="col-md-6">
                             <div class="form-group row">
-                                <label for="customer_id" class="col-sm-4 col-form-label text-right">Cust ID:</label>
+                                <label for="farmer_id" class="col-sm-4 col-form-label text-right">Farmer ID:</label>
                                 <div class="col-sm-8">
                                     <div class="input-group input-group-sm">
-                                        <input class="form-control form-control-sm  " id="customer_id" name="customer_id" type="text" value="<?php if(isset($_GET['customer_id']) && $_GET['customer_id'] !==''){ echo $_GET['customer_id'];}?>">
+                                        <input class="form-control form-control-sm  " id="farmer_id" name="farmer_id" type="text" value="<?php if(isset($_GET['farmer_id']) && $_GET['farmer_id'] !==''){ echo $_GET['farmer_id'];}?>">
                                         <div class="input-group-append">
                                             <button type="submit" class="btn btn-info btn-sm"><i class="fa fa-search"></i></button>                                    
                                         </div>
@@ -99,7 +102,7 @@ print_r($customer_call_dtl);  */
                      ?>
                </div>
             </div>
-            <form action="<?php echo base_url() ?>admin/customer/insertnow" method="post" role="form" enctype="multipart/form-data" >
+            <form action="<?php echo base_url() ?>admin/customer/insertnow" method="post" role="form" enctype="multipart/form-data"  id='add_inquiry'>
                <div class="row">
                 <input type="hidden" name="redirect_url" id="redirect_url" value="<?php echo base_url()."admin/customer/addnew?".$_SERVER['QUERY_STRING'];?>">
                   <div class="col-sm-6">
@@ -107,27 +110,27 @@ print_r($customer_call_dtl);  */
                         <h5 class="card-header bg-success text-white border-bottom ">Farmers Detail</h5>
                         <div class="card-body">
                            <div class="row">
-                              <label for="customer_id2" class="col-sm-4 col-form-label">Farmer ID</label>
+                              <label for="farmser_id2" class="col-sm-4 col-form-label">Farmer ID</label>
                               <div class="col-sm-8">
-                                 <input type="text" class="form-control form-control-sm" id="customer_id2" name="customer_id" placeholder="Customer ID" readonly value="<?php if(isset($edit_data->sku_id) && $edit_data->sku_id !==''){echo $edit_data->sku_id;} ?>">
+                                 <input type="text" class="form-control form-control-sm" id="farmser_id2" name="farmser_id2" placeholder="Farmer ID" readonly value="<?php if(isset($edit_data->id) && $edit_data->id !==''){echo $edit_data->id;} ?>">
                               </div>
                            </div>
                            <div class="row">
                               <label for="customer_name" class="col-sm-4 col-form-label">Farmers Name*</label>
                               <div class="col-sm-8"> 
-                                 <input type="text" class="form-control form-control-sm" id="customer_name" name="customer_name" placeholder="Farmers Name*" value="<?php if(isset($edit_data->customer_name) && $edit_data->customer_name !==''){echo $edit_data->customer_name;}?>" />
+                                 <input type="text" class="form-control form-control-sm" id="customer_name" name="customer_name" placeholder="Farmers Name*" value="<?php if(isset($edit_data->name) && $edit_data->name !==''){echo $edit_data->name;}?>" />
                               </div>
                            </div>
                            <div class="row">
                               <label for="customer_mobile" class="col-sm-4 col-form-label">Mobile*</label>
                               <div class="col-sm-8"> 
-                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="customer_mobile"  name="customer_mobile"  placeholder="Customer Mobile*"  value="<?php if(isset($edit_data->customer_mobile) && $edit_data->customer_mobile !==''){echo $edit_data->customer_mobile;}?>"   />
+                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="customer_mobile"  name="customer_mobile"  placeholder="Customer Mobile*"  value="<?php if(isset($edit_data->mobile) && $edit_data->mobile !==''){echo $edit_data->mobile;}?>"   />
                               </div>
                            </div>
                            <div class="row">
                               <label for="customer_alter_mobile" class="col-sm-4 col-form-label">ALT Mobile</label>
                               <div class="col-sm-8">
-                                 <input type="text" class="form-control form-control-sm" id="customer_alter_mobile" placeholder="ALT Mobile" name="customer_alter_mobile" value="<?php if(isset($edit_data->customer_alter_mobile) && $edit_data->customer_alter_mobile !==''){echo $edit_data->customer_alter_mobile;}?>" >
+                                 <input type="text" class="form-control form-control-sm" id="customer_alter_mobile" placeholder="ALT Mobile" name="customer_alter_mobile" value="<?php if(isset($edit_data->alt_mobile) && $edit_data->alt_mobile !==''){echo $edit_data->alt_mobile;}?>" >
                               </div>
                            </div>
                            <div class="row">
@@ -140,7 +143,7 @@ print_r($customer_call_dtl);  */
                                        {
                                            foreach ($states as $state) {
                                                ?>
-                                    <option value="<?php echo $state->id;?>" <?php if(isset($edit_data->state) && $edit_data->state ==$state->id){ echo "selected";}?>><?php echo $state->name;?></option>
+                                    <option value="<?php echo $state->id;?>" <?php if(isset($edit_data->state_id) && $edit_data->state_id ==$state->id){ echo "selected";}?>><?php echo $state->name;?></option>
                                     <?php
                                        }
                                        }
@@ -215,7 +218,7 @@ print_r($customer_call_dtl);  */
                            <div class="row">
                               <label for="call_type" class="col-sm-4 col-form-label">Call Type*</label>
                               <div class="col-sm-8">
-                                 <select class=" form-control  form-control-sm" id="call_type" name="call_type"  onchange="select_calltype()" aria-label="Floating label select example">
+                                 <select class=" form-control  form-control-sm" id="call_type" name="call_type"  onchange="select_calltype('add_inquiry')" aria-label="Floating label select example">
                                      
                                     <?php
                                        if(!empty($calltypes))
@@ -333,7 +336,7 @@ print_r($customer_call_dtl);  */
                       </div>
                      </div>
                      <div class="col-sm-2">
-                      <button type="submit" class="btn btn-primary btn-sm"> <i class="fa fa-file-export"></i>Export</button>  
+                      <button type="button" class="btn btn-primary btn-sm exportbtn"> <i class="fa fa-file-export"></i>Export</button>  
                      </div>
                    </div>
                  </h5>
@@ -581,7 +584,7 @@ print_r($customer_call_dtl);  */
                                           </div>
                                           </div></td>
                                         <td><?php echo date('d M Y',strtotime($customer['last_follow_date']));?></td>
-                                        <td><?php echo $customer['id'];?></td>
+                                        <td><?php echo $customer['farmer_id'];?></td>
                                         <td><a class="side_modal"  data-userid="<?php echo $customer['id']; ?>" href="javascript:void(0)"><?php echo $customer['customer_title'];?></a></td>
                                         <td><?php echo $customer['customer_mobile'];?></td>
                                         <td><?php echo $customer['customer_alter_mobile'];?></td>
@@ -668,21 +671,314 @@ print_r($customer_call_dtl);  */
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
+<div class="modal fade " id="exportModal" tabindex="-1" aria-labelledby="exportModal" aria-modal="true" role="dialog">
+   <div class="modal-dialog ">
+      <form class="change_booking_status" method="post" id="change_booking_status" action="<?php echo base_url();?>admin/customer/export">
+         <div class="modal-content border-success">
+            <div class="modal-header bg-success">
+               <h5 class="modal-title text-white" id="exportModalLabel">Export enquiry data</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               
+               <div class=" row">
+                  <label for="example-text-input" class="col-md-5 col-form-label">Select Agent</label>
+                  <div class="col-md-7">
+                     <select class=" form-control form-control-sm " id="assigned_to" name="assigned_to" aria-label="Floating label select example"  >
+                        <option value="" selected>All</option>
+                        <?php
+                             
+                              if(!empty($all_users))
+                                       {
+                                           foreach ($all_users as $user) {
+                                               ?>
+                                    <option value="<?php echo $user->id;?>" <?php if( $this->session->userdata('userId')==$user->id){echo "selected";}?> ><?php echo $user->id;?> <?php echo $user->title;?></option>
+                                    <?php
+                                       }
+                                       }
+                           ?>
+                     </select>
+                  </div>
+               </div> 
+               <div class="row">
+                  <label for="example-text-input" class="col-md-5 col-form-label">Call Type</label>
+                  <div class="col-md-7">
+                     <select class=" form-control form-control-sm " id="call_type" name="call_type" aria-label="Floating label select example"  >
+                         <?php
+                                       if(!empty($calltypes))
+                                       {
+                                           foreach ($calltypes as $calltype) {
+                                               ?>
+                                    <option value="<?php echo $calltype->id;?>"><?php echo $calltype->title;?></option>
+                                    <?php
+                                       }
+                                       }
+                                       ?>
+                     </select>
+                  </div>
+               </div>
+               <div class="row">
+                  <label for="from_date" class="col-md-5 col-form-label">Fron Date</label>
+                  <div class="col-md-7">
+                    <input  class="form-control form-control-sm"  type="date" name="from_date" id="from_date"  >
+                   </div>
+               </div>
+               <div class=" row">
+                  <label for="to_date" class="col-md-5 col-form-label">To Date</label>
+                  <div class="col-md-7">
+                    <input class="form-control form-control-sm" type="date" name="to_date" id="to_date"  >
+                   </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+               <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+            </div>
+         </div>
+      </form>
+   </div>
+</div>
+<div class="modal fade bs-example-modal-xl show" tabindex="-1" aria-labelledby="myExtraLargeModalLabel" aria-modal="true" role="dialog" >
+                                                <div class="modal-dialog modal-xl">
+                                                    <div class="modal-content border-success">
+                                                        <div class="modal-header bg-success ">
+                                                            <h5 class="modal-title text-white" id="myExtraLargeModalLabel">Edit Inquiries Information</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body"> 
+                                                            <form action="<?php echo base_url();?>admin/customer/update_enquiry" id="update_inquiry">
+                                                              <div class="row">
+                <input type="hidden" name="redirect_url" id="redirect_url" value="<?php echo base_url()."admin/customer/update?".$_SERVER['QUERY_STRING'];?>">
+                  <div class="col-sm-6">
+                     <div class="card">
+                        <h5 class="card-header bg-success text-white border-bottom ">Farmers Detail</h5>
+                        <div class="card-body">
+                           <div class="row">
+                              <label for="farmser_id_update" class="col-sm-4 col-form-label">Farmer ID</label>
+                              <div class="col-sm-8">
+                                 <input type="text" class="form-control form-control-sm" id="farmser_id_update" name="farmser_id_update" placeholder="Farmer ID" readonly value="">
+                              </div>
+                           </div>
+                           <div class="row">
+                              <label for="customer_name_update" class="col-sm-4 col-form-label">Farmers Name*</label>
+                              <div class="col-sm-8"> 
+                                 <input type="text" class="form-control form-control-sm" id="customer_name_update" name="customer_name_update" placeholder="Farmers Name*" value="" />
+                              </div>
+                           </div>
+                           <div class="row">
+                              <label for="customer_mobile_update" class="col-sm-4 col-form-label">Mobile*</label>
+                              <div class="col-sm-8"> 
+                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="customer_mobile_update"  name="customer_mobile_update"  placeholder="Customer Mobile*"  value=""   />
+                              </div>
+                           </div>
+                           <div class="row">
+                              <label for="customer_alter_mobile_update" class="col-sm-4 col-form-label">ALT Mobile</label>
+                              <div class="col-sm-8">
+                                 <input type="text" class="form-control form-control-sm" id="customer_alter_mobile_update" placeholder="ALT Mobile" name="customer_alter_mobile_update" value="" >
+                              </div>
+                           </div>
+                           <div class="row">
+                              <label for="state_update" class="col-sm-4 col-form-label">State</label>
+                              <div class="col-sm-8">
+                                 <select class=" form-control form-control-sm" id="state_update" name="state_update" aria-label="Floating label select example" onchange="stateChangeUpdate()">
+                                    <option value="" selected>Choose State</option>
+                                    <?php
+                                       if(!empty($states))
+                                       {
+                                           foreach ($states as $state) {
+                                               ?>
+                                    <option value="<?php echo $state->id;?>" ><?php echo $state->name;?></option>
+                                    <?php
+                                       }
+                                       }
+                                       ?>
+                                 </select>
+                                 <input type="text" name="other_state_update" id="other_state_update"  style="display: none;" class="form-control form-control-sm mb-2" placeholder="Please Enter State Name" />
+                              </div>
+                           </div>
+                           <div class="row">
+                              <label for="city" class="col-sm-4 col-form-label">District</label>
+                              <div class="col-sm-8">
+                                 <select class=" form-control form-control-sm" id="district_update" name="district_update" aria-label="Floating label select example" onchange="districtChangeUpdate()">
+                                    <option value="" selected>Choose District</option>
+                                    <?php
+                                      /* if(!empty($districts))
+                                       {
+                                           foreach ($districts as $district) {
+                                               ?>
+                                    <option value="<?php echo $district->id;?>"  <?php if(isset($edit_data->district) && $edit_data->district ==$district->id){ echo "selected";}?>><?php echo $district->name;?></option>
+                                    <?php
+                                       }
+                                       }*/
+                                       ?>
+                                 </select>
+                                 <input type="text" name="other_district_update" id="other_district_update"  style="display: none;" class="form-control form-control-sm mb-2" placeholder="Please Enter District Name" />
+                              </div>
+                           </div>
+                           <div class="row">
+                              <label for="city" class="col-sm-4 col-form-label">Tehsil</label>
+                              <div class="col-sm-8">
+                                 <select class=" form-control form-control-sm" id="city_update" name="city_update" aria-label="Floating label select example"  onchange="cityChangeUpdate()">
+                                    <option value="" selected>Choose Tehsil</option>
+                                    
+                                 </select>
+                                <input type="text" name="other_city_update" id="other_city_update"  style="display: none;" class="form-control form-control-sm mb-2" placeholder="Please Enter Tehsil Name" />
 
+                              </div>
+                           </div>
+                        </div>
+                        <!-- end card body -->
+                     </div>
+                     <div class="card">
+                        <h5 class="card-header bg-success text-white border-bottom ">Call Details</h5>
+                        <div class="card-body">
+                           
+                           <div class="row">
+                              <label for="call_type_update" class="col-sm-4 col-form-label">Call Type*</label>
+                              <div class="col-sm-8">
+                                 <select class=" form-control  form-control-sm" id="call_type_update" name="call_type_update"  onchange="select_calltype('update_inquiry')" aria-label="Floating label select example">
+                                     
+                                    <?php
+                                       if(!empty($calltypes))
+                                       {
+                                           foreach ($calltypes as $calltype) {
+                                               ?>
+                                    <option value="<?php echo $calltype->id;?>"><?php echo $calltype->title;?></option>
+                                    <?php
+                                       }
+                                       }
+                                       ?>
+                                 </select>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <label for="assign_to_update" class="col-sm-4 col-form-label">Assign To*</label>
+                              <div class="col-sm-8">
+                                 <select class=" form-control form-control-sm" id="assign_to_update" name="assign_to_update" aria-label="Floating label select example">
+                                     
+                                    <?php
+                                       if(!empty($all_users))
+                                       {
+                                           foreach ($all_users as $user) {
+                                               ?>
+                                    <option value="<?php echo $user->id;?>"  ><?php echo $user->id;?> <?php echo $user->title;?></option>
+                                    <?php
+                                       }
+                                       }
+                                       ?>
+                                 </select>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <label for="call_back_date_update" class="col-sm-4 col-form-label">Call Back Date*</label>
+                              <div class="col-sm-8">
+                                 <input type="date" class="form-control form-control  form-control-sm" id="call_back_date_update" name="call_back_date_update"  placeholder="Call Back Date" value="<?php echo date("Y-m-d");?>">
+                              </div>
+                           </div>
+                           <div class="row">
+                              <label for="call_direction_update" class="col-sm-4 col-form-label">Call Direction*</label>
+                              <div class="col-sm-8">
+                                 <select class=" form-control  form-control-sm" id="call_direction_update" name="call_direction_update" aria-label="Floating label select example">
+                                    
+                                    <?php
+                                       if(!empty($calldirections))
+                                       {
+                                           foreach ($calldirections as $calldirection) {
+                                               ?>
+                                    <option value="<?php echo $calldirection->id;?>"><?php echo $calldirection->title;?></option>
+                                    <?php
+                                       }
+                                       }
+                                       ?>
+                                 </select>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="card">
+                        <h5 class="card-header bg-success text-white border-bottom ">Current Conversation</h5>
+                        <div class="card-body">
+                           <div class="row">
+                              <div class="col-sm-12">
+                                 <textarea   class="form-control form-control-sm" id="current_conversation_update" name="current_conversation_update" placeholder="Current Conversation"  ></textarea>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="card">
+                         
+                        <div class="card-body">
+                           <div class="row ">
+                              <div class="col-sm-12">
+                                  <button type="submit" class="btn btn-primary w-md float-end">Save</button>
+                                  <input type="hidden" name="enquiry_id_update" id="enquiry_id_update" value=""/>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     
+                  </div>
+               </div>
+                                                            </form>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div>
 <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/toastr/build/toastr.min.js"></script>
+<script type="text/javascript">
+   toastr.options = {
+     "closeButton": true,
+     "debug": false,
+     "newestOnTop": false,
+     "progressBar": false,
+     "positionClass": "toast-top-right",
+     "preventDuplicates": false,
+     "onclick": null,
+     "showDuration": "300",
+     "hideDuration": "10000",
+     "timeOut": "5000",
+     "extendedTimeOut": "1000",
+     "showEasing": "swing",
+     "hideEasing": "linear",
+     "showMethod": "fadeIn",
+     "hideMethod": "fadeOut"
+   }
+</script>
  
 <script type="text/javascript">
-  function select_calltype()
+  function select_calltype(formid)
   {
-     $('#call_back_date').attr('readonly', false);
-    var call_type =  $('#call_type').val();
-   
-    if(call_type==2)
+    if(formid=='update_inquiry')
     {
-      $('#call_back_date').val(''); 
-      $('#call_back_date').attr('readonly', true);
 
+       $('#'+formid+' #call_back_date_update').attr('readonly', false);
+      var call_type =  $('#'+formid+'  #call_type_update').val();
+     
+      if(call_type==2)
+      {
+        $('#'+formid+' #call_back_date_update').val(''); 
+        $('#'+formid+' #call_back_date_update').attr('readonly', true);
+
+      }
+    }else
+    {
+       $('#'+formid+' #call_back_date').attr('readonly', false);
+      var call_type =  $('#'+formid+'  #call_type').val();
+     
+      if(call_type==2)
+      {
+        $('#'+formid+' #call_back_date').val(''); 
+        $('#'+formid+' #call_back_date').attr('readonly', true);
+
+      }
     }
+
+
+
+    
 
     
   }
@@ -752,6 +1048,39 @@ function stateChange2(state_code = '',selected_district = '') {
              
             
             $("#district2").empty();
+        }
+    });
+} 
+function stateChangeUpdate(state_code = '',selected_district = '') {
+      
+    var stateCode = state_code ? state_code : $('#state_update').val();
+    var selectedDistrict = selected_district ? selected_district : $('#district_update').val();
+    hitURL = "<?php echo base_url() ?>admin/customer/state_change/"+ stateCode+"/"+ selectedDistrict;
+    $.ajax({
+        type: 'GET',
+        url: hitURL,
+        data: {},
+        success: function (response) {
+             var check_state = $('#state_update option:selected').text();
+             if(check_state =='Other')
+          {
+              $('#other_state_update').val('');
+             $('#other_state_update').css('display', 'block');
+ 
+          }else
+          {
+             
+             $('#other_state_update').val('');
+             $('#other_state_update').css('display', 'none');
+           }
+            $("#district_update").empty().append(response);
+            
+        },
+        error: function (request, status, error) {
+             
+             
+            
+            $("#district_update").empty();
         }
     });
 }   
@@ -824,6 +1153,21 @@ function cityChange2(district_code = '',selected_city = '') {
                $('#other_city2').css('display', 'none');
              }
 }
+function cityChangeUpdate(district_code = '',selected_city = '') {
+      
+     var check_city = $('#city_update option:selected').text();
+            if(check_city =='Other')
+            {
+              $('#other_city_update').val('');
+              $('#other_city_update').css('display', 'block');
+ 
+            }else
+            {
+               
+               $('#other_city_update').val('');
+               $('#other_city_update').css('display', 'none');
+             }
+}
 function districtChange2(district_code = '',selected_city = '') {
       
     var districtCode = district_code ? district_code : $('#district2').val();
@@ -863,9 +1207,85 @@ function districtChange2(district_code = '',selected_city = '') {
         }
     });
 }
+function districtChangeUpdate(district_code = '',selected_city = '') {
+      
+    var districtCode = district_code ? district_code : $('#district_update').val();
+    var selectedCity = selected_city ? selected_city : $('#city_update').val();
+    hitURL = "<?php echo base_url() ?>admin/customer/district_change/"+ districtCode+"/"+ selectedCity;
+    $.ajax({
+        type: 'GET',
+        url: hitURL,
+        data: {},
+        success: function (response) {
+             
 
+               var check_district = $('#district_update option:selected').text();
+            if(check_district =='Other')
+            {
+              $('#other_district_update').val('');
+              $('#other_district_update').css('display', 'block');
+ 
+            }else
+            {
+               
+               $('#other_district_update').val('');
+               $('#other_district_update').css('display', 'none');
+             }
+
+
+            // console.log(response);
+            // $(".district_wrap").html(response.success);
+            $("#city_update").empty().append(response);
+         },
+        error: function (request, status, error) {
+             
+             
+            
+            $("#city_update").empty();
+        }
+    });
+}
+  
+   jQuery("#update_inquiry").on('submit',function(e){
+            e.preventDefault();
+              
+             
+             var form = $(this);
+             var hitURL = form.attr('action');
+              var formValues= $(this).serialize();
+             show_loader();
+          
+             jQuery.ajax({
+               type : "POST",
+               dataType : "json",
+               url : hitURL,
+               data : formValues 
+             }).done(function(data){
+               hide_loader();
+               if(data.status==1)
+               {
+                 
+   
+                 $('.bs-example-modal-xl').modal('hide');
+                 toastr.success(data.message);
+                    window.location.reload(true);
+   
+               
+               }else{
+   
+                 toastr.error(data.message);
+   
+               }
+             });
+          
+       });
    jQuery(document).ready(function(){
-
+         $(".bs-example-modal-xl").on('hide.bs.modal', function(){
+          $('#update_inquiry').attr('action','');
+          $('#update_inquiry')[0].reset();
+           
+       });
+   
 
        $('#exampleModalScrollable').on("hidden.bs.modal",function(){
           
@@ -876,13 +1296,20 @@ function districtChange2(district_code = '',selected_city = '') {
         jQuery(document).on("click", ".side_modal", function(){
             var userId = $(this).data("userid");
             $("#exampleModalScrollable").modal('show');
+            
             single_cutomer_call_detail(userId);
 
         });
         jQuery(document).on("click", ".editbtn", function(){
-           var userId = $(this).data("userid"),
-           hitURL = "<?php echo base_url() ?>admin/customer/edit/"+userId
-           window.location.replace(hitURL);
+           var userId = $(this).data("userid")
+           
+             single_cutomer_detail(userId);
+            
+        });
+        jQuery(document).on("click", ".exportbtn", function(){
+             
+            $("#exportModal").modal('show'); 
+             
         });
         jQuery(document).on("click", ".deletebtn", function(){
    
@@ -920,7 +1347,46 @@ function districtChange2(district_code = '',selected_city = '') {
   
 
 
+  function single_cutomer_detail(id)
+  {
+     $(".bs-example-modal-xl").modal('show');
+        var userId = id,
+           hitURL = "<?php echo base_url() ?>admin/customer/single/"+id;
+           action_url = "<?php echo base_url() ?>admin/customer/update_enquiry";
+           $("#update_inquiry").attr("action",action_url);
 
+           jQuery.ajax({
+           type : "POST",
+           dataType : "json",
+           url : hitURL,
+           data : {} 
+           }).done(function(data){ 
+            console.log(data);
+            response = data;
+            $("#farmser_id_update").val(response.farmer_id);
+            $("#enquiry_id_update").val(response.id);
+            $("#customer_name_update").val(response.customer_name);
+            $("#customer_mobile_update").val(response.customer_mobile);
+            $("#customer_alter_mobile_update").val(response.customer_alter_mobile);
+            var state_id    = response.state;
+             $("#other_state_update").val(response.other_state);
+             $("#state_update").val(state_id);
+            var district_id = response.district;
+            $("#other_district_update").val(response.other_district);
+            var city_id = response.city;
+            stateChangeUpdate(state_id,district_id);
+            districtChangeUpdate(district_id,city_id);
+
+            $("#other_city_update").val(response.other_city);
+            $("#call_type_update").val(response.last_call_type);
+            $("#assign_to_update").val(response.assigned_to);
+            $("#call_back_date_update").val(response.last_call_back_date);
+            $("#call_direction_update").val(response.last_call_direction);
+            $("#current_conversation_update").val(response.current_conversation);
+            select_calltype('update_inquiry'); 
+
+           });
+  }
   function get_cutomer_call_detail(id,div_id)
   {
      
@@ -991,8 +1457,8 @@ function districtChange2(district_code = '',selected_city = '') {
 
           
             current_cutomer_call_detail();
-            stateChange('<?php echo @$edit_data->state;?>','<?php echo @$edit_data->district;?>');
-            districtChange('<?php echo @$edit_data->district;?>','<?php echo @$edit_data->city;?>');
+            stateChange('<?php echo @$edit_data->state_id;?>','<?php echo @$edit_data->district_id;?>');
+            districtChange('<?php echo @$edit_data->district_id;?>','<?php echo @$edit_data->city_id;?>');
         });
       </script>
       <?php

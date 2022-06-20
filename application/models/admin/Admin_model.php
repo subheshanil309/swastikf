@@ -195,12 +195,21 @@ class Admin_model extends Base_model
                 $this->db->join('z_district as dist', 'dist.id = a.district_id', 'left');
                 $this->db->join('z_cities as cit', 'cit.id = a.city_id', 'left');
                   
-                 
+                    $role = $this->session->userdata('role');
+                    $company_id = $this->session->userdata('company_id');
 
                 $where  = '';
                 $userid = $params['userid'];
                /* $where.= "( a.status = 1 )";*/
+               if($role==1)
+               {
+                
+                 $where.= "   ( a.company_id = '".$company_id."')";
+            }else{
                 $where.= "   ( a.created_by = '".$userid."')";
+            }
+            
+            
 
                
                     

@@ -10,6 +10,7 @@ class Customer extends BaseController
     {
         parent::__construct();
         $this->load->model('admin/customer_model');
+        $this->load->model('admin/farmers_model');
         $this->load->model('admin/city_model');
         $this->load->model('admin/state_model');
         $this->load->model('admin/district_model');
@@ -81,7 +82,7 @@ class Customer extends BaseController
                 $followup_type          = @$this->input->get('followup_type'); 
                 if(!empty($search_customer_id))
                 {
-                    $where_search['id'] =  $search_customer_id;
+                    $where_search['farmer_id'] =  $search_customer_id;
                 }
                  if(!empty($stat_type))
                 {
@@ -232,39 +233,41 @@ class Customer extends BaseController
          $form_type  = $this->input->get('form_type');
          if($form_type =='search')
          {
-            $customer_id    = $this->input->get('customer_id');
+            $farmer_id    = $this->input->get('farmer_id');
             $mobile         = $this->input->get('mobile');
 
             
 
-            if($customer_id !=='' || $mobile !=='')
+            if($farmer_id !=='' || $mobile !=='')
             {   
                 $isserch = false;
                 $where = array();
-                if(!empty($customer_id))
+                $where['status'] = 1;
+                if(!empty($farmer_id))
                 {   
                     $isserch = true;
 
-                     $where['id'] = $customer_id;
+                     $where['id'] = $farmer_id;
                 }
 
                 if(!empty($mobile))
                 {
                     $isserch = true;
-                     $where['customer_mobile'] = $mobile;
+                     $where['mobile'] = $mobile;
                 }
 
                 if($isserch)
                 {
 
-                    $customer = $this->customer_model->findDynamic($where);
-                    if(!empty($customer))
+                    $farmers = $this->farmers_model->findDynamic($where);
+                     
+                    if(!empty($farmers))
                     {
-                        $data['edit_data'] = $customer[0];
+                        $data['edit_data'] = $farmers[0];
 
 
                         $where = array();
-                        $where['customer'] = $data['edit_data']->id;
+                        $where['farmer_id'] = $data['edit_data']->id;
                         //$data['customer_call_dtl'] =$this->customer_call_detail($data['edit_data']->id);
                        // $data['customer_call_dtl'] = $this->customer_call_model->findDynamic($where);
                     }
@@ -356,7 +359,7 @@ class Customer extends BaseController
             $data['follow_up_due_tomorrow'] = $follow_up_due_tomorrow ; 
              
 
-            
+             
             
         $this->global['pageTitle'] = 'Add New customer';
         $this->loadViews("admin/customer/addnew", $this->global, $data , NULL);
@@ -367,6 +370,8 @@ class Customer extends BaseController
     public function insertnow()
     {
         $this->isLoggedIn();
+
+        $userid = $this->session->userdata('userId');
 		$this->load->library('form_validation');            
         $this->form_validation->set_rules('customer_name','customer_name','trim|required');
         $this->form_validation->set_rules('customer_mobile','customer_mobile','trim|required');
@@ -390,48 +395,48 @@ class Customer extends BaseController
 
             $redirect_url = $form_data['redirect_url'];
 
-            $where = array();
-            if($form_data['state'])
+            if(isset($form_data['farmser_id2']) && $form_data['farmser_id2'] !=='')
             {
-                $state_id = $form_data['state'];
-                $state_detail = $this->state_model->find($state_id);
-                
-                if($state_detail->name =='Other')
-                {
-                    $other_state = $form_data['other_state'];
-                    
-                }
-            }
-            
+                $farmer_id = $form_data['farmser_id2'];
+            }else
+            {
+                $where = array();
+                $where['mobile']= $form_data['customer_mobile'];
+                $exist_mobile    = $this->farmers_model->findDynamic($where);
 
-            $where = array();
-            $where['customer_mobile']= $form_data['customer_mobile'];
+                if(empty($exist_mobile))
+                {   
+                        $insertData = array();
 
+                        $insertData['name']         = $form_data['customer_name'];
+                        $insertData['mobile']       = $form_data['customer_mobile'];
+                        $insertData['alt_mobile']   = $form_data['customer_alter_mobile'];
+                        $insertData['city_id']      = $form_data['city'];
+                        $insertData['other_city']   = $form_data['other_city'];
+                        $insertData['state_id']     = $form_data['state'];
+                        $insertData['other_state']  = $form_data['other_state'];
+                        $insertData['other_district']= $form_data['other_district'];
+                        $insertData['district_id']  = $form_data['district'];
+                        $insertData['date_at']      = date("Y-m-d H:i:s");;
+                        $insertData['status']       = 1;
+                        
+                        $insertData['created_by']      = $userid;
 
-
-
-
-                if(!empty($form_data['id']))
-                {
-                    $where['id!=']      = $form_data['id'];
-                    $last_customer_id   = $form_data['customer_id'];
-                    $insertData['id']   = $form_data['id'];
+                        $result_added = $this->farmers_model->save($insertData);
+                        $farmer_id = $result_added;
                 }else
                 {
-                    $where_leatest = array(); 
-                    $where_leatest['orderby']   = '-id';
-
-                    $where_leatest['field']     = 'sku_id';
-                    $where_leatest['limit']     = 1;
-                    $last_customerid    = $this->customer_model->findDynamic($where_leatest);
-
-                    $last_customer_id =  str_pad((@$last_customerid[0]->sku_id)+1, 8, '0', STR_PAD_LEFT);
+                    $this->session->set_flashdata('error', 'Farmer Already Added');
+                    $this->addnew();
                 }
-                $exist_mobile    = $this->customer_model->findDynamic($where);
-                if(empty($exist_mobile))
-                {
+
+            }
+            
+            if($farmer_id )
+               {
+                 $insertData =  array();
                     //pre($form_data);exit;
-                $insertData['sku_id']                = $last_customer_id;
+                $insertData['farmer_id']             = $farmer_id;
                 $insertData['customer_name']         = $form_data['customer_name'];
                 $insertData['customer_title']        = ucfirst($form_data['customer_name']);
                 $insertData['customer_mobile']       = $form_data['customer_mobile'];
@@ -452,6 +457,7 @@ class Customer extends BaseController
                 $insertData['last_follower']         = $this->session->userdata('userId');
                 $insertData['last_follow_call_type'] = $form_data['call_type'];
                 $insertData['last_call_back_date']   = $form_data['call_back_date'];
+                $insertData['current_conversation']  = $form_data['current_conversation'];
 
                
                  
@@ -489,10 +495,8 @@ class Customer extends BaseController
                 { 
                     $this->session->set_flashdata('error', 'Customer Addition failed');
                 }
-                }else
-                {
-                         $this->session->set_flashdata('error', 'Customer Already Added');
-                }
+                 
+               }
 
 
 
@@ -811,6 +815,103 @@ class Customer extends BaseController
         
     }
 
+    public function update_enquiry()
+    {
+        
+        $this->isLoggedIn();
+        
+        
+        
+        $this->load->library('form_validation');            
+        $this->form_validation->set_rules('customer_name_update','Name','trim|required');
+        $this->form_validation->set_rules('enquiry_id_update','ID','trim|required');
+        $this->form_validation->set_rules('customer_mobile_update','MObile','trim|required');
+        
+        
+         
+         
+        
+        
+        //form data 
+        $form_data  = $this->input->post();
+        
+
+                $insertData = array();
+                
+ 
+
+                
+                    //pre($form_data);exit;
+                $insertData['id']                    = $form_data['enquiry_id_update'];
+                $insertData['customer_name']         = $form_data['customer_name_update'];
+                $insertData['customer_title']        = ucfirst($form_data['customer_name_update']);
+                $insertData['customer_mobile']       = $form_data['customer_mobile_update'];
+                $insertData['customer_alter_mobile'] = $form_data['customer_alter_mobile_update'];
+                $insertData['state']                 = $form_data['state_update'];
+                $insertData['other_state']           = $form_data['other_state_update'];
+                $insertData['district']              = $form_data['district_update'];
+                $insertData['other_district']        = $form_data['other_district_update'];
+                $insertData['city']                  = $form_data['city_update'];
+                $insertData['other_city']            = $form_data['other_city_update'];
+                $insertData['update_at']             = date("Y-m-d H:i:s");
+                $insertData['update_by']             = $this->session->userdata('userId');
+                $insertData['assigned_to']           = $form_data['assign_to_update'];
+                $insertData['last_call_direction']   = $form_data['call_direction_update'];
+                $insertData['last_call_type']        = $form_data['call_type_update'];
+                $insertData['last_follow_date']      = date("Y-m-d H:i:s");
+                $insertData['last_follower']         = $this->session->userdata('userId');
+                $insertData['last_follow_call_type'] = $form_data['call_type_update'];
+                $insertData['last_call_back_date']   = $form_data['call_back_date_update'];
+                $insertData['current_conversation'] = $form_data['current_conversation_update'];
+
+               
+                 
+                $result = $this->customer_model->save($insertData);
+
+                if($result)
+                {
+                     $insertData = array();
+                    /**insert data for call recording**/
+                    $insertData['customer']                 = $result;
+                    $insertData['call_type']                = $form_data['call_type_update'];
+                    $insertData['assign_to']                = ($form_data['assign_to_update']);
+                    $insertData['user_id']                  = ($form_data['assign_to_update']);
+                    $insertData['call_back_date']           = $form_data['call_back_date_update'];
+                    $insertData['call_direction']           = $form_data['call_direction_update'];
+                    $insertData['current_conversation']     = $form_data['current_conversation_update'];
+                    $insertData['status']                   = '1';
+                    $insertData['date_at']                  = date("Y-m-d H:i:s");
+
+
+                    $result = $this->customer_call_model->save($insertData);
+                }
+                 $response_result = array(
+                 
+                'status'=>0,
+                'message'=>''
+                    );
+
+                    if($result)
+                    {
+                        $response_result = array(
+                            'status'=>1,
+                            'message'=>'Update Changes Successfully !'
+                        );
+                    }else
+                    {
+                        $response_result = array(
+                            'status'=>0,
+                            'message'=>'Failed Update Changes!'
+                        );
+                    }
+
+                    echo json_encode($response_result);
+                    
+         
+
+         
+    }
+
     public function customer_call_detail()
     {
          $form_data  = $this->input->post('id');
@@ -953,8 +1054,88 @@ class Customer extends BaseController
         }
         echo  json_encode($single_arr);
     }
-    
-    
+    public function export()
+    {
+
+         
+
+            $call_type      = @$this->input->post('call_type'); 
+            $assigned_to    = @$this->input->post('assigned_to'); 
+            $from_date      = @$this->input->post('from_date'); 
+            $to_date        = @$this->input->post('to_date');
+            $where_search   = array(); 
+            $conditions     = array(); 
+            if(!empty($call_type))
+            {
+                $where_search['last_call_type'] =  $call_type;
+            }
+            if(!empty($from_date))
+            {
+                $where_search['from_date']      =  $from_date;
+            } 
+            if(!empty($to_date))
+            {
+                $where_search['to_date']        =  $to_date;
+            }
+
+            if(!empty($assigned_to))
+            {
+                $conditions['userid']           = $assigned_to; 
+            }
+ 
+
+ 
+
+
+            $resultfound = $this->customer_model->getRows($conditions);
+
+            $content = "Call Date,Customer Id,Customer name,Mobile,District,State,Call Direction,Call Type,Followup date,Emp Name,Assigned to,Assigned by,Comment,Customer Reg Date,Call Count,Entry made by,Entry Date,Entry Update Date,Last Follower,Last Call Type \n";
+             
+            if(!empty($resultfound))
+            {
+                foreach ($resultfound as $key => $value) 
+                {
+                    $farmer_details = $this->farmers_model->find($value['farmer_id']);
+                    $where = array();
+                    $where['customer'] = $value['farmer_id'];
+                    $where['field'] ='id';
+
+                    $count_call  = $this->customer_call_model->findDynamic($where);
+                    $count_call = count($count_call);
+
+                    $content.= str_replace(",", " ", date('d M Y',strtotime($value['date_at']))).",";
+                    $content.= str_replace(",", " ", $value['farmer_id']).",";
+                    $content.= str_replace(",", " ", $value['customer_name']).",";
+                    $content.= str_replace(",", " ", $value['customer_mobile']).",";
+                    $content.= str_replace(",", " ", $value['district']).",";
+                    $content.= str_replace(",", " ", $value['state']).",";
+                    $content.= str_replace(",", " ", $value['calldir']).",";
+                    $content.= str_replace(",", " ", $value['calltype']).",";
+                    $content.= str_replace(",", " ", date('d M Y',strtotime($value['last_follow_date']))).",";
+                    
+                    $content.= str_replace(",", " ", $value['createdby']).",";
+                    $content.= str_replace(",", " ", $value['assignedto']).",";
+                    $content.= str_replace(",", " ", $value['createdby']).",";
+                    $content.= str_replace(",", " ", $value['current_conversation']).",";
+                    $content.= str_replace(",", " ", date('d M Y',strtotime($farmer_details->date_at))).",";
+                    $content.= str_replace(",", " ", $count_call).",";
+                    $content.= str_replace(",", " ", $value['createdby']).",";
+                    
+                    $content.= str_replace(",", " ", date('d M Y',strtotime($value['date_at']))).",";
+                    $content.= str_replace(",", " ", date('d M Y',strtotime($value['update_at']))).",";
+                    $content.= str_replace(",", " ", $value['lastfollower']).",";
+                    $content.= str_replace(",", " ", $value['lastcalltype']).",";
+ 
+                           $content.="\n";
+                }
+            }            
+                    
+        $filename = 'enquiry-export-'.date('d-m-Y-h-s').'.csv';
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="'.$filename.'"');
+        print_r($content);
+        die; 
+    }
     
 }
 

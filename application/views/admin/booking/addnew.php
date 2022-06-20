@@ -1189,7 +1189,6 @@
     var totalCart = (price * quantity) - discount;
     var pendingBill = Number($('#pending_bill').val());
    
-    
     $('#total').val(totalCart.toFixed(2));
     $('.totalCart').text(totalCart.toFixed(2));
    

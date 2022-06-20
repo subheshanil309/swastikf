@@ -299,3 +299,22 @@ ALTER TABLE `z_admin` ADD `pincode` INT(25) NOT NULL AFTER `other_city` ;
 
 
 
+
+----20-06-2022
+
+ALTER TABLE `z_admin` ADD `company_id` INT NOT NULL DEFAULT '1';
+
+ALTER TABLE `z_customer` ADD `farmer_id` INT NULL AFTER `id`;
+ALTER TABLE `z_customer` ADD `current_conversation` TEXT NULL;
+ALTER TABLE `z_customer` ADD `update_by` INT NOT NULL DEFAULT '1';
+
+ALTER TABLE `z_customer` CHANGE `update_at` `update_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+
+
+
+
+
+
+
+

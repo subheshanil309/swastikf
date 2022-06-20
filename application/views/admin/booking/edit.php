@@ -473,7 +473,7 @@
                                     <td>
                                        <div class="pull-right">Total Paid </div>
                                     </td>
-                                    <td><span class=" "><?php echo  @($edit_data->total_paid_amount+0)?></span></td>
+                                    <td><span class="advance"><?php echo  @($edit_data->total_paid_amount+0)?></span></td>
                                  </tr>
                                  <tr>
                                     <td colspan="7"></td>
@@ -488,7 +488,7 @@
                                     <td>
                                        <div class="pull-right text-danger">Pending Balance</div>
                                     </td>
-                                    <td><span class="  text-danger"><?php echo $pending_balance;?></span></td>
+                                    <td><span class="text-danger pendingBill"><?php echo $pending_balance;?></span></td>
                                  </tr>
                                  <?php 
                                     if($edit_data->refunded_amount>0){
@@ -1825,15 +1825,17 @@
     var price = Number($('#price').val());
    
     // var totalCart = shoppingCart.itemTotal(price, cgst, sgst, igst, quantity, discount);
-    var advance = Number($('#advance').val());
-    var totalCart = (price * quantity) - discount;
-    var pendingBill = Number($('#pending_bill').val());
-   
+    var advance = Number($('.advance').text());
+     var totalCart = (price * quantity) - discount;
+/*    var pendingBill = Number($('.pendingBill').val());
+*/   
     
     $('#total').val(totalCart.toFixed(2));
     $('.totalCart').text(totalCart.toFixed(2));
+    var balance = (totalCart - advance);
+    $('.pendingBill').text(balance.toFixed(2));
    
-    var balance = (totalCart - advance) + pendingBill;
+    
     $('#balance').val(Number(balance).toFixed(2)); 
    }
    renderCart(centerState);

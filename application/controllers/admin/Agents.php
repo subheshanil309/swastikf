@@ -15,6 +15,7 @@ class Agents extends BaseController
        $this->load->model('admin/district_model');
        $this->load->model('admin/country_model');
        $this->load->model('admin/city_model');
+       $this->load->model('admin/company_model');
 
        $this->perPage =100; 
     }
@@ -25,6 +26,8 @@ class Agents extends BaseController
         $this->isLoggedIn();
 
         $data = array();
+
+
 
 
         //pagomatopm start
@@ -126,6 +129,13 @@ class Agents extends BaseController
             $where['field']         = 'id,name ';
             $where['orderby'] = 'name';
             $data['states'] = $this->state_model->findDynamic($where); 
+
+
+            $where  = array();
+            $where['status']        = '1';
+            $where['field']         = 'id,name ';
+            $where['orderby'] = 'name';
+            $data['companies'] = $this->company_model->findDynamic($where); 
             
             $where  = array();
             $where['status']        = '1'; 
@@ -146,7 +156,7 @@ class Agents extends BaseController
         $this->isLoggedIn();
 		
 		
-		
+		 $userid = $this->session->userdata('userId');
 		$this->load->library('form_validation');            
         $this->form_validation->set_rules('name','name','trim|required');
         $this->form_validation->set_rules('mobile','Mobile','trim|required');
@@ -166,7 +176,7 @@ class Agents extends BaseController
 
                  // check already exist
                 $form_data['name'] = strtolower($form_data['name']);
-                $form_data['name'] = ucwords($form_data['name']);
+                $form_data['title'] = ucwords($form_data['name']);
                 $where = array();
                  
                 $where['email']          =  $form_data['email'];
@@ -178,6 +188,8 @@ class Agents extends BaseController
             }else{
 
             $insertData['name']         = $form_data['name'];
+            $insertData['title']         = $form_data['title'];
+            $insertData['admin_type']         = 2;
             $insertData['email']         = $form_data['email'];
             $insertData['password']         = $form_data['password'];
             $insertData['phone']       = $form_data['mobile'];
@@ -191,6 +203,8 @@ class Agents extends BaseController
             $insertData['date_at']      = date("Y-m-d H:i:s");;
             $insertData['status']       = $form_data['status1'];
             $insertData['address']      = $form_data['address'];
+            $insertData['company_id']      = $form_data['company_id'];
+            $insertData['created_by']      = $userid;
 
                  
     			$result = $this->admin_model->save($insertData);
@@ -293,36 +307,30 @@ class Agents extends BaseController
         $this->isLoggedIn();
         if($id == null)
         {
-            redirect('admin/city');
+            redirect('admin/agents');
         }
         $data = array();
         $data['edit_data'] = $this->admin_model->find($id);
 
 
-        $where  = array();
-            $where['status']  = '1';
-            $where['field']  = 'id,name ';
-             $where['orderby'] = 'name';
-            $data['countryList'] = $this->country_model->findDynamic($where);
+            
 
              $where  = array();
             $where['status']        = '1';
-            $where['country_id']    = $data['edit_data']->country_id;
             $where['field']         = 'id,name ';
             $where['orderby'] = 'name';
-            $data['stateList'] = $this->state_model->findDynamic($where); 
+            $data['states'] = $this->state_model->findDynamic($where); 
 
+            
              $where  = array();
             $where['status']        = '1';
-            $where['country_id']    =$data['edit_data']->country_id;
-            $where['state_id']    =$data['edit_data']->state_id;
             $where['field']         = 'id,name ';
             $where['orderby'] = 'name';
-            $data['districtList'] = $this->district_model->findDynamic($where);
+            $data['companies'] = $this->company_model->findDynamic($where); 
         
 
         
-        $this->global['pageTitle'] = 'City';
+        $this->global['pageTitle'] = 'Edit Agents';
         $this->loadViews("admin/agents/edit", $this->global, $data , NULL);
         
     } 
@@ -343,73 +351,76 @@ class Agents extends BaseController
     // Update category*************************************************************
     public function update()
     {
-		
-        $this->isLoggedIn();
+		 $this->isLoggedIn();
+       
+        $userid = $this->session->userdata('userId');
         $this->load->library('form_validation');            
         $this->form_validation->set_rules('name','name','trim|required');
-        $this->form_validation->set_rules('country_id','Select Country','trim|required');
-        $this->form_validation->set_rules('state_id','Select State','trim|required');
-        $this->form_validation->set_rules('district_id','Select District','trim|required');
-        
+        $this->form_validation->set_rules('mobile','Mobile','trim|required');
+        $this->form_validation->set_rules('email','Email','trim|required');
+        $this->form_validation->set_rules('password','Password','trim|required');
+         
+         
         //form data 
         $form_data  = $this->input->post();
         if($this->form_validation->run() == FALSE)
         {
-			
-                $this->edit($form_data['id']);
+            $this->edit($form_data['id']);
         }
         else
         {
-                  // check already exist
-            $form_data['name'] = strtolower($form_data['name']);
-            $form_data['name'] = ucwords($form_data['name']);
-            $where = array();
-            $where['city']          =  $form_data['name'];
-            $where['country_id']    = $form_data['country_id'];
-            $where['state_id']    = $form_data['state_id'];
-            $where['district_id']    = $form_data['district_id'];
-            $where['id !=']    = $form_data['id'];
-             
 
 
-            $returnData = $this->admin_model->findDynamic($where);
+                 // check already exist
+                $form_data['name'] = strtolower($form_data['name']);
+                $form_data['title'] = ucwords($form_data['name']);
+                $where = array();
+                 
+                $where['email']          =  $form_data['email'];
+                $where['id !=']          =  $form_data['id'];
+                
+                $returnData = $this->admin_model->findDynamic($where);
  
-             if($form_data['name']== "Other")
-             {
-                $this->session->set_flashdata('error', $form_data['name'].' Not Allow.');
-             }else if(!empty($returnData)){
-               $this->session->set_flashdata('error', $form_data['name'].' already Exist.');
-            }else{
-                    $insertData =  array();
-                     $insertData['id'] = $form_data['id'];
-                    $insertData['city'] = $form_data['name'];
-                    $insertData['country_id'] = $form_data['country_id'];
-                    $insertData['state_id'] = $form_data['state_id'];
-                    $insertData['district_id'] = $form_data['district_id'];
-                    $insertData['update_at'] = date("Y-m-d H:i:s");;
-                    $insertData['status'] = $form_data['status1'];
-
-                    $result = $this->admin_model->save($insertData);
-            
-
-                    if($result > 0)
-                    {
-                        $this->session->set_flashdata('success', ' State successfully Updated');
-                    }
-                    else
-                    { 
-                        $this->session->set_flashdata('error', 'State Updation failed');
-                    }
-                    
-                    
-            }
-
-           
-            
+              if(!empty($returnData)){
+               $this->session->set_flashdata('error', $form_data['email'].' already Exist.');
+               //$this->edit($form_data['id']);
                 redirect(base_url().'admin/agents/edit/'.$form_data['id']);
+            }else{
 
-            
+            $insertData['id']         = $form_data['id'];
+            $insertData['admin_type']         = 2;
+            $insertData['name']         = $form_data['name'];
+            $insertData['title']         = $form_data['title'];
+            $insertData['email']         = $form_data['email'];
+            $insertData['password']         = $form_data['password'];
+            $insertData['phone']       = $form_data['mobile'];
+            $insertData['pincode']      = $form_data['pincode'];
+            $insertData['city_id']      = $form_data['city'];
+            $insertData['other_city']   = $form_data['other_city'];
+            $insertData['state_id']    = $form_data['state'];
+            $insertData['other_state'] = $form_data['other_state'];
+            $insertData['other_district']= $form_data['other_district'];
+            $insertData['district_id']  = $form_data['district'];
+            $insertData['update_at']      = date("Y-m-d H:i:s");;
+            $insertData['status']       = $form_data['status1'];
+            $insertData['address']      = $form_data['address'];
+            $insertData['company_id']      = $form_data['company_id'];
+            $insertData['update_by']      = $userid;
+
+                 
+                $result = $this->admin_model->save($insertData);
+                if($result > 0)
+                {
+                    $this->session->set_flashdata('success', 'Agent successfully Update');
+                }
+                else
+                { 
+                    $this->session->set_flashdata('error', 'Agent Update failed');
+                }
+            }// check already    
+            redirect(base_url().'admin/agents');
           }  
+        
         
     }
 

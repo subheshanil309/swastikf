@@ -197,13 +197,20 @@ class Farmers_model extends Base_model
                 $this->db->join('z_district as dist', 'dist.id = f.district_id', 'left');
                 $this->db->join('z_cities as cit', 'cit.id = f.city_id', 'left');
                 $this->db->join('z_lead_source as source', 'source.id = f.source', 'left');
-                 
-                 
+
+                $role = $this->session->userdata('role');
+                $company_id = $this->session->userdata('company_id');
 
                 $where  = '';
                 $userid = $params['userid'];
-               /* $where.= "( f.status = 1 )";*/
-                $where.= "   ( f.created_by = '".$userid."')";
+                /* $where.= "( f.status = 1 )";*/
+                if($role==1)
+                {
+                    $where.= "   ( f.company_id = '".$company_id."')";
+                }else{
+                    $where.= "   ( f.created_by = '".$userid."')";
+                }
+
 
                
                     
@@ -213,7 +220,7 @@ class Farmers_model extends Base_model
                 {
                      
                     foreach($params['where'] as $key => $val){ 
-                     if($key =='customer_title')
+                     if($key =='name' ||  $key =='father_name' )
                     {
 
                     
@@ -223,13 +230,15 @@ class Farmers_model extends Base_model
 
                 } 
 
-                  if(isset($params['where']['customer_title']))
+                  if(isset($params['where']['name']))
                 {
-                    if(!empty($where))
-                    {
-                        
-                    }
-                    $this->db->or_like('customer_title', $params['where']['customer_title']);
+                     
+                    $this->db->or_like('f.name', $params['where']['name']);
+                 }
+                 if(isset($params['where']['father_name']))
+                {
+                     
+                    $this->db->or_like('f.father_name', $params['where']['father_name']);
                  }
                  
 

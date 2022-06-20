@@ -1358,7 +1358,8 @@ echo "</pre>";  */
                     
           }  
 
-          redirect(base_url().'admin/bookings/'.$form_data['id'].'/edit'); 
+          redirect(base_url().'admin/bookings'); 
+          /*redirect(base_url().'admin/bookings/'.$form_data['id'].'/edit'); */
         
     }
 
