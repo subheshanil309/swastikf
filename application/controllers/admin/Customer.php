@@ -1117,7 +1117,7 @@ class Customer extends BaseController
                     $content.= str_replace(",", " ", $value['assignedto']).",";
                     $content.= str_replace(",", " ", $value['createdby']).",";
                     $content.= str_replace(",", " ", $value['current_conversation']).",";
-                    $content.= str_replace(",", " ", date('d M Y',strtotime($farmer_details->date_at))).",";
+                    $content.= str_replace(",", " ", date('d M Y',strtotime(@$farmer_details->date_at))).",";
                     $content.= str_replace(",", " ", $count_call).",";
                     $content.= str_replace(",", " ", $value['createdby']).",";
                     
