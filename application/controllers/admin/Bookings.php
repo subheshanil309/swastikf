@@ -2221,6 +2221,7 @@ echo "</pre>";  */
                     $content.= str_replace(",", " ", date('d M Y',strtotime($value['booking_date']))).",";
                     $content.= str_replace(",", " ", $value['booked_status']).",";
                     $content.= str_replace(",", " ", $value['cropstatusname']).",";
+                    $content.= str_replace(",", " ", $value['farmer_id']).",";
                     $content.= str_replace(",", " ", $value['customer_name']).",";
                     $content.= str_replace(",", " ", $value['executive']).",";
                     $content.= str_replace(",", " ", $value['productname']).",";
