@@ -1255,7 +1255,7 @@ echo "</pre>";  */
 
                             $insertData['id']                       = $form_data['id'];
                             $insertData['stage']                        = "Update";
-                            $insertData['customer_id']                  = $get_customerid;
+                            $insertData['farmer_id']                  = $get_farmerid;
                             $insertData['customer_name']                = $form_data['customer_name'];
                             $insertData['customer_mobile']              = $form_data['customer_mobile'];
                             $insertData['customer_alter_mobile']        = $form_data['customer_alter_mobile'];
