@@ -37,6 +37,36 @@ if ( ! function_exists('test_method'))
     }   
 
 }
+if(!function_exists('arrayToSqlCsv'))
+{
+  function arrayToSqlCsv(array $array)
+  {
+    $stringgify = '';
+    if(!empty($array))
+    {
+       
+         
+       
+        foreach ($array as $key => $value)
+        {
+          if(count($array) >1)
+          {
+            $stringgify.="'".$value."'".",";
+          }else
+          {
+            $stringgify.="'".$array[0]."'";  
+          }
+          
+
+          
+        }
+       
+      
+    } 
+
+    return $stringgify;
+  }
+}
 if(!function_exists('clean_slug'))
 {
         function clean_slug($string) {

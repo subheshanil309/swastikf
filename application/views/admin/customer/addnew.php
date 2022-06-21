@@ -309,8 +309,7 @@ print_r($customer_call_dtl);  */
          <div class="col-xl-6">
             <div class="card">
                <form action='' method="get">
-                <input name="form_type" type="hidden" value="inquiry">
-                 <h5 class="card-header bg-success text-white border-bottom ">
+                  <h5 class="card-header bg-success text-white border-bottom ">
                    <div class="row ">
                      <div class="col-sm-7">
                       Inquiry Stat
@@ -322,9 +321,18 @@ print_r($customer_call_dtl);  */
                           <?php
                              if(!empty($all_users))
                              {
-                                 foreach ($all_users as $user) {
+                              foreach ($all_users as $user) 
+                              {
+
+                                if(isset($_GET['uid']) && $_GET['uid'] !=='')
+                                {
+                                  $userid = $_GET['uid'];
+                                }else
+                                {
+                                  $userid = $this->session->userdata('userId');;
+                                }
                                      ?>
-                          <option value="<?php echo $user->id;?>" <?php if( isset($_GET['uid']) && $_GET['uid']==$user->id){echo "selected";}?> ><?php echo $user->id;?> <?php echo $user->title;?></option>
+                          <option value="<?php echo $user->id;?>" <?php if( isset($userid) && $userid==$user->id){echo "selected";}?> ><?php echo $user->id;?> <?php echo $user->title;?></option>
                           <?php
                              }
                              }
@@ -351,12 +359,14 @@ print_r($customer_call_dtl);  */
 
                            if(!empty($count_call_summary))
                               {
-                                $uuid = (isset($_GET['uid']))?("&uid=".$_GET['uid']):"";
+                                 
+
+                                $uuid = "&uid=".((isset($_GET['uid']))?($_GET['uid']):$this->session->userdata('userId'));
                                  foreach ($count_call_summary as $key => $value) 
                                 {
                                      ?>
                                      <div class="flex-grow-1">
-                                        <a href="<?php echo base_url()?>admin/customer/addnew?form_type=inquiry&stat_type=call_type2&call_type2=<?php echo $value['id'].$uuid?>">
+                                        <a href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=call_type2&call_type2=<?php echo $value['id'].$uuid?>">
                                           <div class="float-end">
                                            <p class="text-primary mb-0"><?php echo $value['total_count_call'];?></p>
                                         </div>
@@ -388,7 +398,7 @@ print_r($customer_call_dtl);  */
                         <div class="card card-body pt-0">
                            <h4 class="card-title bg-success text-white  p-1 ">Follow up Summary</h4>
                            <div class="flex-grow-1">
-                               <a href="<?php echo base_url()?>admin/customer/addnew?form_type=inquiry&stat_type=followup&followup_type=yesterday<?php echo $uuid?>">
+                               <a href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=followup&followup_type=yesterday<?php echo $uuid?>">
                                 <div class="float-end">
                                  <p class="text-primary mb-0"><?php echo $follow_up_missed;?></p>
                               </div>
@@ -397,7 +407,7 @@ print_r($customer_call_dtl);  */
                               
                            </div>
                            <div class="flex-grow-1">
-                               <a href="<?php echo base_url()?>admin/customer/addnew?form_type=inquiry&stat_type=followup&followup_type=today<?php echo $uuid?>">
+                               <a href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=followup&followup_type=today<?php echo $uuid?>">
                                 <div class="float-end">
                                  <p class="text-primary mb-0"><?php echo $follow_up_due_today;?></p>
                               </div>
@@ -406,7 +416,7 @@ print_r($customer_call_dtl);  */
                               
                            </div>
                            <div class="flex-grow-1">
-                               <a href="<?php echo base_url()?>admin/customer/addnew?form_type=inquiry&stat_type=followup&followup_type=tomorrow<?php echo $uuid?>">
+                               <a href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=followup&followup_type=tomorrow<?php echo $uuid?>">
                                 <div class="float-end">
                                  <p class="text-primary mb-0"><?php echo $follow_up_due_tomorrow;?></p>
                               </div>
@@ -457,14 +467,20 @@ print_r($customer_call_dtl);  */
 
                       <h5 class="card-header bg-success text-white border-bottom ">
                <div class="row ">
-                 <div class="col-sm-9">
+                 <div class="col-sm-6">
                   Inquiries
                  </div>
                  
-                 <div class="col-sm-3">
+                 <div class="col-sm-6">
+                  <div class="float-end">
+                     
+                      <a href="<?php echo base_url()?>admin/customer/export_stat?<?php echo $_SERVER['QUERY_STRING']?>" class="btn btn-info btn-sm">Export</a> 
+                     
+                  
                   <a href="<?php echo base_url()?>admin/customer/addnew" class="btn btn-info btn-sm">Clear</a> 
                   <button type="submit" class="btn btn-primary btn-sm"> <i class="fa fa-search"></i> Submit Filter</button>
                   <input name="form_type" type="hidden" value="inquiry">
+                  </div>
                  </div>
                </div>
              </h5>
@@ -704,6 +720,7 @@ print_r($customer_call_dtl);  */
                   <label for="example-text-input" class="col-md-5 col-form-label">Call Type</label>
                   <div class="col-md-7">
                      <select class=" form-control form-control-sm " id="call_type" name="call_type" aria-label="Floating label select example"  >
+                      <option value="" selected>All</option>
                          <?php
                                        if(!empty($calltypes))
                                        {
@@ -768,7 +785,7 @@ print_r($customer_call_dtl);  */
                            <div class="row">
                               <label for="customer_mobile_update" class="col-sm-4 col-form-label">Mobile*</label>
                               <div class="col-sm-8"> 
-                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="customer_mobile_update"  name="customer_mobile_update"  placeholder="Customer Mobile*"  value=""   />
+                                 <input type="text" maxlength="12" class="form-control form-control-sm" readonly id="customer_mobile_update"  name="customer_mobile_update"  placeholder="Customer Mobile*"  value=""   />
                               </div>
                            </div>
                            <div class="row">

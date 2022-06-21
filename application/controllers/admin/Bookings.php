@@ -100,6 +100,8 @@ class Bookings extends BaseController
                 $contract            = @$this->input->get('contract'); 
                 $start_date          = @$this->input->get('start_date'); 
                 $end_date            = @$this->input->get('end_date'); 
+                $search_type            = @$this->input->get('search_type'); 
+                $advance_booking_status_value            = @$this->input->get('advance_booking_status_value'); 
                 if(!empty($start_date))
                 {
                      $where_search['start_date'] =  $start_date;
@@ -208,6 +210,14 @@ class Bookings extends BaseController
                 if(!empty($city2))
                 {
                     $where_search['city'] =  $city2;
+                }
+                if(!empty($search_type))
+                {
+                    $where_search['search_type'] =  $search_type;
+                } 
+                 if(!empty($advance_booking_status_value))
+                {
+                    $where_search['advance_booking_status_value'] =  $advance_booking_status_value;
                 }  
                /* if(!empty($call_direction2))
                 {
@@ -217,8 +227,7 @@ class Bookings extends BaseController
                 {
                     $where_search['last_call_type'] =  $call_type2;
                 }*/
-
-             
+                
 
             $conditions['returnType'] = 'count'; 
             $conditions['userid'] = $userid; 
@@ -393,8 +402,7 @@ echo "</pre>";  */
         $where['field'] = 'id,name,title';
         $data['all_users'] = $this->admin_model->findDynamic($where);
 
-
-        $where = array();
+                $where = array();
         $where['status'] = '1';
         $where['orderby'] = 'name';
         $data['states'] = $this->state_model->findDynamic($where);
@@ -435,6 +443,13 @@ echo "</pre>";  */
         $where['status'] = '1';
         $where['orderby'] = 'title';
         $data['contracts_status'] = $this->contract_status_model->findDynamic($where);
+
+
+        $where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'title';
+        $where['field'] = 'id,name,title';
+        $data['all_products'] = $this->product_model->findDynamic($where); 
 
 
         $filter_bookings_status =  array();
@@ -1099,7 +1114,7 @@ echo "</pre>";  */
         $this->isLoggedIn();
         $delId = $this->input->post('id');  
         
-        $result = $this->customer_model->delete($delId); 
+        $result = $this->booking_model->delete($delId); 
             
         if ($result > 0) { echo(json_encode(array('status'=>TRUE))); }
         else { echo(json_encode(array('status'=>FALSE))); }

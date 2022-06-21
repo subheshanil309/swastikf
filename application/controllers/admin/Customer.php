@@ -47,10 +47,7 @@ class Customer extends BaseController
             if(isset($uid) && $uid !=='')
             {
                  $userid   = $uid;
-            }else
-            {
-                $userid = $this->session->userdata('userId');
-            }
+            } 
 
             
             
@@ -139,14 +136,20 @@ class Customer extends BaseController
 
                
 
-                $conditions['returnType']   = 'count'; 
-                $conditions['userid']       = $userid; 
+                $conditions['returnType']   = 'count';
+                if(!empty($userid))
+                {
+                    $conditions['userid']       = $userid;     
+                } 
+                
                 $conditions['where']       = $where_search;  
                 $conditions['form_type']    = $form_type;
                 $conditions['followup_type'] = @$followup_type;
 
+                
 
                 $totalRec = $this->customer_model->getRows($conditions);
+                    
 
  
 
@@ -218,8 +221,10 @@ class Customer extends BaseController
                 'where' => $where_search, 
                 'limit' => $this->perPage 
                 ); 
-
-                $conditions['userid'] = $userid;
+                if(isset($userid)){
+                    $conditions['userid'] = $userid;    
+                }
+                
                 $conditions['form_type'] = $form_type; 
                 $conditions['followup_type'] = @$followup_type; 
                     
@@ -325,9 +330,19 @@ class Customer extends BaseController
         $where['status'] = '1';
         $where['orderby'] = 'title';
         $data['calldirections'] = $this->call_direction_model->findDynamic($where);
-
+        
+       
+            $uid         = $this->input->get('uid');
+            if(isset($uid) && $uid !=='')
+            {
+                 $userid   = $uid;
+            }else
+            {
+                 $userid = $this->session->userdata('userId');
+            }
 
         $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type'); 
+         
 
 
 
@@ -837,11 +852,26 @@ class Customer extends BaseController
         
 
                 $insertData = array();
+                $insertData['id']                    = $form_data['farmser_id_update'];
+                $insertData['name']                  = ucfirst($form_data['customer_name_update']);
+                $insertData['alt_mobile']               = $form_data['customer_alter_mobile_update'];
+                $insertData['state_id']                 = $form_data['state_update'];
+                $insertData['other_state']           = $form_data['other_state_update'];
+                $insertData['district_id']              = $form_data['district_update'];
+                $insertData['other_district']        = $form_data['other_district_update'];
+                $insertData['city_id']                  = $form_data['city_update'];
+                $insertData['other_city']            = $form_data['other_city_update'];
+                $insertData['update_at']             = date("Y-m-d H:i:s");
+                $insertData['update_by']             = $this->session->userdata('userId');
                 
- 
 
-                
-                    //pre($form_data);exit;
+               
+                 
+                $result = $this->farmers_model->save($insertData);
+
+                $insertData = array();
+
+                //pre($form_data);exit;
                 $insertData['id']                    = $form_data['enquiry_id_update'];
                 $insertData['customer_name']         = $form_data['customer_name_update'];
                 $insertData['customer_title']        = ucfirst($form_data['customer_name_update']);
@@ -1082,6 +1112,95 @@ class Customer extends BaseController
             {
                 $conditions['userid']           = $assigned_to; 
             }
+ 
+
+ 
+
+
+            $resultfound = $this->customer_model->getRows($conditions);
+
+            $content = "Call Date,Customer Id,Customer name,Mobile,District,State,Call Direction,Call Type,Followup date,Emp Name,Assigned to,Assigned by,Comment,Customer Reg Date,Call Count,Entry made by,Entry Date,Entry Update Date,Last Follower,Last Call Type \n";
+             
+            if(!empty($resultfound))
+            {
+                foreach ($resultfound as $key => $value) 
+                {
+                    $farmer_details = $this->farmers_model->find($value['farmer_id']);
+                    $where = array();
+                    $where['customer'] = $value['id'];
+                    $where['field'] ='id';
+
+                    $count_call  = $this->customer_call_model->findDynamic($where);
+                    $count_call = count($count_call);
+
+                       $current_conversation =trim($value['current_conversation']);
+                    $current_conversation =str_replace("\n", " ", $current_conversation);
+                    $current_conversation =str_replace("\r", " ", $current_conversation);
+
+                    $content.= str_replace(",", " ", date('d M Y',strtotime($value['date_at']))).",";
+                    $content.= str_replace(",", " ", $value['farmer_id']).",";
+                    $content.= str_replace(",", " ", $value['customer_name']).",";
+                    $content.= str_replace(",", " ", $value['customer_mobile']).",";
+                    $content.= str_replace(",", " ", $value['district']).",";
+                    $content.= str_replace(",", " ", $value['state']).",";
+                    $content.= str_replace(",", " ", $value['calldir']).",";
+                    $content.= str_replace(",", " ", $value['calltype']).",";
+                    $content.= str_replace(",", " ", date('d M Y',strtotime($value['last_follow_date']))).",";
+                    
+                    $content.= str_replace(",", " ", $value['createdby']).",";
+                    $content.= str_replace(",", " ", $value['assignedto']).",";
+                    $content.= str_replace(",", " ", $value['createdby']).",";
+                    $content.= str_replace(",", " ", $current_conversation).",";
+                    $content.= str_replace(",", " ", date('d M Y',strtotime(@$farmer_details->date_at))).",";
+                    $content.= str_replace(",", " ", $count_call).",";
+                    $content.= str_replace(",", " ", $value['createdby']).",";
+                    
+                    $content.= str_replace(",", " ", date('d M Y',strtotime($value['date_at']))).",";
+                    $content.= str_replace(",", " ", date('d M Y',strtotime($value['update_at']))).",";
+                    $content.= str_replace(",", " ", $value['lastfollower']).",";
+                    $content.= str_replace(",", " ", $value['lastcalltype']).",";
+ 
+                           $content.="\n";
+                }
+            }            
+                    
+        $filename = 'enquiry-export-'.date('d-m-Y-h-s').'.csv';
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="'.$filename.'"');
+        print_r($content);
+        die; 
+    }
+
+    public function export_stat()
+    {
+
+         $this->isLoggedIn();
+
+            $uid    = @$this->input->get('uid'); 
+            $stat_type          = @$this->input->get('stat_type'); 
+            $followup_type          = @$this->input->get('followup_type'); 
+            $where_search   = array(); 
+            $conditions     = array(); 
+             
+             if(!empty($stat_type))
+                {
+                    $where_search['stat_type'] =  $stat_type;
+                }
+
+            if(!empty($uid))
+            {
+                $conditions['userid']           = $uid; 
+            }
+ 
+            if(!empty($followup_type))
+            {
+                $conditions['followup_type']           = $followup_type; 
+            } 
+            
+
+            $conditions['where']       = $where_search;  
+             
+            
  
 
  

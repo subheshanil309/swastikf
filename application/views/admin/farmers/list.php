@@ -127,8 +127,21 @@
                                     <td><?php echo date('d M Y',strtotime($value['date_at']));?></td>
                                     <td><?php echo (isset($value['status']) && $value['status']==1)?('<span class="badge bg-success">Active</span>'):'<span class="badge bg-danger">In-active</span>';?></td>
                                     <td> <?php
+
+
+
+
+                                                   $userid = $this->session->userdata('role');
+                                                   if($userid==1)
+                                                   {
+                                                     $delete_btn =  '<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$value['id'].'"><i class="fa fa-trash"></i></a>';  
+                                                   }else
+                                                   {
+                                                    $delete_btn = '';
+                                                   }
+                                                    
                                        $edit_btn = '<a class="btn btn-sm btn-info" href="'.base_url().'admin/farmers/edit/'.$value['id'].'" title="Edit" ><i class="fa fa-pen"></i></a>&nbsp;';
-                                       $delete_btn =  '<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$value['id'].'"><i class="fa fa-trash"></i></a>';
+                                       
                                        
                                        echo $edit_btn." ".$delete_btn;
                                        ?></td>

@@ -204,12 +204,9 @@ class Farmers_model extends Base_model
                 $where  = '';
                 $userid = $params['userid'];
                 /* $where.= "( f.status = 1 )";*/
-                if($role==1)
-                {
-                    $where.= "   ( f.company_id = '".$company_id."')";
-                }else{
-                    $where.= "   ( f.created_by = '".$userid."')";
-                }
+                 
+                  $where.= "   ( f.company_id = '".$company_id."')";
+                 
 
 
                

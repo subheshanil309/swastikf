@@ -220,8 +220,8 @@
                               <div class="col-sm-8"> 
                                    <select class="form-control form-control-sm" id="status1" name="status1" style="display: block!important">
                                       
-                                                                        <option value="1" <?php if(set_value('status1')==1){echo 'selected';} ?> >Active</option>
-                                                                        <option value="0" <?php if(set_value('status1')==0){echo 'selected';} ?>>Inactive</option>
+                                                                        <option value="1" <?php if(set_value('status1')=='1'){echo 'selected';} ?> >Active</option>
+                                                                        <option value="0" <?php if(set_value('status1')=='0'){echo 'selected';} ?>>Inactive</option>
                                                                          
                                                                      </select>
                                                                       

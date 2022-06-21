@@ -199,9 +199,7 @@ class Customer_call_model extends Base_model
             if(isset($data_param['userid']) && $data_param['userid'] !=='')
             {
                 $userid = $data_param['userid'];
-            }else{
-                $userid  = $this->session->userdata('userId');
-            }
+            } 
 
             /*if(isset($data_param['stat_type']) && $data_param['stat_type'] =='')
             {
@@ -218,8 +216,13 @@ class Customer_call_model extends Base_model
                 $where     = array();
                 $this->db->select('z_customer.id');
                 $this->db->from('z_customer');
-
-                  $where = "( z_customer.created_by = '".$userid."' OR z_customer.assigned_to='".$userid."' ) ";
+                 $where = "( z_customer.status = '1' ) ";
+                if(isset($data_param['userid']) && $data_param['userid'] !=='')
+                {
+                    $userid = $data_param['userid'];
+                    $where.= " AND ( z_customer.created_by = '".$userid."') ";
+                } 
+                   
 
                 if(isset($data_param['stat_type']) && $data_param['stat_type'] =='call_type' && $data_param['call_type'] !=='' )
                 {
@@ -265,18 +268,7 @@ class Customer_call_model extends Base_model
             {
                   
                   
-               /* $current_date  = date('Y-m-d');
-                $where     = array();
-                $this->db->select('z_customer.id');
-                $this->db->from('z_customer');
-                $where = "( z_customer.created_by = '".$userid."' OR z_customer.assigned_to='".$userid."' ) AND z_customer.last_call_type='".$value->id."' AND z_customer.last_follow_date='".$current_date."'";
-                $this->db->where($where); 
-
-
-                $query = $this->db->get();
-
-                $result = $query->result();*/
-
+               
 
 
                 $data_param = array();
@@ -285,8 +277,8 @@ class Customer_call_model extends Base_model
                 $data_param['call_type'] = $value->id;
                 
                   $result =   $this->callSummary($data_param);
-
-                $sec_arr['id']  = $value->id; 
+/*                  print_r($this->db->last_query());  die;
+*/                $sec_arr['id']  = $value->id; 
                 $sec_arr['title'] = $value->title; 
                 $sec_arr['total_count_call'] = count($result);
                 $array[] =$sec_arr;

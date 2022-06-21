@@ -217,9 +217,9 @@ class Booking_model extends Base_model
                 $userid = $this->session->userdata('userId');
                  $role = $this->session->userdata('role');
                 
-
+                  $where.= "( c.status = 1 )"; 
                 
-                if($role==1)
+              /*  if($role==1)
                 {
                     if(isset($params['form_type']) && $params['form_type']=='inquiry')
                     {
@@ -234,7 +234,7 @@ class Booking_model extends Base_model
                 {
                      $where.= "( c.created_by = '".$userid."' OR c.assigned_to='".$userid."')";
 
-                }
+                }*/
                     
 
             if(array_key_exists("where", $params)){
@@ -243,7 +243,7 @@ class Booking_model extends Base_model
                      
                     foreach($params['where'] as $key => $val){ 
                    // $this->db->where('c.'.$key, $val); 
-                    if($key =='customer_name' || $key =='billing_address' || $key =='other_city' ||$key =='other_district' || $key =='other_state' || $key =='req_delivery_date' || $key =='start_date' || $key =='end_date' )
+                    if($key =='customer_name' || $key =='billing_address' || $key =='other_city' ||$key =='other_district' || $key =='other_state' || $key =='req_delivery_date' || $key =='start_date' || $key =='end_date' ||  $key =='search_type' )
                     {
 
                     
@@ -313,7 +313,22 @@ class Booking_model extends Base_model
                         $where.= " AND ( c.date_at  >='".$start_date."' AND c.date_at  <='".$end_date."' )";
                 }
 
+                /*advance search type*/
 
+                if(isset($params['where']['search_type']) && $params['where']['search_type'] =="Advance")
+                {
+
+                    
+                     if(isset($params['where']['advance_booking_status_value']) )
+                    {
+                        $var = explode(',', $params['where']['advance_booking_status_value']);
+                         
+                        $csvexploded =  arrayToSqlCsv($var);
+                        print_r($csvexploded);die;
+                        $where.= " AND ( c.delivery_expect_start_date  >='".$start_date."' AND c.delivery_expect_end_date  <='".$end_date."' )";
+                    }
+                     
+                }
                 
  
                      

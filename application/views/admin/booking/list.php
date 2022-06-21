@@ -8,8 +8,25 @@
    .mytablestyle{
    min-height: 500px;
    }
+
+    .modal#advanceFilterModal .select2-dropdown{
+      z-index:1056 !important;
+      width: 200px !important;
+    }
+    
+    .modal#advanceFilterModal .select2-container{
+      width: 200px !important;
+
+    }
+    .modal#advanceFilterModal
+    {
+      z-index: 1051;
+    }
+        
+    
 </style>
-<div class="page-content">
+<!-- Latest compiled and minified CSS -->
+ <div class="page-content">
    <div class="container-fluid">
       <div class="row">
          <div class="col-xl-12">
@@ -33,6 +50,7 @@
       </div>
    </div>
    <div class="container-fluid">
+     
       <div class="row">
          <div class="col-12">
             <?php $this->load->helper('form'); ?>
@@ -108,7 +126,7 @@
                                           
                                           
                                                       ?>
-                                       <a class="btn btn-outline-primary <?php echo $active ;?>" href="<?php echo base_url()?>admin/bookings?booking_status=<?php echo $filter_booking_status['slug']?>"><span class="badge bg-warning text-white"><?php echo $filter_booking_status['count_booking']?></span><?php echo $filter_booking_status['title']?>
+                                       <a class="btn btn-outline-primary <?php echo $active ;?>" href="<?php echo base_url()?>admin/bookings?booking_status=<?php echo $filter_booking_status['slug']?>"> <span class="badge bg-warning text-white"><?php echo $filter_booking_status['count_booking']?> </span> <?php echo $filter_booking_status['title']?>
                                        </a>
                                        <?php
                                           }
@@ -228,11 +246,11 @@
                                           <select class="form-control form-control-sm select2 " name="product_id" id="product_id" aria-label="Floating label select example" style="width: 150px;"  >
                                              <option value="" selected >Choose Product</option>
                                              <?php
-                                                if(!empty($states))
+                                                if(!empty($all_products))
                                                 {
-                                                        foreach ($states as $state) {
+                                                        foreach ($all_products as $all_product) {
                                                             ?>
-                                             <option value="<?php echo $state->id;?>"><?php echo $state->name;?></option>
+                                             <option value="<?php echo $all_product->id;?>"><?php echo $all_product->title;?></option>
                                              <?php
                                                 }
                                                 }
@@ -449,31 +467,249 @@
    </div>
 </div>
 </div>
-<!--  Large modal example -->
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" id="advanceFilterModal" role="dialog" data-bs-backdrop="static"  aria-labelledby="myLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="myLargeModalLabel">Large modal</h5>
+      <div class="modal-content border-success">
+         <div class="modal-header bg-success">
+            <h5 class="modal-title text-white" id="myLargeModalLabel">Advance Filter</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
          </div>
+          <form action="<?php echo base_url()?>admin/bookings" method="get" enctype="data/form">
          <div class="modal-body">
-            <p>Cras mattis consectetur purus sit amet fermentum.
-               Cras justo odio, dapibus ac facilisis in,
-               egestas eget quam. Morbi leo risus, porta ac
-               consectetur ac, vestibulum at eros.
-            </p>
-            <p>Praesent commodo cursus magna, vel scelerisque
-               nisl consectetur et. Vivamus sagittis lacus vel
-               augue laoreet rutrum faucibus dolor auctor.
-            </p>
-            <p class="mb-0">Aenean lacinia bibendum nulla sed consectetur.
-               Praesent commodo cursus magna, vel scelerisque
-               nisl consectetur et. Donec sed odio dui. Donec
-               ullamcorper nulla non metus auctor
-               fringilla.
-            </p>
-         </div>
+           
+               <div class="row">
+                <div class="col-sm-6">
+                   
+               <div class=" row">
+                  <label for="advance_booking_status" class="col-md-5 col-form-label">Booking Status: </label>
+                  <div class="col-md-7">
+                     <select class=" form-control form-control-sm select2"  multiple="multiple"  id="advance_booking_status">
+                         <?php
+                           if(!empty($bookings_status))
+                           {
+                                   foreach ($bookings_status as $booking_status) {
+                                       ?>
+                        <option value="<?php echo $booking_status->slug;?>"><?php echo $booking_status->title;?></option>
+                        <?php
+                           }
+                           }
+                           ?>
+                           <input type="hidden" name="advance_booking_status_value"  id="advance_booking_status_value" >
+                     </select>
+                  </div>
+               </div>
+               <div class=" row">
+                  <label for="advance_crop_status" class="col-md-5 col-form-label">Crop Status:</label>
+                  <div class="col-md-7">
+                     <select class=" form-control form-control-sm  select2" id="advance_crop_status" multiple="multiple">
+                                              <?php
+                                                if(!empty($crops_status))
+                                                {
+                                                        foreach ($crops_status as $crop_status) {
+                                                            ?>
+                                             <option value="<?php echo $crop_status->slug;?>"><?php echo $crop_status->title;?></option>
+                                             <?php
+                                                }
+                                                }
+                                                ?>
+                                          </select>
+                                           <input type="hidden" name="advance_crop_status_value"  id="advance_crop_status_value" >
+                  </div>
+               </div>
+               <div class=" row">
+                  <label for="advance_agent_id" class="col-md-5 col-form-label">Executive:</label>
+                  <div class="col-md-7">
+                     <select class="form-control form-control-sm select2"  multiple="multiple" name="advance_agent_id[]" id="advance_agent_id">
+                                              <?php
+                                                if(!empty($all_agents))
+                                                {
+                                                        foreach ($all_agents as $executive) {
+                                                            ?>
+                                             <option value="<?php echo $executive->id;?>"><?php echo $executive->title;?></option>
+                                             <?php
+                                                }
+                                                }
+                                                ?>
+                                          </select>
+                                           <input type="hidden" name="advance_agent_id_value"  id="advance_agent_id_value" >
+                  </div>
+               </div>
+               <div class=" row">
+                  <label for="advance_product_id" class="col-md-5 col-form-label">Products:</label>
+                  <div class="col-md-7">
+                     <select class="form-control form-control-sm select2"  multiple="multiple" name="advance_product_id[]" id="advance_product_id">
+                                              <?php
+                                                if(!empty($all_products))
+                                                {
+                                                   foreach ($all_products as $all_product){
+                                                   ?>
+                                                   <option value="<?php echo $all_product->id;?>"><?php echo $all_product->title;?></option>
+                                                   <?php
+                                                   }
+                                                }
+                                                ?>
+                                          </select>
+                                          <input type="hidden" name="advance_product_id_value"  id="advance_product_id_value" >
+                  </div>
+               </div>
+               <div class=" row">
+                  <label for="plant_rate_amount" class="col-md-5 col-form-label">Plant Rate:</label>
+                  <div class="col-md-7">
+                     <div class="row">
+                        <div class="col-sm-6">
+                              <select class="form-control form-control-sm" name="advance_plan_rate" id="advance_plan_rate">
+                                 <option value="<">is less than</option>
+                                 <option value=">">is greater than</option>
+                                 <option value="=">is equal to</option>
+                              </select>
+                        </div>
+                        <div class="col-sm-6">
+                           <input type="number" name="plant_rate_amount" id="plant_rate_amount" class="form-control form-control-sm" placeholder="Amount" />
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class=" row">
+                  <label for="advance_plant_quantity_amount" class="col-md-5 col-form-label">Plant Quantity</label>
+                  <div class="col-md-7">
+                     <div class="row">
+                        <div class="col-sm-6">
+                              <select class="form-control form-control-sm" name="advance_plan_quantiry" id="advance_plan_quantiry">
+                                 <option value="<">is less than</option>
+                                 <option value=">">is greater than</option>
+                                 <option value="=">is equal to</option>
+                              </select>
+                        </div>
+                        <div class="col-sm-6">
+                           <input type="number" name="advance_plant_quantity_amount" id="advance_plant_quantity_amount" class="form-control form-control-sm" placeholder="Amount" />
+                        </div>
+                     </div>
+                  </div>
+               </div>
+             </div>
+             <div class="col-sm-6">
+                   
+               <div class=" row">
+                  <label for="advance_state" class="col-md-5 col-form-label">State: </label>
+                  <div class="col-md-7">
+                     <select class=" form-control form-control-sm select2" name="advance_state[]" multiple="multiple"  id="advance_state"   aria-label="Floating label select example" placeholder="Select"  >
+                         <?php
+
+                              if(!empty($states))
+                              {
+                                 foreach ($states as $state) {
+                                    ?>
+                                    <option value="<?php echo $state->id;?>"><?php echo $state->name;?></option>
+                                    <?php
+                                 }
+                              }
+                           ?>
+                     </select>
+                      <input type="hidden" name="advance_state_value"  id="advance_state_value" >
+                  </div>
+               </div>
+               <div class=" row">
+                  <label for="advance_district" class="col-md-5 col-form-label">District:</label>
+                  <div class="col-md-7">
+                     <select class=" form-control form-control-sm  select2" id="advance_district" name="advance_district[]"  multiple="multiple" aria-label="Floating label select example"  >
+                                              <?php
+                                                if(!empty($districts))
+                                                {
+                                                   foreach ($districts as $district)
+                                                   {
+                                                      ?>
+                                                      <option value="<?php echo $district->id;?>"><?php echo $district->name;?></option>
+                                                      <?php
+                                                   }
+                                                }
+                                                ?>
+                                          </select>
+                                          <input type="hidden" name="advance_district_value"  id="advance_district_value" >
+                  </div>
+               </div>
+               <div class=" row">
+                  <label for="advance_city" class="col-md-5 col-form-label">Tehsil:</label>
+                  <div class="col-md-7">
+                     <select class="form-control form-control-sm select2"  multiple="multiple" name="advance_city[]" id="advance_city" aria-label="Floating label select example"   >
+                        <?php
+                           if(!empty($cities))
+                           {
+                              foreach ($cities as $city) {
+                                 ?>
+                                    <option value="<?php echo $city->id;?>"><?php echo $city->city;?></option>
+                                 <?php
+                              }
+                           }
+                        ?>
+                      </select>
+                      <input type="hidden" name="advance_city_value"  id="advance_city_value" >
+                  </div>
+               </div>
+                
+               <div class=" row">
+                  <label for="oustanding_amount" class="col-md-5 col-form-label">Outstanding:</label>
+                  <div class="col-md-7">
+                     <div class="row">
+                        <div class="col-sm-6">
+                              <select class="form-control form-control-sm" name="advance_oustanding" id="advance_oustanding">
+                                 <option value="<">is less than</option>
+                                 <option value=">">is greater than</option>
+                                 <option value="=">is equal to</option>
+                              </select>
+                        </div>
+                        <div class="col-sm-6">
+                           <input type="number" name="oustanding_amount" id="oustanding_amount" class="form-control form-control-sm" placeholder="Amount" />
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class=" row">
+                  <label for="advance_recieved_amount" class="col-md-5 col-form-label">Received:</label>
+                  <div class="col-md-7">
+                     <div class="row">
+                        <div class="col-sm-6">
+                              <select class="form-control form-control-sm" name="advance_recieved" id="advance_recieved">
+                                 <option value="<">is less than</option>
+                                 <option value=">">is greater than</option>
+                                 <option value="=">is equal to</option>
+                              </select>
+                        </div>
+                        <div class="col-sm-6">
+                           <input type="number" name="advance_recieved_amount" id="advance_recieved_amount" class="form-control form-control-sm" placeholder="Amount" />
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class=" row">
+                  <label for="advance_discount_amount" class="col-md-5 col-form-label">Discount</label>
+                  <div class="col-md-7">
+                     <div class="row">
+                        <div class="col-sm-6">
+                              <select class="form-control form-control-sm" name="advance_discount" id="advance_discount">
+                                 <option value="<">is less than</option>
+                                 <option value=">">is greater than</option>
+                                 <option value="=">is equal to</option>
+                              </select>
+                        </div>
+                        <div class="col-sm-6">
+                           <input type="number" name="advance_discount_amount" id="advance_discount_amount" class="form-control form-control-sm" placeholder="Amount" />
+                        </div>
+                     </div>
+                  </div>
+               </div>
+             </div>
+             
+             </div>
+             </div>
+         <div class="modal-footer">
+               <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+               <input type="hidden" name="search_type" name="search_type" value="Advance"/>
+               <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+            </div>
+            </form>
+         
       </div>
       <!-- /.modal-content -->
    </div>
@@ -481,7 +717,7 @@
 </div>
 <!-- /.modal -->
 <!--  Large modal example -->
-<div class="modal fade bs-example-modal-lg2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade bs-example-modal-lg2" tabindex="-1" role="dialog"  aria-labelledby="myLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg">
       <div class="modal-content">
          <div class="modal-header">
@@ -623,11 +859,16 @@
       </form>
    </div>
 </div>
-<script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
+ <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/daterange/daterangepicker.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/toastr/build/toastr.min.js"></script>
+
+
+ <!--  Large modal example -->
+
 <script type="text/javascript">
+   
    toastr.options = {
      "closeButton": true,
      "debug": false,
@@ -715,14 +956,37 @@
    
    
    jQuery(document).ready(function(){
-   //$('#example').DataTable();
+         
+            $("#advance_booking_status").on('change',function(){
+               $("#advance_booking_status_value").val($(this).val());
+            });
+
+           $("#advance_crop_status").on('change',function(){
+               $("#advance_crop_status_value").val($(this).val());
+           });
+           $("#advance_agent_id").on('change',function(){
+               $("#advance_agent_id_value").val($(this).val());
+           });
+           $("#advance_product_id").on('change',function(){
+               $("#advance_product_id_value").val($(this).val());
+           });
+           $("#advance_state").on('change',function(){
+               $("#advance_state_value").val($(this).val());
+           }); 
+           $("#advance_district").on('change',function(){
+               $("#advance_district_value").val($(this).val());
+           });
+           $("#advance_city").on('change',function(){
+               $("#advance_city_value").val($(this).val());
+           });
+
            $(".select2").select2();
    
    
         jQuery(document).on("click", ".deletebtn", function(){
    
          var userId = $(this).data("userid"),
-           hitURL = "<?php echo base_url() ?>admin/booking/delete",
+           hitURL = "<?php echo base_url() ?>admin/bookings/delete",
            currentRow = $(this);
          
          var confirmation = confirm("Are you sure to delete this?");
@@ -1010,7 +1274,8 @@
    var table;
     
    $(document).ready(function() {
-   
+      
+      //$("#advance_agent_id").select2();
     $("#query-pagination li.page-item a").addClass('page-link');
        //datatables
       /* table = $('#example').DataTable({ 
@@ -1039,7 +1304,20 @@
 </script>
 <!-- Status Change -->
 <script type="text/javascript">
+
+
    jQuery(document).ready(function(){
+$("#chkall_booking").click(function(){
+        if($("#chkall_booking").is(':checked')){
+            $("#filter_booking_status > option").prop("selected", "selected");
+            $("#filter_booking_status").trigger("change");
+        } else {
+            $("#filter_booking_status > option").removeAttr("selected");
+            $("#filter_booking_status").trigger("change");
+        }
+    });
+
+   
       $('#booking_date, #booking_status, #crop_status, #delivery_status, #contract, #agent_id, #product_id, #req_delivery_date, #delivery_date').on(
            'change',
            function() {
@@ -1081,4 +1359,5 @@
        $('#booking_filter').submit();
      }
    }
+
 </script>
