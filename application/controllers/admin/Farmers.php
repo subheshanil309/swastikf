@@ -35,7 +35,7 @@ class Farmers extends BaseController
             $mobile                 = @$this->input->get('mobile');
             $father_name            = @$this->input->get('father_name');
             $whatsapp               = @$this->input->get('whatsapp');
-            $alt_mobile               = @$this->input->get('alt_mobile');
+            $alt_mobile             = @$this->input->get('alt_mobile');
 
 
 
@@ -71,12 +71,12 @@ class Farmers extends BaseController
             $conditions = array();
             $uriSegment = 4; 
 
-            $config['base_url']    = base_url().'admin/farmers/index/'; 
-                $config['uri_segment'] = $uriSegment; 
-                $config['total_rows']  = $totalRec; 
-                $config['per_page']    = $this->perPage; 
-                $config['use_page_numbers'] = TRUE;
-                $config['reuse_query_string'] = TRUE;
+            $config['base_url']         = base_url().'admin/farmers/index/'; 
+            $config['uri_segment']      = $uriSegment; 
+            $config['total_rows']       = $totalRec; 
+            $config['per_page']         = $this->perPage; 
+            $config['use_page_numbers'] = TRUE;
+            $config['reuse_query_string']= TRUE;
              
 
  
@@ -433,7 +433,39 @@ class Farmers extends BaseController
     }
 
     
-    
+     public function single($id='')
+    {
+        $this->isLoggedIn();
+        $customer_id    = $this->input->get('customer_id');
+        $mobile         = $this->input->get('mobile');
+
+        $single_arr  = array();
+        if(isset($customer_id) || isset($mobile))
+        {
+            $where = array();
+            $where['status'] = '1'; 
+            if($customer_id !=='')
+            {
+                $where['id'] = $customer_id; 
+            }
+
+            if($mobile !=='')
+            {
+                $where['customer_mobile'] = $mobile; 
+            }
+
+             $result = $this->farmers_model->findDynamic($where);
+             if(!empty( $result))
+             {
+              $single_arr= $result[0];  
+             }
+                      
+        }else
+        {
+             $single_arr = $this->farmers_model->find($id);
+        }
+        echo  json_encode($single_arr);
+    }
     
 }
 

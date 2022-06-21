@@ -341,7 +341,7 @@ class Booking_log_model extends Base_model
             $insertData = array();
             $insertData['booking_id']                   = $single->id;
             $insertData['stage']                        = $single->stage;
-            $insertData['customer_id']                  = $single->customer_id;
+            $insertData['farmer_id']                    = $single->farmer_id;
             $insertData['customer_name']                = $single->customer_name;
             $insertData['customer_mobile']              = $single->customer_mobile;
             $insertData['customer_alter_mobile']        = $single->customer_alter_mobile;

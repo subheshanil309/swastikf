@@ -131,12 +131,12 @@
                            <table class=""  style="width: 100%">
                               <tr>
                                  <td colspan="6">
-                                    <h3 class="card-title">Customer Details</h3>
+                                    <h3 class="card-title">Farmer Details</h3>
                                  </td>
                               </tr>
                               <tr>
-                                 <td style="width: 20%;"> <strong>Customer Id</strong></td>
-                                 <td style="width: 20%;" > <strong>Customer Name</strong></td>
+                                 <td style="width: 20%;"> <strong>Farmer Id</strong></td>
+                                 <td style="width: 20%;" > <strong>Farmer Name</strong></td>
                                  <?php
                                     $bill_address = '';
                                     if(isset($receipt_dtl['village']) && $receipt_dtl['village'] !=='')
@@ -185,8 +185,8 @@
                                  <td colspan="2" style="width: 30%;"> <strong>Delivery Address</strong></td>
                               </tr>
                               <tr>
-                                 <td> <?php echo (@$receipt_dtl['id']);?></td>
-                                 <td> <?php echo ($receipt_dtl['booking_date']=='0000-00-00' || $receipt_dtl['booking_date']==null)?'': date('d M Y',strtotime($receipt_dtl['booking_date'])); ?></td>
+                                 <td> <?php echo (@$receipt_dtl['farmer_id']);?></td>
+                                 <td> <?php echo  @$receipt_dtl['customer_name']; ?></td>
                                  <td colspan="2" rowspan="3"><?php echo (@$bill_address);?></td>
                                  <td  colspan="2" rowspan="3"><?php  echo $shiping_addres; ?></td>
                               </tr>

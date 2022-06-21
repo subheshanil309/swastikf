@@ -134,8 +134,8 @@
                                        <th class="align-middle bg-success text-white">Booking Date.</th>
                                        <th class="align-middle bg-success text-white">Order Status</th>
                                        <th class="align-middle bg-success text-white">Crop Status</th>
-                                       <th class="align-middle bg-success text-white">Customer ID</th>
-                                       <th class="align-middle bg-success text-white">Customer Name</th>
+                                       <th class="align-middle bg-success text-white">Farmer ID</th>
+                                       <th class="align-middle bg-success text-white">Name</th>
                                        <th class="align-middle bg-success text-white">Executive</th>
                                        <th class="align-middle bg-success text-white">Choose Product</th>
                                        <th class="align-middle bg-success text-white">Primary Number</th>
@@ -204,7 +204,7 @@
                                           </select>
                                        </th>
                                        <th class="align-middle bg-success text-white">
-                                          <input class="form-control-sm" type="text" name="customer_id" id="customer_id" placeholder="Customer ID">
+                                          <input class="form-control-sm" type="text" name="farmer_id" id="farmer_id" placeholder="Farmer ID">
                                        </th>
                                        <th class="align-middle bg-success text-white">
                                           <input class="form-control-sm" type="text" name="customer_name" id="customer_name" placeholder="Customer Name">
@@ -371,7 +371,7 @@
                                        <td><?php echo ($bookings['booking_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['booking_date'])) :'';?></td>
                                        <td><span class="badge bg-<?php echo $bookings['booked_badges'];?> "><?php echo $bookings['booked_status'];?></span></td>
                                        <td><?php echo $bookings['cropstatusname'];?></td>
-                                       <td><?php echo $bookings['customer_id'];?></td>
+                                       <td><?php echo $bookings['farmer_id'];?></td>
                                        <td><?php echo $bookings['customer_name'];?></td>
                                        <td><?php echo $bookings['executive'];?></td>
                                        <td><?php echo $bookings['productname'];?></td>
@@ -529,7 +529,7 @@
                         <th class="align-middle bg-success text-white"  style="min-width: 80px">Booking&nbsp;Date.</th>
                         <th class="align-middle bg-success text-white">Order&nbsp;Status</th>
                         <th class="align-middle bg-success text-white">Crop&nbsp;Status</th>
-                        <th class="align-middle bg-success text-white">Customer&nbsp;ID</th>
+                        <th class="align-middle bg-success text-white">Farmer&nbsp;ID</th>
                         <th class="align-middle bg-success text-white" style="min-width: 200px;"  >Customer&nbsp;Name</th>
                         <th class="align-middle bg-success text-white" style="min-width: 200px;" >Executive</th>
                         <th class="align-middle bg-success text-white" style="min-width: 200px;" >Choose&nbsp;Product</th>
@@ -860,7 +860,7 @@
                  html_content+="<td>"+content.booking_date+"</td>"; 
                  html_content+="<td><span class='badge bg-"+content.booked_badges+"'>"+content.booked_status+"</span></td>"; 
                  html_content+="<td><span class='badge bg-success'>"+content.cropstatusname+"</span></td>"; 
-                 html_content+="<td>"+content.customer_id+"</td>"; 
+                 html_content+="<td>"+content.farmer_id+"</td>"; 
                  html_content+="<td>"+content.customer_name+"</td>"; 
                  html_content+="<td>"+content.executive+"</td>"; 
                  html_content+="<td>"+content.productname+"</td>"; 

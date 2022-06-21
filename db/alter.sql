@@ -310,6 +310,12 @@ ALTER TABLE `z_customer` ADD `update_by` INT NOT NULL DEFAULT '1';
 
 ALTER TABLE `z_customer` CHANGE `update_at` `update_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
+----21-06-2022
+
+ALTER TABLE `z_booking` ADD `farmer_id` INT NULL DEFAULT NULL AFTER `id`;
+ALTER TABLE `z_booking_payments` ADD `farmer_id` INT NULL DEFAULT NULL AFTER `id`;
+ALTER TABLE `z_booking_log` ADD `farmer_id` INT NULL DEFAULT NULL AFTER `id`;
+
 
 
 

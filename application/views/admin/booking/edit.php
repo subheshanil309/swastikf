@@ -19,7 +19,7 @@
                      <div class="row">
                         <div class="col-md-5">
                            <div class="form-group row">
-                              <label for="customer_id" class="col-sm-4 col-form-label text-right">Cust ID:</label>
+                              <label for="customer_id" class="col-sm-4 col-form-label text-right">Farmer ID:</label>
                               <div class="col-sm-8">
                                  <div class="input-group input-group-sm">
                                     <input class="form-control form-control-sm  " id="customer_id" name="customer_id" type="text" onkeypress="return onlyNumberKey(event)">
@@ -88,6 +88,9 @@
             <h5 class="card-header bg-success text-white border-bottom p-1">Add New Booking</h5>
             <div class="card card-body">
                <form action="<?php echo base_url() ?>admin/bookings/update" method="post" role="form" enctype="multipart/form-data" id="booking_form" class="custom-validation">
+
+                  <input type="hidden" name="farmer_id" id="farmer_id" value="<?php echo @$edit_data->farmer_id?>">
+                         
                   <div class="row">
                      <div class="col-sm-3">
                         <input type="hidden" name="contactid" id="contactid" value="">
@@ -144,7 +147,7 @@
                               if(isset($edit_data->document) && $edit_data->document !=='')
                               {
                                  ?>
-                           <a target="_blank" class="badge bg-primary text-white" href="<?php echo base_url()?>uploads/admin/document/<?php echo $edit_data->document;?>">View</a>
+                           <a target="_blank" class="badge bg-primary text-white" href="<?php echo base_url()?>uploads/admin/document/<?php echo $edit_data->document;?>" download >View</a>
                            <?php      
                               }
                               ?>
@@ -617,27 +620,32 @@
                         </div>
                      </div>
                   </div>
-                  <div class="row">
-                     <div class="col-sm-12">
-                        <div class="table table-responsive">
-                           <table class="table table-responsive table-striped" style="max-height: 300px;">
-                              <thead class="table-light" >
-                                 <tr class="p-0">
-                                    <th class="align-middle bg-success text-white p-1">Date</th>
-                                    <th class="align-middle bg-success text-white p-1">Type</th>
-                                    <th class="align-middle bg-success text-white p-1">Amount</th>
-                                    <th class="align-middle bg-success text-white p-1">Mode</th>
-                                    <th class="align-middle bg-success text-white p-1">Bank Trxn Id</th>
-                                    <th class="align-middle bg-success text-white p-1">Action</th>
-                                 </tr>
-                              </thead>
-                              <tbody>
+
+                  
                                  <?php
                                     /*echo "<pre>";
                                     print_r($payment_details);
                                     echo "</pre>";*/  
                                        if(!empty($payment_details))
                                        {
+
+                                          ?>
+                                             <div class="row">
+                                                <div class="col-sm-12">
+                                                   <div class="table table-responsive">
+                                                      <table class="table table-responsive table-striped" style="max-height: 300px;">
+                                                         <thead class="table-light" >
+                                                            <tr class="p-0">
+                                                               <th class="align-middle bg-success text-white p-1">Date</th>
+                                                               <th class="align-middle bg-success text-white p-1">Type</th>
+                                                               <th class="align-middle bg-success text-white p-1">Amount</th>
+                                                               <th class="align-middle bg-success text-white p-1">Mode</th>
+                                                               <th class="align-middle bg-success text-white p-1">Bank Trxn Id</th>
+                                                               <th class="align-middle bg-success text-white p-1">Action</th>
+                                                            </tr>
+                                                         </thead>
+                                                         <tbody>
+                                          <?php
                                           foreach ($payment_details as $key => $value) 
                                           {
                                              $badged = 'bg-primary';
@@ -672,13 +680,17 @@
                                  </tr>
                                  <?php
                                     }
-                                    }
                                     ?>
                               </tbody>
                            </table>
                         </div>
                      </div>
                   </div>
+                                    <?php
+                                    }
+                                    ?>
+                             
+
                </div>
             </div>
          </div>
@@ -1048,7 +1060,7 @@
    
    
    
-     var centerState  = 33;
+     var centerState  = <?php echo $company_data->state?>;
    
    
       function stateChange(state_code = '',selected_district = '') {
@@ -1554,7 +1566,7 @@
          if(customer_id || mobile)
         {
         
-          hitURL = "<?php echo base_url() ?>admin/customer/single";
+          hitURL = "<?php echo base_url() ?>admin/farmers/single";
    
           show_loader();
            $.ajax({
@@ -1570,18 +1582,22 @@
                 if(response)
                 {
                     var data = response;
-   
-                    $('#customer_mobile').val(data.customer_mobile);
-                    $('#customer_alter_mobile').val(data.customer_alter_mobile);
-                    $('#customer_name').val(data.customer_name);
-                    $('#state').val(data.state);
-                    $('#contactid').val(data.id);
-                    var stateCode = data.state;
-                    var districtCode = data.district;
-                    var cityCode = data.city;
+                     console.log(data);
+                    $('#customer_mobile').val(data.mobile);
+                  $('#customer_alter_mobile').val(data.alt_mobile);
+                  $('#customer_name').val(data.name);
+                  $('#state').val(data.state_id);
+                  $('#contactid').val(data.id);
+                  $('#farmer_id').val(data.id);
+                  $('#pincode').val(data.pincode);
+                  $('#village').val(data.village);
+                  $('#father_name').val(data.father_name);
+                  var stateCode = data.state_id;
+                  var districtCode = data.district_id;
+                  var cityCode = data.city_id;
                   stateChange(stateCode,districtCode);
                   districtChange(districtCode,cityCode);
-                    renderCart(centerState);
+                  renderCart(centerState);
                      
                 }else
                 {

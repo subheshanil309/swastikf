@@ -19,7 +19,7 @@
                      <div class="row">
                         <div class="col-md-5">
                            <div class="form-group row">
-                              <label for="customer_id" class="col-sm-4 col-form-label text-right">Cust ID:</label>
+                              <label for="customer_id" class="col-sm-4 col-form-label text-right">Farmer ID:</label>
                               <div class="col-sm-8">
                                  <div class="input-group input-group-sm">
                                     <input class="form-control form-control-sm  " id="customer_id" name="customer_id" type="text" onkeypress="return onlyNumberKey(event)">
@@ -90,6 +90,7 @@
                <form autocomplete="off" action="<?php echo base_url() ?>admin/bookings/insertnow" method="post" role="form" enctype="multipart/form-data" id="booking_form" class="custom-validation">
                   <div class="row">
                      <div class="col-sm-3">
+                        <input type="hidden" name="farmer_id" id="farmer_id" value="">
                         <input type="hidden" name="contactid" id="contactid" value="">
                         <div class="row">
                            <label for="customer_mobile" class="col-sm-4 col-form-label">Reg Mob No<span class="text-danger">*</span></label>
@@ -561,8 +562,8 @@
    
    
    
-     var centerState  = 33;
-      function stateChange(state_code = '',selected_district = '') {
+     var centerState  = <?php echo $company_data->state?>;
+       function stateChange(state_code = '',selected_district = '') {
           
         var stateCode = state_code ? state_code : $('#state').val();
         var selectedDistrict = selected_district ? selected_district : $('#district').val();
@@ -918,10 +919,11 @@
         var customer_id = $("#customer_id").val();
         var mobile = $("#mobile").val();
         $('#contactid').val('');
+        $('#farmer_id').val('');
          if(customer_id || mobile)
         {
         
-          hitURL = "<?php echo base_url() ?>admin/customer/single";
+          hitURL = "<?php echo base_url() ?>admin/farmers/single";
    
           show_loader();
            $.ajax({
@@ -938,21 +940,26 @@
                 {
                     var data = response;
    
-                    $('#customer_mobile').val(data.customer_mobile);
-                    $('#customer_alter_mobile').val(data.customer_alter_mobile);
-                    $('#customer_name').val(data.customer_name);
-                    $('#state').val(data.state);
-                    $('#contactid').val(data.id);
-                    var stateCode = data.state;
-                    var districtCode = data.district;
-                    var cityCode = data.city;
+                  $('#customer_mobile').val(data.mobile);
+                  $('#customer_alter_mobile').val(data.alt_mobile);
+                  $('#customer_name').val(data.name);
+                  $('#state').val(data.state_id);
+                  $('#contactid').val(data.id);
+                  $('#farmer_id').val(data.id);
+                  $('#pincode').val(data.pincode);
+                  $('#village').val(data.village);
+                  $('#father_name').val(data.father_name);
+                  var stateCode = data.state_id;
+                  var districtCode = data.district_id;
+                  var cityCode = data.city_id;
                   stateChange(stateCode,districtCode);
                   districtChange(districtCode,cityCode);
-                    renderCart(centerState);
+                  renderCart(centerState);
                      
                 }else
                 {
                    $('#contactid').val('');
+                   $('#farmer_id').val('');
                 }
                 
          },

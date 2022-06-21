@@ -23,6 +23,7 @@ class Bookings extends BaseController
         $this->load->model('admin/agent_model');
         $this->load->model('admin/product_model');
         $this->load->model('admin/customer_model');
+        $this->load->model('admin/farmers_model');
         $this->load->model('admin/city_model');
         $this->load->model('admin/state_model');
         $this->load->model('admin/district_model');
@@ -69,7 +70,7 @@ class Bookings extends BaseController
         
 
                 $where_search =  array();
-                $search_customer_id  = @$this->input->get('customer_id');
+                $search_farmer_id  = @$this->input->get('farmer_id');
                 $search_name         = @$this->input->get('customer_name');
                 $search_mobile       = @$this->input->get('customer_mobile');
                 $search_alt_mobile   = @$this->input->get('customer_alter_mobile');
@@ -178,9 +179,9 @@ class Bookings extends BaseController
                 {
                     $where_search['id'] =  $booking_no;
                 }
-                if(!empty($search_customer_id))
+                if(!empty($search_farmer_id))
                 {
-                    $where_search['customer_id'] =  $search_customer_id;
+                    $where_search['farmer_id'] =  $search_farmer_id;
                 }
                 if(!empty($search_name))
                 {
@@ -497,6 +498,7 @@ echo "</pre>";  */
             
             $data = array();
             $userid = $this->session->userdata('userId');
+            $company_id = $this->session->userdata('company_id');
 
             $where = array();
         $where['status'] = '1';
@@ -564,8 +566,13 @@ echo "</pre>";  */
         $where['status'] = '1';
         $where['admin_type'] = '2';
         $where['orderby'] = 'title';
-        $data['all_agents'] = $this->admin_model->findDynamic($where);
+        $data['all_agents'] = $this->admin_model->findDynamic($where); 
 
+
+          
+         
+        $data['company_data'] = $this->company_model->find($company_id);
+        
 
  
 
@@ -601,36 +608,47 @@ echo "</pre>";  */
 
 
 
-                if(!empty($form_data['customerid']))
+                if(!empty($form_data['farmer_id']))
                 {
                     /*$where['id!=']      = $form_data['id'];
                     $last_customer_id   = $form_data['customer_id'];
                     $insertData['id']   = $form_data['id'];*/
 
-                    $get_customerid = $form_data['customerid'];
+                    $get_farmerid = $form_data['farmer_id'];
                 }else
                 {
 
 
                         $where = array();
-                        $where['customer_mobile']= $form_data['customer_mobile'];
-                        $result = $this->customer_model->findDynamic($where);
+                        $where['mobile']= $form_data['customer_mobile'];
+                        $result = $this->farmers_model->findDynamic($where);
                         if(!empty($result))
                         {
-                            $get_customerid = $result[0]->id;    
+                            $get_farmerid = $result[0]->id;    
                         }else
                         {
 
-                            $where_leatest = array(); 
-                            $where_leatest['orderby']   = '-id';
-                            $where_leatest['field']     = 'sku_id';
-                            $where_leatest['limit']     = 1;
-                            $last_customerid    = $this->customer_model->findDynamic($where_leatest);
-                            $last_customer_id =  str_pad((@$last_customerid[0]->sku_id)+1, 8, '0', STR_PAD_LEFT);
+                            $insertData = array();
+                            $insertData['name']         = $form_data['customer_name'];
+                            $insertData['mobile']       = $form_data['customer_mobile'];
+                            $insertData['alt_mobile']   = $form_data['customer_alter_mobile'];
+                             
+                            $insertData['father_name']  = $form_data['father_name'];
+                            $insertData['pincode']      = $form_data['pincode'];
+                            $insertData['city_id']      = $form_data['city'];
+                            $insertData['other_city']   = $form_data['other_city'];
+                            $insertData['state_id']     = $form_data['state'];
+                            $insertData['other_state']  = $form_data['other_state'];
+                            $insertData['other_district']= $form_data['other_district'];
+                            $insertData['district_id']  = $form_data['district'];
+                            $insertData['date_at']      = date("Y-m-d H:i:s");;
+                            $insertData['status']       =  1;
+                            $insertData['village']      = $form_data['village'];
+                            $insertData['created_by']   = $this->session->userdata('userId');
 
+                            $get_farmerid = $this->farmers_model->save($insertData);
 
-                            $insertData['sku_id']                = $last_customer_id;
-                            $insertData['customer_name']         = $form_data['customer_name'];
+                            /*$insertData['customer_name']         = $form_data['customer_name'];
                             $insertData['customer_title']        = ucfirst($form_data['customer_name']);
                             $insertData['customer_mobile']       = $form_data['customer_mobile'];
                             $insertData['customer_alter_mobile'] = $form_data['customer_alter_mobile'];
@@ -650,7 +668,7 @@ echo "</pre>";  */
                             $insertData['last_follower']         = $this->session->userdata('userId');
                             $insertData['last_follow_call_type'] = 0;
 
-                             $get_customerid = $this->customer_model->save($insertData);
+                            $get_customerid = $this->customer_model->save($insertData);*/
 
                         }
                         
@@ -691,20 +709,27 @@ echo "</pre>";  */
                                  }
 
 
-                                 $str = $form_data['req_delivery_date'];
-                            $exploded_data = explode(":",$str);
+                            if(isset($form_data['req_delivery_date']) && $form_data['req_delivery_date'] !=='')
+                            {
+                                $str = $form_data['req_delivery_date'];
+                                $exploded_data = explode(":",$str);
 
-                            $start_date = $exploded_data[0];
-                            $end_date = $exploded_data[1];
+                                $start_date = $exploded_data[0];
+                                $end_date = $exploded_data[1];
+ 
+                            }else
+                            {
+                                $start_date = null;
+                                $end_date   = null;
+                            }
+                           
 
-
-
-                            $insertData['customer_id']                = $get_customerid;
-                            $insertData['customer_name']              = $form_data['customer_name'];
-                            $insertData['customer_mobile']            = $form_data['customer_mobile'];
-                            $insertData['customer_alter_mobile']      = $form_data['customer_alter_mobile'];
-                            $insertData['father_name']                = $form_data['father_name'];
-                            $insertData['state']                      = $form_data['state'];
+                            $insertData['farmer_id']                    = $get_farmerid;
+                            $insertData['customer_name']                = $form_data['customer_name'];
+                            $insertData['customer_mobile']              = $form_data['customer_mobile'];
+                            $insertData['customer_alter_mobile']        = $form_data['customer_alter_mobile'];
+                            $insertData['father_name']                  = $form_data['father_name'];
+                            $insertData['state']                        = $form_data['state'];
                             $insertData['other_state']                  = $form_data['other_state'];
                             $insertData['district']                     = $form_data['district'];
                             $insertData['other_district']               = $form_data['other_district'];
@@ -792,7 +817,8 @@ echo "</pre>";  */
                         $insertData['payment_date']                 =  $form_data['create_date'];
                         $insertData['created_by']                   =  $this->session->userdata('userId');
                         $insertData['booking_id']                   = $result_insert;
-                        $insertData['customer_id']                  = $get_customerid;
+                         
+                        $insertData['farmer_id']                    = $get_farmerid;
                         $insertData['status']                       =1;
                         $insertData['payment_mode']                 = $form_data['payment_mode'];
                         $insertData['cheque_no']                    = $form_data['cheque_no'];
@@ -962,7 +988,8 @@ echo "</pre>";  */
 
 
             $data = array();
-
+              $userid = $this->session->userdata('userId');
+            $company_id = $this->session->userdata('company_id');
 
 
 
@@ -1051,7 +1078,10 @@ echo "</pre>";  */
         $data['all_agents'] = $this->admin_model->findDynamic($where);
 
 
-         $data['edit_data'] = $this->booking_model->find($id); 
+         $data['edit_data'] = $this->booking_model->find($id);
+
+                 $data['company_data'] = $this->company_model->find($company_id);
+ 
           
             $data['payment_details']    = $this->booking_payments_model->getPaymentDetail($id); 
 
@@ -1087,6 +1117,7 @@ echo "</pre>";  */
         $this->form_validation->set_rules('customer_name','customer_name','trim|required');
         $this->form_validation->set_rules('customer_mobile','customer_mobile','trim|required');
         $this->form_validation->set_rules('product_id','product_id','trim|required');
+        $this->form_validation->set_rules('farmer_id','Farmer ','trim|required');
         
         
         
@@ -1106,35 +1137,30 @@ echo "</pre>";  */
 
 
 
-                if(!empty($form_data['customerid']))
+                if(!empty($form_data['farmer_id']))
                 {
                     /*$where['id!=']      = $form_data['id'];
                     $last_customer_id   = $form_data['customer_id'];
                     $insertData['id']   = $form_data['id'];*/
 
-                    $get_customerid = $form_data['customerid'];
+                    $get_farmer_id = $form_data['farmer_id'];
                 }else
                 {
 
 
                         $where = array();
-                        $where['customer_mobile']= $form_data['customer_mobile'];
-                        $result = $this->customer_model->findDynamic($where);
+                        $where['mobile']= $form_data['customer_mobile'];
+                        $result = $this->farmers_model->findDynamic($where);
                         if(!empty($result))
                         {
-                            $get_customerid = $result[0]->id;    
+                            $get_farmer_id = $result[0]->id;    
                         }else
                         {
 
-                            $where_leatest = array(); 
-                            $where_leatest['orderby']   = '-id';
-                            $where_leatest['field']     = 'sku_id';
-                            $where_leatest['limit']     = 1;
-                            $last_customerid    = $this->customer_model->findDynamic($where_leatest);
-                            $last_customer_id =  str_pad((@$last_customerid[0]->sku_id)+1, 8, '0', STR_PAD_LEFT);
+                           
 
 
-                            $insertData['sku_id']                = $last_customer_id;
+                           /* $insertData['sku_id']                = $last_customer_id;
                             $insertData['customer_name']         = $form_data['customer_name'];
                             $insertData['customer_title']        = ucfirst($form_data['customer_name']);
                             $insertData['customer_mobile']       = $form_data['customer_mobile'];
@@ -1155,7 +1181,28 @@ echo "</pre>";  */
                             $insertData['last_follower']         = $this->session->userdata('userId');
                             $insertData['last_follow_call_type'] = 0;
 
-                             $get_customerid = $this->customer_model->save($insertData);
+                             $get_customerid = $this->customer_model->save($insertData);*/
+
+
+
+                            $insertData = array();
+                            $insertData['name']         = $form_data['customer_name'];
+                            $insertData['mobile']       = $form_data['customer_mobile'];
+                            $insertData['alt_mobile']   = $form_data['customer_alter_mobile'];
+                            $insertData['father_name']  = $form_data['father_name'];
+                            $insertData['pincode']      = $form_data['pincode'];
+                            $insertData['city_id']      = $form_data['city'];
+                            $insertData['other_city']   = $form_data['other_city'];
+                            $insertData['state_id']     = $form_data['state'];
+                            $insertData['other_state']  = $form_data['other_state'];
+                            $insertData['other_district']= $form_data['other_district'];
+                            $insertData['district_id']  = $form_data['district'];
+                            $insertData['date_at']      = date("Y-m-d H:i:s");;
+                            $insertData['status']       =  1;
+                            $insertData['village']      = $form_data['village'];
+                            $insertData['created_by']   = $this->session->userdata('userId');
+
+                            $get_farmerid = $this->farmers_model->save($insertData);
 
                         }
                         
@@ -1352,7 +1399,7 @@ echo "</pre>";  */
                     
                 }else
                 {
-                     $this->session->set_flashdata('error', 'Booking  Update failed!');
+                     $this->session->set_flashdata('error', 'You Have No Make Any Changes!');
                 }
 
                     
@@ -1932,7 +1979,7 @@ echo "</pre>";  */
                     $arra_empt2['id']                    =$bookin_log['id'];
                     $arra_empt2['booking_id']            =$bookin_log['booking_id'];
                     $arra_empt2['stage']                 =$bookin_log['stage'];
-                    $arra_empt2['customer_id']           =$bookin_log['customer_id'];
+                    $arra_empt2['farmer_id']           =$bookin_log['farmer_id'];
                     $arra_empt2['customer_name']         =$bookin_log['customer_name'];
                     $arra_empt2['customer_mobile']       =$bookin_log['customer_mobile'];
                     $arra_empt2['customer_alter_mobile'] =$bookin_log['customer_alter_mobile'];
