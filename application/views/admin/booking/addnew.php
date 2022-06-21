@@ -269,11 +269,12 @@
                                     {
                                         foreach ($all_agents as $all_agent) {
                                             ?>
-                                 <option value="<?php echo $all_agent->id;?>" ><?php echo $all_agent->title;?></option>
+                                 <option value="<?php echo $all_agent->id;?>" ><?php echo $all_agent->id;?> <?php echo $all_agent->title;?></option>
                                  <?php
                                     }
                                     }
                                     ?>
+                                    
                               </select>
                            </div>
                         </div>

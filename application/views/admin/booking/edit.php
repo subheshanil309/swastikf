@@ -280,11 +280,12 @@
                                     {
                                         foreach ($all_agents as $all_agent) {
                                             ?>
-                                 <option value="<?php echo $all_agent->id;?>" <?php if(isset($edit_data->agent_id) && $edit_data->agent_id ==$all_agent->id){ echo "selected";}?>><?php echo $all_agent->title;?></option>
+                                 <option value="<?php echo $all_agent->id;?>" <?php if(isset($edit_data->agent_id) && $edit_data->agent_id ==$all_agent->id){ echo "selected";}?>><?php echo $all_agent->id;?> <?php echo $all_agent->title;?></option>
                                  <?php
                                     }
                                     }
                                     ?>
+                                    
                               </select>
                            </div>
                         </div>
