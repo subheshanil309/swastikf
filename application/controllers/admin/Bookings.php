@@ -1202,7 +1202,7 @@ echo "</pre>";  */
                             $insertData['village']      = $form_data['village'];
                             $insertData['created_by']   = $this->session->userdata('userId');
 
-                            $get_farmerid = $this->farmers_model->save($insertData);
+                            $get_farmer_id = $this->farmers_model->save($insertData);
 
                         }
                         
@@ -1255,7 +1255,7 @@ echo "</pre>";  */
 
                             $insertData['id']                       = $form_data['id'];
                             $insertData['stage']                        = "Update";
-                            $insertData['farmer_id']                  = $get_farmerid;
+                            $insertData['farmer_id']                  = $get_farmer_id;
                             $insertData['customer_name']                = $form_data['customer_name'];
                             $insertData['customer_mobile']              = $form_data['customer_mobile'];
                             $insertData['customer_alter_mobile']        = $form_data['customer_alter_mobile'];
