@@ -119,7 +119,7 @@
                         <div class="row">
                            <label for="booking_date" class="col-sm-4 col-form-label">Booking Date</label>
                            <div class="col-sm-8"> 
-                              <input type="date" class="form-control form-control-sm" id="booking_date" name="booking_date"  value="" />
+                              <input type="date" class="form-control form-control-sm" id="booking_date" name="booking_date"  value="<?php echo date("Y-m-d");?>" />
                            </div>
                         </div>
                         <div class="row">
@@ -274,7 +274,7 @@
                                     }
                                     }
                                     ?>
-                                    
+
                               </select>
                            </div>
                         </div>

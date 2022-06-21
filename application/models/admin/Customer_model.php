@@ -208,7 +208,7 @@ class Customer_model extends Base_model
                 $this->db->join('z_call_type as last_ctype', 'last_ctype.id = c.last_follow_call_type', 'left');
 
                 $where  = '';
-                $userid = $params['userid'];
+                 $userid = $params['userid'];
                  $role = $this->session->userdata('role');
                 
                  $where.= "( c.status = 1 )";  

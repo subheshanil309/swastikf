@@ -2186,7 +2186,82 @@ echo "</pre>";  */
 
     }
 
+    public function export()
+    {
 
+         $this->isLoggedIn();
+
+           
+            $where_search   = array(); 
+            $conditions     = array();
+             $resultfound = $this->booking_model->getRows($conditions);
+
+            $content = "Booking No,Booking Date ,Order Status,Crop Status,Customer Id,Customer Name,Executive,Product,Primary number,Number,Address,Tehsil,Pincode,District,State,Payment Mode,Bank Trxn Id,Crates,Plants Booked,Plant Rate,Total Billed Amount,Discount Amount,Received Amount,Outstanding Amount,Requested Delivery Date,Actual Delivery Date ,Vehicle No.,Delivery Status,Contract Status,Productive Plants, Billing Address, Delivery Address\n";
+                
+               /* echo "<pre>";
+                print_r($resultfound );
+                echo "</pre>";*/
+            if(!empty($resultfound))
+            {
+                foreach ($resultfound as $key => $value) 
+                {
+                    
+                    $billing_address =trim($value['billing_address']);
+                    $billing_address =str_replace("\n", " ", $billing_address);
+                    $billing_address =str_replace("\r", " ", $billing_address);
+                     
+                    $delivery_address =trim( $value['delivery_address']);
+                    $delivery_address =str_replace("\n", " ", $delivery_address);
+                    $delivery_address =str_replace("\r", " ", $delivery_address);
+                     
+                    $customer_alter_mobile =str_replace(",", " ", $value['customer_alter_mobile']);
+                     
+
+                    $content.= str_replace(",", " ", $value['id']).",";
+                    $content.= str_replace(",", " ", date('d M Y',strtotime($value['booking_date']))).",";
+                    $content.= str_replace(",", " ", $value['booked_status']).",";
+                    $content.= str_replace(",", " ", $value['cropstatusname']).",";
+                    $content.= str_replace(",", " ", $value['customer_name']).",";
+                    $content.= str_replace(",", " ", $value['executive']).",";
+                    $content.= str_replace(",", " ", $value['productname']).",";
+                    $content.= str_replace(",", " ", $value['customer_mobile']).",";
+                    $content.= str_replace(",", " ", $customer_alter_mobile).",";
+                    $content.= str_replace(",", " ", $billing_address).",";
+                    $content.= str_replace(",", " ", ($value['city']=='Other')?$value['other_city']:$value['city']).",";
+                    $content.= str_replace(",", " ", ($value['pincode'])).",";
+                    $content.= str_replace(",", " ", ($value['district']=='Other')?$value['other_district']:$value['district']).",";
+                    $content.= str_replace(",", " ", ($value['state']=='Other')?$value['other_state']:$value['state']).",";
+                     
+                    $content.= str_replace(",", " ", $value['paymentmodename']).",";
+                    $content.= str_replace(",", " ", $value['bank_trans_id']).",";
+                    $content.= str_replace(",", " ", $value['crates']).",";
+                    $content.= str_replace(",", " ", $value['quantity']).",";
+                    $content.= str_replace(",", " ", $value['price']).",";
+                    $content.= str_replace(",", " ", $value['total']).",";
+                    $content.= str_replace(",", " ", $value['discount']).",";
+                    $content.= str_replace(",", " ", $value['total_paid_amount']).",";
+                    $content.= str_replace(",", " ", $value['outstanding_amount']).",";
+                    $content.= str_replace(",", " ", (($value['delivery_expect_start_date'] !=='0000-00-00')?date('d M Y',strtotime($value['delivery_expect_start_date'])):'')).",";
+                    $content.= str_replace(",", " ", (($value['delivery_date'] !=='0000-00-00')?date('d M Y',strtotime($value['delivery_date'])):'')).",";
+                     $content.= str_replace(",", " ", $value['vehicle_no']).",";
+                     $content.= str_replace(",", " ", $value['booked_status']).",";
+                     $content.= str_replace(",", " ", $value['contractstatusname']).",";
+                     $content.= str_replace(",", " ", $value['productive_plants']).",";
+                     $content.= str_replace(",", " ", $billing_address).",";
+                     $content.= str_replace(",", " ", $delivery_address).",";
+ 
+                           $content.="\n";
+                }
+            }        
+
+ 
+                    
+        $filename = 'bookiong-export-'.date('d-m-Y-h-s').'.csv';
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="'.$filename.'"');
+        print_r($content);
+        die; 
+    }
 
     
     

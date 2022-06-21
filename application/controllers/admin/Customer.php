@@ -1057,7 +1057,7 @@ class Customer extends BaseController
     public function export()
     {
 
-         
+         $this->isLoggedIn();
 
             $call_type      = @$this->input->post('call_type'); 
             $assigned_to    = @$this->input->post('assigned_to'); 
@@ -1103,6 +1103,10 @@ class Customer extends BaseController
                     $count_call  = $this->customer_call_model->findDynamic($where);
                     $count_call = count($count_call);
 
+                       $current_conversation =trim($value['current_conversation']);
+                    $current_conversation =str_replace("\n", " ", $current_conversation);
+                    $current_conversation =str_replace("\r", " ", $current_conversation);
+
                     $content.= str_replace(",", " ", date('d M Y',strtotime($value['date_at']))).",";
                     $content.= str_replace(",", " ", $value['farmer_id']).",";
                     $content.= str_replace(",", " ", $value['customer_name']).",";
@@ -1116,7 +1120,7 @@ class Customer extends BaseController
                     $content.= str_replace(",", " ", $value['createdby']).",";
                     $content.= str_replace(",", " ", $value['assignedto']).",";
                     $content.= str_replace(",", " ", $value['createdby']).",";
-                    $content.= str_replace(",", " ", $value['current_conversation']).",";
+                    $content.= str_replace(",", " ", $current_conversation).",";
                     $content.= str_replace(",", " ", date('d M Y',strtotime(@$farmer_details->date_at))).",";
                     $content.= str_replace(",", " ", $count_call).",";
                     $content.= str_replace(",", " ", $value['createdby']).",";
