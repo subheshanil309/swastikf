@@ -402,6 +402,7 @@ class Booking_log_model extends Base_model
             $insertData['discount']                     = $single->discount;
             $insertData['total']                        = $single->total;
             $insertData['pending_bill']                 = $single->pending_bill;
+            $insertData['company_id']                   = $single->company_id;
             $insertData['created_by']                   = $this->session->userdata('userId');
             $insertData['assigned_to']                  = $this->session->userdata('userId');
 

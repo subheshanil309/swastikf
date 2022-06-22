@@ -11,6 +11,37 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                           <div class="col-12">
+                              <?php $this->load->helper('form'); ?>
+                              <div class="row">
+                                 <div class="col-md-12">
+                                    <?php echo validation_errors('<div class="alert alert-danger alert-dismissible fade show " role="alert" >', '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'); ?>
+                                 </div>
+                              </div>
+                              <?php
+                                 $this->load->helper('form');
+                                 $error = $this->session->flashdata('error');
+                                 if($error)
+                                 {
+                                     ?>
+                              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                 <?php echo $error; ?> 
+                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                              </div>
+                              <?php }
+                                 $success = $this->session->flashdata('success');
+                                 if($success)
+                                 {
+                                     ?>
+                              <div class="alert alert-success  alert-dismissible fade show" role="alert">
+                                 <?php echo $success; ?> 
+                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                              </div>
+                              <?php }
+                                 ?>
+                           </div>
+                        </div>
                         <!-- end page title -->
 
                         <div class="row">
@@ -32,21 +63,24 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
-                                            <div class="card-body">
-                                                <div class="text-center">
-                                                    <div class=" mini-stat-icon  rounded-circle bg-primary mb-2">
-                                                        <i class="bx bx-cart text-white display-2"></i>
+                                            
+                                            <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#salesModal">
+                                                <div class="card-body">
+                                                    <div class="text-center">
+                                                        <div class=" mini-stat-icon  rounded-circle bg-success mb-2">
+                                                            <i class="bx bx-cart text-white display-2"></i>
+                                                        </div>
+                                                        <h6>SALES</h6>
                                                     </div>
-                                                    <h6>SALES</h6>
                                                 </div>
-                                            </div>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
                                             <div class="card-body">
                                                 <div class="text-center">
-                                                    <div class=" mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                    <div class=" mini-stat-icon  rounded-circle bg-info mb-2">
                                                         <i class="bx bxs-shopping-bag text-white display-2"></i>
                                                     </div>
                                                     <h6>PURCHASE</h6>
@@ -56,21 +90,23 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
-                                            <div class="card-body">
-                                                <div class="text-center">
-                                                    <div class=" mini-stat-icon  rounded-circle bg-primary mb-2">
-                                                        <i class="bx bxl-product-hunt text-white display-2"></i>
+                                            <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#productModal">
+                                                <div class="card-body">
+                                                    <div class="text-center">
+                                                        <div class=" mini-stat-icon  rounded-circle bg-success mb-2">
+                                                            <i class="bx bxl-product-hunt text-white display-2"></i>
+                                                        </div>
+                                                        <h6>PRODUCT</h6>
                                                     </div>
-                                                    <h6>PRODUCT</h6>
                                                 </div>
-                                            </div>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
                                             <div class="card-body">
                                                 <div class="text-center">
-                                                    <div class=" mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                    <div class=" mini-stat-icon  rounded-circle bg-warning mb-2">
                                                         <i class="bx bx-dock-top text-white display-2"></i>
                                                     </div>
                                                     <h6>PO</h6>
@@ -81,7 +117,23 @@
                                      
                                      
                                 </div>
-                                
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="card mini-stats-wid">
+                                            <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#settingModal">
+                                                <div class="card-body">
+                                                    <div class="text-center">
+                                                        <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                            <i class="bx bx-cog text-white display-2"></i>
+                                                        </div>
+                                                        <h6>Setting</h6>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-xl-4">
                                 <div class="card">
@@ -214,10 +266,10 @@
                         </div>
                     </div>
                 </div>
-
+                <?php $role = $this->session->userdata('role');?>
                 <!-- end modal -->
                 <!-- start css modal -->
-                <div class="modal hide" id="cssModal" tabindex="-1" aria-labelledby="cssModalLabel" aria-modal="true" role="dialog" style="display: none;">
+                <div class="modal hide" id="cssModal" tabindex="-1" data-bs-backdrop="static"  aria-labelledby="cssModalLabel" aria-modal="true" role="dialog" style="display: none;">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content bordered border-primary">
                                                         <div class="modal-header bg-primary mb-2">
@@ -277,6 +329,226 @@
                                                         <div class="modal-footer">
                                                              
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- start css modal -->
+                                    <div class="modal hide" id="salesModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="salesModalLabel" aria-modal="true" role="dialog" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content bordered border-primary">
+                                                        <div class="modal-header bg-primary mb-2">
+                                                            <h5 class="modal-title text-white" id="salesModalLabel">Sales</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                           <!---->
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                                <a href="#">
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                                <i class="bx bx-cart text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>Sales</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                                <a href="<?php echo base_url()?>admin/bookings">
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon  rounded-circle bg-success mb-2">
+                                                                                                <i class="bx bx-book-bookmark text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>Booking</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                             
+                                                                    </div>     
+                                                                </div>     
+                                                            </div>     
+                                                           <!---->     
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal hide" id="productModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="productModalLabel" aria-modal="true" role="dialog" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content bordered border-primary">
+                                                        <div class="modal-header bg-primary mb-2">
+                                                            <h5 class="modal-title text-white" id="productModalLabel">Product</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                           <!---->
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                               <a href="<?php echo base_url()?>admin/product">
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon rounded-circle bg-primary mb-2">
+                                                                                                <i class="bx bxl-product-hunt text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>Product</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                                <a href="#">
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                                <i class="bx bxs-cart text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>Sales</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                                <a href="<?php echo base_url()?>admin/farmers">
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                                <i class="bx bx-group text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>Farmer</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                             
+                                                                    </div>     
+                                                                </div>     
+                                                            </div>     
+                                                           <!---->     
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal hide" id="settingModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="settingModalLabel" aria-modal="true" role="dialog" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content bordered border-primary">
+                                                        <div class="modal-header bg-primary mb-2">
+                                                            <h5 class="modal-title text-white" id="settingModalLabel">Settings</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                           <!---->
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                               <a href="<?php echo ($role==1)?base_url().'admin/agents':'#'?>">
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon rounded-circle bg-primary mb-2">
+                                                                                                <i class="bx bxs-user-rectangle text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>Agents</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                                <a href="<?php echo ($role==1)?base_url().'admin/country':'#'?>">
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                                <i class="bx bx-grid-small text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>Country</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                                <a href="<?php echo ($role==1)?base_url().'admin/state':'#'?>">
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                                <i class="bx bx-grid-vertical text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>State</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                                <a href="<?php echo ($role==1)?base_url().'admin/district':'#'?>">
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                                <i class="bx bx-grid-horizontal text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>District</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                                <a href="<?php echo ($role==1)?base_url().'admin/city':'#'?>">
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                                <i class="bx bx-dialpad  text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>City</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                                <a href="<?php echo ($role==1)?base_url().'admin/company':'#'?>">
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                                <i class="bx bx-dialpad  text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>Company</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div> 
+                                                                             
+                                                                    </div>     
+                                                                </div>     
+                                                            </div>     
+                                                           <!---->     
+                                                        </div>
+                                                       
                                                     </div>
                                                 </div>
                                             </div>

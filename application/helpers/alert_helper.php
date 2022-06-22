@@ -46,17 +46,20 @@ if(!function_exists('arrayToSqlCsv'))
     {
        
          
-       
+       $inc = 0;
         foreach ($array as $key => $value)
         {
-          if(count($array) >1)
+
+          if($inc==0)
           {
-            $stringgify.="'".$value."'".",";
+            $stringgify.="'".$value."'";  
+            
+            
           }else
           {
-            $stringgify.="'".$array[0]."'";  
+            $stringgify.=", '".$value."'";
           }
-          
+          $inc++;
 
           
         }

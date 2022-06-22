@@ -320,6 +320,13 @@ ALTER TABLE `z_booking_log` ADD `farmer_id` INT NULL DEFAULT NULL AFTER `id`;
 
 
 
+----22-06-2022
+ALTER TABLE `z_company` ADD `other_state` VARCHAR(200) NULL DEFAULT NULL  , ADD `other_district` VARCHAR(200) NULL DEFAULT NULL , ADD `other_city` VARCHAR(200) NULL DEFAULT NULL  , ADD `created_by` INT NOT NULL DEFAULT '1' , ADD `updated_by` INT NOT NULL DEFAULT '1';
+
+ALTER TABLE `z_customer` ADD `company_id` INT NULL DEFAULT '1';
+ALTER TABLE `z_customer_call` ADD `company_id` INT NULL DEFAULT '1';
+
+
 
 
 

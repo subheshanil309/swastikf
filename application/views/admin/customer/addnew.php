@@ -584,13 +584,14 @@ print_r($customer_call_dtl);  */
                                             </span>
                                             <div class="dropdown-menu" style="">
                                             <a class="dropdown-item btn side_modal" data-userid="<?php echo $customer['id']; ?>">View</a>
+                                            <a class="dropdown-item btn editbtn" href="#" data-userid="<?php echo $customer['id']; ?>">Edit</a>
                                             <?php
 
                                               $userid = $this->session->userdata('role');
                                               if($userid==1)
                                               {
                                                 ?>
-                                                  <a class="dropdown-item btn editbtn" href="#" data-userid="<?php echo $customer['id']; ?>">Edit</a>
+                                                  
                                                   <a class="dropdown-item text-danger deletebtn" href="#" data-userid="<?php echo $customer['id']; ?>">Delete</a>
                                                   
                                                 <?php    

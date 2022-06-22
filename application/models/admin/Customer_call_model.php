@@ -216,7 +216,27 @@ class Customer_call_model extends Base_model
                 $where     = array();
                 $this->db->select('z_customer.id');
                 $this->db->from('z_customer');
-                 $where = "( z_customer.status = '1' ) ";
+                 $where = " ";
+                   
+
+                   $role = $this->session->userdata('role');
+                    $company_id = $this->session->userdata('company_id');
+                    if($role ==1)
+                    {
+                        $where.= "  ( z_customer.status = 1 ) ";
+                    }else
+                    {
+                        $where.= "( z_customer.status = 1 AND z_customer.company_id=".$company_id." )";  
+                    }
+                    
+
+
+
+
+
+
+
+
                 if(isset($data_param['userid']) && $data_param['userid'] !=='')
                 {
                     $userid = $data_param['userid'];

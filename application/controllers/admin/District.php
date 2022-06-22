@@ -12,6 +12,16 @@ class District extends BaseController
        $this->load->model('admin/district_model');
        $this->load->model('admin/state_model');
        $this->load->model('admin/country_model');
+        $role = $this->session->userdata('role');
+         
+        if($role==1)
+        {
+             
+        }else
+        {
+            $this->session->set_flashdata('error', 'Un-Authorized Page Access !');
+             redirect(base_url().'admin', 'refresh');
+        }
     }
 
     
@@ -56,7 +66,16 @@ class District extends BaseController
     {
         $this->isLoggedIn();
 		
-		
+		 $role = $this->session->userdata('role');
+         
+        if($role==1)
+        {
+             
+        }else
+        {
+            $this->session->set_flashdata('error', 'Un-Authorized Page Access !');
+             redirect(base_url().'admin', 'refresh');
+        }
 		
 		$this->load->library('form_validation');            
         $this->form_validation->set_rules('name','name','trim|required');

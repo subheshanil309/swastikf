@@ -26,11 +26,13 @@ class Customer extends BaseController
     
     public function index()
     {
-        $this->isLoggedIn();
+        /*$this->isLoggedIn();
 
         $data = array();
         $this->global['pageTitle'] = 'Customer ';
-        $this->loadViews("admin/customer/list", $this->global, $data , NULL);
+        $this->loadViews("admin/customer/list", $this->global, $data , NULL);*/
+
+        $this->addnew();
         
     }
 
@@ -291,9 +293,8 @@ class Customer extends BaseController
             }
 
          }
-         
-
-
+        
+        $company_id = $this->session->userdata('company_id');
 
         $where = array();
         $where['status'] = '1';
@@ -302,6 +303,8 @@ class Customer extends BaseController
         
         $where = array();
         $where['status'] = '1';
+        $where['company_id'] = $company_id;
+
         $where['field'] = 'id,name,title';
         $data['all_users'] = $this->admin_model->findDynamic($where);
 
@@ -387,6 +390,7 @@ class Customer extends BaseController
         $this->isLoggedIn();
 
         $userid = $this->session->userdata('userId');
+        $company_id = $this->session->userdata('company_id');
 		$this->load->library('form_validation');            
         $this->form_validation->set_rules('customer_name','customer_name','trim|required');
         $this->form_validation->set_rules('customer_mobile','customer_mobile','trim|required');
@@ -417,6 +421,7 @@ class Customer extends BaseController
             {
                 $where = array();
                 $where['mobile']= $form_data['customer_mobile'];
+                $where['company_id']= $company_id;
                 $exist_mobile    = $this->farmers_model->findDynamic($where);
 
                 if(empty($exist_mobile))
@@ -434,7 +439,7 @@ class Customer extends BaseController
                         $insertData['district_id']  = $form_data['district'];
                         $insertData['date_at']      = date("Y-m-d H:i:s");;
                         $insertData['status']       = 1;
-                        
+                        $insertData['company_id']       =   $company_id;
                         $insertData['created_by']      = $userid;
 
                         $result_added = $this->farmers_model->save($insertData);
@@ -473,6 +478,7 @@ class Customer extends BaseController
                 $insertData['last_follow_call_type'] = $form_data['call_type'];
                 $insertData['last_call_back_date']   = $form_data['call_back_date'];
                 $insertData['current_conversation']  = $form_data['current_conversation'];
+                $insertData['company_id']       =   $company_id;
 
                
                  
@@ -491,6 +497,7 @@ class Customer extends BaseController
                     $insertData['current_conversation']     = $form_data['current_conversation'];
                     $insertData['status']                   = '1';
                     $insertData['date_at']                  = date("Y-m-d H:i:s");
+                    $insertData['company_id']       =   $company_id;
 
 
                     $result = $this->customer_call_model->save($insertData);
@@ -971,7 +978,61 @@ class Customer extends BaseController
 
 
     }
-
+    public function get_all_state()
+    {
+         $where = array();
+        $where['status'] = '1';
+        $where['country_id'] = 105;
+        $where['orderby'] = 'name';
+        
+        $states = $this->state_model->findDynamic($where);
+        $html_content = '';
+        if(!empty($states))
+        {
+            foreach ($states as $state ) {
+                $selected = '';
+                 
+                $html_content.= '<option value="'.$state->id .'" '.$selected.'>'.$state->name .'</option>';
+            }    
+        }
+        echo $html_content;
+    }
+    public function get_all_district()
+    {
+         $where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'name';
+        
+        $districts = $this->district_model->findDynamic($where);
+        $html_content = '';
+        if(!empty($districts))
+        {
+            foreach ($districts as $district ) {
+                $selected = '';
+                 
+                $html_content.= '<option value="'.$district->id .'" '.$selected.'>'.$district->name .'</option>';
+            }    
+        }
+        echo $html_content;
+    } 
+    public function get_all_city()
+    {
+         $where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'city';
+        
+        $cities = $this->city_model->findDynamic($where);
+        $html_content = '';
+        if(!empty($cities))
+        {
+            foreach ($cities as $city ) {
+                $selected = '';
+                 
+                $html_content.= '<option value="'.$city->id .'" '.$selected.'>'.$city->name .'</option>';
+            }    
+        }
+        echo $html_content;
+    }
     public function state_change($state_id='',$selectedDistrict='')
     {
           
@@ -1234,7 +1295,7 @@ class Customer extends BaseController
                     $content.= str_replace(",", " ", $value['state']).",";
                     $content.= str_replace(",", " ", $value['calldir']).",";
                     $content.= str_replace(",", " ", $value['calltype']).",";
-                    $content.= str_replace(",", " ", date('d M Y',strtotime($value['last_follow_date']))).",";
+                    $content.= str_replace(",", " ", date('d M Y',strtotime($value['last_call_back_date']))).",";
                     
                     $content.= str_replace(",", " ", $value['createdby']).",";
                     $content.= str_replace(",", " ", $value['assignedto']).",";

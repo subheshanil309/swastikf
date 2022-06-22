@@ -10,6 +10,17 @@ class Country extends BaseController
     {
         parent::__construct();
        $this->load->model('admin/country_model');
+
+        $role = $this->session->userdata('role');
+         
+        if($role==1)
+        {
+             
+        }else
+        {
+            $this->session->set_flashdata('error', 'Un-Authorized Page Access !');
+             redirect(base_url().'admin', 'refresh');
+        }
     }
 
     

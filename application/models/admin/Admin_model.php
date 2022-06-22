@@ -203,8 +203,8 @@ class Admin_model extends Base_model
                /* $where.= "( a.status = 1 )";*/
                if($role==1)
                {
-                
-                 $where.= "   ( a.company_id = '".$company_id."')";
+                  $where.= "( a.status = 1 OR  a.status = 0 )";
+                 //$where.= "   ( a.company_id = '".$company_id."')";
             }else{
                 $where.= "   ( a.created_by = '".$userid."')";
             }

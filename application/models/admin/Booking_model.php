@@ -217,8 +217,18 @@ class Booking_model extends Base_model
                 $userid = $this->session->userdata('userId');
                  $role = $this->session->userdata('role');
                 
-                  $where.= "( c.status = 1 )"; 
+                   
                 
+
+                    $company_id = $this->session->userdata('company_id');
+                    if($role ==1)
+                    {
+                        $where.= "( c.status = 1 )";
+                    }else
+                    {
+                        $where.= "( c.status = 1 AND c.company_id=".$company_id." )";  
+                    }
+                    
               /*  if($role==1)
                 {
                     if(isset($params['form_type']) && $params['form_type']=='inquiry')
@@ -240,10 +250,41 @@ class Booking_model extends Base_model
             if(array_key_exists("where", $params)){
                 if(!empty($params['where']))
                 {
+
+                    $not_array = array();
+                    $not_array[] = 'customer_name';
+                    $not_array[] = 'billing_address';
+                    $not_array[] = 'other_city';
+                    $not_array[] = 'other_district';
+                    $not_array[] = 'other_state';
+                    $not_array[] = 'req_delivery_date';
+                    $not_array[] = 'start_date';
+                    $not_array[] = 'search_type';
+                    $not_array[] = 'advance_booking_status_value';
+                    $not_array[] = 'advance_crop_status_value';
+                    $not_array[] = 'advance_product_id_value';
+                    $not_array[] = 'advance_agent_id_value';
+                    $not_array[] = 'advance_state_value';
+                    $not_array[] = 'advance_district_value';
+                    $not_array[] = 'advance_city_value';
+                    $not_array[] = 'plant_rate_amount';
+                    $not_array[] = 'advance_plan_rate';
+                    $not_array[] = 'advance_plan_quantity';
+                    $not_array[] = 'advance_plant_quantity_amount';
+                    $not_array[] = 'advance_oustanding';
+                    $not_array[] = 'oustanding_amount';
+                    $not_array[] = 'advance_recieved';
+                    $not_array[] = 'advance_recieved_amount';
+                    $not_array[] = 'advance_discount';
+                    $not_array[] = 'advance_discount_amount';
+
+
+
+                     
                      
                     foreach($params['where'] as $key => $val){ 
                    // $this->db->where('c.'.$key, $val); 
-                    if($key =='customer_name' || $key =='billing_address' || $key =='other_city' ||$key =='other_district' || $key =='other_state' || $key =='req_delivery_date' || $key =='start_date' || $key =='end_date' ||  $key =='search_type' )
+                    if(in_array($key, $not_array))
                     {
 
                     
@@ -310,7 +351,7 @@ class Booking_model extends Base_model
                        /* $this->db->where('order_date >=', $first_date);
                         $this->db->where('order_date <=', $second_date);*/
 
-                        $where.= " AND ( c.date_at  >='".$start_date."' AND c.date_at  <='".$end_date."' )";
+                        $where.= " AND ( c.create_date  >='".$start_date."' AND c.create_date  <='".$end_date."' )";
                 }
 
                 /*advance search type*/
@@ -318,20 +359,120 @@ class Booking_model extends Base_model
                 if(isset($params['where']['search_type']) && $params['where']['search_type'] =="Advance")
                 {
 
+                     
                     
                      if(isset($params['where']['advance_booking_status_value']) )
                     {
                         $var = explode(',', $params['where']['advance_booking_status_value']);
                          
                         $csvexploded =  arrayToSqlCsv($var);
-                        print_r($csvexploded);die;
-                        $where.= " AND ( c.delivery_expect_start_date  >='".$start_date."' AND c.delivery_expect_end_date  <='".$end_date."' )";
+
+
+                         
+                        $where.= " AND ( c.booking_status IN (".$csvexploded.") )";
+                    }
+                     if(isset($params['where']['advance_crop_status_value']) )
+                    {
+                        $var = explode(',', $params['where']['advance_crop_status_value']);
+                         
+                        $csvexploded =  arrayToSqlCsv($var);
+
+
+                         
+                        $where.= " AND ( c.crop_status IN (".$csvexploded.") )";
+                    }
+                     if(isset($params['where']['advance_agent_id_value']) )
+                    {
+                        $var = explode(',', $params['where']['advance_agent_id_value']);
+                         
+                        $csvexploded =  arrayToSqlCsv($var);
+
+
+                         
+                        $where.= " AND ( c.agent_id IN (".$csvexploded.") )";
+                    }
+                    if(isset($params['where']['advance_product_id_value']) )
+                    {
+                        $var = explode(',', $params['where']['advance_product_id_value']);
+                         
+                        $csvexploded =  arrayToSqlCsv($var);
+
+
+                         
+                        $where.= " AND ( c.product_id IN (".$csvexploded.") )";
+                    }
+                    if(isset($params['where']['advance_state_value']) )
+                    {
+                        $var = explode(',', $params['where']['advance_state_value']);
+                         
+                        $csvexploded =  arrayToSqlCsv($var);
+
+
+                         
+                        $where.= " AND ( c.state IN (".$csvexploded.") )";
+                    }
+                    if(isset($params['where']['advance_district_value']) )
+                    {
+                        $var = explode(',', $params['where']['advance_district_value']);
+                         
+                        $csvexploded =  arrayToSqlCsv($var);
+
+
+                         
+                        $where.= " AND ( c.district IN (".$csvexploded.") )";
+                    }
+                    if(isset($params['where']['advance_city_value']) )
+                    {
+                        $var = explode(',', $params['where']['advance_city_value']);
+                         
+                        $csvexploded =  arrayToSqlCsv($var);
+
+
+                         
+                        $where.= " AND ( c.city IN (".$csvexploded.") )";
+                    }
+                    /*print_r($params['where']['advance_plan_rate']);
+                    print_r($params['where']['plant_rate_amount']);die;*/
+                    if(isset($params['where']['advance_plan_rate']) && $params['where']['plant_rate_amount'] !=='')
+                    {
+                        $symbole = $params['where']['advance_plan_rate'];
+                        $amount = $params['where']['plant_rate_amount'];
+                        $where.= " AND ( c.price ".$symbole."  ".$amount." )";
+                    } 
+                    if(isset($params['where']['advance_plan_quantity']) &&  $params['where']['advance_plant_quantity_amount'] !=='')
+                    {
+                        $symbole = $params['where']['advance_plan_quantity'];
+                        $amount = $params['where']['advance_plant_quantity_amount'];
+                        $where.= " AND ( c.quantity ".$symbole."  ".$amount." )";
+                    }
+                     
+                    if(isset($params['where']['advance_oustanding']) &&   $params['where']['oustanding_amount'] !=='')
+                    {
+                        $symbole = $params['where']['advance_oustanding'];
+                        $amount = $params['where']['oustanding_amount'];
+                        $where.= " AND ( c.outstanding_amount ".$symbole."  ".$amount." )";
+                    }
+                    if(isset($params['where']['advance_recieved']) &&   $params['where']['advance_recieved_amount'] !=='')
+                    {
+                        $symbole = $params['where']['advance_recieved'];
+                        $amount = $params['where']['advance_recieved_amount'];
+                        $where.= " AND ( c.advance ".$symbole."  ".$amount." )";
+
+                    }
+
+
+                    if(isset($params['where']['advance_discount']) && $params['where']['advance_discount_amount'] !=='')
+                    {
+                        $symbole = $params['where']['advance_discount'];
+                        $amount = $params['where']['advance_discount_amount'];
+                        $where.= " AND ( c.discount ".$symbole."  ".$amount." )";
+                         
                     }
                      
                 }
                 
  
-                     
+
                 }
                 
             }
@@ -395,15 +536,18 @@ class Booking_model extends Base_model
 
             $where ='';
 
-            $where.= "( c.status = 1 )";    
-            if($role==1)
-                {
+            
+            $role = $this->session->userdata('role');
+            $company_id = $this->session->userdata('company_id');
+            if($role ==1)
+            {
+                $where.= "( c.status = 1 )";
+            }else
+            {
+                $where.= "( c.status = 1 AND c.company_id=".$company_id." )";  
+            }
 
-                }else
-                {
-                     $where.= "AND ( c.created_by = '".$userid."' OR c.assigned_to='".$userid."')";
-
-                }
+            
 
 
 

@@ -209,9 +209,16 @@ class Customer_model extends Base_model
 
                 $where  = '';
                  
-                 $role = $this->session->userdata('role');
-                
-                    $where.= "( c.status = 1 )";  
+                    $role = $this->session->userdata('role');
+                    $company_id = $this->session->userdata('company_id');
+                    if($role ==1)
+                    {
+                        $where.= "( c.status = 1 )";
+                    }else
+                    {
+                        $where.= "( c.status = 1 AND c.company_id=".$company_id." )";  
+                    }
+                    
                     
                     if(isset($params['userid']))
                     {
@@ -229,7 +236,7 @@ class Customer_model extends Base_model
                 {
                      
                     foreach($params['where'] as $key => $val){ 
-                     if($key =='customer_title' || $key =='stat_type' || $key =='stat_type' || $key =='from_date' || $key =='to_date' )
+                     if($key =='customer_title' || $key =='stat_type' ||   $key =='from_date' || $key =='to_date' )
                     {
 
                     

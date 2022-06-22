@@ -194,9 +194,15 @@ class Product extends BaseController
             $row[] =  $currentObj->source;
             $row[] =   $btn;;
             $row[] = $date_at;
+             $role = $this->session->userdata('role');
+         $delete_btn = ' ';
+        if($role==1)
+        {
+              
+              $delete_btn = '<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';
+        } 
             
-            
-            $row[] = '<a title="'.$currentObj->slug.'" class="btn btn-sm btn-info" href="'.base_url().'admin/product/edit/'.$currentObj->id.'"><i class="fa fa-pen"></i></a> <a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';
+            $row[] = '<a title="'.$currentObj->slug.'" class="btn btn-sm btn-info" href="'.base_url().'admin/product/edit/'.$currentObj->id.'"><i class="fa fa-pen"></i></a>'. $delete_btn;
             $data[] = $row;
         }
  

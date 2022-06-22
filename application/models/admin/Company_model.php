@@ -11,13 +11,12 @@ class Company_model extends Base_model
 
     public $table = "z_company";
 
-    //set column field database for datatable orderable
-    var $column_order = array(null, 'StaffName', null, 'StaffEmail','StaffPrimaryTextFirst','StaffSecondaryTextFirst','StaffTeam',null, null, null); 
+   var $column_order = array(null,  'c.id','c.title',null,null,'c.phone','c.email','c.website','c.gst_no','c.pan_no','c.nursury_address','c.office_address','st.name','dist.name','ct.city','c.bank_name','c.bank_account_number','c.bank_holder_name','c.bank_ifsc_code','c.bank_branch_address','c.social_url','c.date_at','c.status'); //set column field database for datatable orderable
 
-    //set column field database for datatable searchable 
-    var $column_search = array('name'); 
+    var $column_search = array('c.id','c.title','c.phone','c.email','c.website','c.gst_no','c.pan_no','c.nursury_address','c.office_address','st.name','dist.name','ct.city','c.bank_name','c.bank_account_number','c.bank_holder_name','c.bank_ifsc_code','c.bank_branch_address','c.social_url','c.date_at','c.status'); //set column field database for datatable searchable 
 
-    var $order = array('id' => 'asc'); // default order
+
+    var $order = array('c.id' => 'desc'); // default order
 
 
 
@@ -84,6 +83,7 @@ class Company_model extends Base_model
         function get_datatables()
         {
 
+              $this->db->select('c.*,st.name as state_name,dist.name as district_name,ct.city as city_name'); 
             $this->_get_datatables_query();
 
             if(isset($_POST['length']) && $_POST['length'] != -1)
@@ -101,7 +101,12 @@ class Company_model extends Base_model
          public function _get_datatables_query()
         {     
 
-            $this->db->from($this->table);
+ 
+
+             $this->db->from($this->table. ' as c');  
+            $this->db->join('z_states as st', 'st.id = c.state','left');
+            $this->db->join('z_district as dist', 'dist.id = c.district','left');
+            $this->db->join('z_cities as ct', 'ct.id = c.city','left');
 
             $i = 0;     
 

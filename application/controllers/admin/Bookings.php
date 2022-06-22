@@ -101,7 +101,23 @@ class Bookings extends BaseController
                 $start_date          = @$this->input->get('start_date'); 
                 $end_date            = @$this->input->get('end_date'); 
                 $search_type            = @$this->input->get('search_type'); 
-                $advance_booking_status_value            = @$this->input->get('advance_booking_status_value'); 
+                $advance_booking_status_value = @$this->input->get('advance_booking_status_value'); 
+                $advance_crop_status_value = @$this->input->get('advance_crop_status_value'); 
+                $advance_agent_id_value = @$this->input->get('advance_agent_id_value'); 
+                $advance_product_id_value = @$this->input->get('advance_product_id_value'); 
+                $advance_state_value = @$this->input->get('advance_state_value'); 
+                $advance_district_value = @$this->input->get('advance_district_value'); 
+                $advance_city_value = @$this->input->get('advance_city_value'); 
+                $advance_plan_rate            = @$this->input->get('advance_plan_rate'); 
+                $plant_rate_amount            = @$this->input->get('plant_rate_amount'); 
+                $advance_plan_quantity        = @$this->input->get('advance_plan_quantity'); 
+                $advance_plant_quantity_amount= @$this->input->get('advance_plant_quantity_amount'); 
+                $advance_oustanding= @$this->input->get('advance_oustanding'); 
+                $oustanding_amount= @$this->input->get('oustanding_amount'); 
+                $advance_recieved= @$this->input->get('advance_recieved'); 
+                $advance_recieved_amount= @$this->input->get('advance_recieved_amount'); 
+                $advance_discount= @$this->input->get('advance_discount'); 
+                $advance_discount_amount= @$this->input->get('advance_discount_amount'); 
                 if(!empty($start_date))
                 {
                      $where_search['start_date'] =  $start_date;
@@ -218,16 +234,47 @@ class Bookings extends BaseController
                  if(!empty($advance_booking_status_value))
                 {
                     $where_search['advance_booking_status_value'] =  $advance_booking_status_value;
-                }  
-               /* if(!empty($call_direction2))
-                {
-                    $where_search['last_call_direction'] =  $call_direction2;
                 } 
-                if(!empty($call_type2))
+
+                 if(!empty($advance_crop_status_value))
                 {
-                    $where_search['last_call_type'] =  $call_type2;
-                }*/
+                    $where_search['advance_crop_status_value'] =  $advance_crop_status_value;
+                } 
+
+                if(!empty($advance_agent_id_value))
+                {
+                    $where_search['advance_agent_id_value'] =  $advance_agent_id_value;
+                } 
+                if(!empty($advance_product_id_value))
+                {
+                    $where_search['advance_product_id_value'] =  $advance_product_id_value;
+                } 
+                if(!empty($advance_state_value))
+                {
+                    $where_search['advance_state_value'] =  $advance_state_value;
+                } 
                 
+                if(!empty($advance_district_value))
+                {
+                    $where_search['advance_district_value'] =  $advance_district_value;
+                } 
+                if(!empty($advance_city_value))
+                {
+                    $where_search['advance_city_value'] =  $advance_city_value;
+                } 
+
+                
+                 
+                    $where_search['advance_plan_rate'] =  $advance_plan_rate;
+                    $where_search['plant_rate_amount'] =  $plant_rate_amount;
+                    $where_search['advance_plan_quantity'] =  $advance_plan_quantity;
+                    $where_search['advance_plant_quantity_amount'] =  $advance_plant_quantity_amount;
+                    $where_search['oustanding_amount'] =  $oustanding_amount;
+                    $where_search['advance_oustanding'] =  $advance_oustanding;
+                    $where_search['advance_recieved'] =  $advance_recieved;
+                    $where_search['advance_recieved_amount'] =  $advance_recieved_amount;
+                    $where_search['advance_discount'] =  $advance_discount;
+                    $where_search['advance_discount_amount'] =  $advance_discount_amount;
 
             $conditions['returnType'] = 'count'; 
             $conditions['userid'] = $userid; 
@@ -236,6 +283,7 @@ class Bookings extends BaseController
             $totalRec = $this->booking_model->getRows($conditions);
 
              
+
 
 
 
@@ -319,8 +367,7 @@ class Bookings extends BaseController
                  $data['bookings']   = $this->booking_model->getRows($conditions); 
 
 
-                /* print_r($this->db->last_query()); */   
-
+ 
                 $data['pagination'] = $this->pagination->create_links(); 
  
                 $data['pagination_total_count'] =  $totalRec;
@@ -407,7 +454,7 @@ echo "</pre>";  */
         $where['orderby'] = 'name';
         $data['states'] = $this->state_model->findDynamic($where);
 
-        $where = array();
+        /*$where = array();
         $where['status'] = '1';
         $where['orderby'] = 'name';
         $data['districts'] = $this->district_model->findDynamic($where);
@@ -415,7 +462,7 @@ echo "</pre>";  */
         $where = array();
         $where['status'] = '1';
         $where['orderby'] = 'city';
-        $data['cities'] = $this->city_model->findDynamic($where);
+        $data['cities'] = $this->city_model->findDynamic($where);*/
 
         $where = array();
         $where['status'] = '1';
@@ -605,7 +652,7 @@ echo "</pre>";  */
         $this->form_validation->set_rules('customer_mobile','customer_mobile','trim|required');
         $this->form_validation->set_rules('product_id','product_id','trim|required');
         
-        
+         $company_id = $this->session->userdata('company_id');
         
         //form data 
         
@@ -775,7 +822,7 @@ echo "</pre>";  */
                             $insertData['advance']                      = $form_data['advance'];
                             $insertData['outstanding_amount']           = $form_data['balance'];
                             $insertData['total_paid_amount']            = $form_data['advance'];
-                            $insertData['create_date']                  = date("Y-m-d H:i:s");
+                            $insertData['create_date']                  = date("Y-m-d");
                             $insertData['balance']                      = $form_data['balance'];
                             $insertData['payment_mode']                 = $form_data['payment_mode'];
                             $insertData['cheque_no']                    = $form_data['cheque_no'];
@@ -795,6 +842,7 @@ echo "</pre>";  */
                             $insertData['discount']                     = $form_data['discount'];
                             $insertData['total']                        = $form_data['total'];
                             $insertData['pending_bill']                 = $form_data['pending_bill'];
+                            $insertData['company_id']                   = $company_id;
                             $insertData['created_by']                   = $this->session->userdata('userId');
                             $insertData['assigned_to']                  = $this->session->userdata('userId');
 
@@ -839,7 +887,7 @@ echo "</pre>";  */
                         $insertData['cheque_no']                    = $form_data['cheque_no'];
                         $insertData['bank_name']                    = $form_data['bank_name'];
                         $insertData['bank_branch']                  = $form_data['bank_branch'];
-                        $insertData['company_id']                  = 1;
+                        $insertData['company_id']                   = $company_id;
                          $this->booking_payments_model->save($insertData);
                     }
                         
@@ -2206,9 +2254,178 @@ echo "</pre>";  */
 
          $this->isLoggedIn();
 
+
+
+                $userid = $this->session->userdata('userId');
+                $where_search   = array(); 
+                $conditions     = array();
+
+                $search_farmer_id  = @$this->input->get('farmer_id');
+                $search_name         = @$this->input->get('customer_name');
+                $search_mobile       = @$this->input->get('customer_mobile');
+                $search_alt_mobile   = @$this->input->get('customer_alter_mobile');
+                $state2              = @$this->input->get('state2');
+                $other_state         = @$this->input->get('other_state');
+                $district2           = @$this->input->get('district2');
+                $other_district      = @$this->input->get('other_district');
+                $city2               = @$this->input->get('city2');
+                $other_city          = @$this->input->get('other_city');
+                $call_direction2     = @$this->input->get('call_direction2');
+                $call_type2          = @$this->input->get('call_type2'); 
+                $booking_no          = @$this->input->get('booking_no'); 
+                $booking_date        = @$this->input->get('booking_date'); 
+                $booking_status      = @$this->input->get('booking_status'); 
+                $crop_status         = @$this->input->get('crop_status'); 
+                $agent_id            = @$this->input->get('agent_id'); 
+                $product_id          = @$this->input->get('product_id'); 
+                $address             = @$this->input->get('address'); 
+                $pincode             = @$this->input->get('pincode'); 
+                $quantity            = @$this->input->get('quantity'); 
+                $unit_price          = @$this->input->get('unit_price'); 
+                $discount            = @$this->input->get('discount'); 
+                $outstanding_amount  = @$this->input->get('outstanding_amount'); 
+                $req_delivery_date   = @$this->input->get('req_delivery_date'); 
+                $delivery_date       = @$this->input->get('delivery_date'); 
+                $vehicle_no          = @$this->input->get('vehicle_no'); 
+                $contract            = @$this->input->get('contract'); 
+                $start_date          = @$this->input->get('start_date'); 
+                $end_date            = @$this->input->get('end_date'); 
+                $search_type            = @$this->input->get('search_type'); 
+                $advance_booking_status_value            = @$this->input->get('advance_booking_status_value'); 
+                if(!empty($start_date))
+                {
+                     $where_search['start_date'] =  $start_date;
+                 } if(!empty($end_date))
+                {
+                     $where_search['end_date'] =  $end_date;
+                 } if(!empty($contract))
+                {
+                     $where_search['contract'] =  $contract;
+                 }
+                 if(!empty($vehicle_no))
+                {
+                     $where_search['vehicle_no'] =  $vehicle_no;
+                 }
+                 if(!empty($delivery_date))
+                {
+                     $where_search['delivery_date'] =  $delivery_date;
+                 }
+                 if(!empty($quantity))
+                {
+                     $where_search['quantity'] =  $quantity;
+                 }
+                 if(!empty($discount))
+                {
+                     $where_search['discount'] =  $discount;
+                 }if(strlen($outstanding_amount) >0)
+                {
+                     $where_search['outstanding_amount'] =  $outstanding_amount;
+                 }if(strlen($unit_price) >0)
+                {
+                     $where_search['price'] =  $unit_price;
+                 }
+                 if(!empty($pincode))
+                {
+                     $where_search['pincode'] =  $pincode;
+                 }
+                 if(!empty($other_state))
+                {
+                     $where_search['other_state'] =  $other_state;
+                 }
+                 if(!empty($other_district))
+                {
+                     $where_search['other_district'] =  $other_district;
+                 }
+                   if(!empty($other_city))
+                {
+                     $where_search['other_city'] =  $other_city;
+                 }
+
+                 if(!empty($address))
+                {
+                     $where_search['billing_address'] =  $address;
+                 }
+                 if(!empty($product_id))
+                {
+                     $where_search['product_id'] =  $product_id;
+                 }
+                
+                if(!empty($agent_id))
+                {
+                     $where_search['agent_id'] =  $agent_id;
+                      
+                }
+                if(!empty($crop_status))
+                {
+                      $where_search['crop_status'] =  $crop_status;
+                }
+                if(!empty($booking_status) && $booking_status !=='all')
+                {
+                     $where_search['booking_status'] =  $booking_status;
+                }
+                if(!empty($booking_date))
+                {
+                     $where_search['booking_date'] =  $booking_date;
+                }
+                if(!empty($booking_no))
+                {
+                    $where_search['id'] =  $booking_no;
+                }
+                if(!empty($search_farmer_id))
+                {
+                    $where_search['farmer_id'] =  $search_farmer_id;
+                }
+                if(!empty($search_name))
+                {
+                    $where_search['customer_title'] =  $search_name;
+                } 
+                
+                if(!empty($search_mobile))
+                {
+                    $where_search['customer_mobile'] =  $search_mobile;
+                }
+                if(!empty($search_alt_mobile))
+                {
+                    $where_search['customer_alter_mobile'] =  $search_alt_mobile;
+                }
+                if(!empty($state2))
+                {
+                    $where_search['state'] =  $state2;
+                }
+                
+                if(!empty($district2))
+                {
+                    $where_search['district'] =  $district2;
+                }
+                if(!empty($city2))
+                {
+                    $where_search['city'] =  $city2;
+                }
+                if(!empty($search_type))
+                {
+                    $where_search['search_type'] =  $search_type;
+                } 
+                 if(!empty($advance_booking_status_value))
+                {
+                    $where_search['advance_booking_status_value'] =  $advance_booking_status_value;
+                }  
+                
+                
+            
+
+             $conditions = array( 
+                 
+                'where' => $where_search, 
+                'userid' =>  $userid
+                 
+                
+                ); 
+
+
+
+
            
-            $where_search   = array(); 
-            $conditions     = array();
+            
              $resultfound = $this->booking_model->getRows($conditions);
 
             $content = "Booking No,Booking Date ,Order Status,Crop Status,Customer Id,Customer Name,Executive,Product,Primary number,Number,Address,Tehsil,Pincode,District,State,Payment Mode,Bank Trxn Id,Crates,Plants Booked,Plant Rate,Total Billed Amount,Discount Amount,Received Amount,Outstanding Amount,Requested Delivery Date,Actual Delivery Date ,Vehicle No.,Delivery Status,Contract Status,Productive Plants, Billing Address, Delivery Address\n";
@@ -2279,6 +2496,115 @@ echo "</pre>";  */
         die; 
     }
 
+    public function get_all_state()
+    {
+
+            
+            $where = array();
+            $where['country_id'] = '105';
+            $where['status'] = 1;
+            $where['field'] = 'id,name';
+             
+
+            $returnData = $this->state_model->findDynamic($where);
+
+          $response_result = array(
+                'status'=>0,
+                'data'=>'',
+                'message'=>'Not data found !'
+        );
+
+        if($returnData)
+        {
+            $response_result = array(
+                'status'=>1,
+                'data'=>$returnData,
+                'message'=>'Data Found .'
+            );
+        }else
+        {
+            $response_result = array(
+                'status'=>0,
+                'data'=>'Failed Fetch Data!',
+                'message'=>'Empty Data Found .'
+            );
+        }
+
+        echo json_encode($response_result);
+          
+    }  
+    public function get_all_district()
+    {
+
+            
+            $where = array();
+            $where['status'] = 1;
+            $where['field'] = 'id,name';
+             
+
+            $returnData = $this->district_model->findDynamic($where);
+
+          $response_result = array(
+                'status'=>0,
+                'data'=>'',
+                'message'=>'Not data found !'
+        );
+
+        if($returnData)
+        {
+            $response_result = array(
+                'status'=>1,
+                'data'=>$returnData,
+                'message'=>'Data Found .'
+            );
+        }else
+        {
+            $response_result = array(
+                'status'=>0,
+                'data'=>'Failed Fetch Data!',
+                'message'=>'Empty Data Found .'
+            );
+        }
+
+        echo json_encode($response_result);
+          
+    }  
+    public function get_all_city()
+    {
+
+            
+            $where = array();
+            $where['status'] = 1;
+            $where['field'] = 'id,city';
+             
+
+            $returnData = $this->city_model->findDynamic($where);
+
+          $response_result = array(
+                'status'=>0,
+                'data'=>'',
+                'message'=>'Not data found !'
+        );
+
+        if($returnData)
+        {
+            $response_result = array(
+                'status'=>1,
+                'data'=>$returnData,
+                'message'=>'Data Found .'
+            );
+        }else
+        {
+            $response_result = array(
+                'status'=>0,
+                'data'=>'Failed Fetch Data!',
+                'message'=>'Empty Data Found .'
+            );
+        }
+
+        echo json_encode($response_result);
+          
+    }  
     
     
     

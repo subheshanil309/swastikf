@@ -38,7 +38,7 @@
                            <div class="btn-group" role="group" aria-label="Basic example">
                               <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/create">Add Booking</a>
                               <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/import" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg2">Import Booking</a>
-                              <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/export">Export Booking</a>
+                              <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/export?<?php echo $_SERVER['QUERY_STRING'];?>">Export Booking</a>
                               <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/advance" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-filter" aria-hidden="true"></i>Advance Search</a> 
                            </div>
                         </div>
@@ -597,14 +597,14 @@
                      <select class=" form-control form-control-sm select2" name="advance_state[]" multiple="multiple"  id="advance_state"   aria-label="Floating label select example" placeholder="Select"  >
                          <?php
 
-                              if(!empty($states))
+                              /*if(!empty($states))
                               {
                                  foreach ($states as $state) {
                                     ?>
                                     <option value="<?php echo $state->id;?>"><?php echo $state->name;?></option>
                                     <?php
                                  }
-                              }
+                              }*/
                            ?>
                      </select>
                       <input type="hidden" name="advance_state_value"  id="advance_state_value" >
@@ -615,7 +615,7 @@
                   <div class="col-md-7">
                      <select class=" form-control form-control-sm  select2" id="advance_district" name="advance_district[]"  multiple="multiple" aria-label="Floating label select example"  >
                                               <?php
-                                                if(!empty($districts))
+                                               /* if(!empty($districts))
                                                 {
                                                    foreach ($districts as $district)
                                                    {
@@ -623,7 +623,7 @@
                                                       <option value="<?php echo $district->id;?>"><?php echo $district->name;?></option>
                                                       <?php
                                                    }
-                                                }
+                                                }*/
                                                 ?>
                                           </select>
                                           <input type="hidden" name="advance_district_value"  id="advance_district_value" >
@@ -634,14 +634,14 @@
                   <div class="col-md-7">
                      <select class="form-control form-control-sm select2"  multiple="multiple" name="advance_city[]" id="advance_city" aria-label="Floating label select example"   >
                         <?php
-                           if(!empty($cities))
+                           /*if(!empty($cities))
                            {
                               foreach ($cities as $city) {
                                  ?>
                                     <option value="<?php echo $city->id;?>"><?php echo $city->city;?></option>
                                  <?php
                               }
-                           }
+                           }*/
                         ?>
                       </select>
                       <input type="hidden" name="advance_city_value"  id="advance_city_value" >
@@ -956,6 +956,11 @@
    
    
    jQuery(document).ready(function(){
+
+            getAllState('advance_state');
+            getAllDistrict('advance_district');
+            getAllCity('advance_city'); 
+            $(".select2").select2(); 
          
             $("#advance_booking_status").on('change',function(){
                $("#advance_booking_status_value").val($(this).val());
@@ -1265,7 +1270,130 @@
             }
    }
    
-   
+   function getAllState(state) {
+      
+      
+        var html_content = "";           
+    var hitURL = "<?php echo base_url() ?>admin/bookings/get_all_state";
+    $.ajax({
+        type: 'GET',
+        url: hitURL,
+        data: {},
+        dataType:'json',
+        success: function (response) {
+          if(response.status==1)
+         {
+            
+            var data = response.data;
+
+            var html_content = "";
+            for (var i = 0; i < data.length; i++)
+            {
+               var content    = data[i];
+               var id         = content.id;
+               var name       = content.name;
+               var html_content= html_content+"<option value='"+id+"'>"+name+"</option>";
+
+
+            }
+             $("#"+state).empty();
+             $("#"+state).append(html_content);
+            
+            
+            
+         }
+            
+            
+        },
+        error: function (request, status, error) {
+             
+             
+            
+             $("#"+state).empty();
+        }
+    });
+   }
+    function getAllDistrict(district) {
+       
+         var html_content = ""; 
+          hitURL = "<?php echo base_url() ?>admin/bookings/get_all_district";
+    $.ajax({
+        type: 'GET',
+        url: hitURL,
+        data: {},
+        dataType:'json',
+        success: function (response) {
+            if(response.status==1)
+         {
+             
+            var data = response.data;
+
+            var html_content = "";
+            for (var i = 0; i < data.length; i++)
+            {
+               var content    = data[i];
+               var id         = content.id;
+               var name       = content.name;
+               var html_content= html_content+"<option value='"+id+"'>"+name+"</option>";
+
+
+            }
+            console.log(html_content);
+             $("#"+district).empty();
+             $("#"+district).append(html_content);
+            
+             
+            
+         }
+        },
+        error: function (request, status, error) {
+             
+             
+            
+            $("#"+district).empty();
+        }
+    });
+   } 
+   function getAllCity(city) {
+      
+      
+      var html_content = ""; 
+    hitURL = "<?php echo base_url() ?>admin/bookings/get_all_city";
+    $.ajax({
+        type: 'GET',
+        url: hitURL,
+        data: {},
+        dataType:'json',
+        success: function (response) {
+             if(response.status==1)
+         {
+            
+            var data = response.data;
+
+            var html_content = "";
+            for (var i = 0; i < data.length; i++)
+            {
+               var content    = data[i];
+               var id         = content.id;
+               var name       = content.city;
+               var html_content= html_content+"<option value='"+id+"'>"+name+"</option>";
+
+
+            }
+            console.log(html_content);
+             $("#"+city).empty();
+             $("#"+city).append(html_content); 
+            
+         }
+        },
+        error: function (request, status, error) {
+             
+             
+            
+            $("#"+city).empty();
+        }
+    });
+   }
    
    
 </script>

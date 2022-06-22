@@ -13,6 +13,16 @@ class City extends BaseController
        $this->load->model('admin/district_model');
        $this->load->model('admin/country_model');
        $this->load->model('admin/city_model');
+        $role = $this->session->userdata('role');
+         
+        if($role==1)
+        {
+             
+        }else
+        {
+            $this->session->set_flashdata('error', 'Un-Authorized Page Access !');
+             redirect(base_url().'admin', 'refresh');
+        }
     }
 
     

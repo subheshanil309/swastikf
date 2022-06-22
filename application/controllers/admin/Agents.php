@@ -16,7 +16,16 @@ class Agents extends BaseController
        $this->load->model('admin/country_model');
        $this->load->model('admin/city_model');
        $this->load->model('admin/company_model');
-
+       $role = $this->session->userdata('role');
+       if($role==1)
+        {
+             
+        }else
+        {
+            $this->session->set_flashdata('error', 'Un-Authorized Page Access !');
+             redirect(base_url().'admin', 'refresh');
+        }
+        
        $this->perPage =100; 
     }
 
@@ -27,8 +36,7 @@ class Agents extends BaseController
 
         $data = array();
 
-
-
+        
 
         //pagomatopm start
             $where_search = array();
@@ -119,6 +127,8 @@ class Agents extends BaseController
     // Add New 
     public function addnew()
     {
+        
+
     
         $this->isLoggedIn();
         $data = array();
@@ -305,10 +315,13 @@ class Agents extends BaseController
         
 
         $this->isLoggedIn();
+        
+
         if($id == null)
         {
             redirect('admin/agents');
         }
+
         $data = array();
         $data['edit_data'] = $this->admin_model->find($id);
 
@@ -352,7 +365,9 @@ class Agents extends BaseController
     public function update()
     {
 		 $this->isLoggedIn();
-       
+        
+        
+
         $userid = $this->session->userdata('userId');
         $this->load->library('form_validation');            
         $this->form_validation->set_rules('name','name','trim|required');
