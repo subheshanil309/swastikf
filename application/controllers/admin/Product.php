@@ -168,6 +168,7 @@ class Product extends BaseController
 		
 		$data = array();
         $no =(isset($_POST['start']))?$_POST['start']:'';
+        $role = $this->session->userdata('role');
         foreach ($list as $currentObj) {
 
             $temp_date = $currentObj->date_at;
@@ -194,7 +195,7 @@ class Product extends BaseController
             $row[] =  $currentObj->source;
             $row[] =   $btn;;
             $row[] = $date_at;
-             $role = $this->session->userdata('role');
+             
          $delete_btn = ' ';
         if($role==1)
         {
@@ -342,28 +343,12 @@ class Product extends BaseController
 		
         $this->isLoggedIn();
         $delId = $this->input->post('id');  
-		/*$db_data = $this->product_model->find($delId);*/
-		//print_r($db_data);
-		/*if(!empty($db_data))
-		{
-			$i = 1;
-			while($i <= 3)
-			{
-				$image = 'image'.$i;
-				$file = "uploads/product/".$db_data->$image;
-				
-				if(file_exists ( $file))
-				{
-					unlink($file);
-				}
-				$i++;
-			}
-		}*/
+		 
 	
         $result = $this->product_model->delete($delId); 
 			
-        if ($result > 0) { echo(json_encode(array('status'=>TRUE))); }
-        else { echo(json_encode(array('status'=>FALSE))); }
+         if ($result > 0) { echo(json_encode(array('status'=>TRUE,'message'=>'Deleted Succesfully'))); }
+            else { echo(json_encode(array('status'=>FALSE,'message'=>'Failed In Deletion Operation!'))); }
     }
 
     public function single($id='')
@@ -386,8 +371,8 @@ class Product extends BaseController
         $insertData['id'] = $_POST['id'];
         $insertData['status'] = $_POST['status'];
         $result = $this->product_model->save($insertData);
-         if ($result > 0) { echo(json_encode(array('status'=>TRUE))); }
-        else { echo(json_encode(array('status'=>FALSE))); }
+         if ($result > 0) { echo(json_encode(array('status'=>TRUE,'message'=>"successfully status changed"))); }
+        else { echo(json_encode(array('status'=>FALSE,'message'=>"status failed failed"))); }
         exit;
         
     } 

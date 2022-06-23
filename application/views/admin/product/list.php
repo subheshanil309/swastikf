@@ -1,6 +1,6 @@
  
  <link href="<?php echo base_url(); ?>assets/admin/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-<link href="<?php echo base_url(); ?>assets/admin/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url(); ?>assets/admin/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
  
  <style type="text/css">
    table.dataTable td, table.dataTable th {
@@ -60,6 +60,7 @@
 
                           
                          <a class="btn btn-primary  float-end btn-sm" href="<?php echo base_url(); ?>admin/product/addnew"><i class="fa fa-plus"></i> Add New</a>
+                         <input type="hidden" name="category_id"  id="category_id" value="<?php if(isset($_REQUEST['category_id'])){echo $_REQUEST['category_id'];}?>">
 
                             </div>
                          </div>
@@ -107,7 +108,28 @@
 
  
 <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/toastr/build/toastr.min.js"></script>
 
+<script type="text/javascript">
+   
+   toastr.options = {
+     "closeButton": true,
+     "debug": false,
+     "newestOnTop": false,
+     "progressBar": false,
+     "positionClass": "toast-top-right",
+     "preventDuplicates": false,
+     "onclick": null,
+     "showDuration": "300",
+     "hideDuration": "10000",
+     "timeOut": "5000",
+     "extendedTimeOut": "1000",
+     "showEasing": "swing",
+     "hideEasing": "linear",
+     "showMethod": "fadeIn",
+     "hideMethod": "fadeOut"
+   }
+</script>
 <!-- Delete Script-->
   <script type="text/javascript">
     jQuery(document).ready(function(){
@@ -129,10 +151,18 @@
             url : hitURL,
             data : { id : userId } 
             }).done(function(data){           
-              currentRow.parents('tr').remove();
-              if(data.status = true) { alert("successfully deleted"); }
-              else if(data.status = false) { alert("deletion failed"); }
-              else { alert("Access denied..!"); }
+              if(data.status ==true) { 
+                toastr.success(data.message);
+                currentRow.parents('tr').remove();
+              }
+              else if(data.status ==false) {
+                toastr.error(data.message);
+                
+             }
+              else { 
+                 toastr.error("Access denied..!");
+                 
+              }
             });
           }
     });
@@ -156,7 +186,9 @@ $(document).ready(function() {
         // Load data for the table's content from an Ajax source
         "ajax": {
             "url": "<?php echo site_url('admin/product/ajax_list')?>",
-            "type": "POST"
+            "type": "POST",
+            data: {
+            "category_id": $("#category_id").val()}
         },
  
         //Set column definition initialisation properties.
@@ -189,10 +221,9 @@ $(document).ready(function() {
             url : hitURL,
             data : { id : userId, status : value } 
             }).done(function(data){           
-              //currentRow.parents('tr').remove();
-              if(data.status = true) { alert("successfully status changed"); }
-              else if(data.status = false) { alert("status failed failed"); }
-              else { alert("Access denied..!"); }
+              if(data.status == true) { toastr.success(data.message);}
+              else if(data.status == false) { toastr.error(data.message);  }
+              else { toastr.error("Access denied..!");}
             });
           
     });

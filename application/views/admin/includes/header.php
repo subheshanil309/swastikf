@@ -316,6 +316,7 @@
                                 <ul class="sub-menu" aria-expanded="false">
                                     <li><a   href="#" key="t-products">Access Mgt</a></li>
                                     <li><a   href="<?php echo base_url('admin/company');?>" key="t-products">Company</a></li>
+                                    <li><a   href="<?php echo base_url('admin/category');?>" key="t-products">Category</a></li>
                                     <li><a   href="<?php echo base_url('admin/product');?>" key="t-products">Product</a></li>
                                     <li><a   href="<?php echo base_url('admin/agents');?>" key="t-products">Agents Mgt</a></li>
                                     <li><a   href="<?php echo base_url('admin/country');?>" key="t-products">Country</a></li>

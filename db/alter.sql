@@ -328,6 +328,11 @@ ALTER TABLE `z_customer_call` ADD `company_id` INT NULL DEFAULT '1';
 
 
 
+----23-06-2022
+ALTER TABLE `z_product_category` ADD `description` TEXT NULL, ADD `update_by` INT NULL;
+
+
+
 
 
 

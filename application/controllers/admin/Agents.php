@@ -403,7 +403,6 @@ class Agents extends BaseController
             }else{
 
             $insertData['id']         = $form_data['id'];
-            $insertData['admin_type']         = 2;
             $insertData['name']         = $form_data['name'];
             $insertData['title']         = $form_data['title'];
             $insertData['email']         = $form_data['email'];

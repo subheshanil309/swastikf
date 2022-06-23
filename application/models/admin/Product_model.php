@@ -257,7 +257,13 @@ class Product_model extends Base_model
 
             }
 
-             
+             if(isset($_POST['category_id']) && !empty($_POST['category_id'])) // here order processing
+
+            {
+
+                $this->db->where('category_id', $_POST['category_id']);
+
+            } 
 
             if(isset($_POST['order'])) // here order processing
 
@@ -276,6 +282,7 @@ class Product_model extends Base_model
                 $this->db->order_by(key($order), $order[key($order)]);
 
             }
+
 
         }
 
