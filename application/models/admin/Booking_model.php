@@ -259,6 +259,7 @@ class Booking_model extends Base_model
                     $not_array[] = 'other_state';
                     $not_array[] = 'req_delivery_date';
                     $not_array[] = 'start_date';
+                    $not_array[] = 'end_date';
                     $not_array[] = 'search_type';
                     $not_array[] = 'advance_booking_status_value';
                     $not_array[] = 'advance_crop_status_value';

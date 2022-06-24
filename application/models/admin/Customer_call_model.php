@@ -240,7 +240,7 @@ class Customer_call_model extends Base_model
                 if(isset($data_param['userid']) && $data_param['userid'] !=='')
                 {
                     $userid = $data_param['userid'];
-                    $where.= " AND ( z_customer.created_by = '".$userid."') ";
+                    $where.= " AND ( z_customer.assigned_to = '".$userid."') ";
                 } 
                    
 
@@ -257,7 +257,7 @@ class Customer_call_model extends Base_model
                         $where.= "  AND z_customer.last_call_back_date='".$yesterday."'";    
                     }else if($data_param['followup_type']=='today')
                     {
-                        $yesterday = date('Y-m-d');
+                        $current_date = date('Y-m-d');
                         $where.= "  AND z_customer.last_call_back_date='".$current_date."'";    
                     }
                     else if($data_param['followup_type']=='tomorrow')

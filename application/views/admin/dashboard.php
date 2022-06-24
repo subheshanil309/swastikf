@@ -163,8 +163,8 @@
                                                         <td><p><?php echo $admin->address;?></p></td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="row"><strong><i class="fa fa-calendar-alt"></i> Opening Date</strong></th>
-                                                        <td><p><?php echo date('d M Y',strtotime($admin->date_at));?></p></td>
+                                                        <th scope="row"><strong><i class="fa fa-calendar-alt"></i> Date Of Join</strong></th>
+                                                        <td><p><?php echo date('d M Y',strtotime($admin->date_join));?></p></td>
                                                     </tr>
                                                 </tbody>
                                             </table>

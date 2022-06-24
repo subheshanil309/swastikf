@@ -87,7 +87,7 @@
                                     <th>District</th>                                            
                                     <th>City</th>
                                     <th>Pincode</th>
-                                    <th>Date</th>
+                                    <th>Date Of Join</th>
                                     <th style="width: 60px;">Status</th>                                            
                                     <th class="text-center"  style="width: 60px;">Actions</th>
                                   </tr>
@@ -112,7 +112,7 @@
                                           <td><?php echo $value['district'];?></td>
                                           <td><?php echo $value['city'];?></td>
                                           <td><?php echo $value['pincode'];?></td>
-                                          <td><?php echo date('d M Y',strtotime($value['date_at']));?></td>
+                                          <td><?php echo date('d M Y',strtotime($value['date_join']));?></td>
                                           <td><?php echo (isset($value['status']) && $value['status']==1)?('<span class="badge bg-success">Active</span>'):'<span class="badge bg-danger">In-active</span>';?></td>
                                           
                                           <td>

@@ -223,7 +223,7 @@ class Customer_model extends Base_model
                     if(isset($params['userid']))
                     {
                         $userid = $params['userid'];
-                        $where.= " AND ( c.created_by = '".$userid."' OR c.assigned_to='".$userid."')";
+                        $where.= " AND ( c.assigned_to = '".$userid."')";
                     }
                 
                      
@@ -288,6 +288,10 @@ class Customer_model extends Base_model
 
 
                     }else if($params['where']['stat_type'] =='call_type2')
+                    {
+                        $current_date = date('Y-m-d');
+                        $where.= " AND (c.last_follow_date='".$current_date."')";
+                    }else if($params['where']['stat_type'] =='all')
                     {
                         $current_date = date('Y-m-d');
                         $where.= " AND (c.last_follow_date='".$current_date."')";

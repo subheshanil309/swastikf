@@ -274,6 +274,18 @@ class Customer extends BaseController
 
 
                         $where = array();
+                        $where['farmer_id'] =$data['edit_data']->id;
+                        $where['orderby'] ='-id';
+                        $where['limit'] ='1';
+                        $customer= $this->customer_model->findDynamic($where);
+
+
+
+                        if(!empty($customer))
+                        {
+                            $data['enquiry_id']  = $customer[0]->id;
+                        }
+                        $where = array();
                         $where['farmer_id'] = $data['edit_data']->id;
                         //$data['customer_call_dtl'] =$this->customer_call_detail($data['edit_data']->id);
                        // $data['customer_call_dtl'] = $this->customer_call_model->findDynamic($where);
@@ -344,8 +356,13 @@ class Customer extends BaseController
                  $userid = $this->session->userdata('userId');
             }
 
-        $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type'); 
-         
+        $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type');
+        $where = array();
+        $where['last_follow_date'] =  $current_date = date('Y-m-d');
+        $where['assigned_to'] =  $userid;
+        $where['field'] = 'id';
+        $data['total_calls'] = $this->customer_model->findDynamic($where);; 
+         $data['total_calls'] = count($data['total_calls']);
 
 
 
@@ -491,7 +508,7 @@ class Customer extends BaseController
                     $insertData['customer']                 = $result;
                     $insertData['call_type']                = $form_data['call_type'];
                     $insertData['assign_to']                = ($form_data['assign_to']);
-                    $insertData['user_id']                  = ($form_data['assign_to']);
+                    $insertData['user_id']                  = ($this->session->userdata('userId'));
                     $insertData['call_back_date']           = $form_data['call_back_date'];
                     $insertData['call_direction']           = $form_data['call_direction'];
                     $insertData['current_conversation']     = $form_data['current_conversation'];
@@ -524,7 +541,7 @@ class Customer extends BaseController
 
                
               
-            redirect($redirect_url);
+            redirect(base_url().'admin/customer/addnew');
             //redirect('admin/customer/addnew'.$redirec_url);
           }  
         
@@ -731,7 +748,7 @@ class Customer extends BaseController
 		
         $this->isLoggedIn();
         
-        
+       
         
         $this->load->library('form_validation');            
         $this->form_validation->set_rules('customer_name','customer_name','trim|required');
@@ -796,13 +813,14 @@ class Customer extends BaseController
                     $insertData['customer']                 = $result;
                     $insertData['call_type']                = $form_data['call_type'];
                     $insertData['assign_to']                = ($form_data['assign_to']);
-                    $insertData['user_id']                  = ($form_data['assign_to']);
+                    $insertData['user_id']                  = $this->session->userdata('userId');
                     $insertData['call_back_date']           = $form_data['call_back_date'];
                     $insertData['call_direction']           = $form_data['call_direction'];
                     $insertData['current_conversation']     = $form_data['current_conversation'];
                     $insertData['status']                   = '1';
                     $insertData['date_at']                  = date("Y-m-d H:i:s");
 
+              
 
                     $result = $this->customer_call_model->save($insertData);
                     
@@ -912,7 +930,7 @@ class Customer extends BaseController
                     $insertData['customer']                 = $result;
                     $insertData['call_type']                = $form_data['call_type_update'];
                     $insertData['assign_to']                = ($form_data['assign_to_update']);
-                    $insertData['user_id']                  = ($form_data['assign_to_update']);
+                     $insertData['user_id']                  = $this->session->userdata('userId');
                     $insertData['call_back_date']           = $form_data['call_back_date_update'];
                     $insertData['call_direction']           = $form_data['call_direction_update'];
                     $insertData['current_conversation']     = $form_data['current_conversation_update'];
@@ -951,6 +969,7 @@ class Customer extends BaseController
 
     public function customer_call_detail()
     {
+         $result = array();
          $form_data  = $this->input->post('id');
          $id = $form_data;
         if(empty($id))
@@ -959,17 +978,32 @@ class Customer extends BaseController
         }else
         {
             /*start data*/
-            $this->db->select('cc.*,user.title as username, call.title as calltype, direction.title as calldirection');
+            $this->db->select('cc.*,user.title as assigned,created.title as user_createdby, call.title as calltype, direction.title as calldirection');
             $this->db->from('z_customer_call as cc');
             $this->db->where('cc.customer', $id);
             $this->db->join('z_admin as user', 'user.id = cc.assign_to', 'left');
+            $this->db->join('z_admin as created', 'created.id = cc.user_id', 'left');
             $this->db->join('z_call_type as call', 'call.id = cc.call_type', 'left');
             $this->db->join('z_call_direction as direction', 'direction.id = cc.call_direction', 'left');
             $this->db->order_by("cc.id", "desc");
             $query = $this->db->get(); 
-            $result = $query->result_array();        
-
-        /*end  data*/
+            $result_array = $query->result_array();        
+            if(!empty($result_array ))
+            {
+                foreach ($result_array  as $value) 
+                {
+                    $call_detail = array();
+                    $call_detail['date_at'] = date('d M Y',strtotime($value['date_at']));
+                    $call_detail['call_back_date'] = date('d M Y',strtotime($value['call_back_date']));
+                    $call_detail['calltype'] =  $value['calltype'];
+                    $call_detail['assigned'] =  $value['assigned'];
+                    $call_detail['user_createdby'] =  $value['user_createdby'];
+                    $call_detail['calldirection'] =  $value['calldirection'];
+                    $call_detail['current_conversation'] =  $value['current_conversation'];
+                    $result[] = $call_detail;
+                }
+                
+             } 
 
         }
         $result = json_encode($result);
@@ -1237,12 +1271,87 @@ class Customer extends BaseController
 
          $this->isLoggedIn();
 
-            $uid    = @$this->input->get('uid'); 
+            $uid                = @$this->input->get('uid'); 
             $stat_type          = @$this->input->get('stat_type'); 
-            $followup_type          = @$this->input->get('followup_type'); 
-            $where_search   = array(); 
-            $conditions     = array(); 
-             
+            $followup_type      = @$this->input->get('followup_type'); 
+            
+                 $form_type  = $this->input->get('form_type');
+              $conditions = array(); 
+                $where_search = array();
+                
+        if($form_type=='inquiry')
+        {
+                $where_search =  array();
+                $search_customer_id  = @$this->input->get('search_customer_id');
+                $search_name         = @$this->input->get('search_name');
+                $search_mobile       = @$this->input->get('search_mobile');
+                $search_alt_mobile   = @$this->input->get('search_alt_mobile');
+                $state2              = @$this->input->get('state2');
+                $other_state2        = @$this->input->get('other_state2');
+                $district2           = @$this->input->get('district2');
+                $other_district2     = @$this->input->get('other_district2');
+                $city2               = @$this->input->get('city2');
+                $other_city2               = @$this->input->get('other_city2');
+                $call_direction2     = @$this->input->get('call_direction2');
+                $call_type2          = @$this->input->get('call_type2'); 
+                $stat_type          = @$this->input->get('stat_type'); 
+                $followup_type          = @$this->input->get('followup_type'); 
+                if(!empty($search_customer_id))
+                {
+                    $where_search['farmer_id'] =  $search_customer_id;
+                }
+                 if(!empty($stat_type))
+                {
+                    $where_search['stat_type'] =  $stat_type;
+                }
+                 if(!empty($search_name))
+                {
+                    $where_search['customer_title'] =  $search_name;
+                } 
+                
+                if(!empty($search_mobile))
+                {
+                    $where_search['customer_mobile'] =  $search_mobile;
+                }
+                if(!empty($search_alt_mobile))
+                {
+                    $where_search['customer_alter_mobile'] =  $search_alt_mobile;
+                }
+                if(!empty($state2))
+                {
+                    $where_search['state'] =  $state2;
+                }
+                if(!empty($other_state2))
+                {
+                    $where_search['other_state'] =  $other_state2;
+                }
+                
+                if(!empty($district2))
+                {
+                    $where_search['district'] =  $district2;
+                }if(!empty($other_district2))
+                {
+                    $where_search['other_district'] =  $other_district2;
+                }
+                if(!empty($city2))
+                {
+                    $where_search['city'] =  $city2;
+                } 
+                if(!empty($other_city2))
+                {
+                    $where_search['other_city'] =  $other_city2;
+                }
+                if(!empty($call_direction2))
+                {
+                    $where_search['last_call_direction'] =  $call_direction2;
+                } 
+                if(!empty($call_type2))
+                {
+                    $where_search['last_call_type'] =  $call_type2;
+                }
+
+        }
+
              if(!empty($stat_type))
                 {
                     $where_search['stat_type'] =  $stat_type;

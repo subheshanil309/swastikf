@@ -103,6 +103,11 @@ print_r($customer_call_dtl);  */
                </div>
             </div>
             <form action="<?php echo base_url() ?>admin/customer/insertnow" method="post" role="form" enctype="multipart/form-data"  id='add_inquiry'>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <h5>Add New inquiry</h5>
+                  </div>
+                </div>
                <div class="row">
                 <input type="hidden" name="redirect_url" id="redirect_url" value="<?php echo base_url()."admin/customer/addnew?".$_SERVER['QUERY_STRING'];?>">
                   <div class="col-sm-6">
@@ -305,6 +310,25 @@ print_r($customer_call_dtl);  */
                </div>
                 
             </form>
+
+            <div class="row">
+               <div class="col-sm-6">
+                  <div class="row">
+                     <div class="col-lg-12">
+                        <div class="card">
+                           <div class="card-body">
+                              <h4 class="card-title mb-5">Previous Conversation</h4>
+                               <div  id="example23">
+                                  
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-sm-4"></div>
+               <div class="col-sm-4"></div>
+            </div>
          </div>
          <div class="col-xl-6">
             <div class="card">
@@ -392,6 +416,14 @@ print_r($customer_call_dtl);  */
                               }
                               }*/
                               ?>
+                               <div class="flex-grow-1">
+                                        <a href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=all<?=$uuid?>">
+                                          <div class="float-end">
+                                          <p class="text-primary mb-0"><?php echo @$total_calls+0;?></p>
+                                          </div>
+                                        <p class="text-primary mb-0">Total Calls</p>
+                                        </a>
+                                     </div>
                         </div>
                      </div>
                      <div class="col-sm-4">
@@ -652,24 +684,7 @@ print_r($customer_call_dtl);  */
 
       <!-- end col -->
      
-            <div class="row">
-               <div class="col-sm-4">
-                  <div class="row">
-                     <div class="col-lg-12">
-                        <div class="card">
-                           <div class="card-body">
-                              <h4 class="card-title mb-5">Previous Conversation</h4>
-                               <div  id="example23">
-                                  
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-sm-4"></div>
-               <div class="col-sm-4"></div>
-            </div>
+            
         
       
    </div>
@@ -1282,11 +1297,12 @@ function districtChangeUpdate(district_code = '',selected_city = '') {
                hide_loader();
                if(data.status==1)
                {
-                 
+                /*console.log(data);
+                 return false;*/
    
                  $('.bs-example-modal-xl').modal('hide');
                  toastr.success(data.message);
-                    window.location.reload(true);
+                  window.location.reload(true);
    
                
                }else{
@@ -1394,13 +1410,12 @@ function districtChangeUpdate(district_code = '',selected_city = '') {
             var city_id = response.city;
             stateChangeUpdate(state_id,district_id);
             districtChangeUpdate(district_id,city_id);
-
+ 
             $("#other_city_update").val(response.other_city);
-            $("#call_type_update").val(response.last_call_type);
             $("#assign_to_update").val(response.assigned_to);
             $("#call_back_date_update").val(response.last_call_back_date);
             $("#call_direction_update").val(response.last_call_direction);
-            $("#current_conversation_update").val(response.current_conversation);
+            $("#current_conversation_update").val();
             select_calltype('update_inquiry'); 
 
            });
@@ -1430,7 +1445,7 @@ function districtChangeUpdate(district_code = '',selected_city = '') {
  
 
               html_content+='<li class="event-list">';
-              html_content+='<div class="event-timeline-dot"><i class="bx bx-right-arrow-circle"></i></div>';
+              html_content+='<div class="event-timeline-dot "><i class=" display-6 bx text-white bxs-chat rounded-circle bg-success"></i></div>';
 
               html_content+='<div class="d-flex">';
               html_content+='<div class="flex-shrink-0 me-3"><i class="text-primary"></i></div>';
@@ -1439,10 +1454,10 @@ function districtChangeUpdate(district_code = '',selected_city = '') {
               html_content+='<span class="bg-primary badge badge-primary border-radius-0">'+data[i].date_at+'</span>';
 
               html_content+='<div class="card-header bg-transparent border-bottom">';
-              html_content+=data[i].calltype+' <strong>By</strong> '+data[i].username;
+              html_content+=data[i].calltype+' <strong>By</strong> '+data[i].user_createdby;
               
               html_content+='</div>';
-              html_content+='<div class="card-body"><p class="p-0 m-0"><strong>Call Direction :</strong>'+data[i].calldirection+'<strong> Call Back Date :</strong>'+data[i].call_back_date+'</p><p><strong> Assigned To :</strong>'+data[i].username+'</p><hr class="p-0 m-0"><p>'+data[i].current_conversation+'</p>';
+              html_content+='<div class="card-body"><p class="p-0 m-0"><strong>Call Direction :</strong>'+data[i].calldirection+'<strong> Call Back Date :</strong>'+data[i].call_back_date+'</p><p><strong> Assigned To :</strong>'+data[i].assigned+'</p><hr class="p-0 m-0"><p>'+data[i].current_conversation+'</p>';
 
 
               html_content+='</div></div></div></div></div></li>';
@@ -1457,7 +1472,7 @@ function districtChangeUpdate(district_code = '',selected_city = '') {
   }
   function current_cutomer_call_detail()
   {
-    get_cutomer_call_detail('<?php echo @$edit_data->id;?>','example23');
+    get_cutomer_call_detail('<?php echo @$enquiry_id;?>','example23');
   }
  function single_cutomer_call_detail(id)
   {

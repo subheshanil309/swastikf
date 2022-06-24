@@ -22,6 +22,10 @@
     {
       z-index: 1051;
     }
+    tbody tr td{
+      text-align: center;
+    }
+    
         
     
 </style>
@@ -102,7 +106,7 @@
                            </div>
                         </div>
                      </h5>
-                     <div class="card">
+                     <div class="card mb-0">
                         <div class="card-body">
                            <div class="row">
                               <div class="col-sm-12 ">
@@ -138,7 +142,7 @@
                            </div>
                         </div>
                      </div>
-                     <div class="card-body">
+                     <div class="card-body pb-0">
                         <div class="table-responsive mytablestyle">
                            <form method="GET" action="<?php echo base_url()?>admin/bookings" id="booking_filter">
                               <input type="text" name="start_date"  id="start_date" hidden >
@@ -458,7 +462,264 @@
                            </div>
                         </div>
                      </div>
+
+                     <div class="row p-4">
+                        <div class="col-sm-2">
+                           <button class="btn btn-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ShowSummary" aria-expanded="true" aria-controls="ShowSummary"><i class="bx bx-plus-medical"></i> Show Summary</button>
+                        </div>
+                        <div class="col-sm-10">
+
+                        </div>                        
+                     </div>
+                     
                      <!-- end table-responsive -->
+
+                     <div class="collapse" id="ShowSummary" style="">
+                                                         
+                                                 
+                     <div class="card ">
+                        <div class="card-body p-0">
+                           <div class="row">
+                              <div class="col-sm-4">
+                                  <div class="card m-0">
+                                     <div class="card-body bg-success p-1 text-center text-white">
+                                       <h4 class="text-white fs-6">Total Summary</h4>    
+                                    </div>
+                                    <div class="card-body p-0">
+                                       <div class="table-responsive">
+                                                <table class="table table-nowrap table-hover mb-0">
+                                                   <thead>
+                                                      <tr>
+                                                         
+                                                           <th>Booking Status</th>
+                                                           <th>No. of booking</th>
+                                                           <th>No. of plant</th>
+                                                       </tr>      
+                                                   </thead>
+                                                <tbody>
+                                                
+                                                    <tr>
+                                                         
+                                                        <td>Booked</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr><tr>
+                                                         
+                                                        <td>Delivered</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr><tr>
+                                                         
+                                                        <td>Processing</td>
+                                                        <td></td>
+                                                        <td>0</td>
+                                                    </tr><tr>
+                                                         
+                                                        <td>Cancelled</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                     
+
+                                                     
+                                                </tbody>
+                                            </table>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-sm-2 ">
+                                  <div class="card  m-0">
+                                     <div class="card-body bg-success p-1 text-center text-white">
+                                       <h4 class="text-white fs-6">Papaya</h4>    
+                                    </div>
+                                 </div>
+                                  <div class="card-body p-0">
+                                       <div class="table-responsive">
+                                                <table class="table table-nowrap table-hover mb-0">
+                                                   <thead>
+                                                      <tr>
+                                                         <th>No. of booking</th>
+                                                           <th>No. of plant</th>
+                                                       </tr>      
+                                                   </thead>
+                                                <tbody>
+                                                    
+                                                     
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                     
+
+                                                     
+                                                </tbody>
+                                            </table>
+                                       </div>
+                                    </div>
+                              </div>
+                              <div class="col-sm-2 ">
+                                  <div class="card  m-0">
+                                     <div class="card-body bg-success p-1 text-center text-white">
+                                       <h4 class="text-white fs-6">Lemon</h4>    
+                                    </div>
+                                     <div class="card-body p-0">
+                                       <div class="table-responsive">
+                                                 <table class="table table-nowrap table-hover mb-0">
+                                                   <thead>
+                                                      <tr>
+                                                         <th>No. of booking</th>
+                                                           <th>No. of plant</th>
+                                                       </tr>      
+                                                   </thead>
+                                                <tbody>
+                                                    
+                                                     
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                     
+
+                                                     
+                                                </tbody>
+                                            </table>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-sm-2 ">
+                                  <div class="card  m-0">
+                                     <div class="card-body bg-success p-1 text-center text-white">
+                                       <h4 class="text-white fs-6">Current Month</h4>    
+                                    </div>
+                                 </div>
+                                  <div class="card-body p-0">
+                                       <div class="table-responsive">
+                                                 <table class="table table-nowrap table-hover mb-0">
+                                                   <thead>
+                                                      <tr>
+                                                         <th>No. of booking</th>
+                                                           <th>No. of plant</th>
+                                                       </tr>      
+                                                   </thead>
+                                                <tbody>
+                                                    
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                     
+
+                                                     
+                                                </tbody>
+                                            </table>
+                                       </div>
+                                    </div>
+                              </div>
+                              <div class="col-sm-2 ">
+                                  <div class="card m-0">
+                                     <div class="card-body bg-success p-1 text-center text-white">
+                                       <h4 class="text-white fs-6">Previous Month</h4>    
+                                    </div>
+                                 </div>
+                                  <div class="card-body p-0">
+                                       <div class="table-responsive">
+                                              <table class="table table-nowrap table-hover mb-0">
+                                                   <thead>
+                                                      <tr>
+                                                         <th>No. of booking</th>
+                                                           <th>No. of plant</th>
+                                                       </tr>      
+                                                   </thead>
+                                                <tbody>
+                                                    
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                         
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                     
+
+                                                     
+                                                </tbody>
+                                            </table>
+                                       </div>
+                                    </div>
+                              </div>
+                               
+                                
+                           </div>
+                        </div>
+                     </div>
+                        </div>
+
+ 
+                     <!-- end table-responsive -->
+
                   </div>
                </div>
             </div>

@@ -171,6 +171,15 @@
                                     </div>
                                  </div>
                               </div>
+                                <div class="col-sm-3">
+                                 <div class="row">
+                                    <label for="status1" class="col-sm-4 col-form-label">Date Of Join</label>
+                                    <div class="col-sm-8">
+                                        
+                                         <input type="date" class="form-control form-control-sm" id="date_join" placeholder="Date Of Join" name="date_join" value="<?php if(!empty(set_value('date_join'))){ echo set_value('date_join'); }else{  echo  $edit_data->date_join;}; ?>">
+                                    </div>
+                                 </div>
+                              </div>
                               <div class="col-sm-3">
                                  <div class="row">
                                     <label for="status1" class="col-sm-4 col-form-label">Status</label>

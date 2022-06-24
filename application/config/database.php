@@ -52,7 +52,7 @@ $active_record = TRUE;
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
 $db['default']['password'] = '';
-$db['default']['database'] = 'customer_support';
+$db['default']['database'] = 'customer_support1';
 
 //Server
 // $db['default']['hostname'] = '208.97.172.20';

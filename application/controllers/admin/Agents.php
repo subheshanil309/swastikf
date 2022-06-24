@@ -211,6 +211,7 @@ class Agents extends BaseController
             $insertData['other_district']= $form_data['other_district'];
             $insertData['district_id']  = $form_data['district'];
             $insertData['date_at']      = date("Y-m-d H:i:s");;
+            $insertData['date_join']      = (isset($form_data['date_join'])?($form_data['date_join']):date("Y-m-d"));
             $insertData['status']       = $form_data['status1'];
             $insertData['address']      = $form_data['address'];
             $insertData['company_id']      = $form_data['company_id'];
@@ -252,7 +253,7 @@ class Agents extends BaseController
             $btn .= '</select>';
             
             $no++;
-            $temp_date = $currentObj->date_at;
+            $temp_date = $currentObj->date_join;
             $dateAt = date("d-m-Y H:ia", strtotime($temp_date));
 
             $row = array();
@@ -415,7 +416,8 @@ class Agents extends BaseController
             $insertData['other_state'] = $form_data['other_state'];
             $insertData['other_district']= $form_data['other_district'];
             $insertData['district_id']  = $form_data['district'];
-            $insertData['update_at']      = date("Y-m-d H:i:s");;
+            $insertData['update_at']      = date("Y-m-d H:i:s");
+             $insertData['date_join']      = (isset($form_data['date_join'])?($form_data['date_join']):date("Y-m-d"));
             $insertData['status']       = $form_data['status1'];
             $insertData['address']      = $form_data['address'];
             $insertData['company_id']      = $form_data['company_id'];

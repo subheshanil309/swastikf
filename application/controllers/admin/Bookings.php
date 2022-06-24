@@ -2295,10 +2295,12 @@ echo "</pre>";  */
                 if(!empty($start_date))
                 {
                      $where_search['start_date'] =  $start_date;
-                 } if(!empty($end_date))
+                 }
+                 if(!empty($end_date))
                 {
                      $where_search['end_date'] =  $end_date;
-                 } if(!empty($contract))
+                 } 
+                 if(!empty($contract))
                 {
                      $where_search['contract'] =  $contract;
                  }
