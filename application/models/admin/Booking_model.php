@@ -654,9 +654,130 @@ class Booking_model extends Base_model
         }
     }
 
-    
+     
+    public function total_summary($variable,$types= array())
+    {
+
+        
+        $globl_arr = [];
+        $start_date = '';
+        $end_date = '';
+         if(isset($types['month_wise']) && $types['month_wise'] !=='')
+        {
+            $exploded = explode('-', $types['month_wise']);
+            $start_date = $exploded[0]."-".$exploded[1]."-01";
+            $end_date = $exploded[0]."-".$exploded[1]."-31";
+        } 
+ 
+        foreach ($variable as $key => $value1) {
 
 
+
+            $booking_status         = $value1;
+            $where                  = array();
+            $where['field']         = 'id,quantity';
+
+            if(isset($types['month_wise']) && $start_date !=='' && $end_date !=='')
+            {
+                $where['booking_date >=']= $start_date;    
+                $where['booking_date <=']= $end_date;    
+            }
+            if(isset($types['product_id']) &&$types['product_id'])
+            {
+                $where['product_id']= $types['product_id'];    
+            }
+            $where['booking_status']= $booking_status;
+            $booked_no_of_booking   = 0;
+            $no_of_plant            = 0;
+
+            $total_booked = $this->booking_model->findDynamic($where);
+            if(!empty($total_booked))
+            {
+                foreach ($total_booked as $key => $value) {
+                     $booked_no_of_booking+= 1;
+                     $no_of_plant+= $value->quantity;
+                }
+            }
+
+            $array = [];
+            $array["name"]  = $value1;
+             $array[$booking_status."_booking"]  =  $booked_no_of_booking;
+            $array[$booking_status."_plant"]    =  $no_of_plant;
+
+            $globl_arr[] = $array;
+        }
+
+        return $globl_arr;
+
+
+    }
+
+    public function getBookedSummary()
+    {
+        $show_summary  = [];
+        
+         
+
+        $where_data = array();
+        $where_data[] = 'booked';
+        $where_data[] = 'delivered';
+        $where_data[] = 'cancelled';
+        $where_data[] = 'processing';
+        $total_summary = $this->total_summary($where_data);
+        $show_summary['total_summary'] = $total_summary;
+        $types = array();
+        $types['month_wise'] = date('Y-m-d');
+        $total_summary_current_month = $this->total_summary($where_data,$types);
+        $show_summary['total_summary_current_month'] = $total_summary_current_month;
+
+        $types = array();
+        $types['month_wise'] = date('Y-m-d', strtotime(date('Y-m')." -1 month"));
+        $total_summary_previous_month = $this->total_summary($where_data,$types);
+        $show_summary['total_summary_previous_month'] = $total_summary_previous_month;
+
+
+
+         $query = $this->db->select("id,product_id")->from($this->table)->group_by('product_id')->get();
+
+         if ($query->num_rows() > 0) {
+
+                $product_id_group_array = $query->result();
+
+            } else {
+
+                $product_id_group_array = array();
+
+            }
+            $products_data  = array();
+            if(!empty($product_id_group_array))
+            {
+                foreach ($product_id_group_array as $key => $value)
+                {
+                    if($value->product_id)
+                    {
+                         $where = array();
+                        $where['table'] = 'z_product';
+                        $where['field'] = 'id,title';
+                        $where['id'] = $value->product_id;
+                        $product_data = $this->booking_model->findDynamic($where);
+                        $types = array();
+                        $types['product_id'] = $value->product_id;
+                         $products_data[] = $this->total_summary($where_data,$types);
+                        $show_summary['productname'][] =  (isset($product_data[0]->title) && $product_data[0]->title !=='')?($product_data[0]->title):'';;
+                    }
+                   
+                }
+            }
+
+            $show_summary['products'] = $products_data;
+            /*echo "<pre>";
+            print_r($product_id_group_array);
+            echo "</pre>";*/
+        
+
+        return  $show_summary;
+
+    }
 
 }
 

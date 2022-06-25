@@ -1011,6 +1011,7 @@
                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
                <input type="hidden" id="booking_status"   name="booking_status"  >
                <input type="hidden" id="custID"   name="custID" value="<?php echo @$edit_data->customer_id?>"  >
+               <input type="hidden" id="farmer_id"   name="farmer_id" value="<?php echo @$edit_data->farmer_id?>"  >
             </div>
          </div>
       </form>

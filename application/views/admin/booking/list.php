@@ -2,7 +2,7 @@
    .table>:not(caption)>*>* {
    border: 1px solid #3a863e;
    padding: 1px 1px;
-   font-size: 12px;
+   font-size: 10px;
    color: #000;
    }
    .mytablestyle{
@@ -27,6 +27,7 @@
     }
     
         
+
     
 </style>
 <!-- Latest compiled and minified CSS -->
@@ -367,7 +368,7 @@
                                              Action<i class="mdi mdi-chevron-down"></i>
                                              </span>
                                              <div class="dropdown-menu" style="">
-                                                <a class="dropdown-item btn changestatusbtn" data-bs-toggle="modal" data-bs-target="#exampleModal"  data-userid="<?php echo $bookings['id']; ?>" data-status_title="<?php echo $bookings['booked_status'];?>"  ><i class="fa fa-wrench" aria-hidden="true"></i> Change Status</a>
+                                                <a class="dropdown-item btn changestatusbtn" data-bs-toggle="modal" data-bs-target="#exampleModal"  data-userid="<?php echo $bookings['id']; ?>"  data-farmer_id="<?php echo $bookings['farmer_id']; ?>" data-status_title="<?php echo $bookings['booked_status'];?>"  ><i class="fa fa-wrench" aria-hidden="true"></i> Change Status</a>
                                                 <a class="dropdown-item btn historybooking" data-bs-toggle="modal" data-bs-target="#exampleModalFullscreen" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-history" aria-hidden="true"></i> View History</a>
                                                 <a class="dropdown-item btn" target="_BLANK" href="<?php echo base_url()?>admin/bookings/receipt/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Generate Receipt</a>
                                                 <a class="dropdown-item btn"  target="_BLANK" href="<?php echo base_url()?>admin/bookings/view/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-eye" aria-hidden="true"></i> View Order Details</a>
@@ -471,7 +472,12 @@
 
                         </div>                        
                      </div>
-                     
+                     <?php 
+                                        /*echo "<pre>";
+                                       print_r($show_summary);
+                                       echo "</pre>"; */ 
+                                    ?>
+
                      <!-- end table-responsive -->
 
                      <div class="collapse" id="ShowSummary" style="">
@@ -480,150 +486,117 @@
                      <div class="card ">
                         <div class="card-body p-0">
                            <div class="row">
-                              <div class="col-sm-4">
-                                  <div class="card m-0">
-                                     <div class="card-body bg-success p-1 text-center text-white">
-                                       <h4 class="text-white fs-6">Total Summary</h4>    
-                                    </div>
-                                    <div class="card-body p-0">
-                                       <div class="table-responsive">
-                                                <table class="table table-nowrap table-hover mb-0">
-                                                   <thead>
-                                                      <tr>
-                                                         
-                                                           <th>Booking Status</th>
-                                                           <th>No. of booking</th>
-                                                           <th>No. of plant</th>
-                                                       </tr>      
-                                                   </thead>
-                                                <tbody>
-                                                
-                                                    <tr>
-                                                         
-                                                        <td>Booked</td>
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr><tr>
-                                                         
-                                                        <td>Delivered</td>
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr><tr>
-                                                         
-                                                        <td>Processing</td>
-                                                        <td></td>
-                                                        <td>0</td>
-                                                    </tr><tr>
-                                                         
-                                                        <td>Cancelled</td>
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                     
+                              <?php 
+                                 if(isset($show_summary['total_summary']))
+                                 {
+                                    ?>
+                                  <div class="col-sm-4  mt-2">
+                                     <div class="card m-0">
+                                        <div class="card-body bg-success p-1 text-center text-white">
+                                          <p class="text-white m-0" style="font-size: 10px;">Total Summary</p>    
+                                       </div>
+                                       
+                                       <div class="card-body p-0">
+                                          <div class="table-responsive">
+                                                   <table class="table table-nowrap table-hover mb-0">
+                                                      <thead>
+                                                         <tr>
+                                                            
+                                                              <th>Booking Status</th>
+                                                              <th>No. of booking</th>
+                                                              <th>No. of plant</th>
+                                                          </tr>      
+                                                      </thead>
+                                                   <tbody>
+                                                      <?php
+                                                         foreach ($show_summary['total_summary'] as $value)
+                                                         {
+                                                            $var = $value['name'];
+                                                            ?>
+                                                             <tr>
+                                                                  <td><span class="float-start" ><?php echo ucfirst($value['name']) ?></span></td>
+                                                                 <td><?php echo ($value[$var.'_booking']) ?></td>
+                                                                 <td><?php echo ($value[$var.'_plant']) ?></td>
+                                                                  
+                                                             </tr>
+                                                            <?php    
+                                                         }
+                                                      ?>
+                                                       
+                                                        
 
-                                                     
-                                                </tbody>
-                                            </table>
+                                                        
+                                                   </tbody>
+                                               </table>
+                                          </div>
                                        </div>
                                     </div>
-                                 </div>
-                              </div>
-                              <div class="col-sm-2 ">
-                                  <div class="card  m-0">
-                                     <div class="card-body bg-success p-1 text-center text-white">
-                                       <h4 class="text-white fs-6">Papaya</h4>    
-                                    </div>
-                                 </div>
-                                  <div class="card-body p-0">
-                                       <div class="table-responsive">
-                                                <table class="table table-nowrap table-hover mb-0">
-                                                   <thead>
-                                                      <tr>
-                                                         <th>No. of booking</th>
-                                                           <th>No. of plant</th>
-                                                       </tr>      
-                                                   </thead>
-                                                <tbody>
-                                                    
-                                                     
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                     
+                                 </div>     
+                                    <?php
+                                 }
+                              ?>
+                              
+                              <?php
+                                 if(isset($show_summary['products']) && !empty($show_summary['products']))
+                                 {
 
-                                                     
-                                                </tbody>
-                                            </table>
-                                       </div>
-                                    </div>
-                              </div>
-                              <div class="col-sm-2 ">
-                                  <div class="card  m-0">
-                                     <div class="card-body bg-success p-1 text-center text-white">
-                                       <h4 class="text-white fs-6">Lemon</h4>    
-                                    </div>
-                                     <div class="card-body p-0">
-                                       <div class="table-responsive">
-                                                 <table class="table table-nowrap table-hover mb-0">
-                                                   <thead>
-                                                      <tr>
-                                                         <th>No. of booking</th>
-                                                           <th>No. of plant</th>
-                                                       </tr>      
-                                                   </thead>
-                                                <tbody>
-                                                    
-                                                     
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                     
+                                    $inc = 0;
+                                    foreach ($show_summary['products'] as  $product) {
 
-                                                     
-                                                </tbody>
-                                            </table>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-sm-2 ">
+                                        
+                                       ?>
+                                          <div class="col-sm-2  mt-2">
+                                              <div class="card  m-0">
+                                                 <div class="card-body bg-success p-1 text-center text-white">
+                                                   <p class="text-white m-0" style="font-size: 10px;"><?php 
+                                                       
+                                                   echo @$show_summary['productname'][$inc];$inc++?></p>    
+                                                </div>
+                                             </div>
+                                              <div class="card-body p-0">
+                                                   <div class="table-responsive">
+                                                            <table class="table table-nowrap table-hover mb-0">
+                                                               <thead>
+                                                                  <tr>
+                                                                     <th>No. of booking</th>
+                                                                       <th>No. of plant</th>
+                                                                   </tr>      
+                                                               </thead>
+                                                            <tbody>
+                                                                <?php
+                                                                      foreach ($product as $value)
+                                                                     {
+                                                                        $var = $value['name'];
+                                                                        ?>
+                                                                         <tr>
+                                                                              <td><?php echo ($value[$var.'_booking']) ?></td>
+                                                                              <td><?php echo ($value[$var.'_plant']) ?></td>
+                                                                              
+                                                                         </tr>
+                                                                        <?php    
+                                                                     } 
+                                                                  ?>
+                                                               </tbody>
+                                                        </table>
+                                                   </div>
+                                                </div>
+                                          </div>
+                                       <?php
+                                    }
+                                    ?>
+
+                                    <?php
+                                 }
+                              ?>
+                              
+                              <?php
+                                 if(isset($show_summary['total_summary_current_month']) && !empty($show_summary['total_summary_current_month']))
+                                 {
+                                    ?>
+                              <div class="col-sm-2  mt-2">
                                   <div class="card  m-0">
                                      <div class="card-body bg-success p-1 text-center text-white">
-                                       <h4 class="text-white fs-6">Current Month</h4>    
+                                       <p class="text-white m-0" style="font-size: 10px;">Current Month</p>    
                                     </div>
                                  </div>
                                   <div class="card-body p-0">
@@ -638,25 +611,19 @@
                                                 <tbody>
                                                     
                                                     <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
+                                                    <?php
+                                                                      foreach ($show_summary['total_summary_current_month'] as $value)
+                                                                     {
+                                                                        $var = $value['name'];
+                                                                        ?>
+                                                                         <tr>
+                                                                              <td><?php echo ($value[$var.'_booking']) ?></td>
+                                                                              <td><?php echo ($value[$var.'_plant']) ?></td>
+                                                                              
+                                                                         </tr>
+                                                                        <?php    
+                                                                     } 
+                                                                  ?>
                                                      
 
                                                      
@@ -665,51 +632,55 @@
                                        </div>
                                     </div>
                               </div>
-                              <div class="col-sm-2 ">
-                                  <div class="card m-0">
-                                     <div class="card-body bg-success p-1 text-center text-white">
-                                       <h4 class="text-white fs-6">Previous Month</h4>    
-                                    </div>
-                                 </div>
-                                  <div class="card-body p-0">
-                                       <div class="table-responsive">
-                                              <table class="table table-nowrap table-hover mb-0">
-                                                   <thead>
-                                                      <tr>
-                                                         <th>No. of booking</th>
-                                                           <th>No. of plant</th>
-                                                       </tr>      
-                                                   </thead>
-                                                <tbody>
-                                                    
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                    <tr>
-                                                         
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                    </tr>
-                                                     
-
-                                                     
-                                                </tbody>
-                                            </table>
+                              <?php
+                                 }
+                              ?>
+                              <?php
+                                 if(isset($show_summary['total_summary_previous_month']) && !empty($show_summary['total_summary_previous_month']))
+                                 {
+                                    ?>
+                                    <div class="col-sm-2  mt-2">
+                                        <div class="card m-0">
+                                           <div class="card-body bg-success p-1 text-center text-white">
+                                             <p class="text-white m-0" style="font-size: 10px;">Previous Month</p>    
+                                          </div>
                                        </div>
+                                        <div class="card-body p-0">
+                                             <div class="table-responsive">
+                                                    <table class="table table-nowrap table-hover mb-0">
+                                                         <thead>
+                                                            <tr>
+                                                               <th>No. of booking</th>
+                                                                 <th>No. of plant</th>
+                                                             </tr>      
+                                                         </thead>
+                                                      <tbody>
+                                                          
+                                                         <?php
+                                                                            foreach ($show_summary['total_summary_previous_month'] as $value)
+                                                                           {
+                                                                              $var = $value['name'];
+                                                                              ?>
+                                                                               <tr>
+                                                                                    <td><?php echo ($value[$var.'_booking']) ?></td>
+                                                                                    <td><?php echo ($value[$var.'_plant']) ?></td>
+                                                                                    
+                                                                               </tr>
+                                                                              <?php    
+                                                                           } 
+                                                                        ?>
+                                                           
+
+                                                           
+                                                      </tbody>
+                                                  </table>
+                                             </div>
+                                          </div>
                                     </div>
-                              </div>
+                                    <?php
+                                 }
+                              ?>
+                              
                                
                                 
                            </div>
@@ -728,8 +699,6 @@
    </div>
 </div>
 </div>
-    
-
 <div class="modal fade bs-example-modal-lg" tabindex="-1" id="advanceFilterModal" role="dialog" data-bs-backdrop="static"  aria-labelledby="myLargeModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg">
       <div class="modal-content border-success">
@@ -1076,6 +1045,68 @@
    </div>
    <!-- /.modal-dialog -->
 </div>
+<div class="modal fade" id="cancelBookingModal" tabindex="1"  style="z-index: 1059"data-bs-backdrop="static" aria-labelledby="cancelBookingModal" aria-modal="true" role="dialog">
+   <div class="modal-dialog ">
+      <form class="cancel_booking" method="post" id="cancel_booking" action="">
+         <div class="modal-content border-success">
+            <div class="modal-header bg-success">
+               <h5 class="modal-title text-white" id="cancelBookingLabel">Booking Cancellation</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <div class="row">
+                  <label for="payment_create_date" class="col-md-5 col-form-label">Cancelation Date</label>
+                  <div class="col-md-7">
+                     <input type="date" class="form-control form-control-sm" name="payment_create_date" id="payment_create_date"  value="<?php echo date('Y-m-d');?>">
+                  </div>
+               </div>
+               <div class="row  hidden " hidden  >
+                  <label for="payment_type" class="col-md-5 col-form-label">Payment Type</label>
+                  <div class="col-md-7">
+                     <select class=" form-control form-control-sm " id="payment_type" name="payment_type" aria-label="Floating label select example"  >
+                        <?php
+                           if(!empty($payments_types))
+                           {
+                                   foreach ($payments_types as $payments_type) {
+                                       ?>
+                        <option value="<?php echo $payments_type->slug;?>" <?php if($payments_type->slug=='cancellation-charge'){ echo "selected";}?> ><?php echo $payments_type->title;?></option>
+                        <?php
+                           }
+                           }
+                           ?>
+                     </select>
+                  </div>
+               </div>
+               <div class="row">
+                  <label for="payment_amount" class="col-md-5 col-form-label">Cancellation Reason</label>
+                  <div class="col-md-7">
+                     <input type="text" class="form-control-sm form-control" name="cancel_reason" id="cancel_reason" >
+                  </div>
+               </div>
+               <div class="row">
+                  <label class="col-md-5 col-form-label"></label>
+                  <div class="col-md-7">
+                      
+                  </div>
+               </div>
+               <div class="row hidden" hidden>
+                  <label for="payment_amount" class="col-md-5 col-form-label">Cancellation Charge</label>
+                  <div class="col-md-7">
+                     <input type="number" class="form-control-sm form-control" name="cancel_charges" id="cancel_charges" value="0" >
+                  </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+               <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+               <input type="hidden" id="booking_status"   name="booking_status"  >
+               <input type="hidden" id="custID"   name="custID" value="0"  >
+               <input type="hidden" id="farmer_id"   name="farmer_id" value="0"  >
+            </div>
+         </div>
+      </form>
+   </div>
+</div>
 <!-- /.modal -->
 <!-- status update modal sample modal content -->
 <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModal" aria-modal="true" role="dialog">
@@ -1120,6 +1151,7 @@
       </form>
    </div>
 </div>
+
  <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/daterange/daterangepicker.js"></script>
@@ -1217,7 +1249,8 @@
    
    
    jQuery(document).ready(function(){
-
+         
+           
             getAllState('advance_state');
             getAllDistrict('advance_district');
             getAllCity('advance_city'); 
@@ -1277,8 +1310,10 @@
         jQuery(document).on("click", ".changestatusbtn", function(){
    
          var userId  = $(this).data("userid");
+         var farmer_id  = $(this).data("farmer_id");
          var status_title  = $(this).data("status_title");
          var form_action      = "<?php echo base_url() ?>admin/bookings/"+userId+"/status";
+         var cancel_form_action      = "<?php echo base_url() ?>admin/bookings/"+userId+"/cancel_status";
          var hitURL = "<?php echo base_url() ?>admin/bookings/single/"+userId;
          show_loader();
    
@@ -1295,6 +1330,8 @@
              var data = response;
              
              $('#change_booking_status').attr('action', form_action);
+             $('#cancel_booking').attr('action', cancel_form_action);
+             $('#cancel_booking #farmer_id').val(farmer_id);
              $('#exampleModal').modal('show');
              $('#update_booking_status').val(data.booking_status);
              $('#current_status').text(status_title);
@@ -1308,11 +1345,51 @@
           
         
    });
+
+        jQuery("#cancel_booking").on('submit',function(e){
+             e.preventDefault();
+               
+              
+               var form = $(this);
+               var hitURL = form.attr('action');
+               var formValues= $(this).serialize();
+               show_loader();
+           
+              jQuery.ajax({
+                type : "POST",
+                dataType : "json",
+                url : hitURL,
+                data : formValues 
+              }).done(function(data){
+                hide_loader();
+                if(data.status==1)
+                {
+                  
+   
+                  $('#cancelBookingModal').modal('hide');
+                     toastr.success(data.message);
+                     window.location.reload(true);
+   
+                
+                }else{
+   
+                  toastr.error(data.message);
+   
+                }
+              });
+           
+        });
    
    
          jQuery("#change_booking_status").on('submit',function(e){
             e.preventDefault();
               
+               if($('#update_booking_status').val()=='cancelled')
+               {
+                  $('#cancelBookingModal').modal('show');   
+                  $('#cancelBookingModal #booking_status').val($('#update_booking_status').val());   
+                   return false;  
+               }
              
              var form = $(this);
              var hitURL = form.attr('action');

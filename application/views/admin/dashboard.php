@@ -50,7 +50,7 @@
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
                                             <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#cssModal">
-                                                <div class="card-body">
+                                                <div class="card-body  p-1">
                                                     <div class="text-center">
                                                         <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
                                                             <i class="bx bxs-tree text-white display-2"></i>
@@ -65,7 +65,7 @@
                                         <div class="card mini-stats-wid">
                                             
                                             <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#salesModal">
-                                                <div class="card-body">
+                                                <div class="card-body  p-1">
                                                     <div class="text-center">
                                                         <div class=" mini-stat-icon  rounded-circle bg-success mb-2">
                                                             <i class="bx bx-cart text-white display-2"></i>
@@ -78,7 +78,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
-                                            <div class="card-body">
+                                            <div class="card-body  p-1">
                                                 <div class="text-center">
                                                     <div class=" mini-stat-icon  rounded-circle bg-info mb-2">
                                                         <i class="bx bxs-shopping-bag text-white display-2"></i>
@@ -91,7 +91,7 @@
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
                                             <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#productModal">
-                                                <div class="card-body">
+                                                <div class="card-body  p-1">
                                                     <div class="text-center">
                                                         <div class=" mini-stat-icon  rounded-circle bg-success mb-2">
                                                             <i class="bx bxl-product-hunt text-white display-2"></i>
@@ -104,7 +104,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
-                                            <div class="card-body">
+                                            <div class="card-body  p-1">
                                                 <div class="text-center">
                                                     <div class=" mini-stat-icon  rounded-circle bg-warning mb-2">
                                                         <i class="bx bx-dock-top text-white display-2"></i>
@@ -122,7 +122,7 @@
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
                                             <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#settingModal">
-                                                <div class="card-body">
+                                                <div class="card-body  p-1">
                                                     <div class="text-center">
                                                         <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
                                                             <i class="bx bx-cog text-white display-2"></i>

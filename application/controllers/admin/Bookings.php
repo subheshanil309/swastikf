@@ -466,6 +466,13 @@ echo "</pre>";  */
 
         $where = array();
         $where['status'] = '1';
+        $where['orderby'] = 'title';
+        $data['payments_types'] = $this->payment_type_model->findDynamic($where);
+
+        
+
+        $where = array();
+        $where['status'] = '1';
         $where['orderby'] = 'id';
         $data['calltypes'] = $this->call_type_model->findDynamic($where);
 
@@ -544,8 +551,13 @@ echo "</pre>";  */
 
 
         $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type'); 
+        $data['show_summary'] = $this->booking_model->getBookedSummary(); 
 
-         
+        
+
+       /* echo "<pre>";
+        print_r($data['show_summary']);die;
+         echo "</pre>";*/
         $this->global['pageTitle'] = 'Booking';
         $this->loadViews("admin/booking/list", $this->global, $data , NULL);
         
@@ -1716,6 +1728,7 @@ echo "</pre>";  */
         $insertData['date_at']          = date("Y-m-d H:i:s");
         $insertData['created_by']       = $this->session->userdata('userId');
         $insertData['customer_id']      = $form_data['custID'];
+        $insertData['farmer_id']        = $form_data['farmer_id'];
         
         //booking data fetch
         $single_arr     = $this->booking_model->find($id);
