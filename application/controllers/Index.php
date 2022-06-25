@@ -33,12 +33,13 @@ class Index extends CI_Controller
     public function index()
     {
     
-      // Onload Comon Page Data ============================= 
-    	$data = array();
-       // Define =========================== 
-       $data["title"]="Customer Support";
-      $data["file"]="front/index";
-       $this->load->view('front/header/template',$data);
+        header("location:".base_url().'admin');
+            // Onload Comon Page Data ============================= 
+            $data = array();
+            // Define =========================== 
+            $data["title"]="Customer Support";
+            $data["file"]="front/index";
+            $this->load->view('front/header/template',$data);
     }  
 
     public function cookieupdate()
