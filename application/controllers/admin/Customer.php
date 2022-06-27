@@ -471,22 +471,45 @@ class Customer extends BaseController
             
             if($farmer_id )
                {
-                 $insertData =  array();
+
+
+
+
+                $where = array();
+                $where['farmer_id']= $farmer_id;
+                $where['company_id']= $company_id;
+                $where['orderby']= '-id';
+                $exist_customer   = $this->customer_model->findDynamic($where);
+
+                 $insertData     =  array();
+                if(empty($exist_customer))
+                {
+                    
+                    $insertData['farmer_id']             = $farmer_id;
+                    $insertData['customer_name']         = $form_data['customer_name'];
+                    $insertData['customer_title']        = ucfirst($form_data['customer_name']);
+                    $insertData['customer_mobile']       = $form_data['customer_mobile'];
+                    $insertData['customer_alter_mobile'] = $form_data['customer_alter_mobile'];
+                    $insertData['state']                 = $form_data['state'];
+                    $insertData['other_state']           = $form_data['other_state'];
+                    $insertData['district']              = $form_data['district'];
+                    $insertData['other_district']        = $form_data['other_district'];
+                    $insertData['city']                  = $form_data['city'];
+                    $insertData['other_city']                  = $form_data['other_city'];
+                    $insertData['status']                = '1';
+                    $insertData['date_at']               = date("Y-m-d H:i:s");
+                    $insertData['created_by']            = $this->session->userdata('userId');
+
+                }else
+                {
+                    $customer_id = $exist_customer[0]->id;
+                    $insertData['id']             = $customer_id;
+                }
+
+
+                 
                     //pre($form_data);exit;
-                $insertData['farmer_id']             = $farmer_id;
-                $insertData['customer_name']         = $form_data['customer_name'];
-                $insertData['customer_title']        = ucfirst($form_data['customer_name']);
-                $insertData['customer_mobile']       = $form_data['customer_mobile'];
-                $insertData['customer_alter_mobile'] = $form_data['customer_alter_mobile'];
-                $insertData['state']                 = $form_data['state'];
-                $insertData['other_state']           = $form_data['other_state'];
-                $insertData['district']              = $form_data['district'];
-                $insertData['other_district']        = $form_data['other_district'];
-                $insertData['city']                  = $form_data['city'];
-                $insertData['other_city']                  = $form_data['other_city'];
-                $insertData['status']                = '1';
-                $insertData['date_at']               = date("Y-m-d H:i:s");
-                $insertData['created_by']            = $this->session->userdata('userId');
+                
                 $insertData['assigned_to']           = $form_data['assign_to'];
                 $insertData['last_call_direction']   = $form_data['call_direction'];
                 $insertData['last_call_type']        = $form_data['call_type'];
@@ -495,7 +518,7 @@ class Customer extends BaseController
                 $insertData['last_follow_call_type'] = $form_data['call_type'];
                 $insertData['last_call_back_date']   = $form_data['call_back_date'];
                 $insertData['current_conversation']  = $form_data['current_conversation'];
-                $insertData['company_id']       =   $company_id;
+                $insertData['company_id']            =   $company_id;
 
                
                  
@@ -791,7 +814,7 @@ class Customer extends BaseController
                 $insertData['district']              = $form_data['district'];
                 $insertData['other_district']        = $form_data['other_district'];
                 $insertData['city']                  = $form_data['city'];
-                $insertData['other_city']                  = $form_data['other_city'];
+                $insertData['other_city']            = $form_data['other_city'];
                 $insertData['status']                = '1';
                 $insertData['date_at']               = date("Y-m-d H:i:s");
                 $insertData['created_by']            = $this->session->userdata('userId');
@@ -801,6 +824,9 @@ class Customer extends BaseController
                 $insertData['last_follow_date']      = date("Y-m-d H:i:s");
                 $insertData['last_follower']         = $this->session->userdata('userId');
                 $insertData['last_follow_call_type'] = $form_data['call_type'];
+                $insertData['last_call_back_date']   = $form_data['call_back_date'];
+                $insertData['current_conversation']  = $form_data['current_conversation'];
+                $insertData['update_by']             = $this->session->userdata('userId');
 
                
                  
@@ -808,9 +834,8 @@ class Customer extends BaseController
                 if($result > 0)
                 {
 
-                    $insertData = array();
-                    /**insert data for call recording**/
-                    $insertData['customer']                 = $result;
+                     $insertData = array();
+                     $insertData['customer']                 = $result;
                     $insertData['call_type']                = $form_data['call_type'];
                     $insertData['assign_to']                = ($form_data['assign_to']);
                     $insertData['user_id']                  = $this->session->userdata('userId');
@@ -822,7 +847,7 @@ class Customer extends BaseController
 
               
 
-                    $result = $this->customer_call_model->save($insertData);
+                    $result = $this->customer_call_model->save($insertData); 
                     
 
 
@@ -925,20 +950,33 @@ class Customer extends BaseController
 
                 if($result)
                 {
-                     $insertData = array();
-                    /**insert data for call recording**/
-                    $insertData['customer']                 = $result;
-                    $insertData['call_type']                = $form_data['call_type_update'];
-                    $insertData['assign_to']                = ($form_data['assign_to_update']);
-                     $insertData['user_id']                  = $this->session->userdata('userId');
-                    $insertData['call_back_date']           = $form_data['call_back_date_update'];
-                    $insertData['call_direction']           = $form_data['call_direction_update'];
-                    $insertData['current_conversation']     = $form_data['current_conversation_update'];
-                    $insertData['status']                   = '1';
-                    $insertData['date_at']                  = date("Y-m-d H:i:s");
+
+                        $insertData = array();
+                        $where = array();
+                        $where['customer'] = $result;
+                        $where['orderby'] = '-id';
+                        $customer_call = $this->customer_call_model->findDynamic($where);
+                        if(!empty( $customer_call))
+                        {
+
+                            $customer_call_id = $customer_call[0]->id;
+                            $insertData = array();
+                            /**insert data for call recording**/
+                            $insertData['id']                       = $customer_call_id;
+                            $insertData['customer']                 = $result;
+                            $insertData['call_type']                = $form_data['call_type_update'];
+                            $insertData['assign_to']                = ($form_data['assign_to_update']);
+                            $insertData['user_id']                  = $this->session->userdata('userId');
+                            $insertData['call_back_date']           = $form_data['call_back_date_update'];
+                            $insertData['call_direction']           = $form_data['call_direction_update'];
+                            $insertData['current_conversation']     = $form_data['current_conversation_update'];
+                            $insertData['status']                   = '1';
+                            $insertData['date_at']                  = date("Y-m-d H:i:s");
 
 
-                    $result = $this->customer_call_model->save($insertData);
+                            $result = $this->customer_call_model->save($insertData);       
+                        }
+                     
                 }
                  $response_result = array(
                  

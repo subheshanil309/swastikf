@@ -129,13 +129,13 @@ print_r($customer_call_dtl);  */
                            <div class="row">
                               <label for="customer_mobile" class="col-sm-4 col-form-label">Mobile*</label>
                               <div class="col-sm-8"> 
-                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="customer_mobile"  name="customer_mobile"  placeholder="Customer Mobile*"  value="<?php if(isset($edit_data->mobile) && $edit_data->mobile !==''){echo $edit_data->mobile;}?>"   />
+                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="customer_mobile"  name="customer_mobile"  placeholder="Customer Mobile*"  value="<?php if(isset($edit_data->mobile) && $edit_data->mobile !==''){echo $edit_data->mobile;}?>"  onkeypress="return onlyNumberKey(event)" />
                               </div>
                            </div>
                            <div class="row">
                               <label for="customer_alter_mobile" class="col-sm-4 col-form-label">ALT Mobile</label>
                               <div class="col-sm-8">
-                                 <input type="text" class="form-control form-control-sm" id="customer_alter_mobile" placeholder="ALT Mobile" name="customer_alter_mobile" value="<?php if(isset($edit_data->alt_mobile) && $edit_data->alt_mobile !==''){echo $edit_data->alt_mobile;}?>" >
+                                 <input type="text" class="form-control form-control-sm" id="customer_alter_mobile" placeholder="ALT Mobile" name="customer_alter_mobile" value="<?php if(isset($edit_data->alt_mobile) && $edit_data->alt_mobile !==''){echo $edit_data->alt_mobile;}?>"  onkeypress="return onlyNumberKey(event)">
                               </div>
                            </div>
                            <div class="row">
@@ -801,13 +801,13 @@ print_r($customer_call_dtl);  */
                            <div class="row">
                               <label for="customer_mobile_update" class="col-sm-4 col-form-label">Mobile*</label>
                               <div class="col-sm-8"> 
-                                 <input type="text" maxlength="12" class="form-control form-control-sm" readonly id="customer_mobile_update"  name="customer_mobile_update"  placeholder="Customer Mobile*"  value=""   />
+                                 <input type="text" maxlength="12" class="form-control form-control-sm" readonly id="customer_mobile_update"  name="customer_mobile_update"  placeholder="Customer Mobile*"  value=""  onkeypress="return onlyNumberKey(event)" />
                               </div>
                            </div>
                            <div class="row">
                               <label for="customer_alter_mobile_update" class="col-sm-4 col-form-label">ALT Mobile</label>
                               <div class="col-sm-8">
-                                 <input type="text" class="form-control form-control-sm" id="customer_alter_mobile_update" placeholder="ALT Mobile" name="customer_alter_mobile_update" value="" >
+                                 <input type="text" class="form-control form-control-sm" id="customer_alter_mobile_update" placeholder="ALT Mobile" name="customer_alter_mobile_update" value="" onkeypress="return onlyNumberKey(event)" >
                               </div>
                            </div>
                            <div class="row">
@@ -1415,7 +1415,8 @@ function districtChangeUpdate(district_code = '',selected_city = '') {
             $("#assign_to_update").val(response.assigned_to);
             $("#call_back_date_update").val(response.last_call_back_date);
             $("#call_direction_update").val(response.last_call_direction);
-            $("#current_conversation_update").val();
+            $("#current_conversation_update").val(response.current_conversation);
+            $("#call_type_update").val(response.last_call_type);
             select_calltype('update_inquiry'); 
 
            });
@@ -1502,6 +1503,10 @@ function districtChangeUpdate(district_code = '',selected_city = '') {
    var table;
 
    $(document).ready(function() {
+
+
+  
+
    $("#query-pagination li.page-item a").addClass('page-link');
     $(".select2").select2();
     
@@ -1529,4 +1534,15 @@ function districtChangeUpdate(district_code = '',selected_city = '') {
        });*/
     
    });
+
+      function onlyNumberKey(evt) {
+          
+        // Only ASCII character in that range allowed
+        var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+         
+        if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+            return false;
+        return true;
+    }
+   
 </script>

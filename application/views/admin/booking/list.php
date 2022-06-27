@@ -8,30 +8,23 @@
    .mytablestyle{
    min-height: 500px;
    }
-
-    .modal#advanceFilterModal .select2-dropdown{
-      z-index:1056 !important;
-      width: 200px !important;
-    }
-    
-    .modal#advanceFilterModal .select2-container{
-      width: 200px !important;
-
-    }
-    .modal#advanceFilterModal
-    {
-      z-index: 1051;
-    }
-    tbody tr td{
-      text-align: center;
-    }
-    
-        
-
-    
+   .modal#advanceFilterModal .select2-dropdown{
+   z-index:1056 !important;
+   width: 200px !important;
+   }
+   .modal#advanceFilterModal .select2-container{
+   width: 200px !important;
+   }
+   .modal#advanceFilterModal
+   {
+   z-index: 1051;
+   }
+   tbody tr td{
+   text-align: center;
+   }
 </style>
 <!-- Latest compiled and minified CSS -->
- <div class="page-content">
+<div class="page-content">
    <div class="container-fluid">
       <div class="row">
          <div class="col-xl-12">
@@ -55,7 +48,6 @@
       </div>
    </div>
    <div class="container-fluid">
-     
       <div class="row">
          <div class="col-12">
             <?php $this->load->helper('form'); ?>
@@ -416,11 +408,11 @@
                                        <td><span class='<?php if($bookings['outstanding_amount'] <0){ echo "text-danger";}?>'><?php echo $bookings['outstanding_amount'];?></span></td>
                                        <td>
                                           <?php 
-                                            if(isset($bookings['delivery_expect_start_date']) && isset($bookings['delivery_expect_end_date']))
-                                            {
-                                              echo ($bookings['delivery_expect_start_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_expect_start_date'])) :'';?> To <?php 
+                                             if(isset($bookings['delivery_expect_start_date']) && isset($bookings['delivery_expect_end_date']))
+                                             {
+                                               echo ($bookings['delivery_expect_start_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_expect_start_date'])) :'';?> To <?php 
                                              echo ($bookings['delivery_expect_end_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_expect_end_date'])) :''; 
-                                            }
+                                             }
                                              ?>
                                        </td>
                                        <td><?php echo ($bookings['delivery_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_date'])) :'';?> </td>
@@ -428,14 +420,15 @@
                                        <td><?php echo $bookings['contractstatusname'];?></td>
                                        <td><?php echo $bookings['productive_plants'];?></td>
                                        <td>
-                                        <?php 
-                                          if($bookings['document'] !=='')
-                                          {
-                                            ?>
-                                              <a target="_BLANK" download class="text-primary"  href="<?php echo base_url()?>uploads/admin/document/<?php echo $bookings['document'];?>">Download <i class="fa fa-download" aria-hidden="true"></i><a>
-                                            <?php
-                                          }
-                                        ?></td>
+                                          <?php 
+                                             if($bookings['document'] !=='')
+                                             {
+                                               ?>
+                                          <a target="_BLANK" download class="text-primary"  href="<?php echo base_url()?>uploads/admin/document/<?php echo $bookings['document'];?>">Download <i class="fa fa-download" aria-hidden="true"></i><a>
+                                          <?php
+                                             }
+                                             ?>
+                                       </td>
                                        <td><?php echo $bookings['assignedto'];?></td>
                                        <td><?php echo $bookings['createdby'];?></td>
                                        <td><?php echo ($bookings['date_at']!=='0000-00-00')? date('d M Y',strtotime($bookings['date_at'])) :'-/-/-';?> </td>
@@ -463,234 +456,200 @@
                            </div>
                         </div>
                      </div>
-
                      <div class="row p-4">
                         <div class="col-sm-2">
                            <button class="btn btn-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ShowSummary" aria-expanded="true" aria-controls="ShowSummary"><i class="bx bx-plus-medical"></i> Show Summary</button>
                         </div>
                         <div class="col-sm-10">
-
-                        </div>                        
+                        </div>
                      </div>
                      <?php 
-                                        /*echo "<pre>";
-                                       print_r($show_summary);
-                                       echo "</pre>"; */ 
-                                    ?>
-
+                        /*echo "<pre>";
+                        print_r($show_summary);
+                        echo "</pre>"; */ 
+                        ?>
                      <!-- end table-responsive -->
-
                      <div class="collapse" id="ShowSummary" style="">
-                                                         
-                                                 
-                     <div class="card ">
-                        <div class="card-body p-0">
-                           <div class="row">
-                              <?php 
-                                 if(isset($show_summary['total_summary']))
-                                 {
-                                    ?>
-                                  <div class="col-sm-4  mt-2">
-                                     <div class="card m-0">
-                                        <div class="card-body bg-success p-1 text-center text-white">
-                                          <p class="text-white m-0" style="font-size: 10px;">Total Summary</p>    
+                        <div class="card ">
+                           <div class="card-body p-0">
+                              <div class="row">
+                                 <?php 
+                                    if(isset($show_summary['total_summary']))
+                                    {
+                                       ?>
+                                 <div class="col-sm-4  mt-2">
+                                    <div class="card m-0">
+                                       <div class="card-body bg-success p-1 text-center text-white">
+                                          <p class="text-white m-0" style="font-size: 10px;">Total Summary</p>
                                        </div>
-                                       
                                        <div class="card-body p-0">
                                           <div class="table-responsive">
-                                                   <table class="table table-nowrap table-hover mb-0">
-                                                      <thead>
-                                                         <tr>
-                                                            
-                                                              <th>Booking Status</th>
-                                                              <th>No. of booking</th>
-                                                              <th>No. of plant</th>
-                                                          </tr>      
-                                                      </thead>
-                                                   <tbody>
-                                                      <?php
-                                                         foreach ($show_summary['total_summary'] as $value)
-                                                         {
-                                                            $var = $value['name'];
-                                                            ?>
-                                                             <tr>
-                                                                  <td><span class="float-start" ><?php echo ucfirst($value['name']) ?></span></td>
-                                                                 <td><?php echo ($value[$var.'_booking']) ?></td>
-                                                                 <td><?php echo ($value[$var.'_plant']) ?></td>
-                                                                  
-                                                             </tr>
-                                                            <?php    
-                                                         }
+                                             <table class="table table-nowrap table-hover mb-0">
+                                                <thead>
+                                                   <tr>
+                                                      <th>Booking Status</th>
+                                                      <th>No. of booking</th>
+                                                      <th>No. of plant</th>
+                                                   </tr>
+                                                </thead>
+                                                <tbody>
+                                                   <?php
+                                                      foreach ($show_summary['total_summary'] as $value)
+                                                      {
+                                                         $var = $value['name'];
+                                                         ?>
+                                                   <tr>
+                                                      <td><span class="float-start" ><?php echo ucfirst($value['name']) ?></span></td>
+                                                      <td><?php echo ($value[$var.'_booking']) ?></td>
+                                                      <td><?php echo ($value[$var.'_plant']) ?></td>
+                                                   </tr>
+                                                   <?php    
+                                                      }
                                                       ?>
-                                                       
-                                                        
-
-                                                        
-                                                   </tbody>
-                                               </table>
+                                                </tbody>
+                                             </table>
                                           </div>
                                        </div>
-                                    </div>
-                                 </div>     
-                                    <?php
-                                 }
-                              ?>
-                              
-                              <?php
-                                 if(isset($show_summary['products']) && !empty($show_summary['products']))
-                                 {
-
-                                    $inc = 0;
-                                    foreach ($show_summary['products'] as  $product) {
-
-                                        
-                                       ?>
-                                          <div class="col-sm-2  mt-2">
-                                              <div class="card  m-0">
-                                                 <div class="card-body bg-success p-1 text-center text-white">
-                                                   <p class="text-white m-0" style="font-size: 10px;"><?php 
-                                                       
-                                                   echo @$show_summary['productname'][$inc];$inc++?></p>    
-                                                </div>
-                                             </div>
-                                              <div class="card-body p-0">
-                                                   <div class="table-responsive">
-                                                            <table class="table table-nowrap table-hover mb-0">
-                                                               <thead>
-                                                                  <tr>
-                                                                     <th>No. of booking</th>
-                                                                       <th>No. of plant</th>
-                                                                   </tr>      
-                                                               </thead>
-                                                            <tbody>
-                                                                <?php
-                                                                      foreach ($product as $value)
-                                                                     {
-                                                                        $var = $value['name'];
-                                                                        ?>
-                                                                         <tr>
-                                                                              <td><?php echo ($value[$var.'_booking']) ?></td>
-                                                                              <td><?php echo ($value[$var.'_plant']) ?></td>
-                                                                              
-                                                                         </tr>
-                                                                        <?php    
-                                                                     } 
-                                                                  ?>
-                                                               </tbody>
-                                                        </table>
-                                                   </div>
-                                                </div>
-                                          </div>
-                                       <?php
-                                    }
-                                    ?>
-
-                                    <?php
-                                 }
-                              ?>
-                              
-                              <?php
-                                 if(isset($show_summary['total_summary_current_month']) && !empty($show_summary['total_summary_current_month']))
-                                 {
-                                    ?>
-                              <div class="col-sm-2  mt-2">
-                                  <div class="card  m-0">
-                                     <div class="card-body bg-success p-1 text-center text-white">
-                                       <p class="text-white m-0" style="font-size: 10px;">Current Month</p>    
                                     </div>
                                  </div>
-                                  <div class="card-body p-0">
-                                       <div class="table-responsive">
-                                                 <table class="table table-nowrap table-hover mb-0">
-                                                   <thead>
-                                                      <tr>
-                                                         <th>No. of booking</th>
-                                                           <th>No. of plant</th>
-                                                       </tr>      
-                                                   </thead>
-                                                <tbody>
-                                                    
-                                                    <tr>
-                                                    <?php
-                                                                      foreach ($show_summary['total_summary_current_month'] as $value)
-                                                                     {
-                                                                        $var = $value['name'];
-                                                                        ?>
-                                                                         <tr>
-                                                                              <td><?php echo ($value[$var.'_booking']) ?></td>
-                                                                              <td><?php echo ($value[$var.'_plant']) ?></td>
-                                                                              
-                                                                         </tr>
-                                                                        <?php    
-                                                                     } 
-                                                                  ?>
-                                                     
-
-                                                     
-                                                </tbody>
-                                            </table>
-                                       </div>
-                                    </div>
-                              </div>
-                              <?php
-                                 }
-                              ?>
-                              <?php
-                                 if(isset($show_summary['total_summary_previous_month']) && !empty($show_summary['total_summary_previous_month']))
-                                 {
+                                 <?php
+                                    }
                                     ?>
-                                    <div class="col-sm-2  mt-2">
-                                        <div class="card m-0">
-                                           <div class="card-body bg-success p-1 text-center text-white">
-                                             <p class="text-white m-0" style="font-size: 10px;">Previous Month</p>    
-                                          </div>
+                                 <?php
+                                    if(isset($show_summary['products']) && !empty($show_summary['products']))
+                                    {
+                                    
+                                       $inc = 0;
+                                       foreach ($show_summary['products'] as  $product) {
+                                    
+                                           
+                                          ?>
+                                 <div class="col-sm-2  mt-2">
+                                    <div class="card  m-0">
+                                       <div class="card-body bg-success p-1 text-center text-white">
+                                          <p class="text-white m-0" style="font-size: 10px;"><?php 
+                                             echo @$show_summary['productname'][$inc];$inc++?></p>
                                        </div>
-                                        <div class="card-body p-0">
-                                             <div class="table-responsive">
-                                                    <table class="table table-nowrap table-hover mb-0">
-                                                         <thead>
-                                                            <tr>
-                                                               <th>No. of booking</th>
-                                                                 <th>No. of plant</th>
-                                                             </tr>      
-                                                         </thead>
-                                                      <tbody>
-                                                          
-                                                         <?php
-                                                                            foreach ($show_summary['total_summary_previous_month'] as $value)
-                                                                           {
-                                                                              $var = $value['name'];
-                                                                              ?>
-                                                                               <tr>
-                                                                                    <td><?php echo ($value[$var.'_booking']) ?></td>
-                                                                                    <td><?php echo ($value[$var.'_plant']) ?></td>
-                                                                                    
-                                                                               </tr>
-                                                                              <?php    
-                                                                           } 
-                                                                        ?>
-                                                           
-
-                                                           
-                                                      </tbody>
-                                                  </table>
-                                             </div>
-                                          </div>
                                     </div>
-                                    <?php
-                                 }
-                              ?>
-                              
-                               
-                                
+                                    <div class="card-body p-0">
+                                       <div class="table-responsive">
+                                          <table class="table table-nowrap table-hover mb-0">
+                                             <thead>
+                                                <tr>
+                                                   <th>No. of booking</th>
+                                                   <th>No. of plant</th>
+                                                </tr>
+                                             </thead>
+                                             <tbody>
+                                                <?php
+                                                   foreach ($product as $value)
+                                                   {
+                                                     $var = $value['name'];
+                                                     ?>
+                                                <tr>
+                                                   <td><?php echo ($value[$var.'_booking']) ?></td>
+                                                   <td><?php echo ($value[$var.'_plant']) ?></td>
+                                                </tr>
+                                                <?php    
+                                                   } 
+                                                   ?>
+                                             </tbody>
+                                          </table>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <?php
+                                    }
+                                    ?>
+                                 <?php
+                                    }
+                                    ?>
+                                 <?php
+                                    if(isset($show_summary['total_summary_current_month']) && !empty($show_summary['total_summary_current_month']))
+                                    {
+                                       ?>
+                                 <div class="col-sm-2  mt-2">
+                                    <div class="card  m-0">
+                                       <div class="card-body bg-success p-1 text-center text-white">
+                                          <p class="text-white m-0" style="font-size: 10px;">Current Month</p>
+                                       </div>
+                                    </div>
+                                    <div class="card-body p-0">
+                                       <div class="table-responsive">
+                                          <table class="table table-nowrap table-hover mb-0">
+                                             <thead>
+                                                <tr>
+                                                   <th>No. of booking</th>
+                                                   <th>No. of plant</th>
+                                                </tr>
+                                             </thead>
+                                             <tbody>
+                                                <tr>
+                                                   <?php
+                                                      foreach ($show_summary['total_summary_current_month'] as $value)
+                                                      {
+                                                        $var = $value['name'];
+                                                        ?>
+                                                <tr>
+                                                   <td><?php echo ($value[$var.'_booking']) ?></td>
+                                                   <td><?php echo ($value[$var.'_plant']) ?></td>
+                                                </tr>
+                                                <?php    
+                                                   } 
+                                                   ?>
+                                             </tbody>
+                                          </table>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <?php
+                                    }
+                                    ?>
+                                 <?php
+                                    if(isset($show_summary['total_summary_previous_month']) && !empty($show_summary['total_summary_previous_month']))
+                                    {
+                                       ?>
+                                 <div class="col-sm-2  mt-2">
+                                    <div class="card m-0">
+                                       <div class="card-body bg-success p-1 text-center text-white">
+                                          <p class="text-white m-0" style="font-size: 10px;">Previous Month</p>
+                                       </div>
+                                    </div>
+                                    <div class="card-body p-0">
+                                       <div class="table-responsive">
+                                          <table class="table table-nowrap table-hover mb-0">
+                                             <thead>
+                                                <tr>
+                                                   <th>No. of booking</th>
+                                                   <th>No. of plant</th>
+                                                </tr>
+                                             </thead>
+                                             <tbody>
+                                                <?php
+                                                   foreach ($show_summary['total_summary_previous_month'] as $value)
+                                                   {
+                                                     $var = $value['name'];
+                                                     ?>
+                                                <tr>
+                                                   <td><?php echo ($value[$var.'_booking']) ?></td>
+                                                   <td><?php echo ($value[$var.'_plant']) ?></td>
+                                                </tr>
+                                                <?php    
+                                                   } 
+                                                   ?>
+                                             </tbody>
+                                          </table>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <?php
+                                    }
+                                    ?>
+                              </div>
                            </div>
                         </div>
                      </div>
-                        </div>
-
- 
                      <!-- end table-responsive -->
-
                   </div>
                </div>
             </div>
@@ -706,240 +665,233 @@
             <h5 class="modal-title text-white" id="myLargeModalLabel">Advance Filter</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
          </div>
-          <form action="<?php echo base_url()?>admin/bookings" method="get" enctype="data/form">
-         <div class="modal-body">
-           
+         <form action="<?php echo base_url()?>admin/bookings" method="get" enctype="data/form">
+            <div class="modal-body">
                <div class="row">
-                <div class="col-sm-6">
-                   
-               <div class=" row">
-                  <label for="advance_booking_status" class="col-md-5 col-form-label">Booking Status: </label>
-                  <div class="col-md-7">
-                     <select class=" form-control form-control-sm select2"  multiple="multiple"  id="advance_booking_status">
-                         <?php
-                           if(!empty($bookings_status))
-                           {
-                                   foreach ($bookings_status as $booking_status) {
-                                       ?>
-                        <option value="<?php echo $booking_status->slug;?>"><?php echo $booking_status->title;?></option>
-                        <?php
-                           }
-                           }
-                           ?>
-                           <input type="hidden" name="advance_booking_status_value"  id="advance_booking_status_value" >
-                     </select>
-                  </div>
-               </div>
-               <div class=" row">
-                  <label for="advance_crop_status" class="col-md-5 col-form-label">Crop Status:</label>
-                  <div class="col-md-7">
-                     <select class=" form-control form-control-sm  select2" id="advance_crop_status" multiple="multiple">
-                                              <?php
-                                                if(!empty($crops_status))
-                                                {
-                                                        foreach ($crops_status as $crop_status) {
-                                                            ?>
-                                             <option value="<?php echo $crop_status->slug;?>"><?php echo $crop_status->title;?></option>
-                                             <?php
-                                                }
-                                                }
-                                                ?>
-                                          </select>
-                                           <input type="hidden" name="advance_crop_status_value"  id="advance_crop_status_value" >
-                  </div>
-               </div>
-               <div class=" row">
-                  <label for="advance_agent_id" class="col-md-5 col-form-label">Executive:</label>
-                  <div class="col-md-7">
-                     <select class="form-control form-control-sm select2"  multiple="multiple" name="advance_agent_id[]" id="advance_agent_id">
-                                              <?php
-                                                if(!empty($all_agents))
-                                                {
-                                                        foreach ($all_agents as $executive) {
-                                                            ?>
-                                             <option value="<?php echo $executive->id;?>"><?php echo $executive->title;?></option>
-                                             <?php
-                                                }
-                                                }
-                                                ?>
-                                          </select>
-                                           <input type="hidden" name="advance_agent_id_value"  id="advance_agent_id_value" >
-                  </div>
-               </div>
-               <div class=" row">
-                  <label for="advance_product_id" class="col-md-5 col-form-label">Products:</label>
-                  <div class="col-md-7">
-                     <select class="form-control form-control-sm select2"  multiple="multiple" name="advance_product_id[]" id="advance_product_id">
-                                              <?php
-                                                if(!empty($all_products))
-                                                {
-                                                   foreach ($all_products as $all_product){
-                                                   ?>
-                                                   <option value="<?php echo $all_product->id;?>"><?php echo $all_product->title;?></option>
-                                                   <?php
-                                                   }
-                                                }
-                                                ?>
-                                          </select>
-                                          <input type="hidden" name="advance_product_id_value"  id="advance_product_id_value" >
-                  </div>
-               </div>
-               <div class=" row">
-                  <label for="plant_rate_amount" class="col-md-5 col-form-label">Plant Rate:</label>
-                  <div class="col-md-7">
-                     <div class="row">
-                        <div class="col-sm-6">
-                              <select class="form-control form-control-sm" name="advance_plan_rate" id="advance_plan_rate">
-                                 <option value="<">is less than</option>
-                                 <option value=">">is greater than</option>
-                                 <option value="=">is equal to</option>
-                              </select>
-                        </div>
-                        <div class="col-sm-6">
-                           <input type="number" name="plant_rate_amount" id="plant_rate_amount" class="form-control form-control-sm" placeholder="Amount" />
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class=" row">
-                  <label for="advance_plant_quantity_amount" class="col-md-5 col-form-label">Plant Quantity</label>
-                  <div class="col-md-7">
-                     <div class="row">
-                        <div class="col-sm-6">
-                              <select class="form-control form-control-sm" name="advance_plan_quantiry" id="advance_plan_quantiry">
-                                 <option value="<">is less than</option>
-                                 <option value=">">is greater than</option>
-                                 <option value="=">is equal to</option>
-                              </select>
-                        </div>
-                        <div class="col-sm-6">
-                           <input type="number" name="advance_plant_quantity_amount" id="advance_plant_quantity_amount" class="form-control form-control-sm" placeholder="Amount" />
-                        </div>
-                     </div>
-                  </div>
-               </div>
-             </div>
-             <div class="col-sm-6">
-                   
-               <div class=" row">
-                  <label for="advance_state" class="col-md-5 col-form-label">State: </label>
-                  <div class="col-md-7">
-                     <select class=" form-control form-control-sm select2" name="advance_state[]" multiple="multiple"  id="advance_state"   aria-label="Floating label select example" placeholder="Select"  >
-                         <?php
-
-                              /*if(!empty($states))
-                              {
-                                 foreach ($states as $state) {
-                                    ?>
-                                    <option value="<?php echo $state->id;?>"><?php echo $state->name;?></option>
-                                    <?php
+                  <div class="col-sm-6">
+                     <div class=" row">
+                        <label for="advance_booking_status" class="col-md-5 col-form-label">Booking Status: </label>
+                        <div class="col-md-7">
+                           <select class=" form-control form-control-sm select2"  multiple="multiple"  id="advance_booking_status">
+                              <?php
+                                 if(!empty($bookings_status))
+                                 {
+                                         foreach ($bookings_status as $booking_status) {
+                                             ?>
+                              <option value="<?php echo $booking_status->slug;?>"><?php echo $booking_status->title;?></option>
+                              <?php
                                  }
-                              }*/
-                           ?>
-                     </select>
-                      <input type="hidden" name="advance_state_value"  id="advance_state_value" >
-                  </div>
-               </div>
-               <div class=" row">
-                  <label for="advance_district" class="col-md-5 col-form-label">District:</label>
-                  <div class="col-md-7">
-                     <select class=" form-control form-control-sm  select2" id="advance_district" name="advance_district[]"  multiple="multiple" aria-label="Floating label select example"  >
-                                              <?php
-                                               /* if(!empty($districts))
-                                                {
-                                                   foreach ($districts as $district)
-                                                   {
-                                                      ?>
-                                                      <option value="<?php echo $district->id;?>"><?php echo $district->name;?></option>
-                                                      <?php
-                                                   }
-                                                }*/
-                                                ?>
-                                          </select>
-                                          <input type="hidden" name="advance_district_value"  id="advance_district_value" >
-                  </div>
-               </div>
-               <div class=" row">
-                  <label for="advance_city" class="col-md-5 col-form-label">Tehsil:</label>
-                  <div class="col-md-7">
-                     <select class="form-control form-control-sm select2"  multiple="multiple" name="advance_city[]" id="advance_city" aria-label="Floating label select example"   >
-                        <?php
-                           /*if(!empty($cities))
-                           {
-                              foreach ($cities as $city) {
+                                 }
                                  ?>
-                                    <option value="<?php echo $city->id;?>"><?php echo $city->city;?></option>
-                                 <?php
-                              }
-                           }*/
-                        ?>
-                      </select>
-                      <input type="hidden" name="advance_city_value"  id="advance_city_value" >
-                  </div>
-               </div>
-                
-               <div class=" row">
-                  <label for="oustanding_amount" class="col-md-5 col-form-label">Outstanding:</label>
-                  <div class="col-md-7">
-                     <div class="row">
-                        <div class="col-sm-6">
-                              <select class="form-control form-control-sm" name="advance_oustanding" id="advance_oustanding">
-                                 <option value="<">is less than</option>
-                                 <option value=">">is greater than</option>
-                                 <option value="=">is equal to</option>
-                              </select>
+                              <input type="hidden" name="advance_booking_status_value"  id="advance_booking_status_value" >
+                           </select>
                         </div>
-                        <div class="col-sm-6">
-                           <input type="number" name="oustanding_amount" id="oustanding_amount" class="form-control form-control-sm" placeholder="Amount" />
+                     </div>
+                     <div class=" row">
+                        <label for="advance_crop_status" class="col-md-5 col-form-label">Crop Status:</label>
+                        <div class="col-md-7">
+                           <select class=" form-control form-control-sm  select2" id="advance_crop_status" multiple="multiple">
+                              <?php
+                                 if(!empty($crops_status))
+                                 {
+                                         foreach ($crops_status as $crop_status) {
+                                             ?>
+                              <option value="<?php echo $crop_status->slug;?>"><?php echo $crop_status->title;?></option>
+                              <?php
+                                 }
+                                 }
+                                 ?>
+                           </select>
+                           <input type="hidden" name="advance_crop_status_value"  id="advance_crop_status_value" >
+                        </div>
+                     </div>
+                     <div class=" row">
+                        <label for="advance_agent_id" class="col-md-5 col-form-label">Executive:</label>
+                        <div class="col-md-7">
+                           <select class="form-control form-control-sm select2"  multiple="multiple" name="advance_agent_id[]" id="advance_agent_id">
+                              <?php
+                                 if(!empty($all_agents))
+                                 {
+                                         foreach ($all_agents as $executive) {
+                                             ?>
+                              <option value="<?php echo $executive->id;?>"><?php echo $executive->title;?></option>
+                              <?php
+                                 }
+                                 }
+                                 ?>
+                           </select>
+                           <input type="hidden" name="advance_agent_id_value"  id="advance_agent_id_value" >
+                        </div>
+                     </div>
+                     <div class=" row">
+                        <label for="advance_product_id" class="col-md-5 col-form-label">Products:</label>
+                        <div class="col-md-7">
+                           <select class="form-control form-control-sm select2"  multiple="multiple" name="advance_product_id[]" id="advance_product_id">
+                              <?php
+                                 if(!empty($all_products))
+                                 {
+                                    foreach ($all_products as $all_product){
+                                    ?>
+                              <option value="<?php echo $all_product->id;?>"><?php echo $all_product->title;?></option>
+                              <?php
+                                 }
+                                 }
+                                 ?>
+                           </select>
+                           <input type="hidden" name="advance_product_id_value"  id="advance_product_id_value" >
+                        </div>
+                     </div>
+                     <div class=" row">
+                        <label for="plant_rate_amount" class="col-md-5 col-form-label">Plant Rate:</label>
+                        <div class="col-md-7">
+                           <div class="row">
+                              <div class="col-sm-6">
+                                 <select class="form-control form-control-sm" name="advance_plan_rate" id="advance_plan_rate">
+                                    <option value="<">is less than</option>
+                                    <option value=">">is greater than</option>
+                                    <option value="=">is equal to</option>
+                                 </select>
+                              </div>
+                              <div class="col-sm-6">
+                                 <input type="number" name="plant_rate_amount" id="plant_rate_amount" class="form-control form-control-sm" placeholder="Amount" />
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class=" row">
+                        <label for="advance_plant_quantity_amount" class="col-md-5 col-form-label">Plant Quantity</label>
+                        <div class="col-md-7">
+                           <div class="row">
+                              <div class="col-sm-6">
+                                 <select class="form-control form-control-sm" name="advance_plan_quantiry" id="advance_plan_quantiry">
+                                    <option value="<">is less than</option>
+                                    <option value=">">is greater than</option>
+                                    <option value="=">is equal to</option>
+                                 </select>
+                              </div>
+                              <div class="col-sm-6">
+                                 <input type="number" name="advance_plant_quantity_amount" id="advance_plant_quantity_amount" class="form-control form-control-sm" placeholder="Amount" />
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class=" row">
+                        <label for="advance_state" class="col-md-5 col-form-label">State: </label>
+                        <div class="col-md-7">
+                           <select class=" form-control form-control-sm select2" name="advance_state[]" multiple="multiple"  id="advance_state"   aria-label="Floating label select example" placeholder="Select"  >
+                              <?php
+                                 /*if(!empty($states))
+                                 {
+                                    foreach ($states as $state) {
+                                       ?>
+                              <option value="<?php echo $state->id;?>"><?php echo $state->name;?></option>
+                              <?php
+                                 }
+                                 }*/
+                                 ?>
+                           </select>
+                           <input type="hidden" name="advance_state_value"  id="advance_state_value" >
+                        </div>
+                     </div>
+                     <div class=" row">
+                        <label for="advance_district" class="col-md-5 col-form-label">District:</label>
+                        <div class="col-md-7">
+                           <select class=" form-control form-control-sm  select2" id="advance_district" name="advance_district[]"  multiple="multiple" aria-label="Floating label select example"  >
+                              <?php
+                                 /* if(!empty($districts))
+                                  {
+                                     foreach ($districts as $district)
+                                     {
+                                        ?>
+                              <option value="<?php echo $district->id;?>"><?php echo $district->name;?></option>
+                              <?php
+                                 }
+                                 }*/
+                                 ?>
+                           </select>
+                           <input type="hidden" name="advance_district_value"  id="advance_district_value" >
+                        </div>
+                     </div>
+                     <div class=" row">
+                        <label for="advance_city" class="col-md-5 col-form-label">Tehsil:</label>
+                        <div class="col-md-7">
+                           <select class="form-control form-control-sm select2"  multiple="multiple" name="advance_city[]" id="advance_city" aria-label="Floating label select example"   >
+                              <?php
+                                 /*if(!empty($cities))
+                                 {
+                                    foreach ($cities as $city) {
+                                       ?>
+                              <option value="<?php echo $city->id;?>"><?php echo $city->city;?></option>
+                              <?php
+                                 }
+                                 }*/
+                                 ?>
+                           </select>
+                           <input type="hidden" name="advance_city_value"  id="advance_city_value" >
+                        </div>
+                     </div>
+                     <div class=" row">
+                        <label for="oustanding_amount" class="col-md-5 col-form-label">Outstanding:</label>
+                        <div class="col-md-7">
+                           <div class="row">
+                              <div class="col-sm-6">
+                                 <select class="form-control form-control-sm" name="advance_oustanding" id="advance_oustanding">
+                                    <option value="<">is less than</option>
+                                    <option value=">">is greater than</option>
+                                    <option value="=">is equal to</option>
+                                 </select>
+                              </div>
+                              <div class="col-sm-6">
+                                 <input type="number" name="oustanding_amount" id="oustanding_amount" class="form-control form-control-sm" placeholder="Amount" />
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class=" row">
+                        <label for="advance_recieved_amount" class="col-md-5 col-form-label">Received:</label>
+                        <div class="col-md-7">
+                           <div class="row">
+                              <div class="col-sm-6">
+                                 <select class="form-control form-control-sm" name="advance_recieved" id="advance_recieved">
+                                    <option value="<">is less than</option>
+                                    <option value=">">is greater than</option>
+                                    <option value="=">is equal to</option>
+                                 </select>
+                              </div>
+                              <div class="col-sm-6">
+                                 <input type="number" name="advance_recieved_amount" id="advance_recieved_amount" class="form-control form-control-sm" placeholder="Amount" />
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class=" row">
+                        <label for="advance_discount_amount" class="col-md-5 col-form-label">Discount</label>
+                        <div class="col-md-7">
+                           <div class="row">
+                              <div class="col-sm-6">
+                                 <select class="form-control form-control-sm" name="advance_discount" id="advance_discount">
+                                    <option value="<">is less than</option>
+                                    <option value=">">is greater than</option>
+                                    <option value="=">is equal to</option>
+                                 </select>
+                              </div>
+                              <div class="col-sm-6">
+                                 <input type="number" name="advance_discount_amount" id="advance_discount_amount" class="form-control form-control-sm" placeholder="Amount" />
+                              </div>
+                           </div>
                         </div>
                      </div>
                   </div>
                </div>
-               <div class=" row">
-                  <label for="advance_recieved_amount" class="col-md-5 col-form-label">Received:</label>
-                  <div class="col-md-7">
-                     <div class="row">
-                        <div class="col-sm-6">
-                              <select class="form-control form-control-sm" name="advance_recieved" id="advance_recieved">
-                                 <option value="<">is less than</option>
-                                 <option value=">">is greater than</option>
-                                 <option value="=">is equal to</option>
-                              </select>
-                        </div>
-                        <div class="col-sm-6">
-                           <input type="number" name="advance_recieved_amount" id="advance_recieved_amount" class="form-control form-control-sm" placeholder="Amount" />
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class=" row">
-                  <label for="advance_discount_amount" class="col-md-5 col-form-label">Discount</label>
-                  <div class="col-md-7">
-                     <div class="row">
-                        <div class="col-sm-6">
-                              <select class="form-control form-control-sm" name="advance_discount" id="advance_discount">
-                                 <option value="<">is less than</option>
-                                 <option value=">">is greater than</option>
-                                 <option value="=">is equal to</option>
-                              </select>
-                        </div>
-                        <div class="col-sm-6">
-                           <input type="number" name="advance_discount_amount" id="advance_discount_amount" class="form-control form-control-sm" placeholder="Amount" />
-                        </div>
-                     </div>
-                  </div>
-               </div>
-             </div>
-             
-             </div>
-             </div>
-         <div class="modal-footer">
+            </div>
+            <div class="modal-footer">
                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
                <input type="hidden" name="search_type" name="search_type" value="Advance"/>
                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
             </div>
-            </form>
-         
+         </form>
       </div>
       <!-- /.modal-content -->
    </div>
@@ -1086,7 +1038,6 @@
                <div class="row">
                   <label class="col-md-5 col-form-label"></label>
                   <div class="col-md-7">
-                      
                   </div>
                </div>
                <div class="row hidden" hidden>
@@ -1151,17 +1102,12 @@
       </form>
    </div>
 </div>
-
- <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/daterange/daterangepicker.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/toastr/build/toastr.min.js"></script>
-
-
- <!--  Large modal example -->
-
+<!--  Large modal example -->
 <script type="text/javascript">
-   
    toastr.options = {
      "closeButton": true,
      "debug": false,
@@ -1259,7 +1205,7 @@
             $("#advance_booking_status").on('change',function(){
                $("#advance_booking_status_value").val($(this).val());
             });
-
+   
            $("#advance_crop_status").on('change',function(){
                $("#advance_crop_status_value").val($(this).val());
            });
@@ -1278,7 +1224,7 @@
            $("#advance_city").on('change',function(){
                $("#advance_city_value").val($(this).val());
            });
-
+   
            $(".select2").select2();
    
    
@@ -1345,7 +1291,7 @@
           
         
    });
-
+   
         jQuery("#cancel_booking").on('submit',function(e){
              e.preventDefault();
                
@@ -1623,7 +1569,7 @@
          {
             
             var data = response.data;
-
+   
             var html_content = "";
             for (var i = 0; i < data.length; i++)
             {
@@ -1631,8 +1577,8 @@
                var id         = content.id;
                var name       = content.name;
                var html_content= html_content+"<option value='"+id+"'>"+name+"</option>";
-
-
+   
+   
             }
              $("#"+state).empty();
              $("#"+state).append(html_content);
@@ -1665,7 +1611,7 @@
          {
              
             var data = response.data;
-
+   
             var html_content = "";
             for (var i = 0; i < data.length; i++)
             {
@@ -1673,8 +1619,8 @@
                var id         = content.id;
                var name       = content.name;
                var html_content= html_content+"<option value='"+id+"'>"+name+"</option>";
-
-
+   
+   
             }
             console.log(html_content);
              $("#"+district).empty();
@@ -1707,7 +1653,7 @@
          {
             
             var data = response.data;
-
+   
             var html_content = "";
             for (var i = 0; i < data.length; i++)
             {
@@ -1715,8 +1661,8 @@
                var id         = content.id;
                var name       = content.city;
                var html_content= html_content+"<option value='"+id+"'>"+name+"</option>";
-
-
+   
+   
             }
             console.log(html_content);
              $("#"+city).empty();
@@ -1770,10 +1716,8 @@
 </script>
 <!-- Status Change -->
 <script type="text/javascript">
-
-
    jQuery(document).ready(function(){
-$("#chkall_booking").click(function(){
+   $("#chkall_booking").click(function(){
         if($("#chkall_booking").is(':checked')){
             $("#filter_booking_status > option").prop("selected", "selected");
             $("#filter_booking_status").trigger("change");
@@ -1782,7 +1726,7 @@ $("#chkall_booking").click(function(){
             $("#filter_booking_status").trigger("change");
         }
     });
-
+   
    
       $('#booking_date, #booking_status, #crop_status, #delivery_status, #contract, #agent_id, #product_id, #req_delivery_date, #delivery_date').on(
            'change',
@@ -1825,5 +1769,5 @@ $("#chkall_booking").click(function(){
        $('#booking_filter').submit();
      }
    }
-
+   
 </script>
