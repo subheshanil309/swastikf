@@ -1032,7 +1032,7 @@ class Customer extends BaseController
                 {
                     $call_detail = array();
                     $call_detail['date_at'] = date('d M Y',strtotime($value['date_at']));
-                    $call_detail['call_back_date'] = date('d M Y',strtotime($value['call_back_date']));
+                    $call_detail['call_back_date'] = (($value['call_back_date']=='0000-00-00' || $value['call_back_date'] == null)?'':date('d M Y',strtotime($value['call_back_date'])));
                     $call_detail['calltype'] =  $value['calltype'];
                     $call_detail['assigned'] =  $value['assigned'];
                     $call_detail['user_createdby'] =  $value['user_createdby'];

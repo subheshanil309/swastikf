@@ -336,6 +336,12 @@ ALTER TABLE `z_product_category` ADD `description` TEXT NULL, ADD `update_by` IN
 ALTER TABLE `z_admin` ADD `date_join` DATE NULL DEFAULT CURRENT_TIMESTAMP;
 
 
+----24-06-2022
+
+ALTER TABLE `z_customer_call` CHANGE `call_back_date` `call_back_date` DATE NULL DEFAULT NULL;
+
+
+
 
 
 

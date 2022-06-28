@@ -1458,7 +1458,15 @@ function districtChangeUpdate(district_code = '',selected_city = '') {
               html_content+=data[i].calltype+' <strong>By</strong> '+data[i].user_createdby;
               
               html_content+='</div>';
-              html_content+='<div class="card-body"><p class="p-0 m-0"><strong>Call Direction :</strong>'+data[i].calldirection+'<strong> Call Back Date :</strong>'+data[i].call_back_date+'</p><p><strong> Assigned To :</strong>'+data[i].assigned+'</p><hr class="p-0 m-0"><p>'+data[i].current_conversation+'</p>';
+               if(data[i].call_back_date.length >0)
+              {
+                var callbackdate = '<strong> Call Back Date :</strong>'+data[i].call_back_date;  
+              }else
+              {
+                var callbackdate = '';
+              }
+              
+              html_content+='<div class="card-body"><p class="p-0 m-0"><strong>Call Direction :</strong>'+data[i].calldirection+callbackdate+'</p><p><strong> Assigned To :</strong>'+data[i].assigned+'</p><hr class="p-0 m-0"><p>'+data[i].current_conversation+'</p>';
 
 
               html_content+='</div></div></div></div></div></li>';
