@@ -271,7 +271,7 @@
                                                     
                                                 </div>
                                                 <div class="col-2">Mobile</div>
-                                                <div class="col-10"><?php echo $receipt_dtl['customer_mobile'];?></div>
+                                                <div class="col-10"><?php echo $receipt_dtl['customer_alter_mobile'];?></div>
                                             </div>
                                         </div>
                                     </div>
