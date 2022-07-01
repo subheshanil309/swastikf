@@ -269,7 +269,8 @@ class Customer_model extends Base_model
 
                          
                          $back_date = date('Y-m-d');
-                        $where.= "  AND c.last_call_back_date < '".$back_date."'"; 
+                        /*$where.= "  AND c.last_call_back_date < '".$back_date."'"; */
+                         $where.= "  AND (c.last_call_back_date <'".$back_date."' AND  c.last_call_back_date != '0000-00-00')";  
 
 
                     }else if($params['where']['stat_type'] =='followup' && $params['followup_type']=='today')

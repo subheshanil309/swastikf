@@ -255,7 +255,7 @@ class Customer_call_model extends Base_model
                     {
                         /*$yesterday = date('Y-m-d',strtotime("-1 days"));*/
                          $current_date = date('Y-m-d');
-                        $where.= "  AND z_customer.last_call_back_date < '".$current_date."'";    
+                        $where.= "  AND (z_customer.last_call_back_date < '".$current_date."' AND  last_call_back_date != '0000-00-00')";    
                     }else if($data_param['followup_type']=='today')
                     {
                         $current_date = date('Y-m-d');
