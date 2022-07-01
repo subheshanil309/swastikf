@@ -348,6 +348,7 @@ ALTER TABLE `z_customer_call` CHANGE `call_back_date` `call_back_date` DATE NULL
 
 
 -- 29-06-2022
+
 DROP TABLE IF EXISTS `z_consultant_ticket_status`;
 CREATE TABLE IF NOT EXISTS `z_consultant_ticket_status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -386,7 +387,27 @@ INSERT INTO `z_consultant_call_type` (`id`, `name`, `title`, `status`, `date_at`
 COMMIT;
 
 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 DROP TABLE IF EXISTS `z_document_category`;
 CREATE TABLE IF NOT EXISTS `z_document_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -398,13 +419,15 @@ CREATE TABLE IF NOT EXISTS `z_document_category` (
   `update_at` date NOT NULL DEFAULT current_timestamp(),
   `created_by` int(11) NOT NULL DEFAULT 1,
   `description` text DEFAULT NULL,
-  `update_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
   `crop_id` int(10) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
- 
- 
+COMMIT;
 
+
+ 
+ 
 
 DROP TABLE IF EXISTS `z_document`;
 CREATE TABLE IF NOT EXISTS `z_document` (
@@ -418,13 +441,15 @@ CREATE TABLE IF NOT EXISTS `z_document` (
   `date_at` date NOT NULL DEFAULT current_timestamp(),
   `update_at` date NOT NULL DEFAULT current_timestamp(),
   `created_by` int(11) NOT NULL DEFAULT 1,
-  `images`  text DEFAULT NULL,
+  `images` text DEFAULT NULL,
   `treatment` text DEFAULT NULL,
   `root_cause` text DEFAULT NULL,
-  `update_by` int(11) DEFAULT NULL,
-
+  `updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+COMMIT;
+
+ 
 
 
 
