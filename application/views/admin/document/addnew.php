@@ -24,6 +24,8 @@
     top: -147px;
 }
 </style>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/admin/libs/summernote/summernote-lite.min.css')?>"> 
+
 <div class="page-content">
    <div class="container-fluid">
       <div class="row">
@@ -138,41 +140,14 @@
                                            
                                              <div class="row" id="pictureresult">
                                                 <div class="upload col-md-2 ">
-                                                    <input type="file" id="files1" name="files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
+                                                    <input type="file" id="files1" name="upload_files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
                                                     <label for="files1" class="p-0">
 
                                                         <img id="files1_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">
                                                     </label>
                                                     <span class="invalid-feedback files1"></span>
                                                 </div>
-                                                <div class="upload col-md-2 ">
-                                                    <input type="file" id="files2" name="files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
-                                                    <label for="files2" class="p-0">
-                                                        <img id="files2_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">
-                                                    </label>
-                                                    <span class="invalid-feedback files2"></span>
-                                                </div>
-                                                <div class="upload col-md-2 ">
-                                                    <input type="file" id="files3" name="files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
-                                                    <label for="files3" class="p-0">
-                                                        <img id="files3_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">
-                                                    </label>
-                                                    <span class="invalid-feedback files3"></span>
-                                                </div>
-                                                <div class="upload col-md-2 ">
-                                                    <input type="file" id="files4" name="files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
-                                                    <label for="files4" class="p-0">
-                                                        <img id="files4_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">
-                                                    </label>
-                                                    <span class="invalid-feedback files4"></span>
-                                                </div>
-                                                <div class="upload col-md-2 ">
-                                                    <input type="file" id="files5" name="files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
-                                                    <label for="files5" class="p-0">
-                                                        <img id="files5_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">
-                                                    </label>
-                                                    <span class="invalid-feedback files5"></span>
-                                                </div>
+                                                
 
                                             </div>
                                             <br>
@@ -210,6 +185,23 @@
 </div>
 <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/toastr/build/toastr.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/summernote/summernote-lite.min.js"></script>
+ 
+<!--  Large modal example -->
+
+<script>
+     $('#treatment').summernote({
+       height: 200,
+         toolbar: [
+         // [groupName, [list of button]]
+         ['style', ['bold', 'italic', 'underline', 'clear']],
+         ['color', ['color']],
+         ['para', ['ul', 'ol', 'paragraph']],
+         ['height', ['height']]
+         ]
+         });
+    </script>
+
 <!--  Large modal example -->
 <script type="text/javascript">
    toastr.options = {
@@ -301,7 +293,7 @@ $(document).on('click','#add_more', function(){
          var id= $('.upload').length+1;
          $("#pictureresult").append('\
                 <div class="upload col-md-2">\
-                    <input type="file" id="files'+id+'" name="files[]" class="input-file" onchange="readURL(this)" >\
+                    <input type="file" id="files'+id+'" name="upload_files[]" class="input-file" onchange="readURL(this)" >\
                     <label for="files'+id+'" class="p-0">\
                         <img id="files'+id+'_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">\
                     </label>\

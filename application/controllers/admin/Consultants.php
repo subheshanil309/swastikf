@@ -23,6 +23,7 @@ class Consultants extends BaseController
         $this->load->model('admin/consultant_call_type_model');
         $this->load->model('admin/document_category_model');
         $this->load->model('admin/document_model');
+        $this->load->model('admin/crop_model');
 
         $this->perPage =100; 
     }
@@ -381,6 +382,12 @@ echo "</pre>";  */
         $data['all_customers'] = $this->customer_model->findDynamic($where);
         
         
+          $where = array(); 
+        $where['status'] = '1'; 
+        $crop_list = $this->crop_model->findDynamic($where);
+        $data['crop_lists'] =  $crop_list;
+
+
         $where = array();
         $where['status']        = '1';
         $where['orderby']       = 'id';
@@ -456,18 +463,18 @@ echo "</pre>";  */
                             $insertData = array();
                             $all_images  = array();
  
-                            if(!empty($_FILES['files']))
+                            if(!empty($_FILES['upload_files']))
                             {
                                  
 
-                                  $total_images = count($_FILES['files']);
+                                  $total_images = count($_FILES['upload_files']);
                                 for ($i=0; $i < $total_images; $i++) {
 
-                                   if(isset($_FILES['files']['name'][$i]) && $_FILES['files']['error'][$i] ==0)
+                                   if(isset($_FILES['upload_files']['name'][$i]) && $_FILES['upload_files']['error'][$i] ==0)
                                   {
-                                         $f_name         =$_FILES['files']['name'][$i];
-                                        $f_tmp          =$_FILES['files']['tmp_name'][$i];
-                                        $f_size         =$_FILES['files']['size'][$i];
+                                         $f_name         =$_FILES['upload_files']['name'][$i];
+                                        $f_tmp          =$_FILES['upload_files']['tmp_name'][$i];
+                                        $f_size         =$_FILES['upload_files']['size'][$i];
                                         $f_extension    =explode('.',$f_name);
                                         $f_extension    =strtolower(end($f_extension));
                                         $f_newfile      =uniqid().'.'.$f_extension;
@@ -724,6 +731,10 @@ echo "</pre>";  */
 
         
 
+         $where = array(); 
+        $where['status'] = '1'; 
+        $crop_list = $this->crop_model->findDynamic($where);
+        $data['crop_lists'] =  $crop_list;
 
         
 
@@ -821,22 +832,20 @@ echo "</pre>";  */
                                    $all_images[] = $exist_image_file[$jj];
                                 }
                             }
-
-
                              
-                             if(!empty($_FILES['files']))
+                             if(!empty($_FILES['upload_files']))
                             {
                                  
 
-                                  $total_images = count($_FILES['files']);
+                                  $total_images = count($_FILES['upload_files']);
                                 for ($i=0; $i < $total_images; $i++) {
 
-                                   if(isset($_FILES['files']['name'][$i]) && $_FILES['files']['error'][$i] ==0)
+                                   if(isset($_FILES['upload_files']['name'][$i]) && $_FILES['upload_files']['error'][$i] ==0)
                                   {
                                      
-                                        $f_name         =$_FILES['files']['name'][$i];
-                                        $f_tmp          =$_FILES['files']['tmp_name'][$i];
-                                        $f_size         =$_FILES['files']['size'][$i];
+                                        $f_name         =$_FILES['upload_files']['name'][$i];
+                                        $f_tmp          =$_FILES['upload_files']['tmp_name'][$i];
+                                        $f_size         =$_FILES['upload_files']['size'][$i];
                                         $f_extension    =explode('.',$f_name);
                                         $f_extension    =strtolower(end($f_extension));
                                         $f_newfile      =uniqid().'.'.$f_extension;
@@ -860,7 +869,7 @@ echo "</pre>";  */
                             }
 
                             $insertData['images'] = json_encode($all_images);
-                              if(isset($_FILES['screenshot']['name']) && $_FILES['screenshot']['error'] ==0)
+                               if(isset($_FILES['screenshot']['name']) && $_FILES['screenshot']['error'] ==0)
                             {
                                  
                                   

@@ -105,18 +105,18 @@ class Kdocuments extends BaseController
                      $insertData = array();
                             $all_images  = array();
  
-                            if(!empty($_FILES['files']))
+                            if(!empty($_FILES['upload_files']))
                             {
                                  
 
-                                  $total_images = count($_FILES['files']);
+                                  $total_images = count($_FILES['upload_files']);
                                 for ($i=0; $i < $total_images; $i++) {
 
-                                   if(isset($_FILES['files']['name'][$i]) && $_FILES['files']['error'][$i] ==0)
+                                   if(isset($_FILES['upload_files']['name'][$i]) && $_FILES['upload_files']['error'][$i] ==0)
                                   {
-                                         $f_name        =$_FILES['files']['name'][$i];
-                                        $f_tmp          =$_FILES['files']['tmp_name'][$i];
-                                        $f_size         =$_FILES['files']['size'][$i];
+                                         $f_name        =$_FILES['upload_files']['name'][$i];
+                                        $f_tmp          =$_FILES['upload_files']['tmp_name'][$i];
+                                        $f_size         =$_FILES['upload_files']['size'][$i];
                                         $f_extension    =explode('.',$f_name);
                                         $f_extension    =strtolower(end($f_extension));
                                         $f_newfile      =uniqid().'.'.$f_extension;
@@ -310,19 +310,19 @@ class Kdocuments extends BaseController
 
 
                      
-                     if(!empty($_FILES['files']))
+                     if(!empty($_FILES['upload_files']))
                     {
                          
 
-                          $total_images = count($_FILES['files']);
+                          $total_images = count($_FILES['upload_files']);
                         for ($i=0; $i < $total_images; $i++) {
 
-                           if(isset($_FILES['files']['name'][$i]) && $_FILES['files']['error'][$i] ==0)
+                           if(isset($_FILES['upload_files']['name'][$i]) && $_FILES['upload_files']['error'][$i] ==0)
                           {
                              
-                                $f_name         =$_FILES['files']['name'][$i];
-                                $f_tmp          =$_FILES['files']['tmp_name'][$i];
-                                $f_size         =$_FILES['files']['size'][$i];
+                                $f_name         =$_FILES['upload_files']['name'][$i];
+                                $f_tmp          =$_FILES['upload_files']['tmp_name'][$i];
+                                $f_size         =$_FILES['upload_files']['size'][$i];
                                 $f_extension    =explode('.',$f_name);
                                 $f_extension    =strtolower(end($f_extension));
                                 $f_newfile      =uniqid().'.'.$f_extension;

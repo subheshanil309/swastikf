@@ -25,7 +25,7 @@
 }
 </style>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/admin/libs/magnific-popup/magnific-popup.css')?>"> 
-
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/admin/libs/summernote/summernote-lite.min.css')?>"> 
 <div class="page-content">
    <div class="container-fluid">
       <div class="row">
@@ -202,6 +202,22 @@
 <script src="<?php echo base_url(); ?>assets/admin/libs/toastr/build/toastr.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/magnific-popup/jquery.magnific-popup.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/pages/lightbox.init.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/summernote/summernote-lite.min.js"></script>
+ 
+<!--  Large modal example -->
+
+<script>
+     $('#treatment').summernote({
+       height: 200,
+         toolbar: [
+         // [groupName, [list of button]]
+         ['style', ['bold', 'italic', 'underline', 'clear']],
+         ['color', ['color']],
+         ['para', ['ul', 'ol', 'paragraph']],
+         ['height', ['height']]
+         ]
+         });
+    </script>
 <!--  Large modal example -->
 <script type="text/javascript">
    toastr.options = {
@@ -293,7 +309,7 @@ $(document).on('click','#add_more', function(){
          var id= $('.upload').length+1;
          $("#pictureresult").append('\
                 <div class="upload col-md-2">\
-                    <input type="file" id="files'+id+'" name="files[]" class="input-file" onchange="readURL(this)" >\
+                    <input type="file" id="files'+id+'" name="upload_files[]" class="input-file" onchange="readURL(this)" >\
                     <label for="files'+id+'" class="p-0">\
                         <img id="files'+id+'_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">\
                     </label>\

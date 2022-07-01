@@ -35,6 +35,7 @@
 }
 
 </style>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/admin/libs/summernote/summernote-lite.min.css')?>"> 
 <div class="page-content">
    <div class="container-fluid">
       <div class="row">
@@ -48,7 +49,7 @@
                               <label for="customer_id" class="col-sm-4 col-form-label text-right">Farmer ID:</label>
                               <div class="col-sm-8">
                                  <div class="input-group input-group-sm">
-                                    <input class="form-control form-control-sm" id="customer_id" name="customer_id" type="text" onkeypress="return onlyNumberKey(event)" />
+                                    <input class="form-control form-control-sm" id="customer_id" name="customer_id" type="text"   />
                                  </div>
                               </div>
                            </div>
@@ -58,7 +59,7 @@
                               <label for="mobile" class="col-sm-4 col-form-label text-right">Mobile No.:</label>
                               <div class="col-sm-8">
                                  <div class="input-group input-group-sm">
-                                    <input class="form-control form-control-sm" id="mobile" name="mobile" type="text" onkeypress="return onlyNumberKey(event)" />
+                                    <input class="form-control form-control-sm" id="mobile" name="mobile" type="text"   />
                                  </div>
                               </div>
                            </div>
@@ -154,8 +155,17 @@
                               <label for="crop_id" class="col-sm-4 col-form-label">Crop</label>
                               <div class="col-sm-8">
                                  <select class="form-control  form-control-sm" id="crop_id" name="crop_id">
-                                    <option value="1">Papaya</option>
-                                    <option value="2">Lemon</option>
+                                     <?php
+                                       if(!empty($crop_lists))
+                                       {
+                                         foreach($crop_lists as $k=>$v)
+                                         { 
+                                           ?>
+                                    <option value="<?php echo $v->id;?>" <?php if(!empty(set_value('crop_id')) && set_value('crop_id')==$v->id){ echo 'selected';}?>><?php echo $v->title;?></option>
+                                    <?php 
+                                       }   
+                                       }
+                                       ?>
                                  </select>
                               </div>
                            </div>
@@ -306,42 +316,14 @@
                                            
                                              <div class="row" id="pictureresult">
                                                 <div class="upload col-md-2 ">
-                                                    <input type="file" id="files1" name="files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
+                                                    <input type="file" id="files1" name="upload_files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
                                                     <label for="files1" class="p-0">
 
                                                         <img id="files1_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">
                                                     </label>
                                                     <span class="invalid-feedback files1"></span>
                                                 </div>
-                                                <div class="upload col-md-2 ">
-                                                    <input type="file" id="files2" name="files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
-                                                    <label for="files2" class="p-0">
-                                                        <img id="files2_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">
-                                                    </label>
-                                                    <span class="invalid-feedback files2"></span>
-                                                </div>
-                                                <div class="upload col-md-2 ">
-                                                    <input type="file" id="files3" name="files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
-                                                    <label for="files3" class="p-0">
-                                                        <img id="files3_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">
-                                                    </label>
-                                                    <span class="invalid-feedback files3"></span>
-                                                </div>
-                                                <div class="upload col-md-2 ">
-                                                    <input type="file" id="files4" name="files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
-                                                    <label for="files4" class="p-0">
-                                                        <img id="files4_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">
-                                                    </label>
-                                                    <span class="invalid-feedback files4"></span>
-                                                </div>
-                                                <div class="upload col-md-2 ">
-                                                    <input type="file" id="files5" name="files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
-                                                    <label for="files5" class="p-0">
-                                                        <img id="files5_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">
-                                                    </label>
-                                                    <span class="invalid-feedback files5"></span>
-                                                </div>
-
+                                                 
                                             </div>
                                             <br>
                                             <button type="button" id="add_more" class="btn btn-sm btn-success rounded" value="Add More Files">Add More</button>
@@ -394,11 +376,25 @@
       </div>
    </div>
 </div>
-<script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/admin/libs/moment/min/moment.min.js"></script>
+ <script src="<?php echo base_url(); ?>assets/admin/libs/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/daterange/daterangepicker.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/toastr/build/toastr.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/summernote/summernote-lite.min.js"></script>
+ 
 <!--  Large modal example -->
+
+<script>
+     $('#recommendation').summernote({
+       height: 200,
+         toolbar: [
+         // [groupName, [list of button]]
+         ['style', ['bold', 'italic', 'underline', 'clear']],
+         ['color', ['color']],
+         ['para', ['ul', 'ol', 'paragraph']],
+         ['height', ['height']]
+         ]
+         });
+    </script>
 <script type="text/javascript">
    toastr.options = {
      "closeButton": true,
@@ -489,7 +485,7 @@ $(document).on('click','#add_more', function(){
          var id= $('.upload').length+1;
          $("#pictureresult").append('\
                 <div class="upload col-md-2">\
-                    <input type="file" id="files'+id+'" name="files[]" class="input-file" onchange="readURL(this)" >\
+                    <input type="file" id="files'+id+'" name="upload_files[]" class="input-file" onchange="readURL(this)" >\
                     <label for="files'+id+'" class="p-0">\
                         <img id="files'+id+'_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">\
                     </label>\
@@ -533,13 +529,14 @@ $(document).on('click','#add_more', function(){
           }
      });
       }
-   }function getProblem (value='')
+   }
+   function getProblem (value='')
    {
        if(value.length >0)
       {
          var id = value;
    
-          hitURL = "<?php echo base_url() ?>admin/document/single/"+id;
+          hitURL = "<?php echo base_url() ?>admin/kdocuments/single/"+id;
    
           show_loader();
            $.ajax({
@@ -551,18 +548,23 @@ $(document).on('click','#add_more', function(){
         }, 
         dataType : "json",
          success: function (response) {
-               hide_loader();
+               hide_loader(); 
                 if(response)
                 {
                   var data = response;
-                   $("#root_cause").empty().val(response.root_cause);
-                   $("#recommendation").empty().val(response.treatment);
+                  var treatmentss = atob(response.treatment);
+                  var root_causesss = atob(response.root_cause);
+                  
+                   $("#root_cause").val(root_causesss);
+                   $("#recommendation").val(treatmentss);
+                   $("#recommendation").summernote("code", treatmentss);
                  }else
                 {
                    $('#root_cause').empty();
                    $('#recommendation').empty();
                 }
                 
+                 
          },
          error: function (request, status, error) {
               

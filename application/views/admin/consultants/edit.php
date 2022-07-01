@@ -35,7 +35,8 @@
 }
 
 </style>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/admin/libs/magnific-popup/magnific-popup.css')?>"> 
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/admin/libs/magnific-popup/magnific-popup.css')?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/admin/libs/summernote/summernote-lite.min.css')?>"> 
 
 <div class="page-content">
    <div class="container-fluid">
@@ -78,7 +79,7 @@
           
          
          <div class="col-xl-12">
-            <form autocomplete="off" action="<?php echo base_url() ?>admin/consultants/update" method="post" role="form" enctype="multipart/form-data" id="booking_form" class="custom-validation">
+            <form autocomplete="off" action="<?php echo base_url() ?>admin/consultants/update" method="post" role="form" enctype="multipart/form-data">
                <div class="card">
                   <h5 class="card-header bg-success text-white border-bottom p-1"></h5>
                   <div class="card card-body">
@@ -120,8 +121,17 @@
                               <label for="crop_id" class="col-sm-4 col-form-label">Crop</label>
                               <div class="col-sm-8">
                                  <select class="form-control  form-control-sm" id="crop_id" name="crop_id">
-                                    <option value="1" <?php echo (($edit_data->crop_id==1)?'selected':'');?>>Papaya</option>
-                                    <option value="2" <?php echo (($edit_data->crop_id==2)?'selected':'');?>>Lemon</option>
+                                     <?php
+                                       if(!empty($crop_lists))
+                                       {
+                                         foreach($crop_lists as $k=>$v)
+                                         { 
+                                           ?>
+                                    <option value="<?php echo $v->id;?>" <?php if(  $edit_data->crop_id==$v->id){ echo 'selected';}?>><?php echo $v->title;?></option>
+                                    <?php 
+                                       }   
+                                       }
+                                       ?>
                                  </select>
                               </div>
                            </div>
@@ -271,7 +281,7 @@
                                     </div>
                                     <div class="col-sm-12">
                                        <div class=" ">
-                                          <label class="form-label"  for="images">Photos</label>
+                                          <label class="form-label" >Photos</label>
                                           <div class="row" id="pictureresult">
                                              <?php
 
@@ -299,8 +309,7 @@
                                           </div>
                                            <br>
                                             <button type="button" id="add_more" class="btn btn-sm btn-success rounded" value="Add More Files">Add More</button>
-<!--                                           <input type="file" name="images[]" id="images" multiple class="form-control-sm form-control">
- -->                                       </div>
+                                        </div>
                                     </div>
                                     <div class="col-sm-12">
                                        <div class=" ">
@@ -362,6 +371,22 @@
 <script src="<?php echo base_url(); ?>assets/admin/libs/toastr/build/toastr.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/magnific-popup/jquery.magnific-popup.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/js/pages/lightbox.init.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/summernote/summernote-lite.min.js"></script>  
+ 
+<!--  Large modal example -->
+
+<script>
+     $('#recommendation').summernote({
+       height: 200,
+         toolbar: [
+         // [groupName, [list of button]]
+         ['style', ['bold', 'italic', 'underline', 'clear']],
+         ['color', ['color']],
+         ['para', ['ul', 'ol', 'paragraph']],
+         ['height', ['height']]
+         ]
+         });
+    </script>
 <!--  Large modal example -->
 <script type="text/javascript">
    toastr.options = {
@@ -453,7 +478,7 @@ $(document).on('click','#add_more', function(){
          var id= $('.upload').length+1;
          $("#pictureresult").append('\
                 <div class="upload col-md-2">\
-                    <input type="file" id="files'+id+'" name="files[]" class="input-file" onchange="readURL(this)" >\
+                    <input type="file" id="files'+id+'" name="upload_files[]" class="input-file" onchange="readURL(this)" >\
                     <label for="files'+id+'" class="p-0">\
                         <img id="files'+id+'_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">\
                     </label>\
@@ -503,7 +528,7 @@ $(document).on('click','#add_more', function(){
       {
          var id = value;
    
-          hitURL = "<?php echo base_url() ?>admin/document/single/"+id;
+          hitURL = "<?php echo base_url() ?>admin/kdocuments/single/"+id;
    
           show_loader();
            $.ajax({
@@ -519,8 +544,12 @@ $(document).on('click','#add_more', function(){
                 if(response)
                 {
                   var data = response;
-                   $("#root_cause").empty().val(response.root_cause);
-                   $("#recommendation").empty().val(response.treatment);
+                  var treatmentss = atob(response.treatment);
+                  var root_causesss = atob(response.root_cause);
+                  
+                   $("#root_cause").val(root_causesss);
+                   $("#recommendation").val(treatmentss);
+                   $("#recommendation").summernote("code", treatmentss);
                  }else
                 {
                    $('#root_cause').empty();
