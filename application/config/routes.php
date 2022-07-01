@@ -150,6 +150,9 @@ $route['admin/bookings/(:num)/delete_payment'] 	= 'admin/bookings/delete_payment
 $route['admin/bookings/(:num)/cancel_status'] 	= 'admin/bookings/cancel_status/$1';
 $route['admin/bookings/(:num)/edit_payment'] 	= 'admin/bookings/edit_payment/$1';
 
+$route['admin/consultants/(:num)/edit'] 	= 'admin/consultants/edit/$1';
+
+
 $route['user'] 	= 'user/dashboard';
 $route['vendor']= 'vendor/dashboard';
 

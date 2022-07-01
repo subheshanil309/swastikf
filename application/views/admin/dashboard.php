@@ -296,7 +296,7 @@
                                                                             </div>
                                                                         </div> <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#cssModal">
+                                                                                <a href="<?php echo base_url()?>admin/consultants"  >
                                                                                     <div class="card-body">
                                                                                         <div class="text-center">
                                                                                             <div class="mini-stat-icon  rounded-circle bg-success">
@@ -307,7 +307,8 @@
                                                                                     </div>
                                                                                 </a>
                                                                             </div>
-                                                                        </div> <div class="col-md-4">
+                                                                        </div>
+                                                                        <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
                                                                                 <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#cssModal">
                                                                                     <div class="card-body">
@@ -372,7 +373,20 @@
                                                                                 </a>
                                                                             </div>
                                                                         </div>
-                                                                             
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                                <a href="<?php echo ($role==1)?base_url().'admin/kdocuments':'#'?>" >
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon  rounded-circle bg-warning">
+                                                                                                <i class="bx bxs-file-doc text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>K Document</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>  
                                                                     </div>     
                                                                 </div>     
                                                             </div>     

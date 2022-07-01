@@ -224,7 +224,7 @@
                      <ul class="sub-menu" aria-expanded="false">
                         <li><a  href="<?php echo base_url()?>admin/bookings" key="t-products">Booking</a></li>
                         <li><a  href="#" key="t-products">Delivery Management</a></li>
-                        <li><a  href="#" key="t-products">Consultation</a></li>
+                        <li><a  href="<?php echo base_url()?>admin/consultants" key="t-products">Consultation</a></li>
                         <li><a  href="#" key="t-products">Harvesting Management</a></li>
                         <li><a   key="t-products">Premium Customer</a></li>
                      </ul>
@@ -260,7 +260,7 @@
                      <span key="t-ecommerce">Documents</span>
                      </a>
                      <ul class="sub-menu" aria-expanded="false">
-                        <li><a   href="#" key="t-products">K Documents</a></li>
+                        <li><a   href="<?php echo base_url('admin/kdocuments');?>" key="t-products">K Documents</a></li>
                         <li><a   href="#" key="t-products">SOP</a></li>
                         <li><a   href="#" key="t-products">Manuals</a></li>
                      </ul>
@@ -287,6 +287,7 @@
                         <li><a   href="<?php echo base_url('admin/state');?>" key="t-products">State</a></li>
                         <li><a   href="<?php echo base_url('admin/district');?>" key="t-products">District</a></li>
                         <li><a   href="<?php echo base_url('admin/city');?>" key="t-products">City</a></li>
+                        <li><a   href="<?php echo base_url('admin/document_category');?>" key="t-products">K Documents Category</a></li>
                      </ul>
                   </li>
                   <?php

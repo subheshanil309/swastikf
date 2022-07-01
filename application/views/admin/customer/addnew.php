@@ -1026,7 +1026,7 @@ print_r($customer_call_dtl);  */
         data: {},
         success: function (response) {
           var check_state = $('#state option:selected').text();
-          if(check_state =='Other')
+         /* if(check_state =='Other')
           {
             $('#other_state').val('');
             $('#other_state').css('display', 'block');
@@ -1038,7 +1038,7 @@ print_r($customer_call_dtl);  */
              $('#other_state').val('');
              $('#other_state').css('display', 'none');
              $('#other_state').prop('required',false);
-          }
+          }*/
           
             $("#district").empty().append(response);
             $(".select2").select2();
@@ -1062,7 +1062,7 @@ function stateChange2(state_code = '',selected_district = '') {
         data: {},
         success: function (response) {
              var check_state = $('#state2 option:selected').text();
-             if(check_state =='Other')
+            /* if(check_state =='Other')
           {
               $('#other_state2').val('');
              $('#other_state2').css('display', 'block');
@@ -1072,7 +1072,7 @@ function stateChange2(state_code = '',selected_district = '') {
              
              $('#other_state2').val('');
              $('#other_state2').css('display', 'none');
-           }
+           }*/
             $("#district2").empty().append(response);
             $(".select2").select2();
         },
@@ -1095,7 +1095,7 @@ function stateChangeUpdate(state_code = '',selected_district = '') {
         data: {},
         success: function (response) {
              var check_state = $('#state_update option:selected').text();
-             if(check_state =='Other')
+          /*   if(check_state =='Other')
           {
               $('#other_state_update').val('');
              $('#other_state_update').css('display', 'block');
@@ -1105,7 +1105,7 @@ function stateChangeUpdate(state_code = '',selected_district = '') {
              
              $('#other_state_update').val('');
              $('#other_state_update').css('display', 'none');
-           }
+           }*/
             $("#district_update").empty().append(response);
             
         },
@@ -1129,7 +1129,7 @@ function districtChange(district_code = '',selected_city = '') {
         success: function (response) {
              
             var check_district = $('#district option:selected').text();
-            if(check_district =='Other')
+            /*if(check_district =='Other')
             {
               $('#other_district').val('');
               $('#other_district').css('display', 'block');
@@ -1141,7 +1141,7 @@ function districtChange(district_code = '',selected_city = '') {
                $('#other_district').val('');
                $('#other_district').css('display', 'none');
                $('#other_district').prop('required',false);
-            }
+            }*/
           
             $("#city").empty().append(response);
             $(".select2").select2();
@@ -1157,7 +1157,7 @@ function districtChange(district_code = '',selected_city = '') {
 function cityChange(district_code = '',selected_city = '') {
       
      var check_district = $('#city option:selected').text();
-            if(check_district =='Other')
+          /*  if(check_district =='Other')
             {
               $('#other_city').val('');
               $('#other_city').css('display', 'block');
@@ -1169,12 +1169,12 @@ function cityChange(district_code = '',selected_city = '') {
                $('#other_city').val('');
                $('#other_city').css('display', 'none');
                $('#other_city').prop('required',false);
-            }
+            }*/
 }
 function cityChange2(district_code = '',selected_city = '') {
       
      var check_city = $('#city2 option:selected').text();
-            if(check_city =='Other')
+            /*if(check_city =='Other')
             {
               $('#other_city2').val('');
               $('#other_city2').css('display', 'block');
@@ -1184,12 +1184,12 @@ function cityChange2(district_code = '',selected_city = '') {
                
                $('#other_city2').val('');
                $('#other_city2').css('display', 'none');
-             }
+             }*/
 }
 function cityChangeUpdate(district_code = '',selected_city = '') {
       
      var check_city = $('#city_update option:selected').text();
-            if(check_city =='Other')
+           /* if(check_city =='Other')
             {
               $('#other_city_update').val('');
               $('#other_city_update').css('display', 'block');
@@ -1199,7 +1199,7 @@ function cityChangeUpdate(district_code = '',selected_city = '') {
                
                $('#other_city_update').val('');
                $('#other_city_update').css('display', 'none');
-             }
+             }*/
 }
 function districtChange2(district_code = '',selected_city = '') {
       
@@ -1214,7 +1214,7 @@ function districtChange2(district_code = '',selected_city = '') {
              
 
                var check_district = $('#district2 option:selected').text();
-            if(check_district =='Other')
+           /* if(check_district =='Other')
             {
               $('#other_district2').val('');
               $('#other_district2').css('display', 'block');
@@ -1224,7 +1224,7 @@ function districtChange2(district_code = '',selected_city = '') {
                
                $('#other_district2').val('');
                $('#other_district2').css('display', 'none');
-             }
+             }*/
 
 
             // console.log(response);
@@ -1253,7 +1253,7 @@ function districtChangeUpdate(district_code = '',selected_city = '') {
              
 
                var check_district = $('#district_update option:selected').text();
-            if(check_district =='Other')
+          /*  if(check_district =='Other')
             {
               $('#other_district_update').val('');
               $('#other_district_update').css('display', 'block');
@@ -1264,7 +1264,7 @@ function districtChangeUpdate(district_code = '',selected_city = '') {
                $('#other_district_update').val('');
                $('#other_district_update').css('display', 'none');
              }
-
+*/
 
             // console.log(response);
             // $(".district_wrap").html(response.success);

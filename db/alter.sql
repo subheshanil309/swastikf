@@ -347,4 +347,136 @@ ALTER TABLE `z_customer_call` CHANGE `call_back_date` `call_back_date` DATE NULL
 
 
 
+-- 29-06-2022
+DROP TABLE IF EXISTS `z_consultant_ticket_status`;
+CREATE TABLE IF NOT EXISTS `z_consultant_ticket_status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `slug` varchar(200) NOT NULL,
+  `status` int(11) DEFAULT 1,
+  `date_at` date NOT NULL DEFAULT current_timestamp(),
+  `update_at` date NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `z_consultant_ticket_status` (`id`, `name`, `title`, `slug`, `status`, `date_at`, `update_at`) VALUES
+(1, 'open', 'Open', 'open', 1, '2022-06-01', '2022-06-01'),
+(2, 'pending', 'Pending', 'pending', 1, '2022-06-01', '2022-06-01'),
+(3, 'resolved', 'Resolved', 'resolved', 1, '2022-06-01', '2022-06-01'),
+(4, 'closed', 'Closed', 'closed', 1, '2022-06-01', '2022-06-01');
+COMMIT;
+
+
+DROP TABLE IF EXISTS `z_consultant_call_type`;
+CREATE TABLE IF NOT EXISTS `z_consultant_call_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  `title` varchar(50) DEFAULT NULL,
+  `status` int(11) DEFAULT 1,
+  `date_at` date DEFAULT NULL,
+  `update_at` date DEFAULT NULL,
+  `slug` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `z_consultant_call_type` (`id`, `name`, `title`, `status`, `date_at`, `update_at`, `slug`) VALUES
+(1, 'consultation', 'Consultation', 1, '2022-05-19', '2022-05-19', 'consultation'),
+(2, 'inquiry', 'Inquiry', 1, '2022-05-19', '2022-05-19', 'inquiry');
+COMMIT;
+
+
+ 
+DROP TABLE IF EXISTS `z_document_category`;
+CREATE TABLE IF NOT EXISTS `z_document_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `slug` varchar(300) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `date_at` date NOT NULL DEFAULT current_timestamp(),
+  `update_at` date NOT NULL DEFAULT current_timestamp(),
+  `created_by` int(11) NOT NULL DEFAULT 1,
+  `description` text DEFAULT NULL,
+  `update_by` int(11) DEFAULT NULL,
+  `crop_id` int(10) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+ 
+ 
+
+
+DROP TABLE IF EXISTS `z_document`;
+CREATE TABLE IF NOT EXISTS `z_document` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `slug` varchar(300) NOT NULL,
+  `crop_id` int(10) NOT NULL DEFAULT 1,
+  `document_cat_id` int(10) NOT NULL DEFAULT 1,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `date_at` date NOT NULL DEFAULT current_timestamp(),
+  `update_at` date NOT NULL DEFAULT current_timestamp(),
+  `created_by` int(11) NOT NULL DEFAULT 1,
+  `images`  text DEFAULT NULL,
+  `treatment` text DEFAULT NULL,
+  `root_cause` text DEFAULT NULL,
+  `update_by` int(11) DEFAULT NULL,
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+ ----30-06-2022
+
+DROP TABLE IF EXISTS `z_consultants`;
+CREATE TABLE IF NOT EXISTS `z_consultants` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ticket_title` varchar(250) DEFAULT NULL,
+  `ticket_status` varchar(30) DEFAULT NULL,
+  `farmer_id` int(11) DEFAULT NULL,
+  `farmer_name` varchar(250) DEFAULT NULL,
+  `farmer_mobile` varchar(20) DEFAULT NULL,
+  `address` varchar(300) DEFAULT NULL,
+  `crop_id` int(11) DEFAULT NULL,
+  `crop_status` varchar(15) DEFAULT 'Active',
+  `crop_area` varchar(300) DEFAULT NULL,
+  `assign_to` int(11) DEFAULT NULL,
+  `call_type` int(11) DEFAULT NULL,
+  `follow_up_date` date DEFAULT current_timestamp(),
+  `document_category_id` int(11) DEFAULT NULL,
+  `document_id` int(11) DEFAULT NULL,
+  `root_cause` text DEFAULT NULL,
+  `recommendation` text DEFAULT NULL,
+  `images` text DEFAULT NULL,
+  `screenshot` varchar(200) DEFAULT NULL,
+  `date_at` datetime DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `company_id` int(11) DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+COMMIT;
+
+
+DROP TABLE IF EXISTS `z_crop`;
+CREATE TABLE IF NOT EXISTS `z_crop` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) DEFAULT NULL,
+  `title` varchar(250) DEFAULT NULL,
+  `status` int(11) DEFAULT 1,
+  `date_at` datetime DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT 1,
+  `updated_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ 
+INSERT INTO `z_crop` (`id`, `name`, `title`, `status`, `date_at`, `update_at`, `created_by`, `updated_by`) VALUES
+(1, 'papaya', 'Papaya', 1, '2022-07-01 09:52:22', '2022-07-01 09:52:22', 1, NULL),
+(2, 'lemon', 'Lemon', 1, '2022-07-01 09:52:22', '2022-07-01 09:52:22', 1, NULL);
+COMMIT;
+ 
