@@ -20,7 +20,7 @@ class Customer extends BaseController
         $this->load->model('admin/user_model');
         $this->load->model('admin/admin_model');
 
-        $this->perPage =35; 
+        $this->perPage =200; 
     }
 
     
@@ -59,8 +59,8 @@ class Customer extends BaseController
             $data['customer_call_dtl'] = array();
 
             $form_type  = $this->input->get('form_type');
-              $conditions = array(); 
-                $where_search = array();
+            $conditions = array(); 
+            $where_search = array();
                 
         if($form_type=='inquiry')
         {
@@ -74,11 +74,11 @@ class Customer extends BaseController
                 $district2           = @$this->input->get('district2');
                 $other_district2     = @$this->input->get('other_district2');
                 $city2               = @$this->input->get('city2');
-                $other_city2               = @$this->input->get('other_city2');
+                $other_city2         = @$this->input->get('other_city2');
                 $call_direction2     = @$this->input->get('call_direction2');
                 $call_type2          = @$this->input->get('call_type2'); 
-                $stat_type          = @$this->input->get('stat_type'); 
-                $followup_type          = @$this->input->get('followup_type'); 
+                $stat_type           = @$this->input->get('stat_type'); 
+                $followup_type       = @$this->input->get('followup_type'); 
                 if(!empty($search_customer_id))
                 {
                     $where_search['farmer_id'] =  $search_customer_id;
@@ -152,6 +152,7 @@ class Customer extends BaseController
 
                 $totalRec = $this->customer_model->getRows($conditions);
                     
+
 
  
 
@@ -231,6 +232,7 @@ class Customer extends BaseController
                 $conditions['followup_type'] = @$followup_type; 
                     
                 $data['customers'] = $this->customer_model->getRows($conditions); 
+
                 $data['pagination_total_count'] =  $totalRec;
                    
  
@@ -518,7 +520,8 @@ class Customer extends BaseController
                 $insertData['last_follow_call_type'] = $form_data['call_type'];
                 $insertData['last_call_back_date']   = $form_data['call_back_date'];
                 $insertData['current_conversation']  = $form_data['current_conversation'];
-                $insertData['company_id']            =   $company_id;
+                $insertData['company_id']            = $company_id;
+                $insertData['update_at']             = date("Y-m-d H:i:s");
 
                
                  

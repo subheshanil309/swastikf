@@ -552,8 +552,10 @@ $(document).on('click','#add_more', function(){
                 if(response)
                 {
                   var data = response;
-                  var treatmentss = atob(response.treatment);
-                  var root_causesss = atob(response.root_cause);
+                   
+                  var treatmentss =  (response.treatment);
+                   
+                  var root_causesss =  (response.root_cause);
                   
                    $("#root_cause").val(root_causesss);
                    $("#recommendation").val(treatmentss);

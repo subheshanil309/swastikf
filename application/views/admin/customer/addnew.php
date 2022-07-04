@@ -2,6 +2,7 @@
 <style type="text/css">
   .mytablestyle {
     min-height: 455px;
+    max-height: 455px;
 
 }
  .row label {font-size: 11px;}

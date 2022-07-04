@@ -144,7 +144,7 @@ class Kdocuments extends BaseController
                     $insertData['title']                = $form_data['title'];
                     $insertData['crop_id']              = $form_data['crop_id'];
                     $insertData['root_cause']           = base64_encode($form_data['root_cause']);
-                    $insertData['treatment']           = base64_encode($form_data['treatment']);
+                    $insertData['treatment']            = base64_encode($form_data['treatment']);
                     $insertData['document_cat_id']      = $form_data['document_cat_id'];
                     $insertData['status']               = $form_data['status1'];
                     $insertData['date_at']              = date("Y-m-d H:i:s");
@@ -266,6 +266,8 @@ class Kdocuments extends BaseController
         $this->form_validation->set_rules('crop_id','Crop','trim|required');
         $this->form_validation->set_rules('name','Problem Name','trim|required');
         $this->form_validation->set_rules('document_cat_id','Category Id','trim|required');
+        $this->form_validation->set_rules('root_cause','Root cause','trim');
+        $this->form_validation->set_rules('treatment','Treatment','trim');
         
         
         if($this->form_validation->run() == FALSE)
@@ -357,8 +359,8 @@ class Kdocuments extends BaseController
                     $insertData['name']                 = $form_data['name'];
                     $insertData['title']                = $form_data['title'];
                     $insertData['crop_id']              = $form_data['crop_id'];
-                    $insertData['root_cause']           = base64_encode($form_data['root_cause']);
-                    $insertData['treatment']           = base64_encode($form_data['treatment']);
+                    $insertData['root_cause']           = ($form_data['root_cause']);
+                    $insertData['treatment']            = ($form_data['treatment']);
                     $insertData['document_cat_id']      = $form_data['document_cat_id'];
                     $insertData['status']               = $form_data['status1'];
                     $insertData['updated_by']           = $this->session->userdata('userId');

@@ -274,7 +274,21 @@
                                           <label for="document_id" class="col-sm-4 col-form-label">Sub Problem<span class="text-danger">*</span></label>
                                           <div class="col-sm-8">
                                              <select class="form-control form-control-sm" id="document_id" name="document_id" onchange="getProblem(this.value)" required="">
+
+                                                
                                                 <option value="">Choose</option>
+                                                <?php
+                                                   if(!empty($documents))
+                                                   {
+                                                           foreach ($documents as $document) 
+                                                           {
+                                                               ?>
+                                                               <option value="<?php echo $document_category->id;?>" 
+                                                                  <?php echo (($document->id== $edit_data->document_id)?'selected':'')?> ><?php echo $document->title;?></option>
+                                                               <?php
+                                                            }
+                                                   }
+                                                   ?>
                                              </select>
                                           </div>
                                        </div>
@@ -314,13 +328,13 @@
                                     <div class="col-sm-12">
                                        <div class=" ">
                                           <label class="form-label"  for="root_cause">Root Cause</label>
-                                          <textarea class="form-control " id="root_cause" rows="2" name="root_cause" cols="50"><?php echo base64_decode($edit_data->root_cause)?></textarea>
+                                          <textarea class="form-control " id="root_cause" rows="2" name="root_cause" cols="50"><?php echo ($edit_data->root_cause)?></textarea>
                                        </div>
                                     </div>
                                     <div class="col-sm-12">
                                        <div class=" ">
                                           <label class="form-label" for="recommendation">Recommendation</label>
-                                          <textarea class="form-control " id="recommendation" name="recommendation" rows="2"  cols="50"><?php echo base64_decode($edit_data->recommendation)?></textarea>
+                                          <textarea class="form-control " id="recommendation" name="recommendation" rows="2"  cols="50"><?php echo ($edit_data->recommendation)?></textarea>
                                        </div>
                                     </div>
                                     <div class="col-sm-12">
@@ -544,8 +558,8 @@ $(document).on('click','#add_more', function(){
                 if(response)
                 {
                   var data = response;
-                  var treatmentss = atob(response.treatment);
-                  var root_causesss = atob(response.root_cause);
+                  var treatmentss =  (response.treatment);
+                  var root_causesss =  (response.root_cause);
                   
                    $("#root_cause").val(root_causesss);
                    $("#recommendation").val(treatmentss);
@@ -637,7 +651,9 @@ $(document).on('click','#add_more', function(){
    
    
       
-<?php if(isset($edit_data->id)){
+<?php 
+/*
+if(isset($edit_data->id)){
 
    ?>
  
@@ -645,6 +661,7 @@ $(document).on('click','#add_more', function(){
  
 <?php 
    }
+   */
 ?>
     
    });

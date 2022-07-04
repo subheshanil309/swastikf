@@ -437,6 +437,8 @@ echo "</pre>";  */
         $this->form_validation->set_rules('address','Address','trim|required');
         $this->form_validation->set_rules('document_category_id','Problem','trim|required');
         $this->form_validation->set_rules('document_id','Sub Problem','trim|required');
+        $this->form_validation->set_rules('root_cause','Root Cause','trim');
+        $this->form_validation->set_rules('recommendation','Recommendation','trim');
         
          $company_id = $this->session->userdata('company_id');
         
@@ -552,8 +554,8 @@ echo "</pre>";  */
                             $insertData['follow_up_date']               = $form_data['follow_up_date'];
                             $insertData['document_category_id']        = $form_data['document_category_id'];
                             $insertData['document_id']                 = $form_data['document_id'];
-                            $insertData['root_cause']                   = base64_encode($form_data['root_cause']);
-                            $insertData['recommendation']               = base64_encode($form_data['recommendation']);
+                            $insertData['root_cause']                   =  ($form_data['root_cause']);
+                            $insertData['recommendation']               =  ($form_data['recommendation']);
                             $insertData['company_id']                   = $company_id;
                             $insertData['created_by']                   = $this->session->userdata('userId');
                             $insertData['assigned_to']                  = $form_data['agent_id'];
@@ -755,12 +757,27 @@ echo "</pre>";  */
 
         $where = array();
         $where['status'] = '1';
-         $where['admin_type'] = '2';
+        $where['admin_type'] = '2';
         $where['orderby'] = 'title';
         $data['all_agents'] = $this->admin_model->findDynamic($where);
 
 
          $data['edit_data'] = $this->consultant_model->find($id);
+         if(empty($data['edit_data']))
+         {
+            redirect(base_url()."admin/consultants");
+            $this->session->set_flashdata('error', 'Record not found !');
+
+         }
+
+            $where = array();
+            $where['status']            = '1';
+            $where['orderby']           = 'id';
+            $where['document_cat_id']   = $data['edit_data']->document_category_id;
+            $data['documents']          = $this->document_model->findDynamic($where);
+             
+
+
 
                  $data['company_data'] = $this->company_model->find($company_id);
  
@@ -799,6 +816,8 @@ echo "</pre>";  */
         $this->form_validation->set_rules('address','Address','trim|required');
         $this->form_validation->set_rules('document_category_id','Problem','trim|required');
         $this->form_validation->set_rules('document_id','Sub Problem','trim|required');
+        $this->form_validation->set_rules('root_cause','Root Cause','trim');
+        $this->form_validation->set_rules('recommendation','Recommendation','trim');
 
 
          $form_data  = $this->input->post();
@@ -921,8 +940,8 @@ echo "</pre>";  */
                             $insertData['follow_up_date']               = $form_data['follow_up_date'];
                             $insertData['document_category_id']        = $form_data['document_category_id'];
                             $insertData['document_id']                 = $form_data['document_id'];
-                            $insertData['root_cause']                   = base64_encode($form_data['root_cause']);
-                            $insertData['recommendation']               = base64_encode($form_data['recommendation']);
+                            $insertData['root_cause']                   = ($form_data['root_cause']);
+                            $insertData['recommendation']               = ($form_data['recommendation']);
                             $insertData['company_id']                   = $company_id;
                             $insertData['updated_by']                   = $this->session->userdata('userId');
                             $insertData['assigned_to']                  = $form_data['agent_id'];

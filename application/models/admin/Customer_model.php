@@ -321,7 +321,7 @@ class Customer_model extends Base_model
                     $query = $this->db->get(); 
                     $result = $query->row_array(); 
                 }else{ 
-                    $this->db->order_by('c.id', 'desc'); 
+                    $this->db->order_by('c.update_at', 'desc'); 
                     if(array_key_exists("start",$params) && array_key_exists("limit",$params)){ 
 
                          $this->db->limit($params['limit'],$params['start']); 
