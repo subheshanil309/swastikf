@@ -173,11 +173,11 @@
                                <div class="col-sm-12">
                                  <label for="root_cause" class=" col-form-label">Root cause of sub problem</label>
                                   
-                                 <textarea class="form-control form-control-sm" id="root_cause" name="root_cause" placeholder="Enter Root cause of sub problem"><?php  echo  base64_decode($edit_data->root_cause);?></textarea>
+                                 <textarea class="form-control form-control-sm" id="root_cause" name="root_cause" placeholder="Enter Root cause of sub problem"><?php  echo ($edit_data->root_cause);?></textarea>
                               </div>
                               <div class="col-sm-12">
                                  <label for="treatment" class=" col-form-label">Treatment of sub problem</label>
-                                 <textarea class="form-control form-control-sm" id="treatment" name="treatment" placeholder="Enter Treatment of sub problem"><?php  echo  base64_decode($edit_data->treatment);?></textarea>
+                                 <textarea class="form-control form-control-sm" id="treatment" name="treatment" placeholder="Enter Treatment of sub problem"><?php  echo  ($edit_data->treatment);?></textarea>
                               </div>
                            </div>
                         </div>
