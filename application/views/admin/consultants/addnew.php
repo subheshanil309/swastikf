@@ -144,7 +144,7 @@
                         </div>
                         <div class="col-sm-3">
                            <div class="row">
-                              <label for="address" class="col-sm-4 col-form-label">Address<span class="text-danger">*</span></label>
+                              <label for="address" class="col-sm-4 col-form-label">Address </label>
                               <div class="col-sm-8"> 
                                  <textarea name="address" id="address" class="form-control  form-control-sm" placeholder="Address" readonly ></textarea>
                               </div>

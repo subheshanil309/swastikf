@@ -434,7 +434,7 @@ echo "</pre>";  */
 		$this->load->library('form_validation');            
         $this->form_validation->set_rules('farmer_id','Farmer Id','trim|required');
         $this->form_validation->set_rules('farmer_name','Farmer name','trim|required');
-        $this->form_validation->set_rules('address','Address','trim|required');
+        /*$this->form_validation->set_rules('address','Address','trim|required');*/
         $this->form_validation->set_rules('document_category_id','Problem','trim|required');
         $this->form_validation->set_rules('document_id','Sub Problem','trim|required');
         $this->form_validation->set_rules('root_cause','Root Cause','trim');
@@ -813,7 +813,7 @@ echo "</pre>";  */
         $this->load->library('form_validation');            
         $this->form_validation->set_rules('farmer_id','Farmer Id','trim|required');
         $this->form_validation->set_rules('farmer_name','Farmer name','trim|required');
-        $this->form_validation->set_rules('address','Address','trim|required');
+        /*$this->form_validation->set_rules('address','Address','trim|required');*/
         $this->form_validation->set_rules('document_category_id','Problem','trim|required');
         $this->form_validation->set_rules('document_id','Sub Problem','trim|required');
         $this->form_validation->set_rules('root_cause','Root Cause','trim');
