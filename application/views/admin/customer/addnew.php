@@ -431,31 +431,122 @@ print_r($customer_call_dtl);  */
                         <div class="card card-body pt-0">
                            <h4 class="card-title bg-success text-white  p-1 ">Follow up Summary</h4>
                            <div class="flex-grow-1">
-                               <a href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=followup&followup_type=yesterday<?php echo $uuid?>">
-                                <div class="float-end">
-                                 <p class="text-primary mb-0"><?php echo $follow_up_missed;?></p>
+                              <a style="font-weight: 600;" href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=followup&followup_type=yesterday<?php echo $uuid?>">
+                              <div class="float-end">
+                              <p class="text-primary mb-0"><?php echo $follow_up_missed;?></p>
                               </div>
                               <p class="text-primary mb-0">Missed followup</p>
-                                </a>
+                              </a>
+                              <?php 
+                                if(!empty($follow_up_missed_sub))
+                                {
+                                  ?>
+                                    <ul class="mb-0">
+                                      
+                                    
+                                  <?php
+                                   foreach ($follow_up_missed_sub as $key => $value)
+                                  {
+                                    if($value['total_count_call'] >0)
+                                    {
+                                        ?>
+                                          <li>
+                                             
+                                            <a  style="font-size: 10px;" href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=followup&followup_type=yesterday&call_type2=<?php echo $value['id'];?><?php echo $uuid?>">
+                                              <div class="float-end">
+                                              <p class="text-primary mb-0"><?php echo $value['total_count_call'];?></p>
+                                              </div>
+                                              <p class="text-primary mb-0"><?php echo $value['title'];?></p>
+                                            </a>
+                                          </li>
+                                        <?php
+                                    }
+                                       
+                                  }
+                                  ?>
+                                    </ul>
+                                  <?php
+                                }
+                              ?>
                               
                            </div>
                            <div class="flex-grow-1">
-                               <a href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=followup&followup_type=today<?php echo $uuid?>">
+                               <a style="font-weight: 600;" href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=followup&followup_type=today<?php echo $uuid?>">
                                 <div class="float-end">
                                  <p class="text-primary mb-0"><?php echo $follow_up_due_today;?></p>
                               </div>
                               <p class="text-primary mb-0">Due Today</p>
                                 </a>
-                              
+                              <?php 
+                                if(!empty($follow_up_due_today_sub))
+                                {
+                                  ?>
+                                    <ul class="mb-0">
+                                      
+                                    
+                                  <?php
+                                   foreach ($follow_up_due_today_sub as $key => $value)
+                                  {
+                                    if($value['total_count_call'] >0)
+                                    {
+                                        ?>
+                                          <li>
+                                             
+                                            <a style="font-size: 10px;" href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=followup&followup_type=today&call_type2=<?php echo $value['id'];?><?php echo $uuid?>">
+                                              <div class="float-end">
+                                              <p class="text-primary mb-0"><?php echo $value['total_count_call'];?></p>
+                                              </div>
+                                              <p class="text-primary mb-0"><?php echo $value['title'];?></p>
+                                            </a>
+                                          </li>
+                                        <?php
+                                    }
+                                       
+                                  }
+                                  ?>
+                                    </ul>
+                                  <?php
+                                }
+                              ?>
                            </div>
                            <div class="flex-grow-1">
-                               <a href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=followup&followup_type=tomorrow<?php echo $uuid?>">
+                               <a style="font-weight: 600;"  href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=followup&followup_type=tomorrow<?php echo $uuid?>">
                                 <div class="float-end">
                                  <p class="text-primary mb-0"><?php echo $follow_up_due_tomorrow;?></p>
                               </div>
                               <p class="text-primary mb-0">Due Tomorrow</p>
                                 </a>
-                              
+                               <?php 
+                                if(!empty($follow_up_due_tomorrow_sub))
+                                {
+                                  ?>
+                                    <ul class="mb-0">
+                                      
+                                    
+                                  <?php
+                                   foreach ($follow_up_due_tomorrow_sub as $key => $value)
+                                  {
+                                    if($value['total_count_call'])
+                                    {
+                                        ?>
+                                          <li>
+                                             
+                                            <a style="font-size: 10px;" href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=followup&followup_type=tomorrow&call_type2=<?php echo $value['id'];?><?php echo $uuid?>">
+                                              <div class="float-end">
+                                              <p class="text-primary mb-0"><?php echo $value['total_count_call'];?></p>
+                                              </div>
+                                              <p class="text-primary mb-0"><?php echo $value['title'];?></p>
+                                            </a>
+                                          </li>
+                                        <?php
+                                    }
+                                       
+                                  }
+                                  ?>
+                                    </ul>
+                                  <?php
+                                }
+                              ?>
                            </div>
                             
                         </div>
@@ -617,7 +708,7 @@ print_r($customer_call_dtl);  */
                                             </span>
                                             <div class="dropdown-menu" style="">
                                             <a class="dropdown-item btn side_modal" data-userid="<?php echo $customer['id']; ?>">View</a>
-                                            <a class="dropdown-item btn editbtn" href="#" data-userid="<?php echo $customer['id']; ?>">Edit</a>
+                                            <a hidden class="dropdown-item btn editbtn" href="#" data-userid="<?php echo $customer['id']; ?>">Edit</a>
                                             <?php
 
                                               $userid = $this->session->userdata('role');
@@ -635,12 +726,12 @@ print_r($customer_call_dtl);  */
                                           </div></td>
                                         <td><?php echo date('d M Y',strtotime($customer['last_follow_date']));?></td>
                                         <td><?php echo $customer['farmer_id'];?></td>
-                                        <td><a class="side_modal"  data-userid="<?php echo $customer['id']; ?>" href="javascript:void(0)"><?php echo $customer['customer_title'];?></a></td>
-                                        <td><?php echo $customer['customer_mobile'];?></td>
-                                        <td><?php echo $customer['customer_alter_mobile'];?></td>
-                                        <td><?php echo (isset($customer['other_state']) && !empty($customer['other_state']))?($customer['other_state']):($customer['state']);?></td>
-                                        <td><?php echo (isset($customer['other_district']) && !empty($customer['other_district']))?($customer['other_district']):($customer['district']);?></td>
-                                        <td><?php echo (isset($customer['other_city']) && !empty($customer['other_city']))?($customer['other_city']):($customer['city']);?></td>
+                                        <td><a class="side_modal"  data-userid="<?php echo $customer['id']; ?>" href="javascript:void(0)"><?php echo $customer['farmername'];?></a></td>
+                                        <td><?php echo $customer['farmermobile'];?></td>
+                                        <td><?php echo $customer['farmeraltmobile'];?></td>
+                                        <td><?php echo  ($customer['state']);?></td>
+                                        <td><?php echo  ($customer['district']);?></td>
+                                        <td><?php echo  ($customer['city']);?></td>
                                         <td><?php echo $customer['calldir'];?></td>
                                         <td><?php echo $customer['calltype'];?></td>
                                         <td><?php if($customer['last_call_back_date'] !=='0000-00-00'){echo date('d M Y',strtotime($customer['last_call_back_date']));}?></td>

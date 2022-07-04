@@ -505,3 +505,13 @@ INSERT INTO `z_crop` (`id`, `name`, `title`, `status`, `date_at`, `update_at`, `
 (2, 'lemon', 'Lemon', 1, '2022-07-01 09:52:22', '2022-07-01 09:52:22', 1, NULL);
 COMMIT;
  
+
+
+-------04-07-2022
+
+INSERT INTO `z_call_type` (`id`, `name`, `title`, `status`, `date_at`, `update_at`, `slug`) VALUES (NULL, 'consultation call', 'Consultation Call', '1', '2022-05-19', '2022-05-19', 'cunsultation-call');
+
+
+
+
+

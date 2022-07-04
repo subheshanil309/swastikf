@@ -194,11 +194,12 @@ class Customer_model extends Base_model
         {
            
 
-                $this->db->select('c.*, cit.city as city, sta.name as state, dist.name as district, ctype.title as calltype,   calldirection.title as calldir,   admin.title as createdby,   admin2.title as assignedto,   admin3.title as lastfollower,   admin3.title as lastfollower,   last_ctype.title as lastcalltype');
+                $this->db->select('c.*, farmer.name  as farmername, farmer.mobile  as farmermobile,farmer.alt_mobile  as farmeraltmobile,cit.city as city, sta.name as state, dist.name as district, ctype.title as calltype,   calldirection.title as calldir,   admin.title as createdby,   admin2.title as assignedto,   admin3.title as lastfollower,   admin3.title as lastfollower,   last_ctype.title as lastcalltype');
                 $this->db->from($this->table. ' as c'); 
-                $this->db->join('z_states as sta', 'sta.id = c.state', 'left');
-                $this->db->join('z_district as dist', 'dist.id = c.district', 'left');
-                $this->db->join('z_cities as cit', 'cit.id = c.city', 'left');
+                $this->db->join('z_farmers as farmer', 'farmer.id = c.farmer_id', 'left');
+                $this->db->join('z_states as sta', 'sta.id = farmer.state_id', 'left');
+                $this->db->join('z_district as dist', 'dist.id = farmer.district_id', 'left');
+                $this->db->join('z_cities as cit', 'cit.id = farmer.city_id', 'left');
                 $this->db->join('z_call_type as ctype', 'ctype.id = c.last_call_type', 'left');
                  
                 $this->db->join('z_call_direction as calldirection', 'calldirection.id = c.last_call_direction', 'left');
@@ -220,11 +221,11 @@ class Customer_model extends Base_model
                     }
                     
                     
-                    if(isset($params['userid']))
-                    {
-                        $userid = $params['userid'];
-                        $where.= " AND ( c.assigned_to = '".$userid."')";
-                    }
+                   
+
+
+ 
+        
                 
                      
 
@@ -232,11 +233,19 @@ class Customer_model extends Base_model
                     
 
             if(array_key_exists("where", $params)){
+
+                 if(isset($params['uid']))
+                    {
+                        $userid = $params['uid'];
+                        $where.= " AND ( c.assigned_to = '".$userid."')";
+                    }
+
+
                 if(!empty($params['where']))
                 {
                      
                     foreach($params['where'] as $key => $val){ 
-                     if($key =='customer_title' || $key =='stat_type' ||   $key =='from_date' || $key =='to_date' )
+                     if($key =='customer_title' || $key =='customer_mobile'  || $key =='customer_alt_mobile' || $key =='state' || $key =='stat_type' ||   $key =='from_date' || $key =='to_date' )
                     {
 
                     
@@ -246,14 +255,37 @@ class Customer_model extends Base_model
 
                 } 
 
-                  if(isset($params['where']['customer_title']))
-                {
-                    if(!empty($where))
+                    if(isset($params['where']['customer_title']))
                     {
-                        
+
+                        $this->db->or_like('farmer.name', $params['where']['customer_title']);
+                    }  
+                    if(isset($params['where']['customer_mobile']))
+                    {
+
+                        $this->db->where('farmer.mobile', $params['where']['customer_mobile']);
                     }
-                    $this->db->or_like('customer_title', $params['where']['customer_title']);
-                 }
+                    if(isset($params['where']['customer_alt_mobile']))
+                    {
+
+                        $this->db->where('farmer.alt_mobile', $params['where']['customer_alt_mobile']);
+                    }
+                    if(isset($params['where']['state']))
+                    {
+
+                        $this->db->where('farmer.state_id', $params['where']['state']);
+                    }
+                    if(isset($params['where']['city']))
+                    {
+
+                        $this->db->where('farmer.city_id', $params['where']['city']);
+                    }
+                    if(isset($params['where']['district']))
+                    {
+
+                        $this->db->where('farmer.district_id', $params['where']['district']);
+                    }
+
                  if(isset($params['where']['from_date']) && isset($params['where']['to_date']))
                 {
                     $fromdate = $params['where']['from_date'];

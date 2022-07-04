@@ -45,12 +45,7 @@ class Customer extends BaseController
             
             $data = array();
 
-            $uid         = $this->input->get('uid');
-            if(isset($uid) && $uid !=='')
-            {
-                 $userid   = $uid;
-            } 
-
+           
             
             
  
@@ -64,6 +59,16 @@ class Customer extends BaseController
                 
         if($form_type=='inquiry')
         {
+
+
+             $uid         = $this->input->get('uid');
+            if(isset($uid) && $uid !=='')
+            {
+                 $userid   = $uid;
+            } 
+
+
+
                 $where_search =  array();
                 $search_customer_id  = @$this->input->get('search_customer_id');
                 $search_name         = @$this->input->get('search_name');
@@ -79,6 +84,8 @@ class Customer extends BaseController
                 $call_type2          = @$this->input->get('call_type2'); 
                 $stat_type           = @$this->input->get('stat_type'); 
                 $followup_type       = @$this->input->get('followup_type'); 
+                $uid                 = @$this->input->get('uid'); 
+                 
                 if(!empty($search_customer_id))
                 {
                     $where_search['farmer_id'] =  $search_customer_id;
@@ -138,20 +145,21 @@ class Customer extends BaseController
 
                
 
-                $conditions['returnType']   = 'count';
-                if(!empty($userid))
-                {
-                    $conditions['userid']       = $userid;     
-                } 
-                
-                $conditions['where']       = $where_search;  
-                $conditions['form_type']    = $form_type;
-                $conditions['followup_type'] = @$followup_type;
+        $conditions['returnType']   = 'count';
+        if(!empty($uid))
+        {
+            $conditions['uid']       = $uid;     
+        } 
 
-                
+        $conditions['where']       = $where_search;  
+        $conditions['form_type']    = $form_type;
+        $conditions['followup_type'] = @$followup_type;
 
-                $totalRec = $this->customer_model->getRows($conditions);
+
+
+        $totalRec = $this->customer_model->getRows($conditions);
                     
+
 
 
  
@@ -224,14 +232,18 @@ class Customer extends BaseController
                 'where' => $where_search, 
                 'limit' => $this->perPage 
                 ); 
-                if(isset($userid)){
-                    $conditions['userid'] = $userid;    
-                }
+                 if(!empty($uid))
+                    {
+                        $conditions['uid']       = $uid;     
+                    } 
                 
                 $conditions['form_type'] = $form_type; 
                 $conditions['followup_type'] = @$followup_type; 
                     
                 $data['customers'] = $this->customer_model->getRows($conditions); 
+
+                
+
 
                 $data['pagination_total_count'] =  $totalRec;
                    
@@ -359,6 +371,8 @@ class Customer extends BaseController
             }
 
         $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type');
+        
+
         $where = array();
         $where['last_follow_date'] =  $current_date = date('Y-m-d');
         $where['assigned_to'] =  $userid;
@@ -368,15 +382,17 @@ class Customer extends BaseController
 
 
 
+
             $data_param = array();
             $data_param['userid']       =  $userid;
             $data_param['stat_type']    = 'followup';
             $data_param['followup_type']= 'yesterday'; 
+            $data_param['calltype']= $data['calltypes']; 
             $result =   $this->customer_call_model->callSummary($data_param);
             $follow_up_missed = count($result);
             $data['follow_up_missed'] = $follow_up_missed ; 
-             
-
+            $data['follow_up_missed_sub'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'followup','yesterday');
+              
             $data_param = array();
             $data_param['userid']       =  $userid;
             $data_param['stat_type']    = 'followup';
@@ -384,6 +400,7 @@ class Customer extends BaseController
             $result =   $this->customer_call_model->callSummary($data_param);
             $follow_up_due_today = count($result);
               $data['follow_up_due_today'] = $follow_up_due_today ; 
+              $data['follow_up_due_today_sub'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'followup','today');
              
             $data_param = array();
             $data_param['userid']       =  $userid;
@@ -393,10 +410,14 @@ class Customer extends BaseController
              
 
             $follow_up_due_tomorrow = count($result);
-            $data['follow_up_due_tomorrow'] = $follow_up_due_tomorrow ; 
-             
-
-             
+            $data['follow_up_due_tomorrow'] = $follow_up_due_tomorrow ;
+            $data['follow_up_due_tomorrow_sub'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'followup','tomorrow'); 
+            
+      /*      echo "<pre>";
+            print_r($data['follow_up_due_tomorrow_sub']);
+            echo "</pre>";
+die;
+         */    
             
         $this->global['pageTitle'] = 'Add New customer';
         $this->loadViews("admin/customer/addnew", $this->global, $data , NULL);
@@ -408,8 +429,8 @@ class Customer extends BaseController
     {
         $this->isLoggedIn();
 
-        $userid = $this->session->userdata('userId');
-        $company_id = $this->session->userdata('company_id');
+        $userid         = $this->session->userdata('userId');
+        $company_id     = $this->session->userdata('company_id');
 		$this->load->library('form_validation');            
         $this->form_validation->set_rules('customer_name','customer_name','trim|required');
         $this->form_validation->set_rules('customer_mobile','customer_mobile','trim|required');
@@ -422,8 +443,9 @@ class Customer extends BaseController
         $this->form_validation->set_rules('call_direction','call_direction','trim|required');
         
         
-        //form data 
         $form_data  = $this->input->post();
+
+        
         if($this->form_validation->run() == FALSE)
         {
             $this->addnew();
@@ -436,6 +458,24 @@ class Customer extends BaseController
             if(isset($form_data['farmser_id2']) && $form_data['farmser_id2'] !=='')
             {
                 $farmer_id = $form_data['farmser_id2'];
+
+                    $insertData = array();
+                    $insertData['id']               = $farmer_id;
+                    $insertData['name']             = $form_data['customer_name'];
+                    $insertData['mobile']           = $form_data['customer_mobile'];
+                    $insertData['alt_mobile']       = $form_data['customer_alter_mobile'];
+                    $insertData['city_id']          = $form_data['city'];
+                    $insertData['other_city']       = $form_data['other_city'];
+                    $insertData['state_id']         = $form_data['state'];
+                    $insertData['other_state']      = $form_data['other_state'];
+                    $insertData['other_district']   = $form_data['other_district'];
+                    $insertData['district_id']      = $form_data['district'];
+                    $insertData['update_at']          = date("Y-m-d H:i:s");
+                    $insertData['company_id']       =   $company_id;
+                    $insertData['update_by']       = $userid;
+
+                    $result_added = $this->farmers_model->save($insertData);
+                    //$farmer_id = $result_added;
             }else
             {
                 $where = array();
@@ -447,71 +487,70 @@ class Customer extends BaseController
                 {   
                         $insertData = array();
 
-                        $insertData['name']         = $form_data['customer_name'];
-                        $insertData['mobile']       = $form_data['customer_mobile'];
-                        $insertData['alt_mobile']   = $form_data['customer_alter_mobile'];
-                        $insertData['city_id']      = $form_data['city'];
-                        $insertData['other_city']   = $form_data['other_city'];
-                        $insertData['state_id']     = $form_data['state'];
-                        $insertData['other_state']  = $form_data['other_state'];
-                        $insertData['other_district']= $form_data['other_district'];
-                        $insertData['district_id']  = $form_data['district'];
-                        $insertData['date_at']      = date("Y-m-d H:i:s");;
-                        $insertData['status']       = 1;
+                        $insertData['name']             = $form_data['customer_name'];
+                        $insertData['mobile']           = $form_data['customer_mobile'];
+                        $insertData['alt_mobile']       = $form_data['customer_alter_mobile'];
+                        $insertData['city_id']          = $form_data['city'];
+                        $insertData['other_city']       = $form_data['other_city'];
+                        $insertData['state_id']         = $form_data['state'];
+                        $insertData['other_state']      = $form_data['other_state'];
+                        $insertData['other_district']   = $form_data['other_district'];
+                        $insertData['district_id']      = $form_data['district'];
+                        $insertData['date_at']          = date("Y-m-d H:i:s");;
+                        $insertData['status']           = 1;
                         $insertData['company_id']       =   $company_id;
-                        $insertData['created_by']      = $userid;
-
+                        $insertData['created_by']       = $userid;
                         $result_added = $this->farmers_model->save($insertData);
                         $farmer_id = $result_added;
                 }else
                 {
+                    
+                    $farmer_id  =   $exist_mobile[0]->id;
+
                     $this->session->set_flashdata('error', 'Farmer Already Added');
                     $this->addnew();
                 }
 
             }
             
-            if($farmer_id )
-               {
+
+            $insertData             =  array();
+            $meassage = '';
+
+            //fetch data from tables origin
 
 
 
+            if(isset($form_data['farmser_id2']) && $form_data['farmser_id2'] !=='')
+            {
 
+                
                 $where = array();
-                $where['farmer_id']= $farmer_id;
-                $where['company_id']= $company_id;
-                $where['orderby']= '-id';
-                $exist_customer   = $this->customer_model->findDynamic($where);
 
-                 $insertData     =  array();
-                if(empty($exist_customer))
-                {
-                    
-                    $insertData['farmer_id']             = $farmer_id;
-                    $insertData['customer_name']         = $form_data['customer_name'];
-                    $insertData['customer_title']        = ucfirst($form_data['customer_name']);
-                    $insertData['customer_mobile']       = $form_data['customer_mobile'];
-                    $insertData['customer_alter_mobile'] = $form_data['customer_alter_mobile'];
-                    $insertData['state']                 = $form_data['state'];
-                    $insertData['other_state']           = $form_data['other_state'];
-                    $insertData['district']              = $form_data['district'];
-                    $insertData['other_district']        = $form_data['other_district'];
-                    $insertData['city']                  = $form_data['city'];
-                    $insertData['other_city']                  = $form_data['other_city'];
-                    $insertData['status']                = '1';
-                    $insertData['date_at']               = date("Y-m-d H:i:s");
-                    $insertData['created_by']            = $this->session->userdata('userId');
-
-                }else
-                {
+                $where['farmer_id']     = $form_data['farmser_id2'];
+                $where['orderby']       = '-id';
+                $exist_customer         = $this->customer_model->findDynamic($where);
+                 
                     $customer_id = $exist_customer[0]->id;
                     $insertData['id']             = $customer_id;
-                }
+                    $insertData['update_at']               = date("Y-m-d H:i:s");
+                    $insertData['update_by']            = $this->session->userdata('userId');
 
+                    $meassage ='Customer successfully Updated ';
+            }else
+            {
 
-                 
-                    //pre($form_data);exit;
                 
+
+
+                // create ad new inquiry  
+                $insertData['farmer_id']            = $farmer_id;
+                $insertData['status']               = '1';
+                $insertData['date_at']              = date("Y-m-d H:i:s");
+                $insertData['created_by']           = $this->session->userdata('userId');
+                $meassage = 'Customer successfully Added';
+            }
+
                 $insertData['assigned_to']           = $form_data['assign_to'];
                 $insertData['last_call_direction']   = $form_data['call_direction'];
                 $insertData['last_call_type']        = $form_data['call_type'];
@@ -523,10 +562,12 @@ class Customer extends BaseController
                 $insertData['company_id']            = $company_id;
                 $insertData['update_at']             = date("Y-m-d H:i:s");
 
-               
-                 
-                $result = $this->customer_model->save($insertData);
-                if($result > 0)
+                 $result = $this->customer_model->save($insertData);
+
+
+
+
+                 if($result > 0)
                 {
 
                     $insertData = array();
@@ -554,21 +595,15 @@ class Customer extends BaseController
 
 
 
-                    $this->session->set_flashdata('success', 'Customer successfully Added');
+                    $this->session->set_flashdata('success', $meassage );
                 }
                 else
                 { 
                     $this->session->set_flashdata('error', 'Customer Addition failed');
                 }
-                 
-               }
 
-
-
-               
-              
-            redirect(base_url().'admin/customer/addnew');
-            //redirect('admin/customer/addnew'.$redirec_url);
+                redirect(base_url().'admin/customer/addnew');
+             
           }  
         
     } 
@@ -1310,16 +1345,16 @@ class Customer extends BaseController
     public function export_stat()
     {
 
-         $this->isLoggedIn();
+            $this->isLoggedIn();
 
             $uid                = @$this->input->get('uid'); 
             $stat_type          = @$this->input->get('stat_type'); 
             $followup_type      = @$this->input->get('followup_type'); 
-            
-                 $form_type  = $this->input->get('form_type');
-              $conditions = array(); 
-                $where_search = array();
-                
+
+            $form_type  = $this->input->get('form_type');
+            $conditions = array(); 
+            $where_search = array();
+
         if($form_type=='inquiry')
         {
                 $where_search =  array();
@@ -1391,6 +1426,11 @@ class Customer extends BaseController
                     $where_search['last_call_type'] =  $call_type2;
                 }
 
+                if(!empty($uid))
+            {
+                $conditions['uid']           = $uid; 
+            }
+
         }
 
              if(!empty($stat_type))
@@ -1398,10 +1438,7 @@ class Customer extends BaseController
                     $where_search['stat_type'] =  $stat_type;
                 }
 
-            if(!empty($uid))
-            {
-                $conditions['userid']           = $uid; 
-            }
+            
  
             if(!empty($followup_type))
             {
@@ -1439,8 +1476,8 @@ class Customer extends BaseController
 
                     $content.= str_replace(",", " ", date('d M Y',strtotime($value['date_at']))).",";
                     $content.= str_replace(",", " ", $value['farmer_id']).",";
-                    $content.= str_replace(",", " ", $value['customer_name']).",";
-                    $content.= str_replace(",", " ", $value['customer_mobile']).",";
+                    $content.= str_replace(",", " ", $value['farmername']).",";
+                    $content.= str_replace(",", " ", $value['farmermobile']).",";
                     $content.= str_replace(",", " ", $value['district']).",";
                     $content.= str_replace(",", " ", $value['state']).",";
                     $content.= str_replace(",", " ", $value['calldir']).",";
