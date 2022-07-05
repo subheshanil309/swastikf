@@ -135,7 +135,7 @@ class Company extends BaseController
                      if(strlen($form_data['link_socials_value'][$i]) >0 && strlen($form_data['socials_keys'][$i])> 0){
                         $singledata = array();
                         $singledata['title'] = ucwords(strtolower($form_data['socials_keys'][$i]));
-                        $singledata['url'] = (strtolower($form_data['link_socials_value'][$i]));
+                        $singledata['url'] = (($form_data['link_socials_value'][$i]));
                         $social_url[] = $singledata;
                      }
                  }
@@ -448,14 +448,14 @@ class Company extends BaseController
                      if(strlen($form_data['link_socials_value'][$i]) >0 && strlen($form_data['socials_keys'][$i])> 0){
                         $singledata = array();
                         $singledata['title'] = ucwords(strtolower($form_data['socials_keys'][$i]));
-                        $singledata['url'] = (strtolower($form_data['link_socials_value'][$i]));
+                        $singledata['url'] = (($form_data['link_socials_value'][$i]));
                         $social_url[] = $singledata;
                      }
                  }
             }
              $insertData['social_url']      =  json_encode($social_url);
 
-             
+
             if(isset($_FILES['logo']['name']) && $_FILES['logo']['name'] != '') {
 
                 $f_name         =$_FILES['logo']['name'];
