@@ -343,6 +343,14 @@ class Base_model extends CI_Model{
                 $this->db->limit($v);
 
             }
+            // group_by
+
+            if($key == 'groupby')
+
+            {
+                        $this->db->group_by($v); 
+
+            }
 
 
 
@@ -366,7 +374,7 @@ class Base_model extends CI_Model{
 
             // where
 
-            if($key != 'field' AND $key != 'orderby' AND $key != 'limit' AND $key != 'table' AND $key != 'like')
+            if($key != 'groupby' AND $key != 'field' AND $key != 'orderby' AND $key != 'limit' AND $key != 'table' AND $key != 'like')
 
             {
 

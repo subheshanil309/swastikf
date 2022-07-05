@@ -1,3 +1,18 @@
+<style>
+   #socialresult .remove {
+   position: relative;
+   right: -15px;
+   font-size: 20px;
+   top: -55px;
+   float: right;
+   }
+   .social
+   {
+   padding: 10px;
+   border: 1px solid #ccc;
+   border-radius: 5px;
+   }
+</style>
 <div class="page-content">
    <div class="container-fluid">
       <div class="row">
@@ -48,8 +63,8 @@
       <div class="row">
          <div class="col-xl-12">
             <div class="row">
-               <div class="col-lg-12">
-                  <form  action="<?php echo base_url() ?>admin/company/insertnow" method="post" role="form" enctype="multipart/form-data"  >
+               <form  action="<?php echo base_url() ?>admin/company/insertnow" method="post" role="form" enctype="multipart/form-data"  >
+                  <div class="col-lg-12">
                      <div class="card">
                         <h5 class="card-header bg-success text-white border-bottom ">
                            <div class="row ">
@@ -92,7 +107,6 @@
                                     </div>
                                  </div>
                               </div>
-                               
                               <div class="col-sm-3">
                                  <div class="row">
                                     <label for="state" class="col-sm-4 col-form-label">State<span class="text-danger">*</span></label>
@@ -137,7 +151,7 @@
                                  </div>
                               </div>
                               <div class="col-sm-3">
-                                   <div class="row">
+                                 <div class="row">
                                     <label for="gst_no" class="col-sm-4 col-form-label">GSTIN</label>
                                     <div class="col-sm-8">
                                        <input type="text" class="form-control form-control-sm" id="gst_no" placeholder="GST IN" name="gst_no" value="<?php echo set_value('gst_no'); ?>">
@@ -160,7 +174,7 @@
                                     </div>
                                  </div>
                               </div>
-                                <div class="col-sm-3">
+                              <div class="col-sm-3">
                                  <div class="row mb-1">
                                     <label for="bank_name" class="col-sm-4 col-form-label">Bank Name</label>
                                     <div class="col-sm-8">
@@ -168,16 +182,14 @@
                                     </div>
                                  </div>
                               </div>
-                               <div class="col-sm-3">
-                                <div class="row mb-1">
+                              <div class="col-sm-3">
+                                 <div class="row mb-1">
                                     <label for="bank_branch_address" class="col-sm-4 col-form-label">Branch Address</label>
                                     <div class="col-sm-8">
-                                        <textarea class="form-control form-control-sm" id="bank_branch_address" placeholder="Branch Address" name="bank_branch_address"><?php echo set_value('bank_branch_address'); ?></textarea>
+                                       <textarea class="form-control form-control-sm" id="bank_branch_address" placeholder="Branch Address" name="bank_branch_address"><?php echo set_value('bank_branch_address'); ?></textarea>
                                     </div>
                                  </div>
                               </div>
-                              
-                              
                               <div class="col-sm-3">
                                  <div class="row">
                                     <label for="bank_account_number" class="col-sm-4 col-form-label">Bank Acc.No</label>
@@ -210,7 +222,6 @@
                                     </div>
                                  </div>
                               </div>
-                               
                               <div class="col-sm-3">
                                  <div class="row">
                                     <label for="status1" class="col-sm-4 col-form-label">Status</label>
@@ -227,17 +238,17 @@
                         <div class="col-sm-12">
                         </div>
                      </div>
-                      
-               </div>
-                <div class="card">
-                   <h5 class="card-header bg-success text-white border-bottom ">
+                  </div>
+                  <div class="col-lg-12">
+                     <div class="card">
+                        <h5 class="card-header bg-success text-white border-bottom ">
                            <div class="row ">
                               <div class="col-sm-9">
                                  Add  Images
                               </div>
                            </div>
                         </h5>
-                         <div class="card-body">
+                        <div class="card-body">
                            <div class="row">
                               <div class="col-sm-3">
                                  <div class="row">
@@ -253,22 +264,50 @@
                                     <label for="seal_logo" class="col-sm-4 col-form-label">Seal Logo<span class="text-danger">*</span></label>
                                     <div class="col-sm-8"> 
                                        <input type="file" class="form-control form-control-sm" id="seal_logo" onchange="readURL(this)"   name="seal_logo" placeholder="Seal Logo" required />
-                                      <img id="seal_logo_src" class="img-thumbnail"  />
-
+                                       <img id="seal_logo_src" class="img-thumbnail"  />
                                     </div>
                                  </div>
                               </div>
                            </div>
-                          </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                      <div class="float-end">
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-lg-12">
+                     <div class="card">
+                        <h5 class="card-header bg-success text-white border-bottom ">
+                           <div class="row ">
+                              <div class="col-sm-9">
+                                 Add  Social
+                              </div>
+                           </div>
+                        </h5>
+                        <div class="card-body">
+                           <div class="row" id="socialresult">
+                              <div class="socials col-md-3">
+                                 Add Social 1
+                                 <div class="row">
+                                    <label for="socials1"  class="col-sm-4"> 
+                                    <input type="text" value = '' class="form-control form-control-sm" id="socials_key1" name="socials_keys[]" placeholder="Key Title "> 
+                                    </label> 
+                                    <div class="col-sm-8"> 
+                                       <input type="text"   value = '' class="form-control form-control-sm" id="socials_value1" name="link_socials_value[]"  placeholder="URL Eg:www.facebook.com" > 
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <br>
+                           <button type="button" id="add_more" class="btn btn-sm btn-success rounded" value="Add More Files">Add More</button>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <div class="float-end">
                            <input type="submit" class="btn btn-primary btn-sm" value="Submit" />
                            <input type="reset" class="btn btn-default btn-sm" value="Reset" />
                         </div>
-                    </div>
-                </div>
+                     </div>
+                  </div>
                </form>
             </div>
          </div>
@@ -279,16 +318,34 @@
 </div>
 <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
 <script >
-
-  var id = $(input).attr('id');
-     var max_size = 2000000;
-           file_validation(id,max_size);
-
-function readURL(input) {
+   $(document).on('click','#add_more', function(){
+          
+         var id= $('.socials').length+1;
+         $("form #socialresult").append('\
+                <div class="socials col-md-3">\
+                Add Social '+id+'\
+                <div class="row">\
+                     <label for="socials'+id+'"  class="col-sm-4">\
+                        <input type="text" value ="" class="form-control form-control-sm" id="socials_key'+id+'" name="socials_keys[]" placeholder="Key Title ">\
+                     </label>\
+                     <div class="col-sm-8">\
+                        <input type="text" value ="" class="form-control form-control-sm" id="socials_value'+id+'" name="link_socials_value[]"  placeholder="URL Eg:www.facebook.com" >\
+                     </div>\
+                     </div>\
+                     <span class="remove removeDiv" style="cursor:pointer;"><i class="fa fa-times" aria-hidden="true"></i></span>\
+                     <span class="invalid-feedback socials'+id+'"></span>\
+                </div>');
+      });
+      $(document).on('click','.removeDiv', function(){
+         $(this).parent().remove();
+      });
+   
+   
+   function readURL(input) {
     var id = $(input).attr('id');
      var max_size = 2000000;
            file_validation(id,max_size);
-
+   
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
@@ -299,7 +356,7 @@ function readURL(input) {
             
         }
     }
-  function file_validation(id,max_size)
+   function file_validation(id,max_size)
    {
        var fuData = document.getElementById(id);
        var FileUploadPath = fuData.value;

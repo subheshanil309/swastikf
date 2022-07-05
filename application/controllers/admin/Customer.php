@@ -10,6 +10,7 @@ class Customer extends BaseController
     {
         parent::__construct();
         $this->load->model('admin/customer_model');
+        $this->load->model('admin/booking_model');
         $this->load->model('admin/farmers_model');
         $this->load->model('admin/city_model');
         $this->load->model('admin/state_model');
@@ -51,14 +52,134 @@ class Customer extends BaseController
  
 
             $data['edit_data'] = array();
+            $data['section'] = $this->input->get('section');
             $data['customer_call_dtl'] = array();
 
             $form_type  = $this->input->get('form_type');
             $conditions = array(); 
             $where_search = array();
                 
-        if($form_type=='inquiry')
-        {
+
+         if($data['section']=='booking')
+         {
+            $uid         = $this->input->get('uid');
+            if(isset($uid) && $uid !=='')
+            {
+                 $userid   = $uid;
+            } 
+
+            $where_search   =  array();
+            $conditions     =  array();
+            $booking_type   = @$this->input->get('booking_type');
+
+            if(!empty($booking_type))
+            {
+                $where_search['booking_type'] =  $booking_type;
+            }
+            
+
+            $conditions['returnType']   = 'count';
+            if(!empty($uid))
+            {
+                $conditions['uid']       = $uid;     
+            } 
+
+            $conditions['where']            = $where_search;  
+             
+            $totalRec = $this->booking_model->getRows($conditions);
+            
+
+
+             $this->load->library('pagination'); 
+
+                $conditions = array(); 
+                
+                $uriSegment = 4; 
+
+                // Get record count 
+                
+
+                // Pagination configuration 
+                $config['base_url']    = base_url().'admin/customer/addnew/'; 
+                $config['uri_segment'] = $uriSegment; 
+                $config['total_rows']  = $totalRec; 
+                $config['per_page']    = $this->perPage; 
+                $config['use_page_numbers'] = TRUE;
+                $config['reuse_query_string'] = TRUE;
+             
+
+ 
+  
+
+
+            $config['full_tag_open'] = ' <ul class="pagination  justify-content-center mt-4" id="query-pagination">';
+            $config['full_tag_close'] = '</ul> ';
+             
+            $config['first_link'] = 'First&nbsp;Page';
+            $config['first_tag_open'] = '<li class="page-item">  ';
+            $config['first_tag_close'] = '</li>';
+             
+            $config['last_link'] = 'Last&nbsp;Page';
+            $config['last_tag_open'] ='<li class="page-item">  ';
+            $config['last_tag_close'] = '</li>';
+             
+            $config['next_link'] = 'Next';
+            $config['next_tag_open'] = '<li class="page-item"> ';
+            $config['next_tag_close'] = ' </li>';
+ 
+            $config['prev_link'] = 'Previous';
+            $config['prev_tag_open'] = '<li class="page-item"> ';
+            $config['prev_tag_close'] = '</li>';
+ 
+            $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link active">';
+            $config['cur_tag_close'] = '</a></li>';
+ 
+            $config['num_tag_open'] = '<li class="page-item"> ';
+            $config['num_tag_close'] = ' </li>';
+
+                // Initialize pagination library 
+                $this->pagination->initialize($config); 
+                
+              
+
+                // Define offset 
+                $page = $this->uri->segment($uriSegment); 
+                $offset = (!$page)?0:$page; 
+
+                if($offset != 0){
+                    $offset = ($offset-1) * $this->perPage;
+                }
+
+                // Get records 
+                $conditions = array( 
+                'start' => $offset, 
+                'where' => $where_search, 
+                'limit' => $this->perPage 
+                ); 
+                 if(!empty($uid))
+                    {
+                        $conditions['uid']       = $uid;     
+                    } 
+                
+                
+                    
+                $data['bookings'] = $this->booking_model->getRows($conditions); 
+
+ 
+                
+
+
+                $data['pagination_total_count'] =  $totalRec;
+
+
+                $where_search = array();
+
+           
+
+         }else
+         {
+                if($form_type=='inquiry')
+                {
 
 
              $uid         = $this->input->get('uid');
@@ -240,15 +361,14 @@ class Customer extends BaseController
                 $conditions['form_type'] = $form_type; 
                 $conditions['followup_type'] = @$followup_type; 
                     
-                $data['customers'] = $this->customer_model->getRows($conditions); 
-
-                
-
-
+                $data['customers'] = $this->customer_model->getRows($conditions);
                 $data['pagination_total_count'] =  $totalRec;
                    
  
 
+         }
+          
+        
 
 
          $form_type  = $this->input->get('form_type');
@@ -370,16 +490,69 @@ class Customer extends BaseController
                  $userid = $this->session->userdata('userId');
             }
 
-        $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type');
+            $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type');
         
 
-        $where = array();
-        $where['last_follow_date'] =  $current_date = date('Y-m-d');
-        $where['assigned_to'] =  $userid;
-        $where['field'] = 'id';
-        $data['total_calls'] = $this->customer_model->findDynamic($where);; 
-         $data['total_calls'] = count($data['total_calls']);
+            $where = array();
+            $where['last_follow_date'] =  $current_date = date('Y-m-d');
+            $where['assigned_to'] =  $userid;
+            $where['farmer_id !='] =  '';
+            $where['field'] = 'id';
+            $total_calls  = $this->customer_model->findDynamic($where);; 
+            $data['total_calls'] = count($total_calls);
 
+            $where = array();
+            $where['last_follow_date'] =  $current_date = date('Y-m-d');
+            $where['assigned_to'] =  $userid;
+            $where['farmer_id !='] =  '';
+            $where['field'] = 'id';
+            $where['groupby'] = 'farmer_id';
+            $total_customer  = $this->customer_model->findDynamic($where);; 
+            $data['total_customer'] = count($total_customer);
+
+            /*fetch data of todays booked*/
+            $where = array();
+            $where['create_date'] =  $current_date;
+            $where['field'] = 'id';
+            $today_booking  = $this->booking_model->findDynamic($where);; 
+            $data['today_booking'] = count($today_booking); 
+
+            /*fetch data of within 7 days booked*/
+            $where = array();
+            $booded_start_date = date('Y-m-d',strtotime("-7 days"));
+            $booded_end_date  = date('Y-m-d');
+            $where['create_date >='] =  $booded_start_date;
+            $where['create_date <='] =  $booded_end_date;
+            $where['field'] = 'id';
+            $week_booking  = $this->booking_model->findDynamic($where);; 
+            $data['week_booking'] = count($week_booking);
+
+            /*fetch data of this months of booking*/
+             $where = array();
+            $currentmonth = date("Y-m");
+
+            $booded_start_date     = $currentmonth."-01";
+            $booded_end_date       =$currentmonth."-31";
+
+            $where['create_date >='] =  $booded_start_date;
+            $where['create_date <='] =  $booded_end_date;
+            $where['field'] = 'id';
+            $this_month_booking  = $this->booking_model->findDynamic($where);; 
+            $data['this_month_booking'] = count($this_month_booking);
+
+ /*fetch data of previous months of booking*/
+             $where         = array();
+            $currentdate    = date("Y-m-d");
+
+            $prevcurrentdate= date("Y-m", strtotime ( '-1 month' , strtotime ( $currentdate ) )) ;
+            $booded_start_date     = $prevcurrentdate."-01";
+            $end_date       = $prevcurrentdate."-31";
+
+            $where['create_date >='] =  $booded_start_date;
+            $where['create_date <='] =  $end_date;
+            $where['field'] = 'id';
+            $previous_month_booking  = $this->booking_model->findDynamic($where);; 
+            $data['previous_month_booking'] = count($previous_month_booking);
 
 
 

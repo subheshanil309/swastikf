@@ -420,6 +420,14 @@ print_r($customer_call_dtl);  */
                                <div class="flex-grow-1">
                                         <a href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=all<?=$uuid?>">
                                           <div class="float-end">
+                                          <p class="text-primary mb-0"><?php echo @$total_customer+0;?></p>
+                                          </div>
+                                        <p class="text-primary mb-0">Total Customer</p>
+                                        </a>
+                                     </div> 
+                                     <div class="flex-grow-1">
+                                        <a href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=allcall<?=$uuid?>">
+                                          <div class="float-end">
                                           <p class="text-primary mb-0"><?php echo @$total_calls+0;?></p>
                                           </div>
                                         <p class="text-primary mb-0">Total Calls</p>
@@ -556,58 +564,237 @@ print_r($customer_call_dtl);  */
                            <h4 class="card-title    p-1  bg-success text-white">Booking Summary:</h4>
 
                             <div class="flex-grow-1">
-                              <div class="float-end">
-                                 <p class="text-primary mb-0">0</p>
+                              <a href="<?php echo base_url()?>admin/customer/addnew?section=booking&booking_type=today<?php echo $uuid?>">
+                                <div class="float-end">
+                                 <p class="text-primary mb-0"><?php echo @$today_booking;?></p>
                               </div>
                               <p class="text-primary mb-0">Today's Booking</p>
+                              </a>
                            </div>
                            <div class="flex-grow-1">
+
+                            <a href="<?php echo base_url()?>admin/customer/addnew?section=booking&booking_type=week<?php echo $uuid?>">
                               <div class="float-end">
-                                 <p class="text-primary mb-0">0</p>
+                                 <p class="text-primary mb-0"><?php echo @$week_booking;?></p>
                               </div>
                               <p class="text-primary mb-0">Last 7 Days</p>
+                            </a>
                            </div>
                            <div class="flex-grow-1">
+                            <a href="<?php echo base_url()?>admin/customer/addnew?section=booking&booking_type=month<?php echo $uuid?>">
                               <div class="float-end">
-                                 <p class="text-primary mb-0">0</p>
+                                 <p class="text-primary mb-0"><?php echo @$this_month_booking;?></p>
                               </div>
                               <p class="text-primary mb-0">This Month</p>
+                            </a>
                            </div>
                            <div class="flex-grow-1">
+                              <a href="<?php echo base_url()?>admin/customer/addnew?section=booking&booking_type=previous_month<?php echo $uuid?>">
                               <div class="float-end">
-                                 <p class="text-primary mb-0">0</p>
+                                 <p class="text-primary mb-0"><?php echo @$previous_month_booking;?></p>
                               </div>
                               <p class="text-primary mb-0">Previous Month</p>
+                            </a>
                            </div>
                          </div>
                      </div>
                   </div>
                </div>
             </div>
-            <div class="row">
+            <?php
+              
+
+              if(@$section=='booking'){
+                ?>
+                  <div class="row">
+               <div class="col-lg-12">
+                  <div class="card">
+ 
+                      <h5 class="card-header bg-success text-white border-bottom ">
+                         <div class="row ">
+                           <div class="col-sm-6">
+                            Booking
+                           </div>
+                           
+                           <div class="col-sm-6">
+                            <div class="float-end">
+                                <a href="<?php echo base_url()?>admin/customer/addnew" class="btn btn-info btn-sm">Clear</a> 
+                            </div>
+                         </div>
+                       </h5>
+
+ 
+                     
+                       <div class="card-body">
+                        
+                        <div class="table-responsive mytablestyle">
+                          
+                           <table class="table align-middle table-nowrap mb-0 table-striped" id="example">
+                              <thead class="table-light">
+                                 <tr>
+                                    <th class="align-middle bg-success text-white">Action</th>
+                                    <th class="align-middle bg-success text-white">Booking No.</th>
+                                    <th class="align-middle bg-success text-white">Booking Status</th>
+                                    <th class="align-middle bg-success text-white">Crop Status</th>
+                                    <th class="align-middle bg-success text-white">Customer Id</th>
+                                    <th class="align-middle bg-success text-white">Customer Name </th>
+                                    <th class="align-middle bg-success text-white">Executive</th>
+                                    <th class="align-middle bg-success text-white">Choose Product</th>
+                                    <th class="align-middle bg-success text-white">Primary number</th>
+                                    <th class="align-middle bg-success text-white">Number</th>
+                                    <th class="align-middle bg-success text-white">Village</th>
+                                    <th class="align-middle bg-success text-white">Pincode</th>
+                                    <th class="align-middle bg-success text-white">Choose State</th>
+                                    <th class="align-middle bg-success text-white">Choose District</th>
+                                    <th class="align-middle bg-success text-white">Choose Tehsil</th>
+                                    <th class="align-middle bg-success text-white">Booking Date</th>
+                                    <th class="align-middle bg-success text-white">Payment Mode</th>
+                                    <th class="align-middle bg-success text-white">Plants Booked</th>
+                                    <th class="align-middle bg-success text-white">Plant Rate</th>
+                                    <th class="align-middle bg-success text-white">Total Billed Amount</th>
+                                    <th class="align-middle bg-success text-white">Discount Amount</th>
+                                    <th class="align-middle bg-success text-white">Received Amount</th>
+                                    <th class="align-middle bg-success text-white">Outstanding Amount</th>
+                                    <th class="align-middle bg-success text-white">Expected Delivery Date</th>
+                                    <th class="align-middle bg-success text-white">Actual Delivery Date</th>
+                                    <th class="align-middle bg-success text-white">Vehicle No.</th>
+                                    <th class="align-middle bg-success text-white">Delivery Status</th>
+                                    <th class="align-middle bg-success text-white">Contract Status</th>
+                                    <th class="align-middle bg-success text-white">Document</th>
+                                    <th class="align-middle bg-success text-white">Assigned To</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                <?php
+                                    if(!empty($bookings)){
+                                           foreach($bookings as $bookings){ ?>
+                                    <tr>
+                                       <td>
+                                          <div class="btn-group">
+                                             <span class="badge bg-primary dropdown-toggle text-white dropdown-toggle" type="button"  data-bs-toggle="dropdown" aria-expanded="false">
+                                             Action<i class="mdi mdi-chevron-down"></i>
+                                             </span>
+                                             <div class="dropdown-menu" style="">
+                                                <a class="dropdown-item btn" target="_BLANK" href="<?php echo base_url()?>admin/bookings/receipt/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Generate Receipt</a>
+                                                <a class="dropdown-item btn"  target="_BLANK" href="<?php echo base_url()?>admin/bookings/view/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-eye" aria-hidden="true"></i> View Order Details</a>
+                                                <a class="dropdown-item btn"  target="_BLANK" href="<?php echo base_url()?>admin/bookings/agreement/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-file-excel" aria-hidden="true"></i> Generate Agreement</a>
+                                                  
+                                                 
+                                             </div>
+                                          </div>
+                                       </td>
+                                       <td>
+                                        <a class="" href="<?php echo base_url()?>admin/bookings/<?php echo $bookings['id']; ?>/edit" data-userid="<?php echo $bookings['id']; ?>"><?php echo $bookings['id'];?></a>
+                                        </td>
+                                         <td><span class="badge bg-<?php echo $bookings['booked_badges'];?> "><?php echo $bookings['booked_status'];?></span></td>
+                                         <td><?php echo $bookings['cropstatusname'];?></td>
+
+                                         <td><?php echo $bookings['farmer_id'];?></td>
+                                         <td><?php echo $bookings['customer_name'];?></td>
+                                         <td><?php echo $bookings['executive'];?></td>
+                                         <td><?php echo $bookings['productname'];?></td>
+                                          <td><?php echo $bookings['customer_mobile'];?></td>
+                                       <td><?php echo $bookings['customer_alter_mobile'];?></td>
+                                        <td><?php echo $bookings['billing_address'];?></td>
+                                       <td><?php echo ($bookings['state']);?></td>
+                                       <td><?php echo  ($bookings['district']);?></td>
+                                       <td><?php echo  ($bookings['city']);?></td>
+                                       <td><?php echo $bookings['pincode'];?></td>
+                                       <td><?php echo ($bookings['booking_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['booking_date'])) :'';?></td>
+                                       <td><?php echo $bookings['paymentmodename'];?></td>
+
+                                        <td><?php echo $bookings['quantity'];?></td>
+                                       <td><?php echo $bookings['price'];?></td>
+                                       <td><?php echo $bookings['total'];?></td>
+                                       <td><?php echo $bookings['discount'];?></td>
+                                       <td><?php echo $bookings['total_paid_amount'];?></td>
+                                       <td><span class='<?php if($bookings['outstanding_amount'] <0){ echo "text-danger";}?>'><?php echo $bookings['outstanding_amount'];?></span></td>
+                                       <td>
+                                          <?php 
+                                             if(isset($bookings['delivery_expect_start_date']) && isset($bookings['delivery_expect_end_date']))
+                                             {
+                                               echo ($bookings['delivery_expect_start_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_expect_start_date'])) :'';?> To <?php 
+                                             echo ($bookings['delivery_expect_end_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_expect_end_date'])) :''; 
+                                             }
+                                             ?>
+                                       </td>
+                                       <td><?php echo ($bookings['delivery_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_date'])) :'';?> </td>
+                                       <td><?php echo $bookings['vehicle_no'];?></td>
+                                       <td></td>
+                                       <td><?php echo $bookings['contractstatusname'];?></td>
+                                        
+                                       <td>
+                                          <?php 
+                                             if($bookings['document'] !=='')
+                                             {
+                                               ?>
+                                          <a target="_BLANK" download class="text-primary"  href="<?php echo base_url()?>uploads/admin/document/<?php echo $bookings['document'];?>">Download <i class="fa fa-download" aria-hidden="true"></i><a>
+                                          <?php
+                                             }
+                                             ?>
+                                       </td>
+                                       <td><?php echo $bookings['assignedto'];?></td>
+                                         
+
+
+                                    </tr>
+                                    <?php } }else{ ?>
+                                    <tr>
+                                       <td colspan="100">customers (s) not found...
+                                       <td>
+                                    </tr>
+                                    <?php }
+
+                                     ?>
+                             
+                              </tbody>
+                           </table>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-3">
+                              <ul class="pagination  justify-content-left mt-4"  >
+                                 <li class="">
+                                    <p><?php echo @$pagination_total_count; ?> Bookings. </p>
+                                 </li>
+                              </ul>
+                          </div>
+                          <div class="col-sm-9">
+                            <?php echo $this->pagination->create_links(); ?>  
+                          </div>
+                        </div>
+                      </div>
+                     
+                  </div>
+                </div>
+              </div>
+                <?php
+              }else
+              {
+                ?>
+                   <div class="row">
                <div class="col-lg-12">
                   <div class="card">
                     <form method="GET" action="<?php echo base_url()?>admin/customer/addnew">
 
                       <h5 class="card-header bg-success text-white border-bottom ">
-               <div class="row ">
-                 <div class="col-sm-6">
-                  Inquiries
-                 </div>
-                 
-                 <div class="col-sm-6">
-                  <div class="float-end">
-                     
-                      <a href="<?php echo base_url()?>admin/customer/export_stat?<?php echo $_SERVER['QUERY_STRING']?>" class="btn btn-info btn-sm">Export</a> 
-                     
-                  
-                  <a href="<?php echo base_url()?>admin/customer/addnew" class="btn btn-info btn-sm">Clear</a> 
-                  <button type="submit" class="btn btn-primary btn-sm"> <i class="fa fa-search"></i> Submit Filter</button>
-                  <input name="form_type" type="hidden" value="inquiry">
-                  </div>
-                 </div>
-               </div>
-             </h5>
+                         <div class="row ">
+                           <div class="col-sm-6">
+                            Inquiries
+                           </div>
+                           
+                           <div class="col-sm-6">
+                            <div class="float-end">
+                               
+                                <a href="<?php echo base_url()?>admin/customer/export_stat?<?php echo $_SERVER['QUERY_STRING']?>" class="btn btn-info btn-sm">Export</a> 
+                               
+                            
+                            <a href="<?php echo base_url()?>admin/customer/addnew" class="btn btn-info btn-sm">Clear</a> 
+                            <button type="submit" class="btn btn-primary btn-sm"> <i class="fa fa-search"></i> Submit Filter</button>
+                            <input name="form_type" type="hidden" value="inquiry">
+                            </div>
+                           </div>
+                         </div>
+                       </h5>
 
  
                      
@@ -684,22 +871,18 @@ print_r($customer_call_dtl);  */
                                            ?>
                                       </select>
                                     </th>
-                                    
-                               <th class="align-middle bg-success text-white" >Followup date</th>
-                               <th class="align-middle bg-success text-white" >Assigned to</th>
-                               <th class="align-middle bg-success text-white" >Entry made by</th>
-                               <th class="align-middle bg-success text-white" >Entry Date</th>
-                               <th class="align-middle bg-success text-white" >Last Follower</th>
-                               <th class="align-middle bg-success text-white" >Last Call Type</th>
-                               </tr>
-                              </thead>
-                              <tbody>
+                                      <th class="align-middle bg-success text-white" >Followup date</th>
+                                      <th class="align-middle bg-success text-white" >Assigned to</th>
+                                      <th class="align-middle bg-success text-white" >Entry made by</th>
+                                      <th class="align-middle bg-success text-white" >Entry Date</th>
+                                      <th class="align-middle bg-success text-white" >Last Follower</th>
+                                      <th class="align-middle bg-success text-white" >Last Call Type</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
                                 <?php
-                               /*   echo "<pre>";
-
-                                  print_r($_SESSION);
-                                  echo "</pre>";*/
-                                 if(!empty($customers)){ foreach($customers as $customer){ ?>
+                                    if(!empty($customers)){ foreach($customers as $customer){ 
+                                      ?>
                                       <tr>
                                         <td>
                                           <div class="btn-group">
@@ -763,14 +946,19 @@ print_r($customer_call_dtl);  */
                             <?php echo $this->pagination->create_links(); ?>  
                           </div>
                         </div>
-                          
                       </div>
-                        <!-- end table-responsive -->
-                     </div>
-                     </form>
+                    </form>
                   </div>
-               </div>
+                </div>
+              </div>
+                <?php
+              }
+
+            ?>
+
             </div>
+
+
          </div>
       </div>
 

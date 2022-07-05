@@ -1,3 +1,18 @@
+<style>
+   #socialresult .remove {
+   position: relative;
+   right: -15px;
+   font-size: 20px;
+   top: -55px;
+   float: right;
+   }
+   .social
+   {
+   padding: 10px;
+   border: 1px solid #ccc;
+   border-radius: 5px;
+   }
+</style>
 <div class="page-content">
    <div class="container-fluid">
       <div class="row">
@@ -48,8 +63,9 @@
       <div class="row">
          <div class="col-xl-12">
             <div class="row">
-               <div class="col-lg-12">
-                  <form  action="<?php echo base_url() ?>admin/company/update" method="post" role="form" enctype="multipart/form-data"  >
+                <form  action="<?php echo base_url() ?>admin/company/update" method="post" role="form" enctype="multipart/form-data"  >
+                  <div class="col-lg-12">
+                 
                      <div class="card">
                         <h5 class="card-header bg-success text-white border-bottom ">
                            <div class="row ">
@@ -229,7 +245,8 @@
                      </div>
                       
                </div>
-                <div class="card">
+               <div class="col-lg-12">
+                  <div class="card">
                    <h5 class="card-header bg-success text-white border-bottom ">
                            <div class="row ">
                               <div class="col-sm-9">
@@ -279,6 +296,53 @@
                            </div>
                           </div>
                 </div>
+               </div>
+
+                  <div class="col-lg-12">
+                     <div class="card">
+                        <h5 class="card-header bg-success text-white border-bottom ">
+                           <div class="row ">
+                              <div class="col-sm-9">
+                                 Add  Social
+                              </div>
+                           </div>
+                        </h5>
+                        <div class="card-body">
+                           <div class="row" id="socialresult">
+                              <?php 
+                                 $socialurls = $edit_data->social_url;
+                                 $socialurls = json_decode($socialurls);
+                                 if(!empty($socialurls))
+                                 {
+                                    $incss = 1;
+                                    foreach ($socialurls as $key => $value) {
+                                        
+                                   
+                                    ?>
+                                    <div class="socials col-md-3">
+                                       <?php echo $value->title?>
+                                       <div class="row">
+                                          <label for="socials<?php echo $incss;?>"  class="col-sm-4"> 
+                                          <input type="text" value = '<?php echo $value->title?>' class="form-control form-control-sm" id="socials_key<?php echo $incss;?>" name="socials_keys[]" placeholder="Key Title "> 
+                                          </label> 
+                                          <div class="col-sm-8"> 
+                                             <input type="text"   value = '<?php echo $value->url;?>' class="form-control form-control-sm" id="socials_value<?php echo $incss;?>" name="link_socials_value[]"  placeholder="URL Eg:www.facebook.com" > 
+                                          </div>
+                                       </div>
+                                       <span class="remove removeDiv" style="cursor:pointer;"><i class="fa fa-times" aria-hidden="true"></i></span>
+                     <span class="invalid-feedback socials<?php echo $incss;?> "></span>
+                                    </div>
+                                    <?php
+                                     }
+                                 }
+                              ?>
+                              
+                           </div>
+                           <br>
+                           <button type="button" id="add_more" class="btn btn-sm btn-success rounded" value="Add More Files">Add More</button>
+                        </div>
+                     </div>
+                  </div>
                 <div class="row">
                     <div class="col-sm-12">
                       <div class="float-end">
@@ -299,9 +363,30 @@
 <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
 <script >
 
-  var id = $(input).attr('id');
-     var max_size = 2000000;
-           file_validation(id,max_size);
+   
+  $(document).on('click','#add_more', function(){
+          
+         var id= $('.socials').length+1;
+         $("form #socialresult").append('\
+                <div class="socials col-md-3">\
+                Add Social '+id+'\
+                <div class="row">\
+                     <label for="socials'+id+'"  class="col-sm-4">\
+                        <input type="text" value ="" class="form-control form-control-sm" id="socials_key'+id+'" name="socials_keys[]" placeholder="Key Title ">\
+                     </label>\
+                     <div class="col-sm-8">\
+                        <input type="text" value ="" class="form-control form-control-sm" id="socials_value'+id+'" name="link_socials_value[]"  placeholder="URL Eg:www.facebook.com" >\
+                     </div>\
+                     </div>\
+                     <span class="remove removeDiv" style="cursor:pointer;"><i class="fa fa-times" aria-hidden="true"></i></span>\
+                     <span class="invalid-feedback socials'+id+'"></span>\
+                </div>');
+      });
+      $(document).on('click','.removeDiv', function(){
+         $(this).parent().remove();
+      });
+   
+
 
 function readURL(input) {
     var id = $(input).attr('id');

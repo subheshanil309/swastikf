@@ -252,6 +252,7 @@ class Booking_model extends Base_model
                 {
 
                     $not_array = array();
+                    $not_array[] = 'booking_type';
                     $not_array[] = 'customer_name';
                     $not_array[] = 'billing_address';
                     $not_array[] = 'other_city';
@@ -290,15 +291,63 @@ class Booking_model extends Base_model
 
                     
                     }else{
+
                         $where.= " AND ( c.".$key." = '".$val."' )";
                     }
 
                     
 
                 } 
+
+
+                
                 
 
-                  if(isset($params['where']['customer_name']))
+                  if(isset($params['where']['booking_type']) && $params['where']['booking_type'] !=='')
+                {
+                    switch ($params['where']['booking_type']){
+                        case 'today':
+                            $start_date  = date('Y-m-d');
+                            $end_date  = date('Y-m-d');
+                            $params['where']['start_date'] = $start_date;
+                            $params['where']['end_date']   = $end_date;
+                            break;
+                         case 'week':
+                            $start_date = date('Y-m-d',strtotime("-7 days"));
+                            $end_date  = date('Y-m-d');
+                            $params['where']['start_date'] = $start_date;
+                            $params['where']['end_date']   = $end_date;
+                            break;
+                        case 'month':
+                            $currentmonth = date("Y-m");
+
+                            $start_date     = $currentmonth."-01";
+                            $end_date       =$currentmonth."-31";
+                            
+                            $params['where']['start_date'] = $start_date;
+                            $params['where']['end_date']   = $end_date;
+                            break;
+                        case 'previous_month':
+                            $currentdate = date("Y-m-d");
+
+                            $prevcurrentdate = date("Y-m", strtotime ( '-1 month' , strtotime ( $currentdate ) )) ;
+                            $start_date = $prevcurrentdate."-01";
+                            $end_date =  $prevcurrentdate."-31";
+
+                            $params['where']['start_date'] = $start_date;
+                            $params['where']['end_date']   = $end_date;
+                            break;
+                        
+                        default:
+                             
+                            break;
+                    }
+
+                     
+                    
+                } 
+
+                 if(isset($params['where']['customer_name']))
                 {
                      
                     $this->db->or_like('customer_name', $params['where']['customer_name']);
@@ -349,8 +398,7 @@ class Booking_model extends Base_model
                     $start_date = $params['where']['start_date'];
                     $end_date = $params['where']['end_date'];
                      
-                       /* $this->db->where('order_date >=', $first_date);
-                        $this->db->where('order_date <=', $second_date);*/
+                       
 
                         $where.= " AND ( c.create_date  >='".$start_date."' AND c.create_date  <='".$end_date."' )";
                 }

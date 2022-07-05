@@ -214,10 +214,10 @@ class Customer_model extends Base_model
                     $company_id = $this->session->userdata('company_id');
                     if($role ==1)
                     {
-                        $where.= "( c.status = 1 )";
+                        $where.= "( c.status = 1 AND c.farmer_id !='')";
                     }else
                     {
-                        $where.= "( c.status = 1 AND c.company_id=".$company_id." )";  
+                        $where.= "( c.status = 1 AND c.company_id=".$company_id."  AND c.farmer_id !='')";  
                     }
                     
                     
@@ -329,6 +329,13 @@ class Customer_model extends Base_model
                     {
                         $current_date = date('Y-m-d');
                         $where.= " AND (c.last_follow_date='".$current_date."')";
+                         
+
+                          
+                    }else if($params['where']['stat_type'] =='allcall')
+                    {
+                        $current_date = date('Y-m-d');
+                        $where.= " AND (c.last_follow_date='".$current_date."')";
                     }
                      
                     
@@ -344,15 +351,31 @@ class Customer_model extends Base_model
            
          if(array_key_exists("returnType",$params) && $params['returnType'] == 'count')
          {
-                $result = $this->db->count_all_results(); 
+                if(isset($params['where']['stat_type']) && @$params['where']['stat_type'] =='all')
+                {
+
+                    $this->db->group_by('c.farmer_id'); 
+                }
+
+                //$result = $this->db->count_all_results(); 
+                    $query = $this->db->get(); 
+                    $result = $query->num_rows() ; 
             }else{ 
                 if(array_key_exists("id", $params) || (array_key_exists("returnType", $params) && $params['returnType'] == 'single')){ 
                     if(!empty($params['id'])){ 
                         $this->db->where('id', $params['id']); 
                     } 
+
                     $query = $this->db->get(); 
                     $result = $query->row_array(); 
                 }else{ 
+
+                    if(isset($params['where']['stat_type']) && @$params['where']['stat_type'] =='all')
+                    {
+                          
+                         $this->db->group_by('c.farmer_id'); 
+                    }
+
                     $this->db->order_by('c.update_at', 'desc'); 
                     if(array_key_exists("start",$params) && array_key_exists("limit",$params)){ 
 

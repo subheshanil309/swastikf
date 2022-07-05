@@ -35,7 +35,7 @@
                         <div class="d-flex flex-wrap gap-2 table-responsive">
                            <div class="btn-group" role="group" aria-label="Basic example">
                               <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/create">Add Booking</a>
-                              <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/import" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg2">Import Booking</a>
+                             <!--  <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/import" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg2">Import Booking</a> -->
                               <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/export?<?php echo $_SERVER['QUERY_STRING'];?>">Export Booking</a>
                               <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/advance" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-filter" aria-hidden="true"></i>Advance Search</a> 
                            </div>

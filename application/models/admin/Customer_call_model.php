@@ -212,10 +212,10 @@ class Customer_call_model extends Base_model
                     $company_id = $this->session->userdata('company_id');
                     if($role ==1)
                     {
-                        $where.= "  ( z_customer.status = 1 ) ";
+                        $where.= "  ( z_customer.status = 1 AND z_customer.farmer_id !='') ";
                     }else
                     {
-                        $where.= "( z_customer.status = 1 AND z_customer.company_id=".$company_id." )";  
+                        $where.= "( z_customer.status = 1 AND z_customer.company_id=".$company_id." AND z_customer.farmer_id !='')";  
                     }
                     
 

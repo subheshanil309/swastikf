@@ -103,6 +103,7 @@ class Company extends BaseController
                $this->session->set_flashdata('error', $form_data['email'].' already Exist.');
             }else{
 
+                
             $insertData['name']         = $form_data['name'];
             $insertData['title']         = $form_data['title'];
             $insertData['email']         = $form_data['email'];
@@ -126,7 +127,21 @@ class Company extends BaseController
             $insertData['bank_holder_name']      = $form_data['bank_holder_name'];
             $insertData['bank_ifsc_code']      = $form_data['bank_ifsc_code'];
             $insertData['created_by']      = $userid;
-
+            $social_url = array();
+             
+            if(isset($form_data['link_socials_value']) && !empty($form_data['link_socials_value']))
+            {
+                 for ($i=0; $i < count($form_data['link_socials_value']); $i++){ 
+                     if(strlen($form_data['link_socials_value'][$i]) >0 && strlen($form_data['socials_keys'][$i])> 0){
+                        $singledata = array();
+                        $singledata['title'] = ucwords(strtolower($form_data['socials_keys'][$i]));
+                        $singledata['url'] = (strtolower($form_data['link_socials_value'][$i]));
+                        $social_url[] = $singledata;
+                     }
+                 }
+            }
+             $insertData['social_url']      =  json_encode($social_url);
+              
             if(isset($_FILES['logo']['name']) && $_FILES['logo']['name'] != '') {
 
                 $f_name         =$_FILES['logo']['name'];
@@ -425,6 +440,22 @@ class Company extends BaseController
             $insertData['bank_ifsc_code']   = $form_data['bank_ifsc_code'];
             $insertData['updated_by']       = $userid;
 
+             $social_url = array();
+             
+            if(isset($form_data['link_socials_value']) && !empty($form_data['link_socials_value']))
+            {
+                 for ($i=0; $i < count($form_data['link_socials_value']); $i++){ 
+                     if(strlen($form_data['link_socials_value'][$i]) >0 && strlen($form_data['socials_keys'][$i])> 0){
+                        $singledata = array();
+                        $singledata['title'] = ucwords(strtolower($form_data['socials_keys'][$i]));
+                        $singledata['url'] = (strtolower($form_data['link_socials_value'][$i]));
+                        $social_url[] = $singledata;
+                     }
+                 }
+            }
+             $insertData['social_url']      =  json_encode($social_url);
+
+             
             if(isset($_FILES['logo']['name']) && $_FILES['logo']['name'] != '') {
 
                 $f_name         =$_FILES['logo']['name'];
