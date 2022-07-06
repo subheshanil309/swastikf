@@ -310,7 +310,7 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#cssModal">
+                                                                                <a href="<?php echo ($role==1)?base_url().'admin/kdocuments':'#'?>">
                                                                                     <div class="card-body">
                                                                                         <div class="text-center">
                                                                                             <div class="mini-stat-icon  rounded-circle bg-warning">
@@ -492,7 +492,7 @@
                                                                                     <div class="card-body">
                                                                                         <div class="text-center">
                                                                                             <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
-                                                                                                <i class="bx bx-grid-small text-white display-2"></i>
+                                                                                                <i class="bx bx-flag text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Country</h6>
                                                                                         </div>
@@ -548,7 +548,7 @@
                                                                                     <div class="card-body">
                                                                                         <div class="text-center">
                                                                                             <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
-                                                                                                <i class="bx bx-dialpad  text-white display-2"></i>
+                                                                                                <i class="bx bxs-bank text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Company</h6>
                                                                                         </div>

@@ -232,12 +232,12 @@
                                                 {
                                                         foreach ($all_agents as $executive) {
                                                             ?>
-                                             <option value="<?php echo $executive->id;?>"><?php echo $executive->title;?></option>
+                                             <option value="<?php echo $executive->id;?>"><?php echo ( ($executive->id)?$executive->id:'')." ".$executive->title;?></option>
                                              <?php
                                                 }
                                                 }
                                                 ?>
-                                          </select>
+                                           </select>
                                        </th>
                                        <th class="align-middle bg-success text-white">
                                           <select class="form-control form-control-sm select2 " name="product_id" id="product_id" aria-label="Floating label select example" style="width: 150px;"  >

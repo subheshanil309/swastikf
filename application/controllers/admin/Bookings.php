@@ -176,7 +176,7 @@ class Bookings extends BaseController
                      $where_search['product_id'] =  $product_id;
                  }
                 
-                if(!empty($agent_id))
+                if(strlen($agent_id)>0)
                 {
                      $where_search['agent_id'] =  $agent_id;
                       
@@ -482,9 +482,8 @@ echo "</pre>";  */
         $data['bookings_status'] = $this->booking_status_model->findDynamic($where); 
 
         $where = array();
-        $where['status'] = '1';
-        $where['admin_type'] = '2';
-        $where['orderby'] = 'title';
+        $where['status !='] = '0';
+        $where['orderby'] = '-id';
         $data['all_agents'] = $this->admin_model->findDynamic($where);
         
 
@@ -637,9 +636,8 @@ echo "</pre>";  */
         $data['all_products'] = $this->product_model->findDynamic($where); 
 
         $where = array();
-        $where['status'] = '1';
-        $where['admin_type'] = '2';
-        $where['orderby'] = 'title';
+        $where['status !='] = '0';
+        $where['orderby'] = '-id';
         $data['all_agents'] = $this->admin_model->findDynamic($where); 
 
 
@@ -1147,9 +1145,8 @@ echo "</pre>";  */
         $data['all_products'] = $this->product_model->findDynamic($where); 
 
         $where = array();
-        $where['status'] = '1';
-         $where['admin_type'] = '2';
-        $where['orderby'] = 'title';
+        $where['status !='] = '0';
+        $where['orderby'] = '-id';
         $data['all_agents'] = $this->admin_model->findDynamic($where);
 
 
@@ -1789,6 +1786,44 @@ echo "</pre>";  */
                 'message'=>'Update Some Amount !'
             );
 
+                $insertData = array();
+                $insertData['payment_date']     = $form_data['payment_create_date'];
+                $insertData['id']               = $id;
+                $insertData['payment_type']     = $form_data['payment_type'];
+                $insertData['payment_mode']     = $form_data['payment_mode'];
+                $insertData['bank_transaction_id']= $form_data['payment_bank_transaction_id'];
+                $insertData['update_at']        = date("Y-m-d H:i:s");
+                $insertData['update_by']        = $this->session->userdata('userId');
+                $insertData['cheque_no']        = $form_data['cheque_no'];
+                $insertData['bank_name']        = $form_data['bank_name'];
+                $insertData['bank_branch']      = $form_data['bank_branch'];
+
+
+                
+                 
+               
+                /*$total_paid_amount  = $single_arr->total + $form_data['payment_amount'];
+                $outstanding_amount = ($balance-$total_paid_amount);*/
+         
+                 
+                $result = $this->booking_payments_model->save($insertData);
+
+                 if($result)
+                {
+                    $response_result = array(
+                        'status'=>1,
+                        'message'=>'Update Payment Successfully !'
+                    );
+                }else
+                {
+                    $response_result = array(
+                        'status'=>0,
+                        'message'=>'Failed Update Payment!'
+                    );
+                }
+
+
+
          }else
          {
                 $booking_id  = $form_data['booking_id'];
@@ -1885,13 +1920,13 @@ echo "</pre>";  */
         {
             $response_result = array(
                 'status'=>1,
-                'message'=>'Add Payment Successfully !'
+                'message'=>'Update Payment Successfully !'
             );
         }else
         {
             $response_result = array(
                 'status'=>0,
-                'message'=>'Failed Add Payment!'
+                'message'=>'Failed Update Payment!'
             );
         }
          }
@@ -2365,7 +2400,7 @@ echo "</pre>";  */
                      $where_search['product_id'] =  $product_id;
                  }
                 
-                if(!empty($agent_id))
+                if(strlen($agent_id) >0)
                 {
                      $where_search['agent_id'] =  $agent_id;
                       

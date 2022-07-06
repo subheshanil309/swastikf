@@ -267,9 +267,10 @@
                                  <?php
                                     if(!empty($all_agents))
                                     {
+                                       $userid = $this->session->userdata('userId');
                                         foreach ($all_agents as $all_agent) {
                                             ?>
-                                 <option value="<?php echo $all_agent->id;?>" ><?php echo $all_agent->id;?> <?php echo $all_agent->title;?></option>
+                                 <option value="<?php echo $all_agent->id;?>" <?php if($all_agent->id==$userid){ echo "selected";}?> > <?php echo ( ($all_agent->id)?$all_agent->id:'')." ".$all_agent->title;?></option>
                                  <?php
                                     }
                                     }

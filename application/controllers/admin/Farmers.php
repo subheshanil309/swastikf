@@ -451,7 +451,7 @@ class Farmers extends BaseController
 
             if($mobile !=='')
             {
-                $where['customer_mobile'] = $mobile; 
+                $where['mobile'] = $mobile; 
             }
 
              $result = $this->farmers_model->findDynamic($where);

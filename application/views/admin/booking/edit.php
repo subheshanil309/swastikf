@@ -280,7 +280,7 @@
                                     {
                                         foreach ($all_agents as $all_agent) {
                                             ?>
-                                 <option value="<?php echo $all_agent->id;?>" <?php if(isset($edit_data->agent_id) && $edit_data->agent_id ==$all_agent->id){ echo "selected";}?>><?php echo $all_agent->id;?> <?php echo $all_agent->title;?></option>
+                                 <option value="<?php echo $all_agent->id;?>" <?php if(isset($edit_data->agent_id) && $edit_data->agent_id ==$all_agent->id){ echo "selected";}?>><?php echo ( ($all_agent->id)?$all_agent->id:'')." ".$all_agent->title;?></option>
                                  <?php
                                     }
                                     }
@@ -634,7 +634,7 @@
                                              <div class="row">
                                                 <div class="col-sm-12">
                                                    <div class="table table-responsive">
-                                                      <table class="table table-responsive table-striped" style="max-height: 300px;">
+                                                      <table class="table table-responsive table-striped" style="min-height: 200px;">
                                                          <thead class="table-light" >
                                                             <tr class="p-0">
                                                                <th class="align-middle bg-success text-white p-1">Date</th>

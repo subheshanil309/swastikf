@@ -143,8 +143,8 @@ class Kdocuments extends BaseController
                     $insertData['name']                 = $form_data['name'];
                     $insertData['title']                = $form_data['title'];
                     $insertData['crop_id']              = $form_data['crop_id'];
-                    $insertData['root_cause']           = base64_encode($form_data['root_cause']);
-                    $insertData['treatment']            = base64_encode($form_data['treatment']);
+                    $insertData['root_cause']           = ($form_data['root_cause']);
+                    $insertData['treatment']            = ($form_data['treatment']);
                     $insertData['document_cat_id']      = $form_data['document_cat_id'];
                     $insertData['status']               = $form_data['status1'];
                     $insertData['date_at']              = date("Y-m-d H:i:s");
