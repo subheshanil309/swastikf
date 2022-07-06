@@ -223,7 +223,7 @@ class Document_model extends Base_model
  
              $this->db->from($this->table. ' as p');  
             $this->db->join('z_document_category as c', 'c.id = p.document_cat_id','left');
-
+             /*$this->db->where("p.status !='2'");*/
 
             $i = 0;     
 
@@ -257,11 +257,11 @@ class Document_model extends Base_model
 
             }
 
-             if(isset($_POST['category_id']) && !empty($_POST['category_id'])) // here order processing
+             if(isset($_POST['document_cat_id']) && !empty($_POST['document_cat_id'])) // here order processing
 
             {
 
-                $this->db->where('category_id', $_POST['category_id']);
+                $this->db->where("   ( p.document_cat_id ='".$_POST["document_cat_id"]."') ");
 
             } 
 

@@ -60,7 +60,7 @@
 
                           
                          <a class="btn btn-primary  float-end btn-sm" href="<?php echo base_url(); ?>admin/kdocuments/addnew"><i class="fa fa-plus"></i> Add New</a>
-                         <input type="hidden" name="category_id"  id="document_category_id" value="<?php if(isset($_REQUEST['document_category_id'])){echo $_REQUEST['document_category_id'];}?>">
+                         <input type="hidden" name="document_cat_id"  id="document_cat_id" value="<?php if(isset($_REQUEST['document_cat_id'])){echo $_REQUEST['document_cat_id'];}?>">
 
                             </div>
                          </div>
@@ -182,7 +182,7 @@ $(document).ready(function() {
             "url": "<?php echo site_url('admin/kdocuments/ajax_list')?>",
             "type": "POST",
             data: {
-            "category_id": $("#category_id").val()}
+            "document_cat_id": $("#document_cat_id").val()}
         },
  
         //Set column definition initialisation properties.
