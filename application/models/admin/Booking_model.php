@@ -307,8 +307,8 @@ class Booking_model extends Base_model
                 {
                     switch ($params['where']['booking_type']){
                         case 'today':
-                            $start_date  = date('Y-m-d');
-                            $end_date  = date('Y-m-d');
+                            $start_date     = date('Y-m-d');
+                            $end_date       = date('Y-m-d');
                             $params['where']['start_date'] = $start_date;
                             $params['where']['end_date']   = $end_date;
                             break;

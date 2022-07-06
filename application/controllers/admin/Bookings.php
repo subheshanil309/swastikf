@@ -1360,19 +1360,7 @@ echo "</pre>";  */
                             $insertData['billing_address']              = $form_data['billing_address'];
                             $insertData['same_billing']                 = (isset($form_data['same_billing'])?($form_data['same_billing']):'');
                             $insertData['delivery_address']             = $form_data['delivery_address'];
-                            /*$insertData['advance']                      = $form_data['advance'];
-                            */
-                            $insertData['create_date']                  = date("Y-m-d H:i:s");
-                            /*$insertData['balance']                      = $form_data['balance'];
-                            $insertData['balance']                      = $form_data['balance'];
-                                $insertData['payment_mode']                 = $form_data['payment_mode'];
-
-                                 $insertData['cheque_no']                    = $form_data['cheque_no'];
-                            $insertData['bank_name']                    = $form_data['bank_name'];
-                            $insertData['bank_branch']                  = $form_data['bank_branch'];
-                            */
                             
-                           
                             $insertData['product_id']                   = $form_data['product_id'];
                             $insertData['uom']                          = $form_data['uom'];
                             $insertData['price']                        = $form_data['price'];
