@@ -132,7 +132,7 @@
          jQuery(document).on("click", ".deletebtn", function(){
 
           var userId = $(this).data("userid"),
-            hitURL = "<?php echo base_url() ?>admin/product/delete",
+            hitURL = "<?php echo base_url() ?>admin/kdocuments/delete",
             currentRow = $(this);
           
           var confirmation = confirm("Are you sure to delete this State ?");
