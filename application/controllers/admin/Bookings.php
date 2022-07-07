@@ -1397,55 +1397,12 @@ echo "</pre>";  */
             /*ADDING TO OUTSTANDING AMOUNT*/
 
                                 $booking_id  = $form_data['id'];
-                                $where = array();
-                                $where['status'] = '1';
-                                $where['booking_id'] = $booking_id;
- 
-                                $fetch_all_payment = $this->booking_payments_model->findDynamic($where);
-                                $total_paid_amount = 0;
-                                $total_refund_amount = 0;
-                                if(!empty($fetch_all_payment))
-                                {
-                                    foreach ($fetch_all_payment as $key => $value)
-                                    {
-                                         if($value->payment_type =='payment')
-                                         {
-                                            $total_paid_amount = $total_paid_amount + $value->amount;
-                                          }else if($value->payment_type =='refund')
-                                         { 
-                                            $total_refund_amount = $total_refund_amount + $value->amount;
-                                         } 
-                                    }
-                                }
+                               $this->update_amount($booking_id);
 
-
-                                $single_arr         = $this->booking_model->find($booking_id);
-                               
-
-                                 
-
-                                    $total_paid_amount = $total_paid_amount + $form_data['payment_amount'];
-                                    $balance            =  $single_arr->total;
-                                    $outstanding_amount = ($balance-$total_paid_amount);
-                                 
-                                /*if($form_data['payment_type']=='refund')
-                                {
-                                   $total_refund_amount = $total_refund_amount + $form_data['payment_amount'];
-
-                                   $outstanding_amount = ($single_arr->total_paid_amount-$total_refund_amount);
-                                }*/
-
-                                $insertData                         = array();
-                                $insertData['total_paid_amount']    = $total_paid_amount;
-                                $insertData['refunded_amount']      = $total_refund_amount;
-                                $insertData['outstanding_amount']   = $outstanding_amount;
-                                $insertData['id']                   = $booking_id;  
-                                $price_updated                      = $this->booking_model->save($insertData);
             /*ADDING TO OUTSTANDING AMOUNT END*/
 
 
-                                $single_arr     = $this->booking_model->find($form_data['id']);
-                                $logged         = $this->booking_log_model->booking_log($single_arr);
+                                
 
 
 
@@ -1590,9 +1547,64 @@ echo "</pre>";  */
 
 
          
-    } 
+    }
 
-    public function delete_payment($id)
+    public function update_amount($booking_id)
+    {
+        /*ADDING TO OUTSTANDING AMOUNT*/
+
+                                 
+                                $where = array();
+                                $where['status'] = '1';
+                                $where['booking_id'] = $booking_id;
+ 
+                                $fetch_all_payment = $this->booking_payments_model->findDynamic($where);
+                                $total_paid_amount = 0;
+                                $total_refund_amount = 0;
+                                $outstanding_amount = 0;
+                                if(!empty($fetch_all_payment))
+                                {
+                                    foreach ($fetch_all_payment as $key => $value)
+                                    {
+                                         if($value->payment_type =='payment')
+                                         {
+                                            $total_paid_amount = $total_paid_amount + $value->amount;
+                                          }else if($value->payment_type =='refund')
+                                         { 
+                                            $total_refund_amount = $total_refund_amount + $value->amount;
+                                         } 
+                                    }
+                                }
+
+
+                                $single_arr         = $this->booking_model->find($booking_id);
+                               
+
+                                 
+
+                                    
+                                    $balance            =  $single_arr->total;
+                                    $outstanding_amount = ($balance-$total_paid_amount);
+                                 
+                                /*if($form_data['payment_type']=='refund')
+                                {
+                                   $total_refund_amount = $total_refund_amount + $form_data['payment_amount'];
+
+                                   $outstanding_amount = ($single_arr->total_paid_amount-$total_refund_amount);
+                                }*/
+
+                                $insertData                         = array();
+                                $insertData['total_paid_amount']    = $total_paid_amount;
+                                $insertData['refunded_amount']      = $total_refund_amount;
+                                $insertData['outstanding_amount']   = $outstanding_amount;
+                                $insertData['id']                   = $booking_id;  
+                                $price_updated                      = $this->booking_model->save($insertData);
+            /*ADDING TO OUTSTANDING AMOUNT END*/
+                                $single_arr     = $this->booking_model->find($booking_id);
+                                $logged         = $this->booking_log_model->booking_log($single_arr);
+    }
+
+    public function delete_payment($id,$booking_id)
     {
 
         
@@ -1602,6 +1614,9 @@ echo "</pre>";  */
         $insertData['id']               = $id;
         $insertData['status']           = 0;
         $result                 = $this->booking_payments_model->save($insertData);
+
+        $this->update_amount($booking_id);
+
   
         $response_result = array(
                 'status'=>0,
@@ -1667,8 +1682,11 @@ echo "</pre>";  */
         $price_updated                      = $this->booking_model->save($insertData);
 
         //get and update to log
-        $single_arr     = $this->booking_model->find($id);
-        $logged         = $this->booking_log_model->booking_log($single_arr);
+        $this->update_amount($id);
+        /*$single_arr     = $this->booking_model->find($id);
+        $logged         = $this->booking_log_model->booking_log($single_arr);*/
+
+
         //get and update to log end
         $response_result = array(
                 'status'=>0,
@@ -1766,7 +1784,7 @@ echo "</pre>";  */
         
         $this->isLoggedIn();
          $form_data  = $this->input->post();
-
+         $booking_id  = $form_data['booking_id'];
          if($form_data['payment_amount'] ==$form_data['x_payment_amount'])
          {
             $response_result = array(
@@ -1896,8 +1914,9 @@ echo "</pre>";  */
         $price_updated                      = $this->booking_model->save($insertData);
 
         //get and update to log
-        $single_arr     = $this->booking_model->find($booking_id);
-        $logged         = $this->booking_log_model->booking_log($single_arr);
+         
+        /*$single_arr     = $this->booking_model->find($booking_id);
+        $logged         = $this->booking_log_model->booking_log($single_arr);*/
         //get and update to log end
         $response_result = array(
                 'status'=>0,
@@ -1918,6 +1937,7 @@ echo "</pre>";  */
             );
         }
          }
+         $this->update_amount($booking_id);
 
         
 
@@ -2014,8 +2034,9 @@ echo "</pre>";  */
             $price_updated    = $this->booking_model->save($insertData);
 
             //get and update to log
-            $single_arr     = $this->booking_model->find($id);
-            $logged         = $this->booking_log_model->booking_log($single_arr);
+             $this->update_amount($id);
+            /*$single_arr     = $this->booking_model->find($id);
+            $logged         = $this->booking_log_model->booking_log($single_arr);*/
             //get and update to log end
             
            

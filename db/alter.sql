@@ -519,8 +519,8 @@ INSERT INTO `z_call_type` (`id`, `name`, `title`, `status`, `date_at`, `update_a
 ALTER TABLE `z_booking` CHANGE `agent_id` `agent_id` INT(11) NULL DEFAULT '0';
 
 INSERT INTO `z_admin` (`id`, `name`, `title`, `admin_type`, `email`, `phone`, `address`, `password`, `date_at`, `update_at`, `status`, `otp`, `created_by`, `update_by`, `state_id`, `district_id`, `city_id`, `other_state`, `other_district`, `other_city`, `pincode`, `company_id`, `date_join`) VALUES
- ('0', 'Direct', 'Direct', '2', '', '', '', '', '2018-04-10 00:00:00', '0000-00-00 00:00:00', '3', '', NULL, NULL, NULL, NULL, NULL, '', '', NULL, '0', '1', '2022-06-24');
- UPDATE `z_admin` SET `id` = '0' WHERE `z_admin`.`id` = 7;
+ (0, 'Direct', 'Direct', '2', '', '', '', '', '2018-04-10 00:00:00', '0000-00-00 00:00:00', '2', '', NULL, NULL, NULL, NULL, NULL, '', '', NULL, '0', '1', '2022-06-24');
+ UPDATE `z_booking` SET  create_date=date_at WHERE 1;
 
 
 

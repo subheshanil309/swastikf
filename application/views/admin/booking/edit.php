@@ -674,7 +674,7 @@
                                           </button>
                                           <div class="dropdown-menu " data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 30px);">
                                              <a class="dropdown-item editpayment" data-userid="<?php echo $value['id'] ?>" data-action_src="<?php echo base_url()?>admin/bookings/<?php echo $value['id'] ?>/edit_payment" href="javascript:void(0)"><i class="fa fa-pen" aria-hidden="true"></i> Edit Transaction</a>
-                                             <a class="dropdown-item text-danger delete_booking_payment" data-action_src="<?php echo base_url()?>admin/bookings/<?php echo $value['id'] ?>/delete_payment" href="javascript:void(0)"><i class="fa fa-trash" aria-hidden="true"></i> Delete Transaction</a>
+                                             <a class="dropdown-item text-danger delete_booking_payment" data-action_src="<?php echo base_url()?>admin/bookings/<?php echo $value['id'] ?>/delete_payment/<?php echo $edit_data->id;?>" href="javascript:void(0)"><i class="fa fa-trash" aria-hidden="true"></i> Delete Transaction</a>
                                           </div>
                                        </div>
                                     </td>
@@ -713,7 +713,7 @@
                <div class="row">
                   <label for="payment_create_date" class="col-md-5 col-form-label">Payment Date</label>
                   <div class="col-md-7">
-                     <input type="date" class="form-control form-control-sm" name="payment_create_date" id="payment_create_date" >
+                     <input type="date" class="form-control form-control-sm" name="payment_create_date" id="payment_create_date" value="<?php echo date('Y-m-d');?>" >
                   </div>
                </div>
                <div class="row">
@@ -793,7 +793,7 @@
                <div class="row">
                   <label for="payment_create_date" class="col-md-5 col-form-label">Payment Date</label>
                   <div class="col-md-7">
-                     <input type="date" class="form-control form-control-sm" name="payment_create_date" id="payment_create_date" >
+                     <input type="date" class="form-control form-control-sm" name="payment_create_date" id="payment_create_date" value="<?php echo date('Y-m-d');?>" >
                   </div>
                </div>
                <div class="row">
@@ -873,7 +873,7 @@
                <div class="row">
                   <label for="payment_create_date" class="col-md-5 col-form-label">Date</label>
                   <div class="col-md-7">
-                     <input type="date" class="form-control form-control-sm" name="payment_create_date" id="payment_create_date" >
+                     <input type="date" class="form-control form-control-sm" name="payment_create_date" id="payment_create_date"  >
                   </div>
                </div>
                <div class="row">
