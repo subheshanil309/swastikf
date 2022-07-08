@@ -195,6 +195,7 @@ class Kdocuments extends BaseController
             $btn .= '</select>';
 
             $row[] =  $currentObj->id;
+            $row[] =  $currentObj->cropname;
             $row[] =  $currentObj->category;
             $row[] =  $currentObj->title;
             $row[] =   $btn;;

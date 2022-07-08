@@ -74,6 +74,7 @@
                                   <thead>
                                  <tr class=" bg-success">
                                     <th  style="width: 60px;">ID</th>
+                                    <th>Crop</th>
                                     <th>Problem (Category)</th>
                                     <th>Sub-Problem</th>
                                     <th style="width: 60px;">Status</th>

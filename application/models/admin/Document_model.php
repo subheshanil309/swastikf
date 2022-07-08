@@ -16,9 +16,9 @@ class Document_model extends Base_model
 
 
 
-    var $column_order = array( 'p.id',  'c.name','p.title', 'p.date_at','p.status'); //set column field database for datatable orderable
+    var $column_order = array( 'p.id',  'crop.title', 'c.name','p.title', 'p.date_at','p.status'); //set column field database for datatable orderable
 
-    var $column_search = array('p.id',  'c.name','p.title', 'p.date_at','p.status'); //set column field database for datatable searchable 
+    var $column_search = array('p.id',  'crop.title', 'c.name','p.title', 'p.date_at','p.status'); //set column field database for datatable searchable 
 
     var $order = array('p.id' => 'desc'); // default order
 
@@ -201,7 +201,7 @@ class Document_model extends Base_model
         function get_datatables()
 
         {
-             $this->db->select('p.*,c.name as category'); 
+             $this->db->select('p.*,c.name as category,crop.title as cropname'); 
             $this->_get_datatables_query();
 
             if(isset($_POST['length']) && $_POST['length'] != -1)
@@ -223,6 +223,7 @@ class Document_model extends Base_model
  
              $this->db->from($this->table. ' as p');  
             $this->db->join('z_document_category as c', 'c.id = p.document_cat_id','left');
+            $this->db->join('z_crop as crop', 'crop.id = p.crop_id','left');
              /*$this->db->where("p.status !='2'");*/
 
             $i = 0;     
