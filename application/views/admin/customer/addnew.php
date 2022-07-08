@@ -183,6 +183,7 @@ print_r($customer_call_dtl);  */
                               <label for="farmer_type" class="col-sm-4 col-form-label">Farmer Type</label>
                               <div class="col-sm-8">
                                 <select class="form-control form-control-sm select2" id="farmer_type" name="farmer_type" aria-label="Floating label select example">
+                                  <option value="">Choose Farmer Type</option>
                                     <?php
                                        if(!empty($farmertypes))
                                        {
@@ -201,6 +202,7 @@ print_r($customer_call_dtl);  */
                               <label for="farmer_type" class="col-sm-4 col-form-label">Crop</label>
                               <div class="col-sm-8">
                                 <select class="form-control form-control-sm select2" id="crop_id" name="crop_id" aria-label="Floating label select example">
+                                  <option value="">Choose Crop</option>
                                     <?php
                                        if(!empty($crop_lists))
                                        {
