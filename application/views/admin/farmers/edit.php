@@ -71,6 +71,27 @@
                        <div class="card-body">
                           <div class="row">
                             <div class="col-sm-3">
+                           <div class="row">
+                              <label for="source" class="col-sm-4 col-form-label">Farmer Type<span class="text-danger">*</span></label>
+                              <div class="col-sm-8">
+                                 <select class=" form-control form-control-sm" id="farmer_type" name="farmer_type" aria-label="Floating label select example" required >
+                                     <?php
+                                       if(!empty($farmertypes))
+                                       {
+                                           foreach ($farmertypes as $farmertype) {
+                                               ?>
+                                    <option value="<?php echo $farmertype->id;?>" <?php if($edit_data->farmer_type==$farmertype->id){echo 'selected';} ?>  ><?php echo $farmertype->title;?></option>
+                                    <?php
+                                       }
+                                       }
+                                       ?>
+                                 </select>
+                                
+
+                              </div>
+                           </div>
+                           </div>
+                            <div class="col-sm-3">
                          <div class="row">
                               <label for="name" class="col-sm-4 col-form-label">Farmers Name*</label>
                               <div class="col-sm-8"> 

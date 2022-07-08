@@ -74,6 +74,7 @@ if(!function_exists('clean_slug'))
 {
         function clean_slug($string) {
        $string = trim($string); // remove start and end espace all spaces with hyphens.
+       $string = strtolower($string); // remove start and end espace all spaces with hyphens.
        $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
        $string = str_replace('--', '-', $string); // Replaces all spaces with hyphens.
        $string = str_replace('--', '-', $string); // Replaces all spaces with hyphens.

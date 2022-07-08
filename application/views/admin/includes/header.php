@@ -289,6 +289,17 @@
                         <li><a   href="<?php echo base_url('admin/district');?>" key="t-products">District</a></li>
                         <li><a   href="<?php echo base_url('admin/city');?>" key="t-products">City</a></li>
                         <li><a   href="<?php echo base_url('admin/document_category');?>" key="t-products">K Documents Category</a></li>
+                         
+                     </ul>
+                  </li>
+                  <li>
+                     <a href="javascript: void(0);" class="has-arrow waves-effect">
+                     <span key="t-ecommerce">Type</span>
+                     </a>
+                     <ul class="sub-menu" aria-expanded="false">
+                        
+                        <li><a   href="<?php echo base_url('admin/farmer_type');?>" key="t-products">Farmer Type</a></li>
+                        <li><a   href="<?php echo base_url('admin/call_type');?>" key="t-products">Call Type</a></li>
                      </ul>
                   </li>
                   <?php

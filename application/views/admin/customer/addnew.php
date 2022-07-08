@@ -122,15 +122,15 @@ print_r($customer_call_dtl);  */
                               </div>
                            </div>
                            <div class="row">
-                              <label for="customer_name" class="col-sm-4 col-form-label">Farmers Name*</label>
+                              <label for="customer_name" class="col-sm-4 col-form-label">Farmers Name<span class="text-danger">*</span></label>
                               <div class="col-sm-8"> 
-                                 <input type="text" class="form-control form-control-sm" id="customer_name" name="customer_name" placeholder="Farmers Name*" value="<?php if(isset($edit_data->name) && $edit_data->name !==''){echo $edit_data->name;}?>" />
+                                 <input type="text" class="form-control form-control-sm" id="customer_name" name="customer_name" placeholder="Farmers Name*" value="<?php if(isset($edit_data->name) && $edit_data->name !==''){echo $edit_data->name;}?>" required/>
                               </div>
                            </div>
                            <div class="row">
-                              <label for="customer_mobile" class="col-sm-4 col-form-label">Mobile*</label>
+                              <label for="customer_mobile" class="col-sm-4 col-form-label">Mobile<span class="text-danger">*</span></label>
                               <div class="col-sm-8"> 
-                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="customer_mobile"  name="customer_mobile"  placeholder="Customer Mobile*"  value="<?php if(isset($edit_data->mobile) && $edit_data->mobile !==''){echo $edit_data->mobile;}?>"  onkeypress="return onlyNumberKey(event)" />
+                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="customer_mobile"  name="customer_mobile"  placeholder="Customer Mobile*"  value="<?php if(isset($edit_data->mobile) && $edit_data->mobile !==''){echo $edit_data->mobile;}?>"  onkeypress="return onlyNumberKey(event)" required/>
                               </div>
                            </div>
                            <div class="row">
@@ -145,15 +145,15 @@ print_r($customer_call_dtl);  */
                                  <select class=" form-control select2 " id="state" name="state" aria-label="Floating label select example" onchange="stateChange()">
                                     <option value="" selected>Choose State</option>
                                     <?php
-                                       if(!empty($states))
-                                       {
-                                           foreach ($states as $state) {
-                                               ?>
-                                    <option value="<?php echo $state->id;?>" <?php if(isset($edit_data->state_id) && $edit_data->state_id ==$state->id){ echo "selected";}?>><?php echo $state->name;?></option>
-                                    <?php
-                                       }
-                                       }
-                                       ?>
+                                      if(!empty($states))
+                                      {
+                                        foreach ($states as $state) {
+                                          ?>
+                                          <option value="<?php echo $state->id;?>" <?php if(isset($edit_data->state_id) && $edit_data->state_id ==$state->id){ echo "selected";}?>><?php echo $state->name;?></option>
+                                          <?php
+                                        }
+                                      }
+                                    ?>
                                  </select>
                                  <input type="text" name="other_state" id="other_state"  style="display: none;" class="form-control form-control-sm mb-2" placeholder="Please Enter State Name" />
                               </div>
@@ -163,17 +163,7 @@ print_r($customer_call_dtl);  */
                               <div class="col-sm-8">
                                  <select class=" form-control select2 " id="district" name="district" aria-label="Floating label select example" onchange="districtChange()">
                                     <option value="" selected>Choose District</option>
-                                    <?php
-                                      /* if(!empty($districts))
-                                       {
-                                           foreach ($districts as $district) {
-                                               ?>
-                                    <option value="<?php echo $district->id;?>"  <?php if(isset($edit_data->district) && $edit_data->district ==$district->id){ echo "selected";}?>><?php echo $district->name;?></option>
-                                    <?php
-                                       }
-                                       }*/
-                                       ?>
-                                 </select>
+                                  </select>
                                  <input type="text" name="other_district" id="other_district"  style="display: none;" class="form-control form-control-sm mb-2" placeholder="Please Enter District Name" />
                               </div>
                            </div>
@@ -182,47 +172,41 @@ print_r($customer_call_dtl);  */
                               <div class="col-sm-8">
                                  <select class=" form-control  select2 " id="city" name="city" aria-label="Floating label select example"  onchange="cityChange()">
                                     <option value="" selected>Choose Tehsil</option>
-                                    <?php
-                                      /* if(!empty($cities))
-                                       {
-                                           foreach ($cities as $city) {
-                                               ?>
-                                    <option value="<?php echo $city->id;?>"  <?php if(isset($edit_data->city) && $edit_data->city ==$city->id){ echo "selected";}?>><?php echo $city->city;?></option>
-                                    <?php
-                                       }
-                                       }*/
-                                       ?>
+                                    
                                  </select>
                                 <input type="text" name="other_city" id="other_city"  style="display: none;" class="form-control form-control-sm mb-2" placeholder="Please Enter Tehsil Name" />
 
                               </div>
                            </div>
+
+                           <div class="row">
+                              <label for="farmer_type" class="col-sm-4 col-form-label">Farmer Type</label>
+                              <div class="col-sm-8">
+                                <select class="form-control form-control-sm" id="farmer_type" name="farmer_type" aria-label="Floating label select example">
+                                    <?php
+                                       if(!empty($farmertypes))
+                                       {
+                                           foreach ($farmertypes as $farmertype) {
+                                               ?>
+                                    <option value="<?php echo $farmertype->id;?>" <?php if(isset($edit_data->farmer_type) && $edit_data->farmer_type ==$farmertype->id){ echo "selected";}?> ><?php echo $farmertype->title;?></option>
+                                    <?php
+                                       }
+                                       }
+                                       ?>
+                                    
+                                </select>
+                              </div>
+                           </div>
                         </div>
                         <!-- end card body -->
-                     </div>
-                     <div class="card">
+                      </div>
+                    </div>
+                  <div class="col-sm-6">
+                      <div class="card">
                         <h5 class="card-header bg-success text-white border-bottom ">Call Details</h5>
                         <div class="card-body">
-                           <!--  <div class="row">
-                              <label for="customer" class="col-sm-4 col-form-label">Choose Farmers</label>
-                                <div class="col-sm-8">
-                                  <select class=" form-control-sm" id="customer" name="customer" aria-label="Floating label select example">
-                              
-                                  <?php
-                                 if(!empty($all_customers))
-                                 {
-                                 foreach ($all_customers as $customer) {
-                                 ?>
-                                  <option value="<?php echo $customer->id;?>" <?php if(isset($edit_data->id) && $customer->id ==$edit_data->id){ echo "selected";}?>><?php echo $customer->sku_id;?> <?php echo $customer->customer_title;?></option>
-                                  <?php
-                                 }
-                                 }
-                                 ?>
-                                  </select>
-                                </div>
-                              </div> -->
-                           <div class="row">
-                              <label for="call_type" class="col-sm-4 col-form-label">Call Type*</label>
+                          <div class="row">
+                              <label for="call_type" class="col-sm-4 col-form-label">Call Type<span class="text-danger">*</span></label>
                               <div class="col-sm-8">
                                  <select class=" form-control  form-control-sm" id="call_type" name="call_type"  onchange="select_calltype('add_inquiry')" aria-label="Floating label select example">
                                      
@@ -240,7 +224,7 @@ print_r($customer_call_dtl);  */
                               </div>
                            </div>
                            <div class="row">
-                              <label for="assign_to" class="col-sm-4 col-form-label">Assign To*</label>
+                              <label for="assign_to" class="col-sm-4 col-form-label">Assign To<span class="text-danger">*</span></label>
                               <div class="col-sm-8">
                                  <select class=" form-control select2 " id="assign_to" name="assign_to" aria-label="Floating label select example">
                                      
@@ -258,13 +242,13 @@ print_r($customer_call_dtl);  */
                               </div>
                            </div>
                            <div class="row">
-                              <label for="call_back_date" class="col-sm-4 col-form-label">Call Back Date*</label>
+                              <label for="call_back_date" class="col-sm-4 col-form-label">Call Back Date<span class="text-danger">*</span></label>
                               <div class="col-sm-8">
-                                 <input type="date" class="form-control form-control  form-control-sm" id="call_back_date" name="call_back_date"  placeholder="Call Back Date" value="<?php echo date("Y-m-d");?>">
+                                 <input type="date" class="form-control form-control  form-control-sm" id="call_back_date" name="call_back_date"  placeholder="Call Back Date" value="<?php echo date("Y-m-d");?>" required >
                               </div>
                            </div>
                            <div class="row">
-                              <label for="call_direction" class="col-sm-4 col-form-label">Call Direction*</label>
+                              <label for="call_direction" class="col-sm-4 col-form-label">Call Direction<span class="text-danger">*</span></label>
                               <div class="col-sm-8">
                                  <select class=" form-control  form-control-sm" id="call_direction" name="call_direction" aria-label="Floating label select example">
                                     
@@ -283,21 +267,24 @@ print_r($customer_call_dtl);  */
                            </div>
                         </div>
                      </div>
-                  </div>
-                  <div class="col-sm-6">
                      <div class="card">
-                        <h5 class="card-header bg-success text-white border-bottom ">Current Conversation</h5>
+                        <h5 class="card-header bg-success text-white border-bottom ">Current Conversation*</h5>
                         <div class="card-body">
                            <div class="row ">
                               <div class="col-sm-12">
-                                 <textarea   class="form-control form-control-sm" id="current_conversation" name="current_conversation" placeholder="Current Conversation"  ></textarea>
+                                 <textarea   class="form-control form-control-sm" id="current_conversation" name="current_conversation" placeholder="Current Conversation" required></textarea>
                               </div>
                            </div>
                         </div>
                      </div>
-                     <div class="card">
-                         
-                        <div class="card-body">
+                     
+                     
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-sm-12">
+                    <div class="card">
+                      <div class="card-body">
                            <div class="row ">
                               <div class="col-sm-12">
                                   <button type="submit" class="btn btn-primary w-md float-end">Save</button>
@@ -306,7 +293,6 @@ print_r($customer_call_dtl);  */
                            </div>
                         </div>
                      </div>
-                     
                   </div>
                </div>
                 
@@ -317,10 +303,11 @@ print_r($customer_call_dtl);  */
                   <div class="row">
                      <div class="col-lg-12">
                         <div class="card">
+                          <h4 class="card-header bg-success text-white">Previous Conversation</h4>
                            <div class="card-body">
-                              <h4 class="card-title mb-5">Previous Conversation</h4>
+                              
                                <div  id="example23">
-                                  
+                                  <p class="text-danger">Not found ...</p>
                               </div>
                            </div>
                         </div>
@@ -402,20 +389,7 @@ print_r($customer_call_dtl);  */
                                 }
                               }
 
-/*
-                              if(!empty($calltypes))
-                                {
-                                    foreach ($calltypes as $calltype) {
-                                        ?>
-                           <div class="flex-grow-1">
-                              <div class="float-end">
-                                 <p class="text-primary mb-0">0</p>
-                              </div>
-                              <p class="text-primary mb-0"><?php echo $calltype->title;?></p>
-                           </div>
-                           <?php
-                              }
-                              }*/
+ 
                               ?>
                                <div class="flex-grow-1">
                                         <a href="<?php echo base_url()?>admin/customer/addnew?section=statsdata&form_type=inquiry&stat_type=all<?=$uuid?>">
@@ -842,6 +816,21 @@ print_r($customer_call_dtl);  */
                                       <input type="text" name="other_city2" id="other_city2"  style="display: none;" class="form-control form-control-sm mb-2" placeholder="Please Enter Tehsil Name" />
                                     </th>
                                     <th class="align-middle bg-success text-white">
+                                      <select class=" form-control  form-control-sm" id="farmer_type2" name="farmer_type2" aria-label="Floating label select example"  style="width: 75px;"  >
+                                     <option value="">FarmerType</option>
+                                    <?php
+                                       if(!empty($farmertypes))
+                                       {
+                                           foreach ($farmertypes as $farmertype) {
+                                               ?>
+                                    <option value="<?php echo $farmertype->id;?>" ><?php echo $farmertype->title;?></option>
+                                    <?php
+                                       }
+                                       }
+                                       ?>
+                                 </select>
+                               </th>
+                               <th class="align-middle bg-success text-white">
                                       <select class=" form-control  form-control-sm" id="call_direction2" name="call_direction2" aria-label="Floating label select example"  style="width: 75px;"  >
                                      <option value="">CallDirection</option>
                                     <?php
@@ -915,6 +904,7 @@ print_r($customer_call_dtl);  */
                                         <td><?php echo  ($customer['state']);?></td>
                                         <td><?php echo  ($customer['district']);?></td>
                                         <td><?php echo  ($customer['city']);?></td>
+                                        <td><?php echo $customer['farmertype'];?></td>
                                         <td><?php echo $customer['calldir'];?></td>
                                         <td><?php echo $customer['calltype'];?></td>
                                         <td><?php if($customer['last_call_back_date'] !=='0000-00-00'){echo date('d M Y',strtotime($customer['last_call_back_date']));}?></td>
@@ -1268,23 +1258,27 @@ print_r($customer_call_dtl);  */
     {
 
        $('#'+formid+' #call_back_date_update').attr('readonly', false);
+       $('#'+formid+' #call_back_date_update').attr('required', true);
       var call_type =  $('#'+formid+'  #call_type_update').val();
      
       if(call_type==2)
       {
         $('#'+formid+' #call_back_date_update').val(''); 
         $('#'+formid+' #call_back_date_update').attr('readonly', true);
+        $('#'+formid+' #call_back_date_update').attr('required', false);
 
       }
     }else
     {
        $('#'+formid+' #call_back_date').attr('readonly', false);
+       $('#'+formid+' #call_back_date').attr('required', true);
       var call_type =  $('#'+formid+'  #call_type').val();
      
       if(call_type==2)
       {
         $('#'+formid+' #call_back_date').val(''); 
         $('#'+formid+' #call_back_date').attr('readonly', true);
+        $('#'+formid+' #call_back_date').attr('required', false);
 
       }
     }
@@ -1304,22 +1298,21 @@ print_r($customer_call_dtl);  */
         type: 'GET',
         url: hitURL,
         data: {},
+        beforeSend: function(){
+          if(state_code=='')
+          {
+            show_loader();    
+          }
+        
+       },
+       complete: function(){
+        if(state_code=='')
+          {
+            hide_loader();    
+          } 
+       },
         success: function (response) {
           var check_state = $('#state option:selected').text();
-         /* if(check_state =='Other')
-          {
-            $('#other_state').val('');
-            $('#other_state').css('display', 'block');
-            $('#other_state').prop('required',true);
-
-          }else
-          {
-             
-             $('#other_state').val('');
-             $('#other_state').css('display', 'none');
-             $('#other_state').prop('required',false);
-          }*/
-          
             $("#district").empty().append(response);
             $(".select2").select2();
         },
@@ -1340,19 +1333,22 @@ function stateChange2(state_code = '',selected_district = '') {
         type: 'GET',
         url: hitURL,
         data: {},
+         beforeSend: function(){
+            if(state_code=='')
+            {
+              show_loader();    
+            }
+          
+         },
+         complete: function(){
+          if(state_code=='')
+            {
+              hide_loader();    
+            } 
+         },
         success: function (response) {
              var check_state = $('#state2 option:selected').text();
-            /* if(check_state =='Other')
-          {
-              $('#other_state2').val('');
-             $('#other_state2').css('display', 'block');
- 
-          }else
-          {
              
-             $('#other_state2').val('');
-             $('#other_state2').css('display', 'none');
-           }*/
             $("#district2").empty().append(response);
             $(".select2").select2();
         },
@@ -1373,19 +1369,22 @@ function stateChangeUpdate(state_code = '',selected_district = '') {
         type: 'GET',
         url: hitURL,
         data: {},
+         beforeSend: function(){
+            if(state_code=='')
+            {
+              show_loader();    
+            }
+          
+         },
+         complete: function(){
+          if(state_code=='')
+            {
+              hide_loader();    
+            } 
+         },
         success: function (response) {
              var check_state = $('#state_update option:selected').text();
-          /*   if(check_state =='Other')
-          {
-              $('#other_state_update').val('');
-             $('#other_state_update').css('display', 'block');
- 
-          }else
-          {
-             
-             $('#other_state_update').val('');
-             $('#other_state_update').css('display', 'none');
-           }*/
+           
             $("#district_update").empty().append(response);
             
         },
@@ -1406,22 +1405,23 @@ function districtChange(district_code = '',selected_city = '') {
         type: 'GET',
         url: hitURL,
         data: {},
+          beforeSend: function(){
+            if(district_code=='')
+            {
+              show_loader();    
+            }
+          
+         },
+         complete: function(){
+          if(district_code=='')
+            {
+              hide_loader();    
+            } 
+         },
         success: function (response) {
              
             var check_district = $('#district option:selected').text();
-            /*if(check_district =='Other')
-            {
-              $('#other_district').val('');
-              $('#other_district').css('display', 'block');
-              $('#other_district').prop('required',true);
-
-            }else
-            {
-               
-               $('#other_district').val('');
-               $('#other_district').css('display', 'none');
-               $('#other_district').prop('required',false);
-            }*/
+             
           
             $("#city").empty().append(response);
             $(".select2").select2();
@@ -1437,49 +1437,17 @@ function districtChange(district_code = '',selected_city = '') {
 function cityChange(district_code = '',selected_city = '') {
       
      var check_district = $('#city option:selected').text();
-          /*  if(check_district =='Other')
-            {
-              $('#other_city').val('');
-              $('#other_city').css('display', 'block');
-              $('#other_city').prop('required',true);
-
-            }else
-            {
-               
-               $('#other_city').val('');
-               $('#other_city').css('display', 'none');
-               $('#other_city').prop('required',false);
-            }*/
+          
 }
 function cityChange2(district_code = '',selected_city = '') {
       
      var check_city = $('#city2 option:selected').text();
-            /*if(check_city =='Other')
-            {
-              $('#other_city2').val('');
-              $('#other_city2').css('display', 'block');
- 
-            }else
-            {
-               
-               $('#other_city2').val('');
-               $('#other_city2').css('display', 'none');
-             }*/
+             
 }
 function cityChangeUpdate(district_code = '',selected_city = '') {
       
      var check_city = $('#city_update option:selected').text();
-           /* if(check_city =='Other')
-            {
-              $('#other_city_update').val('');
-              $('#other_city_update').css('display', 'block');
- 
-            }else
-            {
-               
-               $('#other_city_update').val('');
-               $('#other_city_update').css('display', 'none');
-             }*/
+           
 }
 function districtChange2(district_code = '',selected_city = '') {
       
@@ -1490,25 +1458,24 @@ function districtChange2(district_code = '',selected_city = '') {
         type: 'GET',
         url: hitURL,
         data: {},
+        beforeSend: function(){
+            if(district_code=='')
+            {
+              show_loader();    
+            }
+          
+         },
+         complete: function(){
+          if(district_code=='')
+            {
+              hide_loader();    
+            } 
+         },
         success: function (response) {
              
 
                var check_district = $('#district2 option:selected').text();
-           /* if(check_district =='Other')
-            {
-              $('#other_district2').val('');
-              $('#other_district2').css('display', 'block');
- 
-            }else
-            {
-               
-               $('#other_district2').val('');
-               $('#other_district2').css('display', 'none');
-             }*/
-
-
-            // console.log(response);
-            // $(".district_wrap").html(response.success);
+           
             $("#city2").empty().append(response);
             $(".select2").select2();
         },
@@ -1529,25 +1496,22 @@ function districtChangeUpdate(district_code = '',selected_city = '') {
         type: 'GET',
         url: hitURL,
         data: {},
+         beforeSend: function(){
+            if(district_code=='')
+            {
+              show_loader();    
+            }
+          
+         },
+         complete: function(){
+          if(district_code=='')
+            {
+              hide_loader();    
+            } 
+         },
         success: function (response) {
-             
-
-               var check_district = $('#district_update option:selected').text();
-          /*  if(check_district =='Other')
-            {
-              $('#other_district_update').val('');
-              $('#other_district_update').css('display', 'block');
- 
-            }else
-            {
-               
-               $('#other_district_update').val('');
-               $('#other_district_update').css('display', 'none');
-             }
-*/
-
-            // console.log(response);
-            // $(".district_wrap").html(response.success);
+          var check_district = $('#district_update option:selected').text();
+           
             $("#city_update").empty().append(response);
          },
         error: function (request, status, error) {
@@ -1791,7 +1755,9 @@ function districtChangeUpdate(district_code = '',selected_city = '') {
    var table;
 
    $(document).ready(function() {
-
+     $("#add_inquiry").on("submit", function(){
+        show_loader();
+    });//submit
 
   
 

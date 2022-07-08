@@ -526,5 +526,35 @@ INSERT INTO `z_admin` (`id`, `name`, `title`, `admin_type`, `email`, `phone`, `a
 
 
 
+-------08-07-2022
+
+ALTER TABLE `z_farmers` ADD `farmer_type` INT NULL DEFAULT '1';
+
+DROP TABLE IF EXISTS `z_farmer_type`;
+CREATE TABLE IF NOT EXISTS `z_farmer_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  `title` varchar(50) DEFAULT NULL,
+  `status` int(11) DEFAULT 1,
+  `date_at` datetime DEFAULT current_timestamp(),
+  `update_at` datetime DEFAULT current_timestamp(),
+  `slug` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+INSERT INTO `z_farmer_type` (`id`, `name`, `title`, `status`, `date_at`, `update_at`, `slug`) VALUES
+(1, 'farmer', 'Farmer', 1, '2022-07-08 12:42:11', '2022-07-08 12:42:11', 'farmer'),
+(2, 'dealer', 'Dealer', 1, '2022-07-08 12:42:19', '2022-07-08 12:42:19', 'dealer'),
+(3, 'entrepreneur', 'Entrepreneur', 1, '2022-07-08 12:43:03', '2022-07-08 12:43:03', 'entrepreneur'),
+(4, 'manufacturer', 'Manufacturer', 1, '2022-07-08 12:43:13', '2022-07-08 12:43:13', 'manufacturer'),
+(5, 'societies', 'Societies', 1, '2022-07-08 12:43:25', '2022-07-08 12:43:25', 'societies');
+COMMIT;
+
+
+
+
+
+
 
 

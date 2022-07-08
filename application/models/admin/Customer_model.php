@@ -194,10 +194,11 @@ class Customer_model extends Base_model
         {
            
 
-                $this->db->select('c.*, farmer.name  as farmername, farmer.mobile  as farmermobile,farmer.alt_mobile  as farmeraltmobile,cit.city as city, sta.name as state, dist.name as district, ctype.title as calltype,   calldirection.title as calldir,   admin.title as createdby,   admin2.title as assignedto,   admin3.title as lastfollower,   admin3.title as lastfollower,   last_ctype.title as lastcalltype');
+                $this->db->select('c.*, farmer.name  as farmername, farmer.mobile  as farmermobile,farmer.alt_mobile  as farmeraltmobile,cit.city as city, sta.name as state, ftype.title as farmertype, dist.name as district, ctype.title as calltype,   calldirection.title as calldir,   admin.title as createdby,   admin2.title as assignedto,   admin3.title as lastfollower,   admin3.title as lastfollower,   last_ctype.title as lastcalltype');
                 $this->db->from($this->table. ' as c'); 
                 $this->db->join('z_farmers as farmer', 'farmer.id = c.farmer_id', 'left');
                 $this->db->join('z_states as sta', 'sta.id = farmer.state_id', 'left');
+                $this->db->join('z_farmer_type as ftype', 'ftype.id = farmer.farmer_type', 'left');
                 $this->db->join('z_district as dist', 'dist.id = farmer.district_id', 'left');
                 $this->db->join('z_cities as cit', 'cit.id = farmer.city_id', 'left');
                 $this->db->join('z_call_type as ctype', 'ctype.id = c.last_call_type', 'left');
@@ -245,7 +246,7 @@ class Customer_model extends Base_model
                 {
                      
                     foreach($params['where'] as $key => $val){ 
-                     if($key =='customer_title' || $key =='customer_mobile'  || $key =='customer_alt_mobile' || $key =='state' || $key =='stat_type' ||   $key =='from_date' || $key =='to_date' )
+                     if($key =='customer_title' || $key =='farmer_type' || $key =='customer_mobile'  || $key =='customer_alt_mobile' || $key =='state' || $key =='stat_type' ||   $key =='from_date' || $key =='to_date' )
                     {
 
                     
@@ -260,7 +261,11 @@ class Customer_model extends Base_model
 
                         $this->db->or_like('farmer.name', $params['where']['customer_title']);
                     }  
-                    if(isset($params['where']['customer_mobile']))
+                    if(isset($params['where']['farmer_type']))
+                    {
+
+                        $this->db->where('farmer.farmer_type', $params['where']['farmer_type']);
+                    }if(isset($params['where']['customer_mobile']))
                     {
 
                         $this->db->where('farmer.mobile', $params['where']['customer_mobile']);

@@ -191,9 +191,10 @@ class Farmers_model extends Base_model
         {
            
 
-                $this->db->select('f.*, cit.city as city, sta.name as state, dist.name as district, source.title as source');
+                $this->db->select('f.*, cit.city as city, sta.name as state,ftype.title as farmertype, dist.name as district, source.title as source');
                 $this->db->from($this->table. ' as f'); 
                 $this->db->join('z_states as sta', 'sta.id = f.state_id', 'left');
+                $this->db->join('z_farmer_type as ftype', 'ftype.id = f.farmer_type', 'left');
                 $this->db->join('z_district as dist', 'dist.id = f.district_id', 'left');
                 $this->db->join('z_cities as cit', 'cit.id = f.city_id', 'left');
                 $this->db->join('z_lead_source as source', 'source.id = f.source', 'left');

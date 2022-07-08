@@ -89,6 +89,21 @@
                                     <th><input class="form-control-sm" type="text" name="father_name" id="father_name" placeholder="Father Name" ></th>
                                     <th><input class="form-control-sm" type="text" name="alt_mobile" id="alt_mobile" placeholder="ALT Mobile" ></th>
                                     <th><input class="form-control-sm" type="text" name="whatsapp" id="whatsapp" placeholder="WhatsApp" ></th>
+                                       <th class="align-middle bg-success text-white">
+                                      <select class=" form-control  form-control-sm" id="farmer_type" name="farmer_type" aria-label="Floating label select example"  style="width: 75px;"  >
+                                     <option value="">FarmerType</option>
+                                    <?php
+                                       if(!empty($farmertypes))
+                                       {
+                                           foreach ($farmertypes as $farmertype) {
+                                               ?>
+                                    <option value="<?php echo $farmertype->id;?>" ><?php echo $farmertype->title;?></option>
+                                    <?php
+                                       }
+                                       }
+                                       ?>
+                                 </select>
+                               </th>
                                     <th>Village</th>
                                     <th>Address</th>
                                     <th>State</th>
@@ -117,6 +132,7 @@
                                     <td><?php echo $value['father_name'];?></td>
                                     <td><?php echo $value['alt_mobile'];?></td>
                                     <td><?php echo $value['whatsapp'];?></td>
+                                    <td><?php echo $value['farmertype'];?></td>
                                     <td><?php echo $value['village'];?></td>
                                     <td><?php echo $value['address'];?></td>
                                     <td><?php echo $value['state'];?></td>

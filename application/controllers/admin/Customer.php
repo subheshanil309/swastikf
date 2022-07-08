@@ -20,6 +20,7 @@ class Customer extends BaseController
         $this->load->model('admin/customer_call_model');
         $this->load->model('admin/user_model');
         $this->load->model('admin/admin_model');
+        $this->load->model('admin/farmer_type_model');
 
         $this->perPage =200; 
     }
@@ -203,6 +204,7 @@ class Customer extends BaseController
                 $other_city2         = @$this->input->get('other_city2');
                 $call_direction2     = @$this->input->get('call_direction2');
                 $call_type2          = @$this->input->get('call_type2'); 
+                $farmer_type2        = @$this->input->get('farmer_type2'); 
                 $stat_type           = @$this->input->get('stat_type'); 
                 $followup_type       = @$this->input->get('followup_type'); 
                 $uid                 = @$this->input->get('uid'); 
@@ -259,6 +261,10 @@ class Customer extends BaseController
                 if(!empty($call_type2))
                 {
                     $where_search['last_call_type'] =  $call_type2;
+                }
+                if(!empty($farmer_type2))
+                {
+                    $where_search['farmer_type'] =  $farmer_type2;
                 }
 
         } 
@@ -477,6 +483,11 @@ class Customer extends BaseController
 
         $where = array();
         $where['status'] = '1';
+        $where['orderby'] = 'id';
+        $data['farmertypes'] = $this->farmer_type_model->findDynamic($where);
+
+        $where = array();
+        $where['status'] = '1';
         $where['orderby'] = 'title';
         $data['calldirections'] = $this->call_direction_model->findDynamic($where);
         
@@ -614,6 +625,7 @@ die;
         $this->form_validation->set_rules('call_type','call_type','trim|required');
         $this->form_validation->set_rules('assign_to','assign_to','trim|required');
         $this->form_validation->set_rules('call_direction','call_direction','trim|required');
+        $this->form_validation->set_rules('current_conversation','Current Conversation','trim|required');
         
         
         $form_data  = $this->input->post();
@@ -630,8 +642,7 @@ die;
 
             if(isset($form_data['farmser_id2']) && $form_data['farmser_id2'] !=='')
             {
-                $farmer_id = $form_data['farmser_id2'];
-
+                    $farmer_id = $form_data['farmser_id2'];
                     $insertData = array();
                     $insertData['id']               = $farmer_id;
                     $insertData['name']             = $form_data['customer_name'];
@@ -643,9 +654,10 @@ die;
                     $insertData['other_state']      = $form_data['other_state'];
                     $insertData['other_district']   = $form_data['other_district'];
                     $insertData['district_id']      = $form_data['district'];
-                    $insertData['update_at']          = date("Y-m-d H:i:s");
-                    $insertData['company_id']       =   $company_id;
-                    $insertData['update_by']       = $userid;
+                    $insertData['update_at']        = date("Y-m-d H:i:s");
+                    $insertData['company_id']       = $company_id;
+                    $insertData['update_by']        = $userid;
+                    $insertData['farmer_type']      = $form_data['farmer_type'];
 
                     $result_added = $this->farmers_model->save($insertData);
                     //$farmer_id = $result_added;
@@ -671,8 +683,9 @@ die;
                         $insertData['district_id']      = $form_data['district'];
                         $insertData['date_at']          = date("Y-m-d H:i:s");;
                         $insertData['status']           = 1;
-                        $insertData['company_id']       =   $company_id;
+                        $insertData['company_id']       = $company_id;
                         $insertData['created_by']       = $userid;
+                        $insertData['farmer_type']      = $form_data['farmer_type'];
                         $result_added = $this->farmers_model->save($insertData);
                         $farmer_id = $result_added;
                 }else
@@ -734,6 +747,7 @@ die;
                 $insertData['current_conversation']  = $form_data['current_conversation'];
                 $insertData['company_id']            = $company_id;
                 $insertData['update_at']             = date("Y-m-d H:i:s");
+
 
                  $result = $this->customer_model->save($insertData);
 
@@ -1543,6 +1557,7 @@ die;
                 $other_city2               = @$this->input->get('other_city2');
                 $call_direction2     = @$this->input->get('call_direction2');
                 $call_type2          = @$this->input->get('call_type2'); 
+                $farmer_type2          = @$this->input->get('farmer_type2'); 
                 $stat_type          = @$this->input->get('stat_type'); 
                 $followup_type          = @$this->input->get('followup_type'); 
                 if(!empty($search_customer_id))
@@ -1598,6 +1613,10 @@ die;
                 {
                     $where_search['last_call_type'] =  $call_type2;
                 }
+                if(!empty($farmer_type2))
+                {
+                    $where_search['farmer_type'] =  $farmer_type2;
+                }
 
                 if(!empty($uid))
             {
@@ -1629,7 +1648,7 @@ die;
 
             $resultfound = $this->customer_model->getRows($conditions);
 
-            $content = "Call Date,Customer Id,Customer name,Mobile,District,State,Call Direction,Call Type,Followup date,Emp Name,Assigned to,Assigned by,Comment,Customer Reg Date,Call Count,Entry made by,Entry Date,Entry Update Date,Last Follower,Last Call Type \n";
+            $content = "Call Date,Customer Id,Customer name,Mobile,District,State,Farmer Type,Call Direction,Call Type,Followup date,Emp Name,Assigned to,Assigned by,Comment,Customer Reg Date,Call Count,Entry made by,Entry Date,Entry Update Date,Last Follower,Last Call Type \n";
              
             if(!empty($resultfound))
             {
@@ -1653,6 +1672,7 @@ die;
                     $content.= str_replace(",", " ", $value['farmermobile']).",";
                     $content.= str_replace(",", " ", $value['district']).",";
                     $content.= str_replace(",", " ", $value['state']).",";
+                    $content.= str_replace(",", " ", $value['farmertype']).",";
                     $content.= str_replace(",", " ", $value['calldir']).",";
                     $content.= str_replace(",", " ", $value['calltype']).",";
                     $content.= str_replace(",", " ", date('d M Y',strtotime($value['last_call_back_date']))).",";

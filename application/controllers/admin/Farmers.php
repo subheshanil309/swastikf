@@ -15,6 +15,7 @@ class Farmers extends BaseController
        $this->load->model('admin/district_model');
        $this->load->model('admin/country_model');
        $this->load->model('admin/farmers_model');
+       $this->load->model('admin/farmer_type_model');
 
        $this->perPage =100; 
     }
@@ -36,6 +37,7 @@ class Farmers extends BaseController
             $father_name            = @$this->input->get('father_name');
             $whatsapp               = @$this->input->get('whatsapp');
             $alt_mobile             = @$this->input->get('alt_mobile');
+            $farmer_type             = @$this->input->get('farmer_type');
 
 
 
@@ -54,9 +56,14 @@ class Farmers extends BaseController
                 if(!empty($whatsapp))
                 {
                     $where_search['whatsapp'] =  $whatsapp;
-                } if(!empty($alt_mobile))
+                }
+                 if(!empty($alt_mobile))
                 {
                     $where_search['alt_mobile'] =  $alt_mobile;
+                }
+                if(!empty($farmer_type))
+                {
+                    $where_search['farmer_type'] =  $farmer_type;
                 } 
 
 
@@ -130,6 +137,13 @@ class Farmers extends BaseController
                 'limit' => $this->perPage 
                 ); 
 
+
+                $where = array();
+                $where['status']        = '1';
+                $where['orderby']       = 'id';
+                $data['farmertypes']    = $this->farmer_type_model->findDynamic($where);
+
+
                  $data['farmers'] = $this->farmers_model->getRows($conditions); 
                 $data['pagination_total_count'] =  $totalRec;
                /* echo "<pre>";
@@ -158,6 +172,11 @@ class Farmers extends BaseController
             $where['orderby'] = 'name';
             $data['states'] = $this->state_model->findDynamic($where); 
             
+            $where = array();
+            $where['status'] = '1';
+            $where['orderby'] = 'id';
+            $data['farmertypes'] = $this->farmer_type_model->findDynamic($where);
+
             $where  = array();
             $where['status']        = '1'; 
             $data['lead_sources'] = $this->lead_source_model->findDynamic($where); 
@@ -180,6 +199,7 @@ class Farmers extends BaseController
 		$this->load->library('form_validation');            
         $this->form_validation->set_rules('name','name','trim|required');
         $this->form_validation->set_rules('mobile','Mobile','trim|required');
+        $this->form_validation->set_rules('farmer_type','Farmer Type','trim|required');
          
          
         //form data 
@@ -222,6 +242,7 @@ class Farmers extends BaseController
             $insertData['status']       = $form_data['status1'];
             $insertData['village']      = $form_data['village'];
             $insertData['address']      = $form_data['address'];
+            $insertData['farmer_type']      = $form_data['farmer_type'];
              $insertData['created_by']      = $userid;
                  
     			$result = $this->farmers_model->save($insertData);
@@ -260,7 +281,7 @@ class Farmers extends BaseController
             
             $no++;
             $temp_date = $currentObj->date_at;
-            $dateAt = date("d-m-Y H:ia", strtotime($temp_date));
+            $dateAt = date("d M Y H:ia", strtotime($temp_date));
 
             $row = array();
             $row[] = $currentObj->id;
@@ -337,6 +358,15 @@ class Farmers extends BaseController
             $where['orderby'] = 'name';
             $data['states'] = $this->state_model->findDynamic($where); 
         
+
+
+        $where = array();
+            $where['status'] = '1';
+            $where['orderby'] = 'id';
+            $data['farmertypes'] = $this->farmer_type_model->findDynamic($where);
+
+
+            
          $where  = array();
             $where['status']        = '1'; 
             $data['lead_sources'] = $this->lead_source_model->findDynamic($where); 
@@ -414,6 +444,7 @@ class Farmers extends BaseController
             $insertData['status']       = $form_data['status1'];
             $insertData['village']      = $form_data['village'];
             $insertData['address']      = $form_data['address'];
+            $insertData['farmer_type']      = $form_data['farmer_type'];
              $insertData['update_by']      = $userid;
 
                  
