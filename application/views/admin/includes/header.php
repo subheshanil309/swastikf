@@ -300,6 +300,7 @@
                         
                         <li><a   href="<?php echo base_url('admin/farmer_type');?>" key="t-products">Farmer Type</a></li>
                         <li><a   href="<?php echo base_url('admin/call_type');?>" key="t-products">Call Type</a></li>
+                        <li><a   href="<?php echo base_url('admin/crop_type');?>" key="t-products">Crop Type</a></li>
                      </ul>
                   </li>
                   <?php

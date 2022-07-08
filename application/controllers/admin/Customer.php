@@ -21,6 +21,7 @@ class Customer extends BaseController
         $this->load->model('admin/user_model');
         $this->load->model('admin/admin_model');
         $this->load->model('admin/farmer_type_model');
+        $this->load->model('admin/crop_model');
 
         $this->perPage =200; 
     }
@@ -205,6 +206,7 @@ class Customer extends BaseController
                 $call_direction2     = @$this->input->get('call_direction2');
                 $call_type2          = @$this->input->get('call_type2'); 
                 $farmer_type2        = @$this->input->get('farmer_type2'); 
+                $crop_id2            = @$this->input->get('crop_id2'); 
                 $stat_type           = @$this->input->get('stat_type'); 
                 $followup_type       = @$this->input->get('followup_type'); 
                 $uid                 = @$this->input->get('uid'); 
@@ -265,6 +267,10 @@ class Customer extends BaseController
                 if(!empty($farmer_type2))
                 {
                     $where_search['farmer_type'] =  $farmer_type2;
+                } 
+                if(!empty($crop_id2))
+                {
+                    $where_search['crop_id'] =  $crop_id2;
                 }
 
         } 
@@ -486,6 +492,11 @@ class Customer extends BaseController
         $where['orderby'] = 'id';
         $data['farmertypes'] = $this->farmer_type_model->findDynamic($where);
 
+        $where = array(); 
+        $where['status'] = '1'; 
+        $crop_list = $this->crop_model->findDynamic($where);
+        $data['crop_lists'] =  $crop_list;
+
         $where = array();
         $where['status'] = '1';
         $where['orderby'] = 'title';
@@ -658,6 +669,7 @@ die;
                     $insertData['company_id']       = $company_id;
                     $insertData['update_by']        = $userid;
                     $insertData['farmer_type']      = $form_data['farmer_type'];
+                    $insertData['crop_id']          = $form_data['crop_id'];
 
                     $result_added = $this->farmers_model->save($insertData);
                     //$farmer_id = $result_added;
@@ -686,6 +698,7 @@ die;
                         $insertData['company_id']       = $company_id;
                         $insertData['created_by']       = $userid;
                         $insertData['farmer_type']      = $form_data['farmer_type'];
+                        $insertData['crop_id']          = $form_data['crop_id'];
                         $result_added = $this->farmers_model->save($insertData);
                         $farmer_id = $result_added;
                 }else
@@ -1554,12 +1567,13 @@ die;
                 $district2           = @$this->input->get('district2');
                 $other_district2     = @$this->input->get('other_district2');
                 $city2               = @$this->input->get('city2');
-                $other_city2               = @$this->input->get('other_city2');
+                $other_city2         = @$this->input->get('other_city2');
                 $call_direction2     = @$this->input->get('call_direction2');
                 $call_type2          = @$this->input->get('call_type2'); 
-                $farmer_type2          = @$this->input->get('farmer_type2'); 
-                $stat_type          = @$this->input->get('stat_type'); 
-                $followup_type          = @$this->input->get('followup_type'); 
+                $farmer_type2        = @$this->input->get('farmer_type2'); 
+                $crop_id2            = @$this->input->get('crop_id2'); 
+                $stat_type           = @$this->input->get('stat_type'); 
+                $followup_type       = @$this->input->get('followup_type'); 
                 if(!empty($search_customer_id))
                 {
                     $where_search['farmer_id'] =  $search_customer_id;
@@ -1617,6 +1631,10 @@ die;
                 {
                     $where_search['farmer_type'] =  $farmer_type2;
                 }
+                if(!empty($crop_id2))
+                {
+                    $where_search['crop_id'] =  $crop_id2;
+                }
 
                 if(!empty($uid))
             {
@@ -1673,6 +1691,7 @@ die;
                     $content.= str_replace(",", " ", $value['district']).",";
                     $content.= str_replace(",", " ", $value['state']).",";
                     $content.= str_replace(",", " ", $value['farmertype']).",";
+                    $content.= str_replace(",", " ", $value['cropname']).",";
                     $content.= str_replace(",", " ", $value['calldir']).",";
                     $content.= str_replace(",", " ", $value['calltype']).",";
                     $content.= str_replace(",", " ", date('d M Y',strtotime($value['last_call_back_date']))).",";

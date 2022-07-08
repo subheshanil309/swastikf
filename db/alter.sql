@@ -552,6 +552,12 @@ INSERT INTO `z_farmer_type` (`id`, `name`, `title`, `status`, `date_at`, `update
 COMMIT;
 
 
+----updated
+
+
+ALTER TABLE `z_crop` ADD `slug` VARCHAR(300) NULL DEFAULT NULL;
+
+
 
 
 

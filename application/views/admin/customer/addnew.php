@@ -197,6 +197,24 @@ print_r($customer_call_dtl);  */
                                 </select>
                               </div>
                            </div>
+                          <div class="row">
+                              <label for="farmer_type" class="col-sm-4 col-form-label">Crop</label>
+                              <div class="col-sm-8">
+                                <select class="form-control form-control-sm" id="crop_id" name="crop_id" aria-label="Floating label select example">
+                                    <?php
+                                       if(!empty($crop_lists))
+                                       {
+                                           foreach ($crop_lists as $crop_list) {
+                                               ?>
+                                    <option value="<?php echo $crop_list->id;?>" <?php if(isset($edit_data->crop_id) && $edit_data->crop_id ==$crop_list->id){ echo "selected";}?> ><?php echo $crop_list->title;?></option>
+                                    <?php
+                                       }
+                                       }
+                                       ?>
+                                    
+                                </select>
+                              </div>
+                           </div>
                         </div>
                         <!-- end card body -->
                       </div>
@@ -831,6 +849,21 @@ print_r($customer_call_dtl);  */
                                  </select>
                                </th>
                                <th class="align-middle bg-success text-white">
+                                      <select class=" form-control  form-control-sm" id="crop_id2" name="crop_id2" aria-label="Floating label select example"  style="width: 75px;"  >
+                                     <option value="">Crop</option>
+                                    <?php
+                                       if(!empty($crop_lists))
+                                       {
+                                           foreach ($crop_lists as $crop_list) {
+                                               ?>
+                                    <option value="<?php echo $crop_list->id;?>" ><?php echo $crop_list->title;?></option>
+                                    <?php
+                                       }
+                                       }
+                                       ?>
+                                 </select>
+                               </th>
+                               <th class="align-middle bg-success text-white">
                                       <select class=" form-control  form-control-sm" id="call_direction2" name="call_direction2" aria-label="Floating label select example"  style="width: 75px;"  >
                                      <option value="">CallDirection</option>
                                     <?php
@@ -905,6 +938,7 @@ print_r($customer_call_dtl);  */
                                         <td><?php echo  ($customer['district']);?></td>
                                         <td><?php echo  ($customer['city']);?></td>
                                         <td><?php echo $customer['farmertype'];?></td>
+                                        <td><?php echo $customer['cropname'];?></td>
                                         <td><?php echo $customer['calldir'];?></td>
                                         <td><?php echo $customer['calltype'];?></td>
                                         <td><?php if($customer['last_call_back_date'] !=='0000-00-00'){echo date('d M Y',strtotime($customer['last_call_back_date']));}?></td>
