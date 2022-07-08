@@ -182,7 +182,7 @@ print_r($customer_call_dtl);  */
                            <div class="row">
                               <label for="farmer_type" class="col-sm-4 col-form-label">Farmer Type</label>
                               <div class="col-sm-8">
-                                <select class="form-control form-control-sm" id="farmer_type" name="farmer_type" aria-label="Floating label select example">
+                                <select class="form-control form-control-sm select2" id="farmer_type" name="farmer_type" aria-label="Floating label select example">
                                     <?php
                                        if(!empty($farmertypes))
                                        {
@@ -200,7 +200,7 @@ print_r($customer_call_dtl);  */
                           <div class="row">
                               <label for="farmer_type" class="col-sm-4 col-form-label">Crop</label>
                               <div class="col-sm-8">
-                                <select class="form-control form-control-sm" id="crop_id" name="crop_id" aria-label="Floating label select example">
+                                <select class="form-control form-control-sm select2" id="crop_id" name="crop_id" aria-label="Floating label select example">
                                     <?php
                                        if(!empty($crop_lists))
                                        {
@@ -226,7 +226,7 @@ print_r($customer_call_dtl);  */
                           <div class="row">
                               <label for="call_type" class="col-sm-4 col-form-label">Call Type<span class="text-danger">*</span></label>
                               <div class="col-sm-8">
-                                 <select class=" form-control  form-control-sm" id="call_type" name="call_type"  onchange="select_calltype('add_inquiry')" aria-label="Floating label select example">
+                                 <select class=" form-control  form-control-sm select2" id="call_type" name="call_type"  onchange="select_calltype('add_inquiry')" aria-label="Floating label select example">
                                      
                                     <?php
                                        if(!empty($calltypes))
@@ -268,7 +268,7 @@ print_r($customer_call_dtl);  */
                            <div class="row">
                               <label for="call_direction" class="col-sm-4 col-form-label">Call Direction<span class="text-danger">*</span></label>
                               <div class="col-sm-8">
-                                 <select class=" form-control  form-control-sm" id="call_direction" name="call_direction" aria-label="Floating label select example">
+                                 <select class=" form-control  form-control-sm select2" id="call_direction" name="call_direction" aria-label="Floating label select example">
                                     
                                     <?php
                                        if(!empty($calldirections))
@@ -834,7 +834,7 @@ print_r($customer_call_dtl);  */
                                       <input type="text" name="other_city2" id="other_city2"  style="display: none;" class="form-control form-control-sm mb-2" placeholder="Please Enter Tehsil Name" />
                                     </th>
                                     <th class="align-middle bg-success text-white">
-                                      <select class=" form-control  form-control-sm" id="farmer_type2" name="farmer_type2" aria-label="Floating label select example"  style="width: 75px;"  >
+                                      <select class=" form-control  form-control-sm select2" id="farmer_type2" name="farmer_type2" aria-label="Floating label select example"  style="width: 150px;"  >
                                      <option value="">FarmerType</option>
                                     <?php
                                        if(!empty($farmertypes))
@@ -849,7 +849,7 @@ print_r($customer_call_dtl);  */
                                  </select>
                                </th>
                                <th class="align-middle bg-success text-white">
-                                      <select class=" form-control  form-control-sm" id="crop_id2" name="crop_id2" aria-label="Floating label select example"  style="width: 75px;"  >
+                                      <select class=" form-control  form-control-sm select2" id="crop_id2" name="crop_id2" aria-label="Floating label select example"  style="width: 150px;" >
                                      <option value="">Crop</option>
                                     <?php
                                        if(!empty($crop_lists))
@@ -864,7 +864,7 @@ print_r($customer_call_dtl);  */
                                  </select>
                                </th>
                                <th class="align-middle bg-success text-white">
-                                      <select class=" form-control  form-control-sm" id="call_direction2" name="call_direction2" aria-label="Floating label select example"  style="width: 75px;"  >
+                                      <select class=" form-control  form-control-sm select2" id="call_direction2" name="call_direction2" aria-label="Floating label select example"  style="width: 75px;"  >
                                      <option value="">CallDirection</option>
                                     <?php
                                        if(!empty($calldirections))
@@ -879,7 +879,7 @@ print_r($customer_call_dtl);  */
                                  </select>
                                </th>
                                     <th class="align-middle bg-success text-white">
-                                      <select class=" form-control  form-control-sm" id="call_type2" name="call_type2" aria-label="Floating label select example"  style="width: 75px;" >
+                                      <select class=" form-control  form-control-sm select2" id="call_type2" name="call_type2" aria-label="Floating label select example"  style="width: 75px;" >
                                          <option value="">CallType</option>
                                         <?php
                                            if(!empty($calltypes))

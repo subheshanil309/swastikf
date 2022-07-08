@@ -556,11 +556,32 @@ COMMIT;
 
 
 ALTER TABLE `z_crop` ADD `slug` VARCHAR(300) NULL DEFAULT NULL;
+ALTER TABLE `z_farmers` ADD `crop_id` INT NULL DEFAULT '1';
 
+ 
 
+DROP TABLE IF EXISTS `z_crop`;
+CREATE TABLE IF NOT EXISTS `z_crop` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) DEFAULT NULL,
+  `title` varchar(250) DEFAULT NULL,
+  `status` int(11) DEFAULT 1,
+  `date_at` datetime DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT 1,
+  `updated_by` int(11) DEFAULT NULL,
+  `slug` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+ 
 
-
-
-
-
+INSERT INTO `z_crop` (`id`, `name`, `title`, `status`, `date_at`, `update_at`, `created_by`, `updated_by`, `slug`) VALUES
+(1, 'papaya', 'Papaya', 1, '2022-07-08 14:11:34', '2022-07-08 14:13:44', 1, NULL, 'papaya'),
+(2, 'lemon', 'Lemon', 1, '2022-07-08 14:12:48', NULL, 1, NULL, 'lemon'),
+(3, 'tiwan pink guava', 'Tiwan Pink Guava', 1, '2022-07-08 14:14:45', NULL, 1, NULL, 'tiwan-pink-guava'),
+(4, 'g9 banana', 'G9 Banana', 1, '2022-07-08 14:15:12', NULL, 1, NULL, 'g9-banana'),
+(5, 'apple ber', 'Apple Ber', 1, '2022-07-08 14:15:28', NULL, 1, NULL, 'apple-ber'),
+(6, 'fig', 'Fig', 1, '2022-07-08 14:16:34', NULL, 1, NULL, 'fig');
+COMMIT;
+ 

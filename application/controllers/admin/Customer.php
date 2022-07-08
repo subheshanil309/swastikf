@@ -679,36 +679,43 @@ die;
                 $where['mobile']= $form_data['customer_mobile'];
                 $where['company_id']= $company_id;
                 $exist_mobile    = $this->farmers_model->findDynamic($where);
+                $insertData = array();
 
                 if(empty($exist_mobile))
                 {   
-                        $insertData = array();
+                        
 
-                        $insertData['name']             = $form_data['customer_name'];
-                        $insertData['mobile']           = $form_data['customer_mobile'];
-                        $insertData['alt_mobile']       = $form_data['customer_alter_mobile'];
-                        $insertData['city_id']          = $form_data['city'];
-                        $insertData['other_city']       = $form_data['other_city'];
-                        $insertData['state_id']         = $form_data['state'];
-                        $insertData['other_state']      = $form_data['other_state'];
-                        $insertData['other_district']   = $form_data['other_district'];
-                        $insertData['district_id']      = $form_data['district'];
-                        $insertData['date_at']          = date("Y-m-d H:i:s");;
-                        $insertData['status']           = 1;
-                        $insertData['company_id']       = $company_id;
-                        $insertData['created_by']       = $userid;
-                        $insertData['farmer_type']      = $form_data['farmer_type'];
-                        $insertData['crop_id']          = $form_data['crop_id'];
-                        $result_added = $this->farmers_model->save($insertData);
-                        $farmer_id = $result_added;
+                       
                 }else
                 {
                     
                     $farmer_id  =   $exist_mobile[0]->id;
 
-                    $this->session->set_flashdata('error', 'Farmer Already Added');
-                    $this->addnew();
+                    /*$this->session->set_flashdata('error', 'Farmer Already Added');
+                    $this->addnew();*/
+                     $insertData['id']             = $farmer_id;
                 }
+
+                   
+                    $insertData['name']             = $form_data['customer_name'];
+                    $insertData['mobile']           = $form_data['customer_mobile'];
+                    $insertData['alt_mobile']       = $form_data['customer_alter_mobile'];
+                    $insertData['city_id']          = $form_data['city'];
+                    $insertData['other_city']       = $form_data['other_city'];
+                    $insertData['state_id']         = $form_data['state'];
+                    $insertData['other_state']      = $form_data['other_state'];
+                    $insertData['other_district']   = $form_data['other_district'];
+                    $insertData['district_id']      = $form_data['district'];
+                    $insertData['date_at']          = date("Y-m-d H:i:s");;
+                    $insertData['status']           = 1;
+                    $insertData['company_id']       = $company_id;
+                    $insertData['created_by']       = $userid;
+                    $insertData['farmer_type']      = $form_data['farmer_type'];
+                    $insertData['crop_id']          = $form_data['crop_id'];
+                    $result_added = $this->farmers_model->save($insertData);
+                    
+                    $farmer_id  = $result_added;
+
 
             }
             
@@ -725,29 +732,41 @@ die;
 
                 
                 $where = array();
-
                 $where['farmer_id']     = $form_data['farmser_id2'];
                 $where['orderby']       = '-id';
                 $exist_customer         = $this->customer_model->findDynamic($where);
-                 
-                    $customer_id = $exist_customer[0]->id;
-                    $insertData['id']             = $customer_id;
-                    $insertData['update_at']               = date("Y-m-d H:i:s");
-                    $insertData['update_by']            = $this->session->userdata('userId');
+                $customer_id            = $exist_customer[0]->id;
 
-                    $meassage ='Customer successfully Updated ';
-            }else
+                $insertData['id']        = $customer_id;
+                $insertData['update_at'] = date("Y-m-d H:i:s");
+                $insertData['update_by'] = $this->session->userdata('userId');
+
+                $meassage ='Customer successfully Updated ';
+            }else 
             {
 
-                
+                $where = array();
+                $where['farmer_id']     = $farmer_id;
+                $where['orderby']       = '-id';
+                $exist_customer         = $this->customer_model->findDynamic($where);
+                if(!empty($exist_customer))
+                {
+                    $customer_id            = $exist_customer[0]->id; 
+                    $insertData['id']        = $customer_id;
+                    $insertData['update_at'] = date("Y-m-d H:i:s");
+                    $insertData['update_by'] = $this->session->userdata('userId');
 
+                    $meassage ='Customer successfully Updated ';
 
-                // create ad new inquiry  
-                $insertData['farmer_id']            = $farmer_id;
-                $insertData['status']               = '1';
-                $insertData['date_at']              = date("Y-m-d H:i:s");
-                $insertData['created_by']           = $this->session->userdata('userId');
-                $meassage = 'Customer successfully Added';
+                }else
+                {
+                     // create ad new inquiry  
+                    $insertData['farmer_id']            = $farmer_id;
+                    $insertData['status']               = '1';
+                    $insertData['date_at']              = date("Y-m-d H:i:s");
+                    $insertData['created_by']           = $this->session->userdata('userId');
+                    $meassage = 'Customer successfully Added';
+                }
             }
 
                 $insertData['assigned_to']           = $form_data['assign_to'];
