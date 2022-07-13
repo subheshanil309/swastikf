@@ -4,12 +4,12 @@
     <div class="row">
       <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                     <h4 class="mb-sm-0 font-size-18">City</h4>
+                                     <h4 class="mb-sm-0 font-size-18">Tehsil</h4>
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a  href="<?php echo base_url()?>admin">Dashboard</a></li>
-                                            <li class="breadcrumb-item"><a   href="<?php echo base_url()?>admin/city">City List</a></li>
-                                            <li class="breadcrumb-item active">Update City</li>
+                                            <li class="breadcrumb-item"><a   href="<?php echo base_url()?>admin/city">Tehsil List</a></li>
+                                            <li class="breadcrumb-item active">Update Tehsil</li>
                                         </ol>
                                     </div>
 
@@ -60,7 +60,7 @@
                       <h5 class="card-header bg-success text-white border-bottom ">
                          <div class="row ">
                            <div class="col-sm-9">
-                            Update City 
+                            Update Tehsil 
                            </div>
                            
                             
@@ -139,9 +139,9 @@
                        <div class="col-sm-3">
                     
                             <div class="row">
-                              <label for="name" class="col-sm-4 col-form-label">City Name<span class="text-danger">*</span></label>
+                              <label for="name" class="col-sm-4 col-form-label">Tehsil Name<span class="text-danger">*</span></label>
                               <div class="col-sm-8"> 
-                                 <input type="text" class="form-control form-control-sm" id="name" name="name" placeholder="Enter State Name*" value="<?php echo $edit_data->city; ?>" required="">
+                                 <input type="text" class="form-control form-control-sm" id="name" name="name" placeholder="Enter Tehsil Name*" value="<?php echo $edit_data->city; ?>" required="">
                               </div>
                            </div>
                        </div>

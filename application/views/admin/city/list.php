@@ -51,7 +51,7 @@
                       <h5 class="card-header bg-success text-white border-bottom ">
                          <div class="row ">
                            <div class="col-sm-9">
-                            City List
+                            Tehsil List
                            </div>
                            
                            <div class="col-sm-3 ">
@@ -75,7 +75,7 @@
                                     <th>Country</th>                                            
                                     <th>State</th>                                            
                                     <th>District</th>                                            
-                                    <th>City</th>                                            
+                                    <th>Tehsil</th>                                            
                                      <th  style="width: 60px;">Status</th>                                            
                                     <th class="text-center"  style="width: 60px;">Actions</th>
                                   </tr>
@@ -113,7 +113,7 @@
             hitURL = "<?php echo base_url() ?>admin/city/delete",
             currentRow = $(this);
           
-          var confirmation = confirm("Are you sure to delete this city ?");
+          var confirmation = confirm("Are you sure to delete this Tehsil ?");
           
           if(confirmation)
           {

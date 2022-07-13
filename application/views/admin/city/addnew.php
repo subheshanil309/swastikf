@@ -4,12 +4,12 @@
     <div class="row">
       <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                     <h4 class="mb-sm-0 font-size-18">City</h4>
+                                     <h4 class="mb-sm-0 font-size-18">Tehsil</h4>
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a  href="<?php echo base_url()?>admin">Dashboard</a></li>
-                                            <li class="breadcrumb-item"><a   href="<?php echo base_url()?>admin/city">City List</a></li>
-                                            <li class="breadcrumb-item active">Add New City</li>
+                                            <li class="breadcrumb-item"><a   href="<?php echo base_url()?>admin/city">Tehsil List</a></li>
+                                            <li class="breadcrumb-item active">Add New Tehsil</li>
                                         </ol>
                                     </div>
 
@@ -60,7 +60,7 @@
                       <h5 class="card-header bg-success text-white border-bottom ">
                          <div class="row ">
                            <div class="col-sm-9">
-                            Add City 
+                            Add Tehsil 
                            </div>
                            
                             
@@ -139,50 +139,35 @@
                        <div class="col-sm-3">
                     
                             <div class="row">
-                              <label for="name" class="col-sm-4 col-form-label">City Name<span class="text-danger">*</span></label>
+                              <label for="name" class="col-sm-4 col-form-label">Tehsil Name<span class="text-danger">*</span></label>
                               <div class="col-sm-8"> 
-                                 <input type="text" class="form-control form-control-sm" id="name" name="name" placeholder="Enter State Name*" value="" required="">
+                                 <input type="text" class="form-control form-control-sm" id="name" name="name" placeholder="Enter Tehsil Name*" value="" required="">
                               </div>
                            </div>
                        </div>
                  
-                  <div class="col-sm-3">
-                     
-
-                             
-                            <div class="row">
-                              <label for="status1" class="col-sm-4 col-form-label">Status</label>
-                              <div class="col-sm-8"> 
-                                   <select class="form-control form-control-sm" id="status1" name="status1" style="display: block!important">
-                                      
-                                                                        <option value="1" >Active</option>
-                                                                        <option value="0">Inactive</option>
-                                                                         
-                                                                     </select>
-                                                                      
-                              </div>
-                           </div>
-
-                           
-                          
-                     
-                  </div>
-                 
-                   
-                 
-               </div>
-               <div class="col-sm-12">
-                   
-               </div>
-                      
-                        
-                      </div>
-                      <div class="card-footer">
-                        <div class="float-end">
-                            <input type="submit" class="btn btn-primary btn-sm" value="Submit" />
-                            <input type="reset" class="btn btn-default btn-sm" value="Reset" />
+                      <div class="col-sm-3">
+                        <div class="row">
+                          <label for="status1" class="col-sm-4 col-form-label">Status</label>
+                          <div class="col-sm-8">
+                            <select class="form-control form-control-sm" id="status1" name="status1" style="display: block!important">
+                              <option value="1" >Active</option>
+                              <option value="0">Inactive</option>
+                            </select>
+                          </div>
                         </div>
                       </div>
+                    </div>
+                   <div class="col-sm-12">
+                       
+                   </div>
+                  </div>
+                  <div class="card-footer">
+                    <div class="float-end">
+                        <input type="submit" class="btn btn-primary btn-sm" value="Submit" />
+                        <input type="reset" class="btn btn-default btn-sm" value="Reset" />
+                    </div>
+                  </div>
 
                       </div>
                      </form>

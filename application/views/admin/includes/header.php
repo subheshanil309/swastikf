@@ -287,7 +287,7 @@
                         <li><a   href="<?php echo base_url('admin/country');?>" key="t-products">Country</a></li>
                         <li><a   href="<?php echo base_url('admin/state');?>" key="t-products">State</a></li>
                         <li><a   href="<?php echo base_url('admin/district');?>" key="t-products">District</a></li>
-                        <li><a   href="<?php echo base_url('admin/city');?>" key="t-products">City</a></li>
+                        <li><a   href="<?php echo base_url('admin/city');?>" key="t-products">Tehsil</a></li>
                         <li><a   href="<?php echo base_url('admin/document_category');?>" key="t-products">K Documents Category</a></li>
                          
                      </ul>

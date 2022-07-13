@@ -69,11 +69,14 @@ class Login extends CI_Controller
              
             
             $result = $this->login_model->loginMe($email, $password);
+             
 			if(count($result) > 0)
             {
                 foreach ($result as $res)
                 {
-                    $sessionArray = array('userId'=>$res->id,                    
+                    if($res->status==1)
+                    {
+                        $sessionArray = array('userId'=>$res->id,                    
                                             'role'=> $res->admin_type,
                                             'email'=>$res->email,
                                             'phone'=>$res->phone,
@@ -87,7 +90,15 @@ class Login extends CI_Controller
                     
                     redirect(base_url()."admin/dashboard");
                     //redirect('/admin/dashboard');
+                }else
+                {
+                    $this->session->set_flashdata('error', 'Your Account is suspended');
+                    redirect(base_url()."admin/login");
+                    //redirect('/admin/login');
                 }
+                     
+                }
+                    
             }
             else	
             {
