@@ -585,3 +585,14 @@ INSERT INTO `z_crop` (`id`, `name`, `title`, `status`, `date_at`, `update_at`, `
 (6, 'fig', 'Fig', 1, '2022-07-08 14:16:34', NULL, 1, NULL, 'fig');
 COMMIT;
  
+
+
+
+
+
+
+
+------13-07-2022
+
+ALTER TABLE `z_consultants` CHANGE `call_type` `call_type` VARCHAR(20) NULL DEFAULT NULL;
+

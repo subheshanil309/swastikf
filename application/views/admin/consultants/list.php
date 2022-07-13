@@ -29,7 +29,7 @@
       <div class="row">
          <div class="col-xl-12">
             <div class="card">
-               <h5 class="card-header  bg-primary text-white border-bottom p-0">
+               <h5 class="card-header  text-white border-bottom p-0">
                   <div class="row ">
                      <div class="col-sm-12">
                         <div class="d-flex flex-wrap gap-2 table-responsive">

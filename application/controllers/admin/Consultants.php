@@ -25,7 +25,7 @@ class Consultants extends BaseController
         $this->load->model('admin/document_model');
         $this->load->model('admin/crop_model');
 
-        $this->perPage =100; 
+        $this->perPage =200; 
     }
 
     
@@ -201,31 +201,12 @@ class Consultants extends BaseController
                 'form_type' => $form_type, 
                 'limit' => $this->perPage 
                 ); 
-
                 
-                    /*$conditions['userid'] = $userid;
-                $conditions['form_type'] = $form_type;  echo "<pre>";
-                    print_r( $conditions);
-                    echo "</pre>"; */
-
-                 $data['consultants']   = $this->consultant_model->getRows($conditions); 
-
-
- 
+                $data['consultants']   = $this->consultant_model->getRows($conditions); 
                 $data['pagination'] = $this->pagination->create_links(); 
- 
                 $data['pagination_total_count'] =  $totalRec;
- 
-                   
-
-/* 
-  echo "<pre>";
-print_r($this->db->last_query());  
-echo "</pre>";  */
-
-
-
-         $form_type  = $this->input->get('form_type');
+                
+                $form_type  = $this->input->get('form_type');
          if($form_type =='search')
          {
             $customer_id    = $this->input->get('customer_id');
@@ -261,8 +242,7 @@ echo "</pre>";  */
 
                         $where = array();
                         $where['customer'] = $data['edit_data']->id;
-                        //$data['customer_call_dtl'] =$this->customer_call_detail($data['edit_data']->id);
-                       // $data['customer_call_dtl'] = $this->customer_call_model->findDynamic($where);
+                         
                     }
                     
 
@@ -357,9 +337,7 @@ echo "</pre>";  */
           
         
 
-       /* echo "<pre>";
-        print_r($data['show_summary']);die;
-         echo "</pre>";*/
+        
         $this->global['pageTitle'] = 'Consultants';
         $this->loadViews("admin/consultants/list", $this->global, $data , NULL);
         

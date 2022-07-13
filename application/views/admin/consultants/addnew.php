@@ -33,6 +33,11 @@
     font-size: 25px;
     top: -147px;
 }
+a img
+{
+   width: 163px;
+    height: 125px;
+}
 
 </style>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/admin/libs/summernote/summernote-lite.min.css')?>"> 
@@ -311,23 +316,35 @@
                                        </div>
                                     </div>
                                     <div class="col-sm-12">
-                                       <div class=" ">
-                                          <label class="form-label"  for="images">Photos</label>
-                                           
-                                             <div class="row" id="pictureresult">
-                                                <div class="upload col-md-2 ">
-                                                    <input type="file" id="files1" name="upload_files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
-                                                    <label for="files1" class="p-0">
+                                       <div class="gallery">
+                                          <label class="form-label"  for="images">Photos
+                                             <div class="  ">
+                                                <img id="files1_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>"  >
+                                             </div>
+                                          </label>
+                                          <input type="file" multiple id="images" name="upload_files[]"  class="input-file">
+                                             
+                                          <?php
+                                             /*
+                                                <div class="row" id="pictureresult">
+                                             <div class="upload col-md-2 ">
+                                                 <input type="file" id="files1" name="upload_files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
+                                                 <label for="files1" class="p-0">
 
-                                                        <img id="files1_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">
-                                                    </label>
-                                                    <span class="invalid-feedback files1"></span>
-                                                </div>
-                                                 
-                                            </div>
-                                            <br>
-                                            <button type="button" id="add_more" class="btn btn-sm btn-success rounded" value="Add More Files">Add More</button>
-                                        
+                                                     <img id="files1_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">
+                                                 </label>
+                                                 <span class="invalid-feedback files1"></span>
+                                             </div>
+                                              
+                                         </div>
+                                         <br>
+                                         <button type="button" id="add_more" class="btn btn-sm btn-success rounded" value="Add More Files">Add More</button>
+                                             */
+                                          ?>
+                                          
+                                          <div class="row uploads">
+                                                
+                                          </div>
                                     </div>
                                     <div class="col-sm-12">
                                        <div class=" ">
@@ -379,11 +396,45 @@
  <script src="<?php echo base_url(); ?>assets/admin/libs/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/daterange/daterangepicker.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/toastr/build/toastr.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/js/pages/lightbox.init.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/summernote/summernote-lite.min.js"></script>
  
 <!--  Large modal example -->
 
 <script>
+   $(function() {
+    // Multiple images preview in browser
+    var imagesPreview = function(input, placeToInsertImagePreview) {
+
+        if (input.files) {
+            var filesAmount = input.files.length;
+            html_content = '';
+            for (i = 0; i < filesAmount; i++) {
+                var reader = new FileReader();
+
+                reader.onload = function(event) {
+              /*    <a href="<?php echo base_url('uploads/admin/document/images/').$all_images[$i]?>" title="images gallery" data-source="<?php echo base_url('uploads/admin/document/images/').$all_images[$i]?>">
+                                                                  <img id="files<?php echo $i;?>_src" class="already_exit_pic" data-name="<?php echo $all_images[$i];?>" alt title="images gallery" src="<?php echo base_url('uploads/admin/document/images/').$all_images[$i]?>" style="height:100%;width:100%;">
+                                                               </a>*/
+
+
+                     var html_content = '\
+                     <div class="zoom-gallery upload col-md-2"><a href="'+event.target.result+'" title="image gallery" data-source="'+event.target.result+'"> \
+                     <img  class="already_exit_pic" alt title="images gallery " src="'+event.target.result+'"/  ></div>';
+                     $(html_content).appendTo(placeToInsertImagePreview);
+                }
+
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+
+    };
+
+    $('#images').on('change', function() {
+        imagesPreview(this, 'div.uploads');
+    });
+});
      $('#recommendation').summernote({
        height: 200,
          toolbar: [
