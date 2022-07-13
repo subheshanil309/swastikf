@@ -46,7 +46,7 @@ a img
       <div class="row">
          <div class="col-xl-6">
             <div class="card">
-               <form method="GET" onsubmit="return false">
+               <form  id="add_cunsultant" method="GET" onsubmit="return false">
                   <div class="card-body">
                      <div class="row">
                         <div class="col-md-5">
@@ -432,6 +432,7 @@ a img
     };
 
     $('#images').on('change', function() {
+      $('div.uploads').empty();
         imagesPreview(this, 'div.uploads');
     });
 });
@@ -693,7 +694,9 @@ $(document).on('click','#add_more', function(){
    
    $("#query-pagination li.page-item a").addClass('page-link');
     $(".select2").select2();
-    
+    $("#add_cunsultant").on("submit", function(){
+        show_loader();
+    });
       
    
    
@@ -701,6 +704,9 @@ $(document).on('click','#add_more', function(){
     
     
    });
+    
+    
+
    
    
 </script>
