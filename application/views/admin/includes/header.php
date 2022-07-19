@@ -2,7 +2,7 @@
 <html lang="en">
    <head>
       <meta charset="utf-8" />
-      <title><?php echo $pageTitle; ?></title>
+      <title>Swastik | <?php echo $pageTitle; ?></title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta content=" Admin & Dashboard Template" name="description" />
       <meta content="Themesbrand" name="author" />
@@ -235,7 +235,7 @@
                      <span key="t-ecommerce">Sales</span>
                      </a>
                      <ul class="sub-menu" aria-expanded="false">
-                        <li><a   href="#" key="t-products">Sales</a></li>
+                        <li><a   href="<?php echo base_url('admin/sales');?>" key="t-products">Sales</a></li>
                         <li><a   href="#" key="t-products">RazorPay Sales</a></li>
                      </ul>
                   </li>

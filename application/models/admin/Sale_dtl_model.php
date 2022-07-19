@@ -1,17 +1,23 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Property_model extends Base_model
+
+
+
+
+
+
+class Sale_dtl_model extends Base_model
 {
 
-    public $table = "rc_rel_property";
+    public $table = "z_sales_dtl";
 
     //set column field database for datatable orderable
-    var $column_order = array(null, 'img', 'name', 'price','area_size','rooms','address', 'date_at', 'status'); 
+    var $column_order = array(null, 'c.date_at', 'c.sku_id', 'c.customer_title','c.customer_mobile','c.customer_alter_mobile',  'sta.name', 'dist.name', 'cit.city', 'ctype.name', 'calldirection.name'); 
 
     //set column field database for datatable searchable 
-    var $column_search = array('name'); 
+    var $column_search = array('c.date_at', 'c.sku_id', 'c.customer_title','c.customer_mobile','c.customer_alter_mobile',  'sta.name', 'dist.name', 'cit.city', 'ctype.name', 'calldirection.name'); 
 
-    var $order = array('id' => 'asc'); // default order
+    var $order = array('c.id' => 'desc'); // default order
 
 
 
@@ -77,7 +83,7 @@ class Property_model extends Base_model
 
         function get_datatables()
         {
-
+            $this->db->select('c.*, cit.city as city, sta.name as state, dist.name as district, ctype.title as leatest_calltype,   calldirection.title as leatest_calldir');
             $this->_get_datatables_query();
 
             if(isset($_POST['length']) && $_POST['length'] != -1)
@@ -95,7 +101,15 @@ class Property_model extends Base_model
          public function _get_datatables_query()
         {     
 
-            $this->db->from($this->table);
+            $this->db->from($this->table. ' as c'); 
+            $this->db->join('z_states as sta', 'sta.id = c.state', 'left');
+            $this->db->join('z_district as dist', 'dist.id = c.district', 'left');
+            $this->db->join('z_cities as cit', 'cit.id = c.city', 'left');
+            $this->db->join('z_call_type as ctype', 'ctype.id = c.last_call_type', 'left');
+            $this->db->join('z_call_direction as calldirection', 'calldirection.id = c.last_call_direction', 'left');
+
+            
+            
 
             $i = 0;     
 
@@ -170,15 +184,35 @@ class Property_model extends Base_model
         public function count_all()
         {
 
-            $this->db->from($this->table);
+            $this->db->from($this->table. ' as c');
 
             return $this->db->count_all_results();
 
         }
 
+        public function getOrderDetail($wheredata)
+        {
+            $this->db->select('ord_dtl.* ,prod.title as productname,prod.title as productname, prod.hsn as producthsn,prod.usage_unit as uoms ');
+            $this->db->from($this->table. ' as ord_dtl'); 
+            $this->db->join('z_product as prod', 'prod.id = ord_dtl.product_id', 'left');
+
+            $where = "ord_dtl.status=1 ";
+                foreach($wheredata as $key => $val)
+                {
+
+                    $where.= " AND ( ord_dtl.".$key." = '".$val."' )";
+                 
 
 
-}
+                } 
+            $this->db->where($where); 
+
+            $query      = $this->db->get(); 
+            $result     = ($query->num_rows() > 0)?$query->result_array():FALSE; 
+            return $result;
+
+         }
+    }
 
 
 

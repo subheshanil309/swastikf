@@ -6,10 +6,10 @@
 
 
 
-class Consultant_model extends Base_model
+class Sale_model extends Base_model
 {
 
-    public $table = "z_consultants";
+    public $table = "z_sales";
 
     //set column field database for datatable orderable
     var $column_order = array(null, 'c.date_at', 'c.sku_id', 'c.customer_title','c.customer_mobile','c.customer_alter_mobile',  'sta.name', 'dist.name', 'cit.city', 'ctype.name', 'calldirection.name'); 
@@ -195,15 +195,20 @@ class Consultant_model extends Base_model
           /*  $this->db->select('*'); 
             $this->db->from($this->table); */
 
-                $this->db->select('c.*, admin.title as createdby, bookstatus.badge_color as booked_badge_color,bookstatus.title as booked_status,calltype.title as calltypename, document.title as documentname, document_category.title as documentcategoryname ,admin2.title as assignedto');
+                $this->db->select('c.*, farmer.name  as farmername, farmer.mobile  as farmermobile,farmer.alt_mobile  as farmeraltmobile,  cit.city as city, sta.name as state, sta.id as statecode, dist.name as district,    admin.title as createdby,  executive.title as executive,  paymentmode.title as paymentmodename, admin2.title as assignedto');
                 $this->db->from($this->table. ' as c'); 
-                $this->db->join('z_consultant_call_type as calltype', 'calltype.slug = c.call_type', 'left'); 
-                $this->db->join('z_consultant_ticket_status as bookstatus', 'bookstatus.slug = c.ticket_status', 'left'); 
-                $this->db->join('z_document as document', 'document.id = c.document_id', 'left'); 
-                $this->db->join('z_document_category as document_category', 'document_category.id = c.document_category_id', 'left'); 
+                $this->db->join('z_farmers as farmer', 'farmer.id = c.farmer_id', 'left');
+                $this->db->join('z_states as sta', 'sta.id = c.state', 'left');
+                $this->db->join('z_district as dist', 'dist.id = c.district', 'left');
+                $this->db->join('z_cities as cit', 'cit.id = c.city', 'left');
+                $this->db->join('z_payment_mode as paymentmode', 'paymentmode.slug = c.payment_mode', 'left'); 
+                $this->db->join('z_admin as executive', 'executive.id = c.agent_id', 'left'); 
                 $this->db->join('z_admin as admin', 'admin.id = c.created_by', 'left');
                 $this->db->join('z_admin as admin2', 'admin2.id = c.assigned_to', 'left');
+                /*$this->db->join('z_call_direction as calldirection', 'calldirection.id = c.last_call_direction', 'left');*/
                 
+               /* $this->db->join('z_admin as admin3', 'admin3.id = c.last_follower', 'left');*/
+                /*$this->db->join('z_call_type as last_ctype', 'last_ctype.id = c.last_follow_call_type', 'left');*/
 
                 $where  = '';
                 $userid = $this->session->userdata('userId');
@@ -221,54 +226,72 @@ class Consultant_model extends Base_model
                         $where.= "( c.status = 1 AND c.company_id=".$company_id." )";  
                     }
                     
-              
+             
                     
 
-                    if(array_key_exists("where", $params)){
-                        if(!empty($params['where']))
-                        {
+            if(array_key_exists("where", $params)){
+                if(!empty($params['where']))
+                {
 
-                            $not_array = array();
-                            $not_array[] = 'farmer_name';
-                            /*$not_array[] = 'follow_up_date';*/
-                            
-
-
-
-                             
-                                 
-                            foreach($params['where'] as $key => $val){ 
-                                
-                                if(in_array($key, $not_array))
-                                {
-
-                                }else{
-                                    $where.= " AND ( c.".$key." = '".$val."' )";
-                                }
-                            } 
-                            
-
-                              if(isset($params['where']['farmer_name']))
-                            {
-                                 
-                                $this->db->or_like('farmer_name', $params['where']['farmer_name']);
-                                 //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
-                            }
-                        } 
-                       /* if(isset($params['where']['follow_up_date']))
-                        {
+                    $not_array = array();
+                    $not_array[] = 'booking_type';
+                    $not_array[] = 'customer_name';
+                    $not_array[] = 'billing_address';
+                    $not_array[] = 'search_type';
+                    
+                    
 
 
-                            $this->db->where('follow_up_date', $params['where']['follow_up_date']);
-                             
-                        }*/
+                     
+                     
+                    foreach($params['where'] as $key => $val){ 
+                   // $this->db->where('c.'.$key, $val); 
+                    if(in_array($key, $not_array))
+                    {
+
+                    
+                    }else{
+
+                        $where.= " AND ( c.".$key." = '".$val."' )";
                     }
+
+                    
+
+                } 
+
+
                 
-             
+                
+ 
+
+                 if(isset($params['where']['customer_name']))
+                {
+                     
+                    $this->db->or_like('customer_name', $params['where']['customer_name']);
+                     //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
+                } 
+
+                if(isset($params['where']['billing_address']))
+                {
+                     
+                    $this->db->or_like('billing_address', $params['where']['billing_address']);
+                     //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
+                } 
+                
+                
+                
+
+ 
+                
+ 
+
+                }
+                
+            }
 
             $this->db->where($where); 
-           
-
+            
+ 
 
 
 

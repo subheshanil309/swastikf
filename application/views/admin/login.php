@@ -30,22 +30,22 @@
                     <div class="col-md-8 col-lg-6 col-xl-5">
                         <div class="card overflow-hidden">
                              
-                            <div class="card-body pt-0">
+                            <div class="card-body pt-0" style="background: #dae3cb;">
 
 
                                 <div class="auth-logo">
                                     <a href="<?php echo base_url(); ?>" class="auth-logo-light">
                                         <div class="  mb-4 pt-5">
-                                            <span class="avatar-title rounded-circle bg-light logo-adjust">
-                                                <img src="<?php echo base_url(); ?>assets/admin/images/logo.png" alt="" class="rounded-circle" height="200">
+                                            <span class="avatar-title" style="background-color: #556ee600">
+                                                <img src="<?php echo base_url(); ?>assets/admin/images/logo.png" alt="" height="200">
                                             </span>
                                         </div>
                                     </a>
 
                                     <a href="<?php echo base_url(); ?>" class="auth-logo-dark">
                                         <div class="  mb-4 pt-5">
-                                            <span class="avatar-title rounded-circle bg-light logo-adjust">
-                                                <img src="<?php echo base_url(); ?>assets/admin/images/logo.png" alt="" class="rounded-circle" height="200">
+                                            <span class="avatar-title"  style="background-color: #556ee600" >
+                                                <img src="<?php echo base_url(); ?>assets/admin/images/logo.png" alt=""  height="200">
                                             </span>
                                         </div>
                                     </a>
@@ -82,19 +82,19 @@
                                                
                                           <?php } ?>
                                 <div class="p-2">
-                                    <form class="form-horizontal" action="<?php echo base_url(); ?>admin/login/loginMe" method="post" >
+                                    <form class="form-horizontal" action="<?php echo base_url(); ?>admin/login/loginMe" method="post" autocomplete="off" >
         
                                         
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Username</label>
-                                            <input type="text" name="email" required  class="form-control" id="email" placeholder="Enter Email">
+                                            <input type="text" name="email" required  class="form-control" id="email" placeholder="Enter Email" autocomplete="off">
                                         </div>
                 
                                         <div class="mb-3">
                                             <label class="form-label">Password</label>
                                             <div class="input-group auth-pass-inputgroup">
-                                                <input type="password" class="form-control" placeholder="Enter password" name="password" id="password" aria-label="Password" aria-describedby="password-addon">
-                                                <button class="btn btn-light "   type="button"  ><i class="mdi mdi-eye-outline"></i></button>
+                                                <input type="password" class="form-control" placeholder="Enter password" name="password" id="password" aria-label="Password" aria-describedby="password-addon" autocomplete="off">
+                                                <button class="btn btn-light "  onclick="password_toggle('password','login_eye')"  type="button"  ><i id="login_eye" class="fas fa-eye"></i></button>
                                             </div>
                                         </div>
                                         <div class="mt-3 d-grid">
@@ -127,7 +127,22 @@
         <script src="<?php echo base_url(); ?>assets/admin/libs/node-waves/waves.min.js"></script>
         
         <!-- App js -->
-        <script src="<?php echo base_url(); ?>assetsadmin/admin/js/app.js"></script>
+        <script src="<?php echo base_url(); ?>assets/admin/js/app.js"></script>
+        <script type="text/javascript">
+          function password_toggle(inputpass,togglepass)
+          {
+            const togglePassword = document.querySelector('#'+togglepass);
+            const password = document.querySelector('#'+inputpass);
+
+             
+            // toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            // toggle the eye slash icon
+            togglePassword.classList.toggle('fa-eye-slash');
+             
+          }
+        </script>
     </body>
 
 <!-- Mirrored from themesbrand.com/skote/layouts/auth-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 11 May 2022 07:54:15 GMT -->

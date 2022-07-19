@@ -236,7 +236,7 @@ class Customer_model extends Base_model
 
             if(array_key_exists("where", $params)){
 
-                 if(isset($params['uid']))
+                 if(isset($params['uid']) && $params['uid'] !=='all')
                     {
                         $userid = $params['uid'];
                         $where.= " AND ( c.assigned_to = '".$userid."')";

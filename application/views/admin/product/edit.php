@@ -130,7 +130,7 @@
                             <div class="row">
                               <label for="tax_rate" class="col-sm-4 col-form-label">GST </label>
                               <div class="col-sm-8"> 
-                                 <input type="text" class="form-control form-control-sm" id="tax_rate" value="0" name="tax_rate" placeholder="Enter GST" value="<?php echo @$edit_data->tax_rate;?>" >
+                                 <input type="text" class="form-control form-control-sm" id="tax_rate"  name="tax_rate" placeholder="Enter GST" value="<?php echo @$edit_data->tax_rate;?>" >
                               </div>
                            </div>
                        </div>

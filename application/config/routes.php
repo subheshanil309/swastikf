@@ -149,9 +149,13 @@ $route['admin/bookings/(:num)/add_refund'] 	= 'admin/bookings/add_refund/$1';
 $route['admin/bookings/(:num)/delete_payment/(:num)'] 	= 'admin/bookings/delete_payment/$1/$2';
 $route['admin/bookings/(:num)/cancel_status'] 	= 'admin/bookings/cancel_status/$1';
 $route['admin/bookings/(:num)/edit_payment'] 	= 'admin/bookings/edit_payment/$1';
-
 $route['admin/consultants/(:num)/edit'] 	= 'admin/consultants/edit/$1';
-
+$route['admin/sales/(:num)/edit'] 	= 'admin/sales/edit/$1';
+$route['admin/sales/(:num)/add_payment'] 	= 'admin/sales/add_payment/$1';
+$route['admin/sales/(:num)/add_refund'] 	= 'admin/sales/add_refund/$1';
+$route['admin/sales/(:num)/edit_payment'] 	= 'admin/sales/edit_payment/$1';
+$route['admin/sales/(:num)/delete_payment/(:num)'] 	= 'admin/sales/delete_payment/$1/$2';
+ 
 
 $route['user'] 	= 'user/dashboard';
 $route['vendor']= 'vendor/dashboard';

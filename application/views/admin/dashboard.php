@@ -1,3 +1,18 @@
+<style type="text/css">
+    .rounded-circle
+    {
+        height: 120px;
+    width: 120px;
+    }
+    .bx
+    {
+        line-height: 111px;
+    }
+ .display-2 {
+    font-size: 3.5rem;
+}
+</style>
+
  <div class="page-content">
     <div class="container-fluid">
         <!-- start page title -->
@@ -347,7 +362,7 @@
                                                                     <div class="row">
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="#">
+                                                                                <a href="<?php echo base_url()?>admin/sales">
                                                                                     <div class="card-body">
                                                                                         <div class="text-center">
                                                                                             <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
@@ -424,7 +439,7 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="#">
+                                                                                <a href="<?php echo base_url()?>admin/sales">
                                                                                     <div class="card-body">
                                                                                         <div class="text-center">
                                                                                             <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
@@ -536,7 +551,7 @@
                                                                                             <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
                                                                                                 <i class="bx bx-dialpad  text-white display-2"></i>
                                                                                             </div>
-                                                                                            <h6>City</h6>
+                                                                                            <h6>Tehsil</h6>
                                                                                         </div>
                                                                                     </div>
                                                                                 </a>

@@ -349,26 +349,30 @@ print_r($customer_call_dtl);  */
                      <div class="col-sm-3">
                           <div class="input-group input-group-sm">
                                <select class="form-control form-control-sm " id="uid" name="uid" aria-label="Floating label select example">
-                           <option value="" >Choose User</option>
+                           
                           <?php
-                             if(!empty($all_users))
-                             {
-                              foreach ($all_users as $user) 
-                              {
 
-                                if(isset($_GET['uid']) && $_GET['uid'] !=='')
+                          if(isset($_GET['uid']) && $_GET['uid'] !=='')
                                 {
                                   $userid = $_GET['uid'];
                                 }else
                                 {
                                   $userid = $this->session->userdata('userId');;
                                 }
+
+                             if(!empty($all_users))
+                             {
+                              foreach ($all_users as $user) 
+                              {
+
+                                
                                      ?>
                           <option value="<?php echo $user->id;?>" <?php if( isset($userid) && $userid==$user->id){echo "selected";}?> ><?php echo $user->id;?> <?php echo $user->title;?></option>
                           <?php
                              }
                              }
                              ?>
+                           <option value="all" <?php if( isset($userid) && $userid=='all'){echo "selected";}?> >All Users</option>   
                        </select>
                           <div class="input-group-append">
                               <button type="submit" class="btn btn-info btn-sm">Filter</button>                                    

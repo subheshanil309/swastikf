@@ -596,3 +596,110 @@ COMMIT;
 
 ALTER TABLE `z_consultants` CHANGE `call_type` `call_type` VARCHAR(20) NULL DEFAULT NULL;
 
+------14-07-2022
+
+ALTER TABLE `z_consultant_ticket_status` ADD `badge_color` VARCHAR(200) NOT NULL DEFAULT 'primary';
+UPDATE `z_consultant_ticket_status` SET `badge_color` = 'warning' WHERE `z_consultant_ticket_status`.`id` = 2;
+UPDATE `z_consultant_ticket_status` SET `badge_color` = 'success' WHERE `z_consultant_ticket_status`.`id` = 3;
+UPDATE `z_consultant_ticket_status` SET `badge_color` = 'danger' WHERE `z_consultant_ticket_status`.`id` = 4;
+
+
+
+
+------15-07-2022
+
+ALTER TABLE `z_booking_payments` ADD `transaction_type` VARCHAR(20) NULL DEFAULT 'booking';
+
+DROP TABLE IF EXISTS `z_sales`;
+CREATE TABLE IF NOT EXISTS `z_sales` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `farmer_id` int(11) DEFAULT NULL,
+  `stage` varchar(10) NOT NULL DEFAULT 'Created',
+  `customer_id` int(11) DEFAULT NULL,
+  `customer_name` varchar(200) DEFAULT NULL,
+  `customer_mobile` varchar(40) DEFAULT NULL,
+  `customer_alter_mobile` varchar(40) DEFAULT NULL,
+  `state` int(11) DEFAULT NULL,
+  `district` int(11) DEFAULT NULL,
+  `city` int(11) DEFAULT NULL,
+  `supply_address` varchar(200) DEFAULT NULL,
+  `vehicle_no` varchar(50) DEFAULT NULL,
+  `bank_trans_id` varchar(200) DEFAULT NULL,
+  `booking_status` varchar(50) DEFAULT NULL,
+  `billing_address` text DEFAULT NULL,
+  `same_billing` varchar(10) DEFAULT NULL,
+  `delivery_address` text DEFAULT NULL,
+  `advance` float DEFAULT NULL,
+  `balance` double DEFAULT NULL,
+  `outstanding_amount` int(11) DEFAULT 0,
+  `total_paid_amount` int(11) NOT NULL DEFAULT 0,
+  `refunded_amount` int(11) NOT NULL DEFAULT 0,
+  `payment_mode` varchar(20) DEFAULT NULL,
+  `cheque_no` varchar(200) DEFAULT NULL,
+  `bank_name` varchar(200) DEFAULT NULL,
+  `bank_branch` varchar(200) DEFAULT NULL,
+  `total` float DEFAULT NULL,
+  `pending_bill` float DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `created_by` int(11) NOT NULL DEFAULT 1,
+  `agent_id` int(11) DEFAULT NULL,
+  `assigned_to` int(11) NOT NULL DEFAULT 1,
+  `cancel_by` int(11) NOT NULL,
+  `booking_date` date DEFAULT current_timestamp(),
+  `date_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `create_date` date DEFAULT NULL,
+  `update_at` date NOT NULL DEFAULT current_timestamp(),
+  `company_id` int(11) NOT NULL DEFAULT 1,
+  `cancellation_charge` int(11) NOT NULL,
+  `cancellation_reason` varchar(400) NOT NULL,
+  `cancellation_date` date NOT NULL DEFAULT current_timestamp(),
+  `product_set` text DEFAULT NULL,
+  `comment` text DEFAULT NULL,
+  `trans_desctription` text DEFAULT NULL,
+  `reverse_charge` varchar(50) NOT NULL,
+  `booking_id` int(11) DEFAULT NULL,
+  `transport_type` varchar(50) NOT NULL,
+  `supply_date` date NOT NULL DEFAULT current_timestamp(),
+  `discount_amount` float DEFAULT 0,
+  `gst_amount` float DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+COMMIT;
+
+
+
+DROP TABLE IF EXISTS `z_sales_dtl`;
+CREATE TABLE IF NOT EXISTS `z_sales_dtl` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sale_id` int(11) DEFAULT NULL,
+  `booking_id` int(11) DEFAULT NULL,
+  `farmer_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `tax_rate` float DEFAULT 0,
+  `tax_amount` float DEFAULT 0,
+  `cgst_rate` float DEFAULT 0,
+  `cgst_amount` float DEFAULT 0,
+  `sgst_rate` float DEFAULT 0,
+  `sgst_amount` float DEFAULT 0,
+  `igst_rate` float DEFAULT 0,
+  `igst_amount` float DEFAULT 0,
+  `price` float DEFAULT 0,
+  `quantity` float DEFAULT 0,
+  `discount` float DEFAULT 0,
+  `status` int(5) DEFAULT 1,
+  `sub_total_amount` float DEFAULT 0,
+  `created_by` int(20) DEFAULT NULL,
+  `updated_by` int(20) DEFAULT NULL,
+  `date_at` datetime DEFAULT current_timestamp(),
+  `update_at` datetime DEFAULT NULL,
+  `company_id` int(10) DEFAULT 1,
+  `data_set` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+COMMIT;
+
+
+
+
+
+

@@ -254,7 +254,7 @@
                                        <td><?php echo $bookings['farmer_mobile'];?></td>
                                        <td><?php echo $bookings['farmer_name'];?></td>
                                        <td><?php echo $bookings['assignedto'];?></td>
-                                       <td><?php echo $bookings['booked_status'];?></td>
+                                       <td><span class="badge rounded-pill bg-<?php echo $bookings['booked_badge_color'];?>"><?php echo $bookings['booked_status'];?></span></td>
                                        <td><?php echo ($bookings['follow_up_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['follow_up_date'])) :'';?></td>
                                        <td><?php echo ($bookings['date_at']!=='0000-00-00')? date('d M Y',strtotime($bookings['date_at'])) :'';?></td>
                                        <td><?php echo $bookings['createdby'];?></td>

@@ -283,7 +283,7 @@
                                                            foreach ($documents as $document) 
                                                            {
                                                                ?>
-                                                               <option value="<?php echo $document_category->id;?>" 
+                                                               <option value="<?php echo $document->id;?>" 
                                                                   <?php echo (($document->id== $edit_data->document_id)?'selected':'')?> ><?php echo $document->title;?></option>
                                                                <?php
                                                             }

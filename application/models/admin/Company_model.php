@@ -189,7 +189,7 @@ class Company_model extends Base_model
 
     public function findCompanyDetail($params)
     {
-                $this->db->select('c.*, cit.city as city, sta.name as state, dist.name as district');
+                $this->db->select('c.*, cit.city as city, sta.name as state,sta.id as statecode, dist.name as district');
                 $this->db->from($this->table. ' as c'); 
                 $this->db->join('z_states as sta', 'sta.id = c.state', 'left');
                 $this->db->join('z_district as dist', 'dist.id = c.district', 'left');

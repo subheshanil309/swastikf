@@ -10,6 +10,7 @@
                               <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings">Booking</a>
                               <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/farmers">Farmers</a>
                               <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/customer/addnew">Enquiry</a>
+                              <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/sales">Sales</a>
                            </div>
                         </div>
                      </div>

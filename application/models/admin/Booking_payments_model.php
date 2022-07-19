@@ -182,7 +182,7 @@ class Booking_payments_model extends Base_model
 
         }
 
-        public function getPaymentDetail($id)
+        public function getPaymentDetail($id,$transaction_type='booking')
         {
             $result = array();
             if(!empty($id))
@@ -192,6 +192,7 @@ class Booking_payments_model extends Base_model
                 $this->db->join('z_payment_type as petype', 'petype.slug = pay.payment_type', 'left');
                 $this->db->join('z_payment_mode as pemtmode', 'pemtmode.slug = pay.payment_mode', 'left');
                 $this->db->where('pay.status', 1); 
+                $this->db->where('pay.transaction_type', $transaction_type); 
                 $this->db->where('pay.booking_id', $id); 
                 $this->db->order_by("pay.id", "asc");
 

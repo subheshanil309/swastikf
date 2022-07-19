@@ -3,7 +3,7 @@
 require APPPATH . '/libraries/BaseController.php';
 
 
-class Bookings extends BaseController
+class Sales extends BaseController
 {
 
 
@@ -12,12 +12,8 @@ class Bookings extends BaseController
     {
         parent::__construct();
         $this->load->model('admin/company_model');
-        $this->load->model('admin/booking_model');
-        $this->load->model('admin/booking_log_model');
         $this->load->model('admin/booking_status_model');
         $this->load->model('admin/booking_payments_model');
-        $this->load->model('admin/crop_status_model');
-        $this->load->model('admin/contract_status_model');
         $this->load->model('admin/payment_mode_model');
         $this->load->model('admin/payment_type_model');
         $this->load->model('admin/agent_model');
@@ -32,6 +28,8 @@ class Bookings extends BaseController
         $this->load->model('admin/customer_call_model');
         $this->load->model('admin/user_model');
         $this->load->model('admin/admin_model');
+        $this->load->model('admin/sale_model');
+        $this->load->model('admin/sale_dtl_model');
 
         $this->perPage =100; 
     }
@@ -41,6 +39,7 @@ class Bookings extends BaseController
 
     public function index()
     {
+
 
 
         $this->isLoggedIn();
@@ -70,132 +69,24 @@ class Bookings extends BaseController
         
 
                 $where_search =  array();
-                $search_farmer_id  = @$this->input->get('farmer_id');
+                 $search_farmer_id    = @$this->input->get('farmer_id');
                 $search_name         = @$this->input->get('customer_name');
                 $search_mobile       = @$this->input->get('customer_mobile');
                 $search_alt_mobile   = @$this->input->get('customer_alter_mobile');
+                $status1              = @$this->input->get('status1');
                 $state2              = @$this->input->get('state2');
-                $other_state         = @$this->input->get('other_state');
                 $district2           = @$this->input->get('district2');
-                $other_district      = @$this->input->get('other_district');
                 $city2               = @$this->input->get('city2');
-                $other_city          = @$this->input->get('other_city');
-                $call_direction2     = @$this->input->get('call_direction2');
-                $call_type2          = @$this->input->get('call_type2'); 
-                $booking_no          = @$this->input->get('booking_no'); 
-                $booking_date        = @$this->input->get('booking_date'); 
-                $booking_status      = @$this->input->get('booking_status'); 
-                $crop_status         = @$this->input->get('crop_status'); 
-                $agent_id            = @$this->input->get('agent_id'); 
-                $product_id          = @$this->input->get('product_id'); 
-                $address             = @$this->input->get('address'); 
-                $pincode             = @$this->input->get('pincode'); 
-                $quantity            = @$this->input->get('quantity'); 
-                $unit_price          = @$this->input->get('unit_price'); 
-                $discount            = @$this->input->get('discount'); 
-                $outstanding_amount  = @$this->input->get('outstanding_amount'); 
-                $req_delivery_date   = @$this->input->get('req_delivery_date'); 
-                $delivery_date       = @$this->input->get('delivery_date'); 
-                $vehicle_no          = @$this->input->get('vehicle_no'); 
-                $contract            = @$this->input->get('contract'); 
-                $start_date          = @$this->input->get('start_date'); 
-                $end_date            = @$this->input->get('end_date'); 
-                $search_type            = @$this->input->get('search_type'); 
-                $advance_booking_status_value = @$this->input->get('advance_booking_status_value'); 
-                $advance_crop_status_value = @$this->input->get('advance_crop_status_value'); 
-                $advance_agent_id_value = @$this->input->get('advance_agent_id_value'); 
-                $advance_product_id_value = @$this->input->get('advance_product_id_value'); 
-                $advance_state_value = @$this->input->get('advance_state_value'); 
-                $advance_district_value = @$this->input->get('advance_district_value'); 
-                $advance_city_value = @$this->input->get('advance_city_value'); 
-                $advance_plan_rate            = @$this->input->get('advance_plan_rate'); 
-                $plant_rate_amount            = @$this->input->get('plant_rate_amount'); 
-                $advance_plan_quantity        = @$this->input->get('advance_plan_quantity'); 
-                $advance_plant_quantity_amount= @$this->input->get('advance_plant_quantity_amount'); 
-                $advance_oustanding= @$this->input->get('advance_oustanding'); 
-                $oustanding_amount= @$this->input->get('oustanding_amount'); 
-                $advance_recieved= @$this->input->get('advance_recieved'); 
-                $advance_recieved_amount= @$this->input->get('advance_recieved_amount'); 
-                $advance_discount= @$this->input->get('advance_discount'); 
-                $advance_discount_amount= @$this->input->get('advance_discount_amount'); 
-                if(!empty($start_date))
+                $invoice_no          = @$this->input->get('invoice_no'); 
+                $invoice_date        = @$this->input->get('invoice_date'); 
+                 
+                if(!empty($invoice_date))
                 {
-                     $where_search['start_date'] =  $start_date;
-                 } if(!empty($end_date))
-                {
-                     $where_search['end_date'] =  $end_date;
-                 } if(!empty($contract))
-                {
-                     $where_search['contract'] =  $contract;
-                 }
-                 if(!empty($vehicle_no))
-                {
-                     $where_search['vehicle_no'] =  $vehicle_no;
-                 }
-                 if(!empty($delivery_date))
-                {
-                     $where_search['delivery_date'] =  $delivery_date;
-                 }
-                 if(!empty($quantity))
-                {
-                     $where_search['quantity'] =  $quantity;
-                 }
-                 if(!empty($discount))
-                {
-                     $where_search['discount'] =  $discount;
-                 }if(strlen($outstanding_amount) >0)
-                {
-                     $where_search['outstanding_amount'] =  $outstanding_amount;
-                 }if(strlen($unit_price) >0)
-                {
-                     $where_search['price'] =  $unit_price;
-                 }
-                 if(!empty($pincode))
-                {
-                     $where_search['pincode'] =  $pincode;
-                 }
-                 if(!empty($other_state))
-                {
-                     $where_search['other_state'] =  $other_state;
-                 }
-                 if(!empty($other_district))
-                {
-                     $where_search['other_district'] =  $other_district;
-                 }
-                   if(!empty($other_city))
-                {
-                     $where_search['other_city'] =  $other_city;
-                 }
-
-                 if(!empty($address))
-                {
-                     $where_search['billing_address'] =  $address;
-                 }
-                 if(!empty($product_id))
-                {
-                     $where_search['product_id'] =  $product_id;
-                 }
-                
-                if(strlen($agent_id)>0)
-                {
-                     $where_search['agent_id'] =  $agent_id;
-                      
+                     $where_search['booking_date'] =  $invoice_date;
                 }
-                if(!empty($crop_status))
+                if(!empty($invoice_no))
                 {
-                      $where_search['crop_status'] =  $crop_status;
-                }
-                if(!empty($booking_status) && $booking_status !=='all')
-                {
-                     $where_search['booking_status'] =  $booking_status;
-                }
-                if(!empty($booking_date))
-                {
-                     $where_search['booking_date'] =  $booking_date;
-                }
-                if(!empty($booking_no))
-                {
-                    $where_search['id'] =  $booking_no;
+                    $where_search['id'] =  $invoice_no;
                 }
                 if(!empty($search_farmer_id))
                 {
@@ -203,7 +94,11 @@ class Bookings extends BaseController
                 }
                 if(!empty($search_name))
                 {
-                    $where_search['customer_title'] =  $search_name;
+                    $where_search['customer_name'] =  $search_name;
+                } 
+                 if(!empty($status1))
+                {
+                    $where_search['booking_status'] =  $status1;
                 } 
                 
                 if(!empty($search_mobile))
@@ -231,59 +126,18 @@ class Bookings extends BaseController
                 {
                     $where_search['search_type'] =  $search_type;
                 } 
-                 if(!empty($advance_booking_status_value))
-                {
-                    $where_search['advance_booking_status_value'] =  $advance_booking_status_value;
-                } 
-
-                 if(!empty($advance_crop_status_value))
-                {
-                    $where_search['advance_crop_status_value'] =  $advance_crop_status_value;
-                } 
-
-                if(!empty($advance_agent_id_value))
-                {
-                    $where_search['advance_agent_id_value'] =  $advance_agent_id_value;
-                } 
-                if(!empty($advance_product_id_value))
-                {
-                    $where_search['advance_product_id_value'] =  $advance_product_id_value;
-                } 
-                if(!empty($advance_state_value))
-                {
-                    $where_search['advance_state_value'] =  $advance_state_value;
-                } 
-                
-                if(!empty($advance_district_value))
-                {
-                    $where_search['advance_district_value'] =  $advance_district_value;
-                } 
-                if(!empty($advance_city_value))
-                {
-                    $where_search['advance_city_value'] =  $advance_city_value;
-                } 
+               
 
                 
                  
-                    $where_search['advance_plan_rate'] =  $advance_plan_rate;
-                    $where_search['plant_rate_amount'] =  $plant_rate_amount;
-                    $where_search['advance_plan_quantity'] =  $advance_plan_quantity;
-                    $where_search['advance_plant_quantity_amount'] =  $advance_plant_quantity_amount;
-                    $where_search['oustanding_amount'] =  $oustanding_amount;
-                    $where_search['advance_oustanding'] =  $advance_oustanding;
-                    $where_search['advance_recieved'] =  $advance_recieved;
-                    $where_search['advance_recieved_amount'] =  $advance_recieved_amount;
-                    $where_search['advance_discount'] =  $advance_discount;
-                    $where_search['advance_discount_amount'] =  $advance_discount_amount;
+               
+                    $conditions['returnType'] = 'count'; 
+                    $conditions['userid'] = $userid; 
+                    $conditions['form_type'] = $form_type; 
+                    $conditions['where'] = $where_search; 
+                    $totalRec = $this->sale_model->getRows($conditions);
 
-            $conditions['returnType'] = 'count'; 
-            $conditions['userid'] = $userid; 
-            $conditions['form_type'] = $form_type; 
-            $conditions['where'] = $where_search; 
-            $totalRec = $this->booking_model->getRows($conditions);
-
-             
-
+ 
 
 
 
@@ -298,7 +152,7 @@ class Bookings extends BaseController
                 
 
                 // Pagination configuration 
-                $config['base_url']    = base_url().'admin/bookings/index'; 
+                $config['base_url']    = base_url().'admin/sales/index'; 
                 $config['uri_segment'] = $uriSegment; 
                 $config['total_rows']  = $totalRec; 
                 $config['per_page']    = $this->perPage; 
@@ -364,7 +218,7 @@ class Bookings extends BaseController
                     print_r( $conditions);
                     echo "</pre>"; */
 
-                 $data['bookings']   = $this->booking_model->getRows($conditions); 
+                 $data['bookings']   = $this->sale_model->getRows($conditions); 
 
 
  
@@ -487,15 +341,7 @@ echo "</pre>";  */
         $data['all_agents'] = $this->admin_model->findDynamic($where);
         
 
-        $where = array();
-        $where['status'] = '1';
-        $where['orderby'] = 'title';
-        $data['crops_status'] = $this->crop_status_model->findDynamic($where);
-
-        $where = array();
-        $where['status'] = '1';
-        $where['orderby'] = 'title';
-        $data['contracts_status'] = $this->contract_status_model->findDynamic($where);
+         
 
 
         $where = array();
@@ -505,37 +351,9 @@ echo "</pre>";  */
         $data['all_products'] = $this->product_model->findDynamic($where); 
 
 
-        $filter_bookings_status =  array();
-        $result_bookings_status =  array();
-        if(!empty($data['bookings_status']))
-        {
-            $bookingwhere  = array();
-            $bookingwhere['title']  = 'all';
+        
 
-            $count_booking =  $this->booking_model->get_booking_data($bookingwhere,$userid); 
-            $filter_bookings_status = array();
-            $filter_bookings_status['title'] = 'All' ;
-            $filter_bookings_status['slug'] = 'all';
-            $filter_bookings_status['count_booking'] = count($count_booking) ;
-            $result_bookings_status[] = $filter_bookings_status;
-
-
-            foreach ($data['bookings_status'] as $bookingstatus)
-            {
-                $bookingwhere  = array(); 
-                $bookingwhere['title']  = $bookingstatus->slug;
-                $count_booking =  $this->booking_model->get_booking_data($bookingwhere,$userid); 
-
-                $filter_bookings_status = array();
-                $filter_bookings_status['title'] = $bookingstatus->title ;
-                $filter_bookings_status['slug'] = $bookingstatus->slug ;
-                $filter_bookings_status['count_booking'] = count($count_booking) ;
-                $result_bookings_status[] = $filter_bookings_status;
-            }
-        }
-
-        $data['filter_bookings_status'] = $result_bookings_status;
-
+ 
 
 
          $where = array();
@@ -550,15 +368,14 @@ echo "</pre>";  */
 
 
         $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type'); 
-        $data['show_summary'] = $this->booking_model->getBookedSummary(); 
-
+ 
         
 
        /* echo "<pre>";
         print_r($data['show_summary']);die;
          echo "</pre>";*/
-        $this->global['pageTitle'] = 'Booking';
-        $this->loadViews("admin/booking/list", $this->global, $data , NULL);
+        $this->global['pageTitle'] = 'Sales';
+        $this->loadViews("admin/sale/list", $this->global, $data , NULL);
         
     }
 
@@ -599,37 +416,15 @@ echo "</pre>";  */
         $where['orderby'] = 'city';
         $data['cities'] = $this->city_model->findDynamic($where);
 
-        $where = array();
-        $where['status'] = '1';
-        $where['orderby'] = 'id';
-        $data['calltypes'] = $this->call_type_model->findDynamic($where);
+         
 
-         $where = array();
-        $where['status'] = '1';
-        $where['orderby'] = 'title';
-        $data['bookings_status'] = $this->booking_status_model->findDynamic($where);
-        
-
-        $where = array();
-        $where['status'] = '1';
-        $where['orderby'] = 'title';
-        $data['crops_status'] = $this->crop_status_model->findDynamic($where);
-
-        $where = array();
-        $where['status'] = '1';
-        $where['orderby'] = 'title';
-        $data['contracts_status'] = $this->contract_status_model->findDynamic($where); 
-
+         
          $where = array();
         $where['status'] = '1';
         $where['orderby'] = 'title';
         $data['payments_mode'] = $this->payment_mode_model->findDynamic($where);
 
-        $where = array();
-        $where['status'] = '1';
-        $where['orderby'] = 'title';
-        $data['calldirections'] = $this->call_direction_model->findDynamic($where);
-
+         
         $where = array();
         $where['status'] = '1';
         $where['orderby'] = 'title';
@@ -648,21 +443,23 @@ echo "</pre>";  */
 
  
 
-        $this->global['pageTitle'] = 'Add New Booking';
-        $this->loadViews("admin/booking/addnew", $this->global, $data , NULL);
+        $this->global['pageTitle'] = 'Add New Sales';
+        $this->loadViews("admin/sale/addnew", $this->global, $data , NULL);
         
     } 
 
     // Insert Member *************************************************************
     public function insertnow()
     {
+
+          
         $this->isLoggedIn();
 		$this->load->library('form_validation');            
+        $this->form_validation->set_rules('farmer_id','Farmer','trim|required');
         $this->form_validation->set_rules('customer_name','customer_name','trim|required');
         $this->form_validation->set_rules('customer_mobile','customer_mobile','trim|required');
-        $this->form_validation->set_rules('product_id','product_id','trim|required');
-        
-         $company_id = $this->session->userdata('company_id');
+         
+        $company_id = $this->session->userdata('company_id');
         
         //form data 
         
@@ -672,208 +469,49 @@ echo "</pre>";  */
         }
         else
         {
-            $form_data  = $this->input->post();
 
-                
-
+             $form_data  = $this->input->post();
 
 
 
-
-                if(!empty($form_data['farmer_id']))
-                {
-                    /*$where['id!=']      = $form_data['id'];
-                    $last_customer_id   = $form_data['customer_id'];
-                    $insertData['id']   = $form_data['id'];*/
-
-                    $get_farmerid = $form_data['farmer_id'];
-                }else
-                {
+                   
 
 
-                        $where = array();
-                        $where['mobile']= $form_data['customer_mobile'];
-                        $result = $this->farmers_model->findDynamic($where);
-                        if(!empty($result))
-                        {
-                            $get_farmerid = $result[0]->id;    
-                        }else
-                        {
+           
 
-                            $insertData = array();
-                            $insertData['name']         = $form_data['customer_name'];
-                            $insertData['mobile']       = $form_data['customer_mobile'];
-                            $insertData['alt_mobile']   = $form_data['customer_alter_mobile'];
-                             
-                            $insertData['father_name']  = $form_data['father_name'];
-                            $insertData['pincode']      = $form_data['pincode'];
-                            $insertData['city_id']      = $form_data['city'];
-                            $insertData['other_city']   = $form_data['other_city'];
-                            $insertData['state_id']     = $form_data['state'];
-                            $insertData['other_state']  = $form_data['other_state'];
-                            $insertData['other_district']= $form_data['other_district'];
-                            $insertData['district_id']  = $form_data['district'];
-                            $insertData['date_at']      = date("Y-m-d H:i:s");;
-                            $insertData['status']       =  1;
-                            $insertData['village']      = $form_data['village'];
-                            $insertData['created_by']   = $this->session->userdata('userId');
+            $insertData = array();
+            
+            $insertData['farmer_id']                    = $form_data['farmer_id'];
+            $insertData['booking_id']                   = $form_data['booking_id'];
+            $insertData['customer_name']                = $form_data['customer_name'];
+            $insertData['customer_mobile']              = $form_data['customer_mobile'];
+            $insertData['customer_alter_mobile']        = $form_data['customer_alter_mobile'];
+            $insertData['state']                        = $form_data['state'];
+            $insertData['district']                     = $form_data['district'];
+            $insertData['city']                         = $form_data['city'];
+            $insertData['reverse_charge']               = $form_data['reverse_charge'];
+            $insertData['booking_date']                 = (isset($form_data['booking_date']) && $form_data['booking_date'] !=='')?$form_data['booking_date']:date("Y-m-d H:i:s");
+            $insertData['supply_address']               = $form_data['supply_address'];
+            $insertData['supply_date']                  = $form_data['supply_date'];
+            $insertData['vehicle_no']                   = $form_data['vehicle_no'];
+            $insertData['transport_type']               = $form_data['transport_type'];
+            $insertData['agent_id']                     = $this->session->userdata('userId');
+            $insertData['created_by']                   = $this->session->userdata('userId');
+            $insertData['assigned_to']                  = $this->session->userdata('userId');
+            $insertData['company_id']                   = $company_id;
+            $insertData['bank_trans_id']                = $form_data['bank_trans_id'];
+            $insertData['booking_status']               = 'completed';
+            $insertData['billing_address']              = $form_data['billing_address'];
+            $insertData['same_billing']                 = (isset($form_data['same_billing'])?($form_data['same_billing']):'');
+            $insertData['delivery_address']             = $form_data['delivery_address'];
+            $insertData['create_date']                  = date("Y-m-d");
+            $insertData['comment']                      = $form_data['comment'];
+            $insertData['trans_desctription']           = $form_data['trans_desctription'];
 
-                            $get_farmerid = $this->farmers_model->save($insertData);
+            $result_insert  = $this->sale_model->save($insertData);
 
-                            /*$insertData['customer_name']         = $form_data['customer_name'];
-                            $insertData['customer_title']        = ucfirst($form_data['customer_name']);
-                            $insertData['customer_mobile']       = $form_data['customer_mobile'];
-                            $insertData['customer_alter_mobile'] = $form_data['customer_alter_mobile'];
-                            $insertData['state']                 = $form_data['state'];
-                            $insertData['other_state']           = $form_data['other_state'];
-                            $insertData['district']              = $form_data['district'];
-                            $insertData['other_district']        = $form_data['other_district'];
-                            $insertData['city']                  = $form_data['city'];
-                            $insertData['other_city']            = $form_data['other_city'];
-                            $insertData['status']                = '1';
-                            $insertData['date_at']               = date("Y-m-d H:i:s");
-                            $insertData['created_by']            = $this->session->userdata('userId');
-                            $insertData['assigned_to']           = $this->session->userdata('userId');
-                            $insertData['last_call_direction']   = 0;
-                            $insertData['last_call_type']        = 0;
-                            $insertData['last_follow_date']      = date("Y-m-d H:i:s");
-                            $insertData['last_follower']         = $this->session->userdata('userId');
-                            $insertData['last_follow_call_type'] = 0;
-
-                            $get_customerid = $this->customer_model->save($insertData);*/
-
-                        }
-                        
-
-
-                    
-                }
-
-
-
-
-
-
-                //$get_customerid
-
-                            $insertData = array();
-
-
-                              if(isset($_FILES['document_file']['name']) && $_FILES['document_file']['name'] != '') {
-
-                                    $f_name         =$_FILES['document_file']['name'];
-                                    $f_tmp          =$_FILES['document_file']['tmp_name'];
-                                    $f_size         =$_FILES['document_file']['size'];
-                                    $f_extension    =explode('.',$f_name);
-                                    $f_extension    =strtolower(end($f_extension));
-                                    $f_newfile      =uniqid().'.'.$f_extension;
-                                    $store          ="uploads/admin/document/".$f_newfile;
+            
                                 
-                                    if(!move_uploaded_file($f_tmp,$store))
-                                    {
-                                        $this->session->set_flashdata('error', 'Image Upload Failed .');
-                                    }
-                                    else
-                                    {
-                                       $insertData['document'] = $f_newfile;
-                                       
-                                    }
-                                 }
-
-
-                            if(isset($form_data['req_delivery_date']) && $form_data['req_delivery_date'] !=='')
-                            {
-                                $str = $form_data['req_delivery_date'];
-                                $exploded_data = explode(":",$str);
-
-                                $start_date = $exploded_data[0];
-                                $end_date = $exploded_data[1];
- 
-                            }else
-                            {
-                                $start_date = null;
-                                $end_date   = null;
-                            }
-                           
-
-                            $insertData['farmer_id']                    = $get_farmerid;
-                            $insertData['customer_name']                = $form_data['customer_name'];
-                            $insertData['customer_mobile']              = $form_data['customer_mobile'];
-                            $insertData['customer_alter_mobile']        = $form_data['customer_alter_mobile'];
-                            $insertData['father_name']                  = $form_data['father_name'];
-                            $insertData['state']                        = $form_data['state'];
-                            $insertData['other_state']                  = $form_data['other_state'];
-                            $insertData['district']                     = $form_data['district'];
-                            $insertData['other_district']               = $form_data['other_district'];
-                            $insertData['city']                         = $form_data['city'];
-                            $insertData['other_city']                   = $form_data['other_city'];
-                            $insertData['village']                      = $form_data['village'];
-                            $insertData['pincode']                      = $form_data['pincode'];
-                            $insertData['booking_date']                 = (isset($form_data['booking_date']) && $form_data['booking_date'] !=='')?$form_data['booking_date']:date("Y-m-d H:i:s");
-                            $insertData['req_delivery_date']            = $form_data['req_delivery_date'];
-                            $insertData['delivery_expect_start_date']   = $start_date;
-                            $insertData['delivery_expect_end_date']     = $end_date;
-                            $insertData['delivery_date']                = $form_data['delivery_date'];
-                            $insertData['req_delivery_date']            = $form_data['req_delivery_date'];
-                            $insertData['delivery_date']                = $form_data['delivery_date'];
-                            $insertData['supply_address']               = $form_data['supply_address'];
-                            $insertData['vehicle_no']                   = $form_data['vehicle_no'];
-                            $insertData['agent_id']                     = $form_data['agent_id'];
-                            $insertData['bank_trans_id']                = $form_data['bank_trans_id'];
-                            $insertData['crates']                       = $form_data['crates'];
-                            $insertData['contract']                     = $form_data['contract'];
-                            $insertData['productive_plants']            = $form_data['productive_plants'];
-                            $insertData['driver_name']                  = $form_data['driver_name'];
-                            $insertData['booking_status']               = $form_data['booking_status'];
-                            $insertData['crop_status']                  = $form_data['crop_status'];
-                            $insertData['billing_address']              = $form_data['billing_address'];
-                            $insertData['same_billing']                 = (isset($form_data['same_billing'])?($form_data['same_billing']):'');
-                            $insertData['delivery_address']             = $form_data['delivery_address'];
-                            $insertData['advance']                      = $form_data['advance'];
-                            $insertData['outstanding_amount']           = $form_data['balance'];
-                            $insertData['total_paid_amount']            = $form_data['advance'];
-                            $insertData['create_date']                  = date("Y-m-d");
-                            $insertData['balance']                      = $form_data['balance'];
-                            $insertData['payment_mode']                 = $form_data['payment_mode'];
-                            $insertData['cheque_no']                    = $form_data['cheque_no'];
-                            $insertData['bank_name']                    = $form_data['bank_name'];
-                            $insertData['bank_branch']                  = $form_data['bank_branch'];
-                            $insertData['product_id']                   = $form_data['product_id'];
-                            $insertData['uom']                          = $form_data['uom'];
-                            $insertData['price']                        = $form_data['price'];
-                            $insertData['tax_rate']                     = $form_data['gst'];
-                            $insertData['quantity']                     = $form_data['quantity'];
-                            $insertData['cgst_rate']                    = $form_data['cgst_rate'];
-                            $insertData['sgst_rate']                    = $form_data['sgst_rate'];
-                            $insertData['igst_rate']                    = $form_data['igst_rate'];
-                            $insertData['cgst_amount']                  = $form_data['cgst_amount'];
-                            $insertData['sgst_amount']                  = $form_data['sgst_amount'];
-                            $insertData['igst_amount']                  = $form_data['igst_amount'];
-                            $insertData['discount']                     = $form_data['discount'];
-                            $insertData['total']                        = $form_data['total'];
-                            $insertData['pending_bill']                 = $form_data['pending_bill'];
-                            $insertData['company_id']                   = $company_id;
-                            $insertData['created_by']                   = $this->session->userdata('userId');
-                            $insertData['assigned_to']                  = $this->session->userdata('userId');
-
-                                        $product_set = array();
-                                        $product_set['product_id']                   = $form_data['product_id'];
-                                        $product_set['uom']                          = $form_data['uom'];
-                                        $product_set['price']                        = $form_data['price'];
-                                        $product_set['quantity']                     = $form_data['quantity'];
-                                        $product_set['cgst_rate']                    = $form_data['cgst_rate'];
-                                        $product_set['sgst_rate']                    = $form_data['sgst_rate'];
-                                        $product_set['igst_rate']                    = $form_data['igst_rate'];
-                                        $product_set['cgst_amount']                  = $form_data['cgst_amount'];
-                                        $product_set['sgst_amount']                  = $form_data['sgst_amount'];
-                                        $product_set['igst_amount']                  = $form_data['igst_amount'];
-                                        $product_set['discount']                     = $form_data['discount'];
-
-                            $insertData['product_set']                  = json_encode($product_set);
-                             
-                                $result_insert  = $this->booking_model->save($insertData);
-                                $single_arr     = $this->booking_model->find($result_insert);
-                                $logged         = $this->booking_log_model->booking_log($single_arr);
 
 
 
@@ -882,43 +520,93 @@ echo "</pre>";  */
  
                 if(!empty($result_insert))
                 {
+
+                    $items = $form_data['items'];
+                    $gst_amountss = 0;
+                    $discount_amount = 0;
+                    if(!empty($items))
+                    {
+
+                        foreach ($items as $item) {
+
+                            $gst_amountss       = $gst_amountss + $item['gstVal'];
+                            $discount_amount    = $discount_amount + $item['discount'];
+
+                            $insertData_dtl = array();
+                            $insertData_dtl['farmer_id']        = $form_data['farmer_id'];
+                            $insertData_dtl['sale_id']          = $result_insert;
+                            $insertData_dtl['booking_id']       = $form_data['booking_id'];
+                            $insertData_dtl['product_id']       = $item['product_id'];
+                            $insertData_dtl['tax_rate']         = $item['gst'];
+                            $insertData_dtl['tax_amount']       = $item['gstVal'];
+                            $insertData_dtl['cgst_amount']      = $item['cgstVal'];
+                            $insertData_dtl['cgst_rate']        = $item['cgstRate'];
+                            $insertData_dtl['sgst_amount']      = $item['sgstVal'];
+                            $insertData_dtl['sgst_rate']        = $item['sgstRate'];
+                            $insertData_dtl['igst_amount']      = $item['igstVal'];
+                            $insertData_dtl['igst_rate']        = $item['igstRate'];
+                            $insertData_dtl['price']            = $item['price'];
+                            $insertData_dtl['quantity']         = $item['quantity'];
+                            $insertData_dtl['discount']         = $item['discount'];
+                            $insertData_dtl['sub_total_amount'] = $item['subTotalAmount'];
+                            $result_dtl_insert  = $this->sale_dtl_model->save($insertData_dtl);
+
+                            
+
+
+                        }
+                    }
+                    $insertData = array();
+                    $insertData['id']                           = $result_insert;
+                    $insertData['outstanding_amount']           = $form_data['balance'];
+                    $insertData['gst_amount']                   = $gst_amountss;
+                    $insertData['discount_amount']              = $discount_amount;
+                    $insertData['balance']                      = $form_data['balance'];
+                    $insertData['total']                        = $form_data['total'];
+                    /*$insertData['advance']                      = $form_data['advance'];
+                    $insertData['total_paid_amount']            = $form_data['advance'];*/
+                    $insertData['payment_mode']                 = $form_data['payment_mode'];
+                    $insertData['cheque_no']                    = $form_data['cheque_no'];
+                    $insertData['bank_name']                    = $form_data['bank_name'];
+                    $insertData['bank_branch']                  = $form_data['bank_branch'];
+
+                     $this->sale_model->save($insertData);
+                    
+
+
+
+                    /*Start booking_payments_model*/
                     if($form_data['advance']  >0)
                     {
                         $insertData = array();
                         $insertData['amount']                       = $form_data['advance'];
                         $insertData['date_at']                      = date("Y-m-d H:i:s");
-                        $insertData['payment_date']                 =  $form_data['create_date'];
-                        $insertData['created_by']                   =  $this->session->userdata('userId');
+                        $insertData['payment_date']                 = $form_data['create_date'];
+                        $insertData['created_by']                   = $this->session->userdata('userId');
                         $insertData['booking_id']                   = $result_insert;
-                         
-                        $insertData['farmer_id']                    = $get_farmerid;
+                        $insertData['transaction_type']             = "sale";
+                        $insertData['farmer_id']                    = $form_data['farmer_id'];
                         $insertData['status']                       =1;
                         $insertData['payment_mode']                 = $form_data['payment_mode'];
                         $insertData['cheque_no']                    = $form_data['cheque_no'];
                         $insertData['bank_name']                    = $form_data['bank_name'];
                         $insertData['bank_branch']                  = $form_data['bank_branch'];
                         $insertData['company_id']                   = $company_id;
+                        $insertData['bank_transaction_id']          = $form_data['bank_trans_id'];
                          $this->booking_payments_model->save($insertData);
                     }
-                        
 
-
-                        //booking_payments_model
-
-
-
-
-
-
-                     $this->session->set_flashdata('success', 'Booking successfully Added');
+                     $this->update_amount($result_insert);
+                    /*End booking_payments_model*/
+                    $this->session->set_flashdata('success', 'Sales successfully Added');
 
                     
                 }else
                 {
-                     $this->session->set_flashdata('error', 'Booking  Addition failed!');
+                     $this->session->set_flashdata('error', 'Sales  Addition failed!');
                 }
 
-                    redirect(base_url().'admin/bookings');
+                    redirect(base_url().'admin/sales');
           }  
         
     } 
@@ -1055,37 +743,20 @@ echo "</pre>";  */
  
     public function edit($id = NULL)
     {
-        
+         
 
-            $this->isLoggedIn();
+        $this->isLoggedIn();
 
 
-            $data = array();
-              $userid = $this->session->userdata('userId');
-            $company_id = $this->session->userdata('company_id');
+        $data = array();
+        $userid = $this->session->userdata('userId');
+        $company_id = $this->session->userdata('company_id');
 
 
 
 
 
             $data['edit_data'] = array();
-
- 
-         
-
-
-
-        $where = array();
-        $where['status'] = '1';
-        $where['field'] = 'id,customer_name,customer_title,sku_id';
-        $data['all_customers'] = $this->customer_model->findDynamic($where);
-        
-        $where = array();
-        $where['status'] = '1';
-
-        $where['field'] = 'id,name,title';
-        $data['all_users'] = $this->admin_model->findDynamic($where);
-
 
         $where = array();
         $where['status'] = '1';
@@ -1102,30 +773,13 @@ echo "</pre>";  */
         $where['orderby'] = 'city';
         $data['cities'] = $this->city_model->findDynamic($where);
 
-        $where = array();
-        $where['status'] = '1';
-        $where['orderby'] = 'id';
-        $data['calltypes'] = $this->call_type_model->findDynamic($where);
-
-         $where = array();
-        $where['status'] = '1';
-        $where['orderby'] = 'title';
-        $data['bookings_status'] = $this->booking_status_model->findDynamic($where);
+         
         
+  
 
         $where = array();
-        $where['status'] = '1';
-        $where['orderby'] = 'title';
-        $data['crops_status'] = $this->crop_status_model->findDynamic($where);
-
-        $where = array();
-        $where['status'] = '1';
-        $where['orderby'] = 'title';
-        $data['contracts_status'] = $this->contract_status_model->findDynamic($where); 
-
-        $where = array();
-        $where['status'] = '1';
-        $where['orderby'] = 'title';
+        $where['status']        = '1';
+        $where['orderby']       = 'title';
         $data['payments_modes'] = $this->payment_mode_model->findDynamic($where);
 
 
@@ -1134,33 +788,39 @@ echo "</pre>";  */
         $where['orderby'] = 'title';
         $data['payments_types'] = $this->payment_type_model->findDynamic($where);
 
-        $where = array();
-        $where['status'] = '1';
-        $where['orderby'] = 'title';
-        $data['calldirections'] = $this->call_direction_model->findDynamic($where);
+         
 
         $where = array();
         $where['status'] = '1';
         $where['orderby'] = 'title';
         $data['all_products'] = $this->product_model->findDynamic($where); 
 
-        $where = array();
-        $where['status !='] = '0';
-        $where['orderby'] = '-id';
-        $data['all_agents'] = $this->admin_model->findDynamic($where);
-
-
-         $data['edit_data'] = $this->booking_model->find($id);
-
-                 $data['company_data'] = $this->company_model->find($company_id);
- 
-          
-            $data['payment_details']    = $this->booking_payments_model->getPaymentDetail($id); 
-
-
-        $this->global['pageTitle'] = 'Edit New Booking';
          
-        $this->loadViews("admin/booking/edit", $this->global, $data , NULL);
+
+
+         $data['edit_data'] = $this->sale_model->find($id);
+
+        $where = array();
+
+            $where['sale_id']       = $id; 
+            $where['company_id']    = $company_id; 
+
+
+            $invoice_dtls = $this->sale_dtl_model->getOrderDetail($where);
+ 
+              $data['edit_order_dtail_data'] = $invoice_dtls;
+
+         
+
+        $data['company_data'] = $this->company_model->find($company_id);
+
+
+        $data['payment_details']    = $this->booking_payments_model->getPaymentDetail($id,'sale'); 
+
+
+        $this->global['pageTitle'] = 'Edit Sale Invoice';
+         
+        $this->loadViews("admin/sale/edit", $this->global, $data , NULL);
         
     } 
 
@@ -1171,10 +831,10 @@ echo "</pre>";  */
         $this->isLoggedIn();
         $delId = $this->input->post('id');  
         
-        $result = $this->booking_model->delete($delId); 
+        $result = $this->sale_model->delete($delId); 
             
-        if ($result > 0) { echo(json_encode(array('status'=>TRUE))); }
-        else { echo(json_encode(array('status'=>FALSE))); }
+        if ($result > 0) { echo(json_encode(array('status'=>TRUE,'message'=>'successfully deleted'))); }
+        else { echo(json_encode(array('status'=>FALSE,'message'=>'successfully deleted'))); }
     }
 
     // Update Agency*************************************************************
@@ -1188,101 +848,21 @@ echo "</pre>";  */
         $this->load->library('form_validation');            
         $this->form_validation->set_rules('customer_name','customer_name','trim|required');
         $this->form_validation->set_rules('customer_mobile','customer_mobile','trim|required');
-        $this->form_validation->set_rules('product_id','product_id','trim|required');
         $this->form_validation->set_rules('farmer_id','Farmer ','trim|required');
+         
+        $form_data  = $this->input->post();
         
-        
-        
-        //form data 
         
         if($this->form_validation->run() == FALSE)
         {
-            $this->create();
+
+              $this->edit($form_data['sale_id']);
+             
         }
         else
         {
-            $form_data  = $this->input->post();
-
-                
-
-
-
-
-
-                if(!empty($form_data['farmer_id']))
-                {
-                    /*$where['id!=']      = $form_data['id'];
-                    $last_customer_id   = $form_data['customer_id'];
-                    $insertData['id']   = $form_data['id'];*/
-
-                    $get_farmer_id = $form_data['farmer_id'];
-                }else
-                {
-
-
-                        $where = array();
-                        $where['mobile']= $form_data['customer_mobile'];
-                        $result = $this->farmers_model->findDynamic($where);
-                        if(!empty($result))
-                        {
-                            $get_farmer_id = $result[0]->id;    
-                        }else
-                        {
-
-                           
-
-
-                           /* $insertData['sku_id']                = $last_customer_id;
-                            $insertData['customer_name']         = $form_data['customer_name'];
-                            $insertData['customer_title']        = ucfirst($form_data['customer_name']);
-                            $insertData['customer_mobile']       = $form_data['customer_mobile'];
-                            $insertData['customer_alter_mobile'] = $form_data['customer_alter_mobile'];
-                            $insertData['state']                 = $form_data['state'];
-                            $insertData['other_state']           = $form_data['other_state'];
-                            $insertData['district']              = $form_data['district'];
-                            $insertData['other_district']        = $form_data['other_district'];
-                            $insertData['city']                  = $form_data['city'];
-                            $insertData['other_city']            = $form_data['other_city'];
-                            $insertData['status']                = '1';
-                            $insertData['date_at']               = date("Y-m-d H:i:s");
-                            $insertData['created_by']            = $this->session->userdata('userId');
-                            $insertData['assigned_to']           = $this->session->userdata('userId');
-                            $insertData['last_call_direction']   = 0;
-                            $insertData['last_call_type']        = 0;
-                            $insertData['last_follow_date']      = date("Y-m-d H:i:s");
-                            $insertData['last_follower']         = $this->session->userdata('userId');
-                            $insertData['last_follow_call_type'] = 0;
-
-                             $get_customerid = $this->customer_model->save($insertData);*/
-
-
-
-                            $insertData = array();
-                            $insertData['name']         = $form_data['customer_name'];
-                            $insertData['mobile']       = $form_data['customer_mobile'];
-                            $insertData['alt_mobile']   = $form_data['customer_alter_mobile'];
-                            $insertData['father_name']  = $form_data['father_name'];
-                            $insertData['pincode']      = $form_data['pincode'];
-                            $insertData['city_id']      = $form_data['city'];
-                            $insertData['other_city']   = $form_data['other_city'];
-                            $insertData['state_id']     = $form_data['state'];
-                            $insertData['other_state']  = $form_data['other_state'];
-                            $insertData['other_district']= $form_data['other_district'];
-                            $insertData['district_id']  = $form_data['district'];
-                            $insertData['date_at']      = date("Y-m-d H:i:s");;
-                            $insertData['status']       =  1;
-                            $insertData['village']      = $form_data['village'];
-                            $insertData['created_by']   = $this->session->userdata('userId');
-
-                            $get_farmer_id = $this->farmers_model->save($insertData);
-
-                        }
-                        
-
-
-                    
-                }
-
+            $get_farmer_id = $form_data['farmer_id'];
+               
 
 
 
@@ -1292,111 +872,88 @@ echo "</pre>";  */
 
                 //$get_customerid
 
-                            $insertData = array();
+            $insertData = array();
+            $insertData['id']                           = $form_data['sale_id'];
+            $insertData['farmer_id']                    = $form_data['farmer_id'];
+            $insertData['booking_id']                   = $form_data['booking_id'];
+            $insertData['customer_name']                = $form_data['customer_name'];
+            $insertData['customer_mobile']              = $form_data['customer_mobile'];
+            $insertData['customer_alter_mobile']        = $form_data['customer_alter_mobile'];
+            $insertData['state']                        = $form_data['state'];
+            $insertData['district']                     = $form_data['district'];
+            $insertData['city']                         = $form_data['city'];
+            $insertData['reverse_charge']               = $form_data['reverse_charge'];
+            $insertData['booking_date']                 = (isset($form_data['booking_date']) && $form_data['booking_date'] !=='')?$form_data['booking_date']:date("Y-m-d H:i:s");
+            $insertData['supply_address']               = $form_data['supply_address'];
+            $insertData['supply_date']                  = $form_data['supply_date'];
+            $insertData['vehicle_no']                   = $form_data['vehicle_no'];
+            $insertData['transport_type']               = $form_data['transport_type'];
+            $insertData['booking_status']               = 'completed';
+            $insertData['billing_address']              = $form_data['billing_address'];
+            $insertData['same_billing']                 = (isset($form_data['same_billing'])?($form_data['same_billing']):'');
+            $insertData['delivery_address']             = $form_data['delivery_address'];
+            $insertData['update_at']                    = date("Y-m-d");
+            $insertData['comment']                      = $form_data['comment'];
+            $insertData['trans_desctription']           = $form_data['trans_desctription'];
 
-
-                              if(isset($_FILES['document_file']['name']) && $_FILES['document_file']['name'] != '') {
-
-                                    $f_name         =$_FILES['document_file']['name'];
-                                    $f_tmp          =$_FILES['document_file']['tmp_name'];
-                                    $f_size         =$_FILES['document_file']['size'];
-                                    $f_extension    =explode('.',$f_name);
-                                    $f_extension    =strtolower(end($f_extension));
-                                    $f_newfile      =uniqid().'.'.$f_extension;
-                                    $store          ="uploads/admin/document/".$f_newfile;
-                                
-                                    if(!move_uploaded_file($f_tmp,$store))
-                                    {
-                                        $this->session->set_flashdata('error', 'Image Upload Failed .');
-                                    }
-                                    else
-                                    {
-                                       $insertData['document'] = $f_newfile;
-                                       
-                                    }
-                                 }
-
-
-                                 $str = $form_data['req_delivery_date'];
-                            $exploded_data = explode(":",$str);
-
-                            $start_date = $exploded_data[0];
-                            $end_date = $exploded_data[1];
+            $result_insert  = $this->sale_model->save($insertData);
 
 
 
-                            $insertData['id']                       = $form_data['id'];
-                            $insertData['stage']                        = "Update";
-                            $insertData['farmer_id']                  = $get_farmer_id;
-                            $insertData['customer_name']                = $form_data['customer_name'];
-                            $insertData['customer_mobile']              = $form_data['customer_mobile'];
-                            $insertData['customer_alter_mobile']        = $form_data['customer_alter_mobile'];
-                            $insertData['father_name']                  = $form_data['father_name'];
-                            $insertData['state']                        = $form_data['state'];
-                            $insertData['other_state']                  = $form_data['other_state'];
-                            $insertData['district']                     = $form_data['district'];
-                            $insertData['other_district']               = $form_data['other_district'];
-                            $insertData['city']                         = $form_data['city'];
-                            $insertData['other_city']                   = $form_data['other_city'];
-                            $insertData['village']                      = $form_data['village'];
-                            $insertData['pincode']                      = $form_data['pincode'];
-                            $insertData['booking_date']                 = (isset($form_data['booking_date']) && $form_data['booking_date'] !=='')?$form_data['booking_date']:date("Y-m-d H:i:s");
-                            $insertData['req_delivery_date']            = $form_data['req_delivery_date'];
-                            $insertData['delivery_expect_start_date']   = $start_date;
-                            $insertData['delivery_expect_end_date']     = $end_date;
-                            $insertData['delivery_date']                = $form_data['delivery_date'];
-                            $insertData['req_delivery_date']            = $form_data['req_delivery_date'];
-                            $insertData['delivery_date']                = $form_data['delivery_date'];
-                            $insertData['supply_address']               = $form_data['supply_address'];
-                            $insertData['vehicle_no']                   = $form_data['vehicle_no'];
-                            $insertData['agent_id']                     = $form_data['agent_id'];
-                            $insertData['bank_trans_id']                = $form_data['bank_trans_id'];
-                            $insertData['crates']                       = $form_data['crates'];
-                            $insertData['contract']                     = $form_data['contract'];
-                            $insertData['productive_plants']            = $form_data['productive_plants'];
-                            $insertData['driver_name']                  = $form_data['driver_name'];
-                            $insertData['booking_status']               = $form_data['booking_status'];
-                            $insertData['crop_status']                  = $form_data['crop_status'];
-                            $insertData['billing_address']              = $form_data['billing_address'];
-                            $insertData['same_billing']                 = (isset($form_data['same_billing'])?($form_data['same_billing']):'');
-                            $insertData['delivery_address']             = $form_data['delivery_address'];
+
+            $items = $form_data['items'];
+                    $gst_amountss = 0;
+                    $discount_amount = 0;
+                    if(!empty($items))
+                    {
+
+                        foreach ($items as $item) {
+
+                            $gst_amountss       = $gst_amountss + $item['gstVal'];
+                            $discount_amount    = $discount_amount + $item['discount'];
+
+                            $insertData_dtl = array();
+                            if(isset($item['editid']) &&  $item['editid'] !=='')
+                            {
+                                $insertData_dtl['id']        = $item['editid'];    
+                            }
+                            $insertData_dtl['farmer_id']        = $form_data['farmer_id'];
+                            $insertData_dtl['sale_id']          = $form_data['sale_id'];
+                            $insertData_dtl['booking_id']       = $form_data['booking_id'];
+                            $insertData_dtl['product_id']       = $item['product_id'];
+                            $insertData_dtl['tax_rate']         = $item['gst'];
+                            $insertData_dtl['tax_amount']       = $item['gstVal'];
+                            $insertData_dtl['cgst_amount']      = $item['cgstVal'];
+                            $insertData_dtl['cgst_rate']        = $item['cgstRate'];
+                            $insertData_dtl['sgst_amount']      = $item['sgstVal'];
+                            $insertData_dtl['sgst_rate']        = $item['sgstRate'];
+                            $insertData_dtl['igst_amount']      = $item['igstVal'];
+                            $insertData_dtl['igst_rate']        = $item['igstRate'];
+                            $insertData_dtl['price']            = $item['price'];
+                            $insertData_dtl['quantity']         = $item['quantity'];
+                            $insertData_dtl['discount']         = $item['discount'];
+                            $insertData_dtl['sub_total_amount'] = $item['subTotalAmount'];
+                            $result_dtl_insert  = $this->sale_dtl_model->save($insertData_dtl);
+
                             
-                            $insertData['product_id']                   = $form_data['product_id'];
-                            $insertData['uom']                          = $form_data['uom'];
-                            $insertData['price']                        = $form_data['price'];
-                            $insertData['tax_rate']                     = $form_data['gst'];
-                            $insertData['quantity']                     = $form_data['quantity'];
-                            $insertData['cgst_rate']                    = $form_data['cgst_rate'];
-                            $insertData['sgst_rate']                    = $form_data['sgst_rate'];
-                            $insertData['igst_rate']                    = $form_data['igst_rate'];
-                            $insertData['cgst_amount']                  = $form_data['cgst_amount'];
-                            $insertData['sgst_amount']                  = $form_data['sgst_amount'];
-                            $insertData['igst_amount']                  = $form_data['igst_amount'];
-                            $insertData['discount']                     = $form_data['discount'];
-                            $insertData['total']                        = $form_data['total'];
-                            $insertData['pending_bill']                 = $form_data['pending_bill'];
-                            $insertData['created_by']                   = $this->session->userdata('userId');
-                            $insertData['assigned_to']                  = $this->session->userdata('userId');
 
-                                        $product_set = array();
-                                        $product_set['product_id']                   = $form_data['product_id'];
-                                        $product_set['uom']                          = $form_data['uom'];
-                                        $product_set['price']                        = $form_data['price'];
-                                        $product_set['quantity']                     = $form_data['quantity'];
-                                        $product_set['cgst_rate']                    = $form_data['cgst_rate'];
-                                        $product_set['sgst_rate']                    = $form_data['sgst_rate'];
-                                        $product_set['igst_rate']                    = $form_data['igst_rate'];
-                                        $product_set['cgst_amount']                  = $form_data['cgst_amount'];
-                                        $product_set['sgst_amount']                  = $form_data['sgst_amount'];
-                                        $product_set['igst_amount']                  = $form_data['igst_amount'];
-                                        $product_set['discount']                     = $form_data['discount'];
 
-                            $insertData['product_set']                  = json_encode($product_set);
-                             
-                                $result_insert  = $this->booking_model->save($insertData);
+                        }
+                    }
+                    $insertData = array();
+                    $insertData['id']                           = $form_data['sale_id'];
+                    $insertData['outstanding_amount']           = $form_data['balance'];
+                    $insertData['gst_amount']                   = $gst_amountss;
+                    $insertData['discount_amount']              = $discount_amount;
+                    $insertData['balance']                      = $form_data['balance'];
+                    $insertData['total']                        = $form_data['total'];
+                   /* $insertData['advance']                      = $form_data['advance'];
+                    $insertData['total_paid_amount']            = $form_data['advance'];*/
+                    
+                    $this->sale_model->save($insertData);
             /*ADDING TO OUTSTANDING AMOUNT*/
 
-                                $booking_id  = $form_data['id'];
+                                $booking_id  = $form_data['sale_id'];
                                $this->update_amount($booking_id);
 
             /*ADDING TO OUTSTANDING AMOUNT END*/
@@ -1409,20 +966,20 @@ echo "</pre>";  */
                          
 
  
-                if(!empty($result_insert))
+                if( $result_insert || $result_dtl_insert  )
                 {
-                     $this->session->set_flashdata('success', 'Booking successfully Update');
+                     $this->session->set_flashdata('success', 'Sales successfully Update');
 
                     
                 }else
                 {
                      $this->session->set_flashdata('error', 'You Have No Make Any Changes!');
                 }
-
+                redirect(base_url().'admin/sales'); 
                     
           }  
 
-          redirect(base_url().'admin/bookings'); 
+          
           /*redirect(base_url().'admin/bookings/'.$form_data['id'].'/edit'); */
         
     }
@@ -1555,8 +1112,9 @@ echo "</pre>";  */
 
                                  
                                 $where = array();
-                                $where['status'] = '1';
-                                $where['booking_id'] = $booking_id;
+                                $where['status']            = '1';
+                                $where['transaction_type']  = 'sale';
+                                $where['booking_id']        = $booking_id;
  
                                 $fetch_all_payment = $this->booking_payments_model->findDynamic($where);
                                 $total_paid_amount = 0;
@@ -1577,7 +1135,7 @@ echo "</pre>";  */
                                 }
 
 
-                                $single_arr         = $this->booking_model->find($booking_id);
+                                $single_arr         = $this->sale_model->find($booking_id);
                                
 
                                  
@@ -1586,22 +1144,15 @@ echo "</pre>";  */
                                     $balance            =  $single_arr->total;
                                     $outstanding_amount = ($balance-$total_paid_amount);
                                  
-                                /*if($form_data['payment_type']=='refund')
-                                {
-                                   $total_refund_amount = $total_refund_amount + $form_data['payment_amount'];
-
-                                   $outstanding_amount = ($single_arr->total_paid_amount-$total_refund_amount);
-                                }*/
+                                
 
                                 $insertData                         = array();
                                 $insertData['total_paid_amount']    = $total_paid_amount;
                                 $insertData['refunded_amount']      = $total_refund_amount;
                                 $insertData['outstanding_amount']   = $outstanding_amount;
                                 $insertData['id']                   = $booking_id;  
-                                $price_updated                      = $this->booking_model->save($insertData);
-            /*ADDING TO OUTSTANDING AMOUNT END*/
-                                $single_arr     = $this->booking_model->find($booking_id);
-                                $logged         = $this->booking_log_model->booking_log($single_arr);
+                                $price_updated                      = $this->sale_model->save($insertData);
+            
     }
 
     public function delete_payment($id,$booking_id)
@@ -1654,6 +1205,7 @@ echo "</pre>";  */
         $insertData['payment_date']     = $form_data['payment_create_date'];
         $insertData['booking_id']       = $id;
         $insertData['payment_type']     = 'payment';
+        $insertData['transaction_type']     = 'sale';
         $insertData['payment_mode']     = $form_data['payment_mode'];
         $insertData['bank_transaction_id']= $form_data['payment_bank_transaction_id'];
         $insertData['amount']           = $form_data['payment_amount'];
@@ -1667,7 +1219,7 @@ echo "</pre>";  */
 
 
         //booking data fetch
-        $single_arr         = $this->booking_model->find($id);
+        $single_arr         = $this->sale_model->find($id);
         $balance            =  $single_arr->total;
         $total_paid_amount  = $single_arr->total_paid_amount + $form_data['payment_amount'];
         $outstanding_amount = ($balance-$total_paid_amount);
@@ -1679,7 +1231,7 @@ echo "</pre>";  */
         $insertData['total_paid_amount']    = $total_paid_amount;
         $insertData['outstanding_amount']   = $outstanding_amount;
         $insertData['id']                   = $id;  
-        $price_updated                      = $this->booking_model->save($insertData);
+        $price_updated                      = $this->sale_model->save($insertData);
 
         //get and update to log
         $this->update_amount($id);
@@ -1784,27 +1336,28 @@ echo "</pre>";  */
         
         $this->isLoggedIn();
          $form_data  = $this->input->post();
-         $booking_id  = $form_data['booking_id'];
+         $booking_id  = $form_data['booking_id']; 
          if($form_data['payment_amount'] ==$form_data['x_payment_amount'])
          {
+
             $response_result = array(
                 'status'=>0,
                 'message'=>'Update Some Amount !'
             );
 
-                $insertData = array();
-                $insertData['payment_date']     = $form_data['payment_create_date'];
-                $insertData['id']               = $id;
-                $insertData['payment_type']     = $form_data['payment_type'];
-                $insertData['payment_mode']     = $form_data['payment_mode'];
-                $insertData['bank_transaction_id']= $form_data['payment_bank_transaction_id'];
-                $insertData['update_at']        = date("Y-m-d H:i:s");
-                $insertData['update_by']        = $this->session->userdata('userId');
-                $insertData['cheque_no']        = $form_data['cheque_no'];
-                $insertData['bank_name']        = $form_data['bank_name'];
-                $insertData['bank_branch']      = $form_data['bank_branch'];
+            $insertData = array();
+            $insertData['payment_date']     = $form_data['payment_create_date'];
+            $insertData['id']               = $id;
+            $insertData['payment_mode']     = $form_data['payment_mode'];
+            $insertData['payment_type']     = $form_data['payment_type'];
+            $insertData['bank_transaction_id']= $form_data['payment_bank_transaction_id'];
+            $insertData['update_at']        = date("Y-m-d H:i:s");
+            $insertData['update_by']        = $this->session->userdata('userId');
+            $insertData['cheque_no']        = $form_data['cheque_no'];
+            $insertData['bank_name']        = $form_data['bank_name'];
+            $insertData['bank_branch']      = $form_data['bank_branch'];
 
-
+ 
                 
                  
                
@@ -1835,6 +1388,7 @@ echo "</pre>";  */
                 $booking_id  = $form_data['booking_id'];
                 $where = array();
                 $where['status'] = '1';
+                $where['transaction_type'] =  'sale';
                 $where['booking_id'] = $booking_id;
                 $where['id !='] = $id;
 
@@ -1885,6 +1439,7 @@ echo "</pre>";  */
          $insertData = array();
         $insertData['payment_date']     = $form_data['payment_create_date'];
         $insertData['id']               = $id;
+        $where['transaction_type'] =  'sale';
         $insertData['payment_type']     = $form_data['payment_type'];
         $insertData['payment_mode']     = $form_data['payment_mode'];
         $insertData['bank_transaction_id']= $form_data['payment_bank_transaction_id'];
@@ -1911,7 +1466,7 @@ echo "</pre>";  */
         $insertData['refunded_amount']      = $total_refund_amount;
         $insertData['outstanding_amount']   = $outstanding_amount;
         $insertData['id']                   = $booking_id;  
-        $price_updated                      = $this->booking_model->save($insertData);
+        $price_updated                      = $this->sale_model->save($insertData);
 
         //get and update to log
          
@@ -1958,6 +1513,7 @@ echo "</pre>";  */
         $insertData['payment_date']     = $form_data['payment_create_date'];
         $insertData['booking_id']       = $id;
         $insertData['payment_type']     = 'refund';
+        $insertData['transaction_type']     = 'sale';
         $insertData['payment_mode']     = $form_data['payment_mode'];
         $insertData['bank_transaction_id']= $form_data['payment_bank_transaction_id'];
         $insertData['amount']           = $form_data['payment_amount'];
@@ -1975,8 +1531,9 @@ echo "</pre>";  */
                     'message'=>''
             );
 
-            $where = array();
+                $where = array();
                 $where['status'] = '1';
+                $where['transaction_type'] = 'sale';
                 $where['booking_id'] = $id; 
 
                 $fetch_all_payment = $this->booking_payments_model->findDynamic($where);
@@ -1993,7 +1550,7 @@ echo "</pre>";  */
                 }
 
 
-                $single_arr         = $this->booking_model->find($id);
+                $single_arr         = $this->sale_model->find($id);
                
 
                
@@ -2003,25 +1560,7 @@ echo "</pre>";  */
                    $outstanding_amount = ($single_arr->total_paid_amount-$total_refund_amount);
                 
 
-
-
-
-   /*      //booking data fetch outstanding_amount
-        $single_arr     = $this->booking_model->find($id);
-        $total_paid = $single_arr->total_paid_amount;
-        $refund = $form_data['payment_amount'];
-        /*if($total_paid >= $refund)
-        {
-            $balance =  $single_arr->total;
-             
-            $refunded_amount        =  $single_arr->refunded_amount;
-            $total_paid_amount      = ($single_arr->total_paid_amount-$form_data['payment_amount']);
-            $outstanding_amount     = ($balance+0) - ($total_paid_amount+0);
-            $outstanding_amount     = ($outstanding_amount) - ($form_data['payment_amount']);
-            $refunded_amount        = $refunded_amount + $form_data['payment_amount'];
-            $total_paid_amount      = $single_arr->total_paid_amount - $form_data['payment_amount'];
-
-*/
+ 
              
             $result = $this->booking_payments_model->save($insertData);
 
@@ -2031,7 +1570,7 @@ echo "</pre>";  */
             $insertData['outstanding_amount']  = $outstanding_amount;
             $insertData['refunded_amount']  = $total_refund_amount;
             $insertData['id']  = $id;  
-            $price_updated    = $this->booking_model->save($insertData);
+            $price_updated    = $this->sale_model->save($insertData);
 
             //get and update to log
              $this->update_amount($id);
@@ -2176,18 +1715,19 @@ echo "</pre>";  */
         echo  json_encode($arra_empt);
     }
 
-    public function receipt($id)
+    public function invoice($id)
     {
 
         $this->isLoggedIn();
 
         $data = array();
          $userid = $this->session->userdata('userId');
+         $company_id = $this->session->userdata('company_id');
          $where_search['id'] = $id;
          $conditions = array( 
                     'where' => $where_search 
                  ); 
-        $booked = $this->booking_model->getRows($conditions);
+        $booked = $this->sale_model->getRows($conditions);
          $data['company_details'] = '';
          $data['receipt_dtl'] = '';
         if(!empty($booked))
@@ -2200,7 +1740,20 @@ echo "</pre>";  */
                 'where' => $where_search 
             ); 
 
+                $where = array();
+                 
+                $where['sale_id']       = $id; 
+                $where['company_id']    = $company_id; 
+
+
+                $invoice_dtls = $this->sale_dtl_model->getOrderDetail($where);
+                /* echo "<pre>";
+                    print_r($invoice_dtl);
+                    echo "</pre>";
+                    die;
+                */
              $data['receipt_dtl'] = $receipt_dtl;
+             $data['invoice_dtls'] = $invoice_dtls;
              $company_details = $this->company_model->findCompanyDetail($conditions);
 
             if(!empty($company_details))
@@ -2208,18 +1761,15 @@ echo "</pre>";  */
                 $data['company_details'] =   $company_details[0];   
             }
 
-            $where = array();
-            $where['status'] = '1';
-            $where['orderby'] = 'title';
-            $data['payments_mode'] = $this->payment_mode_model->findDynamic($where);
+             
            
 
             
         }
         
  
-        $this->global['pageTitle'] = 'Booking Receipt';
-        $this->loadViews("admin/booking/booking-reciept", $this->global, $data , NULL);
+        $this->global['pageTitle'] = 'Sale Invoice';
+        $this->loadViews("admin/sale/sale-invoice", $this->global, $data , NULL);
 
     }
     public function agreement($id)
@@ -2260,7 +1810,7 @@ echo "</pre>";  */
         
  
         $this->global['pageTitle'] = 'Booking Agreement';
-        $this->loadViews("admin/booking/booking-agreement", $this->global, $data , NULL);
+        $this->loadViews("admin/sale/booking-agreement", $this->global, $data , NULL);
 
     }
     public function view($id)
@@ -2270,11 +1820,12 @@ echo "</pre>";  */
 
         $data = array();
          $userid = $this->session->userdata('userId');
+          $company_id = $this->session->userdata('company_id');
          $where_search['id'] = $id;
          $conditions = array( 
                     'where' => $where_search 
                  ); 
-        $booked = $this->booking_model->getRows($conditions);
+        $booked = $this->sale_model->getRows($conditions);
          $data['company_details'] = '';
          $data['receipt_dtl'] = '';
         if(!empty($booked))
@@ -2287,8 +1838,17 @@ echo "</pre>";  */
                 'where' => $where_search 
             ); 
 
+            $where = array();
+
+            $where['sale_id']       = $id; 
+            $where['company_id']    = $company_id; 
+
+
+            $invoice_dtls = $this->sale_dtl_model->getOrderDetail($where);
+
              $data['receipt_dtl'] = $receipt_dtl;
-             $data['payment_details']    = $this->booking_payments_model->getPaymentDetail($id); 
+              $data['invoice_dtls'] = $invoice_dtls;
+             $data['payment_details']    = $this->booking_payments_model->getPaymentDetail($id,'sale'); 
              $company_details = $this->company_model->findCompanyDetail($conditions);
 
             if(!empty($company_details))
@@ -2301,8 +1861,8 @@ echo "</pre>";  */
         }
         
  
-        $this->global['pageTitle'] = 'Booking View';
-        $this->loadViews("admin/booking/booking-view", $this->global, $data , NULL);
+        $this->global['pageTitle'] = 'Sale Transaction Details';
+        $this->loadViews("admin/sale/invoice-view", $this->global, $data , NULL);
 
     }
 
@@ -2317,118 +1877,25 @@ echo "</pre>";  */
                 $where_search   = array(); 
                 $conditions     = array();
 
-                $search_farmer_id  = @$this->input->get('farmer_id');
+                 $where_search =  array();
+                 $search_farmer_id    = @$this->input->get('farmer_id');
                 $search_name         = @$this->input->get('customer_name');
                 $search_mobile       = @$this->input->get('customer_mobile');
                 $search_alt_mobile   = @$this->input->get('customer_alter_mobile');
+                $status1              = @$this->input->get('status1');
                 $state2              = @$this->input->get('state2');
-                $other_state         = @$this->input->get('other_state');
                 $district2           = @$this->input->get('district2');
-                $other_district      = @$this->input->get('other_district');
                 $city2               = @$this->input->get('city2');
-                $other_city          = @$this->input->get('other_city');
-                $call_direction2     = @$this->input->get('call_direction2');
-                $call_type2          = @$this->input->get('call_type2'); 
-                $booking_no          = @$this->input->get('booking_no'); 
-                $booking_date        = @$this->input->get('booking_date'); 
-                $booking_status      = @$this->input->get('booking_status'); 
-                $crop_status         = @$this->input->get('crop_status'); 
-                $agent_id            = @$this->input->get('agent_id'); 
-                $product_id          = @$this->input->get('product_id'); 
-                $address             = @$this->input->get('address'); 
-                $pincode             = @$this->input->get('pincode'); 
-                $quantity            = @$this->input->get('quantity'); 
-                $unit_price          = @$this->input->get('unit_price'); 
-                $discount            = @$this->input->get('discount'); 
-                $outstanding_amount  = @$this->input->get('outstanding_amount'); 
-                $req_delivery_date   = @$this->input->get('req_delivery_date'); 
-                $delivery_date       = @$this->input->get('delivery_date'); 
-                $vehicle_no          = @$this->input->get('vehicle_no'); 
-                $contract            = @$this->input->get('contract'); 
-                $start_date          = @$this->input->get('start_date'); 
-                $end_date            = @$this->input->get('end_date'); 
-                $search_type            = @$this->input->get('search_type'); 
-                $advance_booking_status_value            = @$this->input->get('advance_booking_status_value'); 
-                if(!empty($start_date))
+                $invoice_no          = @$this->input->get('invoice_no'); 
+                $invoice_date        = @$this->input->get('invoice_date'); 
+                 
+                if(!empty($invoice_date))
                 {
-                     $where_search['start_date'] =  $start_date;
-                 }
-                 if(!empty($end_date))
-                {
-                     $where_search['end_date'] =  $end_date;
-                 } 
-                 if(!empty($contract))
-                {
-                     $where_search['contract'] =  $contract;
-                 }
-                 if(!empty($vehicle_no))
-                {
-                     $where_search['vehicle_no'] =  $vehicle_no;
-                 }
-                 if(!empty($delivery_date))
-                {
-                     $where_search['delivery_date'] =  $delivery_date;
-                 }
-                 if(!empty($quantity))
-                {
-                     $where_search['quantity'] =  $quantity;
-                 }
-                 if(!empty($discount))
-                {
-                     $where_search['discount'] =  $discount;
-                 }if(strlen($outstanding_amount) >0)
-                {
-                     $where_search['outstanding_amount'] =  $outstanding_amount;
-                 }if(strlen($unit_price) >0)
-                {
-                     $where_search['price'] =  $unit_price;
-                 }
-                 if(!empty($pincode))
-                {
-                     $where_search['pincode'] =  $pincode;
-                 }
-                 if(!empty($other_state))
-                {
-                     $where_search['other_state'] =  $other_state;
-                 }
-                 if(!empty($other_district))
-                {
-                     $where_search['other_district'] =  $other_district;
-                 }
-                   if(!empty($other_city))
-                {
-                     $where_search['other_city'] =  $other_city;
-                 }
-
-                 if(!empty($address))
-                {
-                     $where_search['billing_address'] =  $address;
-                 }
-                 if(!empty($product_id))
-                {
-                     $where_search['product_id'] =  $product_id;
-                 }
-                
-                if(strlen($agent_id) >0)
-                {
-                     $where_search['agent_id'] =  $agent_id;
-                      
+                     $where_search['booking_date'] =  $invoice_date;
                 }
-                if(!empty($crop_status))
+                if(!empty($invoice_no))
                 {
-                      $where_search['crop_status'] =  $crop_status;
-                }
-                if(!empty($booking_status) && $booking_status !=='all')
-                {
-                     $where_search['booking_status'] =  $booking_status;
-                }
-                if(!empty($booking_date))
-                {
-                     $where_search['booking_date'] =  $booking_date;
-                }
-                if(!empty($booking_no))
-                {
-                    $where_search['id'] =  $booking_no;
+                    $where_search['id'] =  $invoice_no;
                 }
                 if(!empty($search_farmer_id))
                 {
@@ -2436,7 +1903,11 @@ echo "</pre>";  */
                 }
                 if(!empty($search_name))
                 {
-                    $where_search['customer_title'] =  $search_name;
+                    $where_search['customer_name'] =  $search_name;
+                } 
+                 if(!empty($status1))
+                {
+                    $where_search['booking_status'] =  $status1;
                 } 
                 
                 if(!empty($search_mobile))
@@ -2464,10 +1935,6 @@ echo "</pre>";  */
                 {
                     $where_search['search_type'] =  $search_type;
                 } 
-                 if(!empty($advance_booking_status_value))
-                {
-                    $where_search['advance_booking_status_value'] =  $advance_booking_status_value;
-                }  
                 
                 
             
@@ -2485,9 +1952,9 @@ echo "</pre>";  */
 
            
             
-             $resultfound = $this->booking_model->getRows($conditions);
+             $resultfound = $this->sale_model->getRows($conditions);
 
-            $content = "Booking No,Booking Date ,Order Status,Crop Status,Customer Id,Customer Name,Executive,Product,Primary number,Number,Address,Tehsil,Pincode,District,State,Payment Mode,Bank Trxn Id,Crates,Plants Booked,Plant Rate,Total Billed Amount,Discount Amount,Received Amount,Outstanding Amount,Requested Delivery Date,Actual Delivery Date ,Vehicle No.,Delivery Status,Contract Status,Productive Plants, Billing Address, Delivery Address\n";
+            $content = "Invoice No,Invoice Date ,Order Status ,Customer Id,Customer Name ,Primary Number, Tehsil, District,State,Payment Mode,Bank Trxn Id, Total Billed Amount,Discount Amount,Received Amount,Outstanding Amount, Vehicle No.,Place of Supply,Transportation,Comment,Transaction Description \n";
                 
                /* echo "<pre>";
                 print_r($resultfound );
@@ -2500,46 +1967,44 @@ echo "</pre>";  */
                     $billing_address =trim($value['billing_address']);
                     $billing_address =str_replace("\n", " ", $billing_address);
                     $billing_address =str_replace("\r", " ", $billing_address);
+
+                    $comment =trim($value['comment']);
+                    $comment =str_replace("\n", " ", $comment);
+                    $comment =str_replace("\r", " ", $comment); 
+
+                    $trans_desctription =trim($value['trans_desctription']);
+                    $trans_desctription =str_replace("\n", " ", $trans_desctription);
+                    $trans_desctription =str_replace("\r", " ", $trans_desctription); 
+
+                    $supply_address =trim($value['supply_address']);
+                    $supply_address =str_replace("\n", " ", $supply_address);
+                    $supply_address =str_replace("\r", " ", $supply_address);
                      
                     $delivery_address =trim( $value['delivery_address']);
                     $delivery_address =str_replace("\n", " ", $delivery_address);
                     $delivery_address =str_replace("\r", " ", $delivery_address);
                      
-                    $customer_alter_mobile =str_replace(",", " ", $value['customer_alter_mobile']);
-                     
-
-                    $content.= str_replace(",", " ", $value['id']).",";
+                     $content.= str_replace(",", " ", $value['id']).",";
                     $content.= str_replace(",", " ", date('d M Y',strtotime($value['booking_date']))).",";
-                    $content.= str_replace(",", " ", $value['booked_status']).",";
-                    $content.= str_replace(",", " ", $value['cropstatusname']).",";
+                    $content.= str_replace(",", " ", ucwords($value['booking_status'])).",";
                     $content.= str_replace(",", " ", $value['farmer_id']).",";
                     $content.= str_replace(",", " ", $value['customer_name']).",";
-                    $content.= str_replace(",", " ", $value['executive']).",";
-                    $content.= str_replace(",", " ", $value['productname']).",";
                     $content.= str_replace(",", " ", $value['customer_mobile']).",";
-                    $content.= str_replace(",", " ", $customer_alter_mobile).",";
-                    $content.= str_replace(",", " ", $billing_address).",";
-                    $content.= str_replace(",", " ", ($value['city']=='Other')?$value['other_city']:$value['city']).",";
-                    $content.= str_replace(",", " ", ($value['pincode'])).",";
-                    $content.= str_replace(",", " ", ($value['district']=='Other')?$value['other_district']:$value['district']).",";
-                    $content.= str_replace(",", " ", ($value['state']=='Other')?$value['other_state']:$value['state']).",";
-                     
+                    $content.= str_replace(",", " ", $value['city']).",";
+                    $content.= str_replace(",", " ", $value['district']).",";
+                    $content.= str_replace(",", " ", $value['state']).",";
                     $content.= str_replace(",", " ", $value['paymentmodename']).",";
                     $content.= str_replace(",", " ", $value['bank_trans_id']).",";
-                    $content.= str_replace(",", " ", $value['crates']).",";
-                    $content.= str_replace(",", " ", $value['quantity']).",";
-                    $content.= str_replace(",", " ", $value['price']).",";
                     $content.= str_replace(",", " ", $value['total']).",";
-                    $content.= str_replace(",", " ", $value['discount']).",";
+                    $content.= str_replace(",", " ", $value['discount_amount']).",";
                     $content.= str_replace(",", " ", $value['total_paid_amount']).",";
-                    $content.= str_replace(",", " ", $value['outstanding_amount']).",";
-                    $content.= str_replace(",", " ", (($value['delivery_expect_start_date'] !=='0000-00-00')?date('d M Y',strtotime($value['delivery_expect_start_date'])):'')).",";
-                    $content.= str_replace(",", " ", (($value['delivery_date'] !=='0000-00-00')?date('d M Y',strtotime($value['delivery_date'])):'')).",";
+                    $content.= str_replace(",", " ", ($value['outstanding_amount']+0)).",";
+                    
                      $content.= str_replace(",", " ", $value['vehicle_no']).",";
-                     $content.= str_replace(",", " ", $value['booked_status']).",";
-                     $content.= str_replace(",", " ", $value['contractstatusname']).",";
-                     $content.= str_replace(",", " ", $value['productive_plants']).",";
-                     $content.= str_replace(",", " ", $billing_address).",";
+                     $content.= str_replace(",", " ", $supply_address).",";
+                     $content.= str_replace(",", " ",  ucwords($value['transport_type']) ).",";
+                     $content.= str_replace(",", " ",  $comment).",";
+                     $content.= str_replace(",", " ",  $trans_desctription).",";
                      $content.= str_replace(",", " ", $delivery_address).",";
  
                            $content.="\n";
@@ -2548,7 +2013,7 @@ echo "</pre>";  */
 
  
                     
-        $filename = 'bookiong-export-'.date('d-m-Y-h-s').'.csv';
+        $filename = 'invoice-export-'.date('d-m-Y-h-s').'.csv';
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="'.$filename.'"');
         print_r($content);
@@ -2663,14 +2128,6 @@ echo "</pre>";  */
 
         echo json_encode($response_result);
           
-    }
-
-    public function forsale()
-    {
-         $booking_id    = $this->input->get('booking_no');
-
-        $single_arr         = $this->booking_model->find($booking_id);
-        echo  json_encode($single_arr);
     }  
     
     

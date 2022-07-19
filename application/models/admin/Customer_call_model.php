@@ -228,8 +228,12 @@ class Customer_call_model extends Base_model
 
                 if(isset($data_param['userid']) && $data_param['userid'] !=='')
                 {
+
+                if($data_param['userid'] !=='all'){
                     $userid = $data_param['userid'];
-                    $where.= " AND ( z_customer.assigned_to = '".$userid."') ";
+                    $where.= " AND ( z_customer.assigned_to = '".$userid."') ";  
+                }
+                    
                 } 
                    
 

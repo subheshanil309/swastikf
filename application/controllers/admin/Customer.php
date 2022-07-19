@@ -513,11 +513,17 @@ class Customer extends BaseController
             }
 
             $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type');
-        
+             
+           // print_r($data['count_call_summary']);    
+//die;
 
             $where = array();
             $where['last_follow_date'] =  $current_date = date('Y-m-d');
-            $where['assigned_to'] =  $userid;
+            if($userid !=='all')
+            {
+                $where['assigned_to'] =  $userid;    
+            }
+            
             $where['farmer_id !='] =  '';
             $where['field'] = 'id';
             $total_calls  = $this->customer_model->findDynamic($where);; 
@@ -525,7 +531,10 @@ class Customer extends BaseController
 
             $where = array();
             $where['last_follow_date'] =  $current_date = date('Y-m-d');
-            $where['assigned_to'] =  $userid;
+            if($userid !=='all')
+            {
+                $where['assigned_to'] =  $userid;    
+            }
             $where['farmer_id !='] =  '';
             $where['field'] = 'id';
             $where['groupby'] = 'farmer_id';
@@ -608,11 +617,8 @@ class Customer extends BaseController
             $data['follow_up_due_tomorrow'] = $follow_up_due_tomorrow ;
             $data['follow_up_due_tomorrow_sub'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'followup','tomorrow'); 
             
-      /*      echo "<pre>";
-            print_r($data['follow_up_due_tomorrow_sub']);
-            echo "</pre>";
-die;
-         */    
+            
+             
             
         $this->global['pageTitle'] = 'Add New customer';
         $this->loadViews("admin/customer/addnew", $this->global, $data , NULL);
@@ -735,13 +741,35 @@ die;
                 $where['farmer_id']     = $form_data['farmser_id2'];
                 $where['orderby']       = '-id';
                 $exist_customer         = $this->customer_model->findDynamic($where);
-                $customer_id            = $exist_customer[0]->id;
+                
 
-                $insertData['id']        = $customer_id;
+                /*$insertData['id']        = $customer_id;
                 $insertData['update_at'] = date("Y-m-d H:i:s");
                 $insertData['update_by'] = $this->session->userdata('userId');
 
-                $meassage ='Customer successfully Updated ';
+                $meassage ='Customer successfully Updated ';*/
+
+                if(!empty($exist_customer))
+                {
+                     
+                    $customer_id            = $exist_customer[0]->id;
+                    $insertData['id']        = $customer_id;
+                    $insertData['update_at'] = date("Y-m-d H:i:s");
+                    $insertData['update_by'] = $this->session->userdata('userId');
+
+                    $meassage ='Customer successfully Updated ';
+
+                }else
+                {
+                     // create ad new inquiry  
+                    $insertData['farmer_id']            = $farmer_id;
+                    $insertData['status']               = '1';
+                    $insertData['date_at']              = date("Y-m-d H:i:s");
+                    $insertData['created_by']           = $this->session->userdata('userId');
+                    $meassage = 'Customer successfully Added';
+                }
+
+
             }else 
             {
 
