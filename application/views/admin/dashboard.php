@@ -1,14 +1,14 @@
 <style type="text/css">
-    .rounded-circle
+   .card-body .rounded-circle
     {
         height: 120px;
     width: 120px;
     }
-    .bx
+    .card-body .bx
     {
         line-height: 111px;
     }
- .display-2 {
+ .card-body .display-2 {
     font-size: 3.5rem;
 }
 </style>
