@@ -493,50 +493,7 @@
                                 </div>
                                 <div class="row no-gutters">
                                     <div class="col-8">
-                                        <ul class="mt-3">
-                                            <?php 
-                                                if(isset($receipt_dtl['delivery_expect_start_date']) && isset($receipt_dtl['delivery_expect_end_date']) && $receipt_dtl['delivery_expect_start_date'] !=='0000-00-00' && $receipt_dtl['delivery_expect_end_date'] !=='0000-00-00')
-                                                {
-                                                 ?>
-                                                    <li>Delivery Date:  
-                                                        <?php echo date('d M Y',strtotime($receipt_dtl['delivery_expect_start_date']));?>
-                                                        To 
-                                                        <?php echo date('d M Y',strtotime($receipt_dtl['delivery_expect_end_date']));?>
-                                                    
-                                                        </li>
-                                                                                            <?php   
-                                                }
-
-                                                
-                                            ?>
-                                            
-
-
-                                            
-                                             <?php 
-                                                if(!empty($receipt_dtl['paymentmodename'])){
-                                                    ?><li> Mode of payment:  
-                                                        <?php echo @$receipt_dtl['paymentmodename'];?>
-                                                       </li> 
-                                                    <?php
-                                                } 
-                                            ?> 
-                                            <li>Outstanding amount must be cleared before 15 Days of Delivery</li>
-                                            <li><strong>Bank Details:</strong><br> <strong>Bank:</strong> <?php echo  @$company_details['bank_name'];?><br>
-                                                <strong>Account Number :</strong> <?php echo  @$company_details['bank_account_number'];?><br>
-                                                <strong>Account Holder's name :</strong> <?php echo  @$company_details['bank_holder_name'];?><br>
-                                                <strong>Ifsc Code :</strong> <?php echo  @$company_details['bank_ifsc_code'];?><br>
-                                                <strong>Branch :</strong> <?php echo  @$company_details['bank_branch_address'];?>
-                                            </li>
-                                        </ul>
-                                        <p class="mb-0"><strong>Cancellation &amp; Refund:</strong></p>
-                                        <ol class="receipt-note">
-                                            <li>5% of total amount will be deducted if booking cancelled before 15 days of
-                                                delivery date</li>
-                                            <li>No amount will be refunded if booking cancelled in last 15 days of delivery
-                                                or
-                                                Unable to take delivery or Not responded during delivery.</li>
-                                        </ol>
+                                       
                                     </div>
                                     <div class="col-4">
                                         <div class="seal-section" style="margin-top: 20px;">
