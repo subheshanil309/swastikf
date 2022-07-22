@@ -218,7 +218,7 @@
                                             <div class="col-10">
                                               <?php
                                                 $bill_address = '';
-                                                if(isset($receipt_dtl['village']) && $receipt_dtl['village'] !=='')
+                                                /*if(isset($receipt_dtl['village']) && $receipt_dtl['village'] !=='')
                                                 {
                                                   $bill_address.= "Village - ".$receipt_dtl['village'].",";  
                                                 }
@@ -247,8 +247,9 @@
                                                 {
                                                    
                                                       $bill_address.=" Pincode - ".($receipt_dtl['pincode']).","; 
-                                                }
+                                                }*/
                                                 
+                                                 $bill_address = @$receipt_dtl['billing_address'];
                                                 echo  $bill_address;
                                               ?>
                                              
