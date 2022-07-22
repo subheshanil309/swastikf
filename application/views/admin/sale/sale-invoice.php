@@ -295,38 +295,22 @@
                                             
                                             <div class="col-2"></div>
                                             <div class="col-10">
+                                                <?php
+                                        $bill_address = '';
+                                          $bill_address =$receipt_dtl['billing_address'] ;
+                                        
+                                         
+                                        if(@$receipt_dtl['same_billing']=='yes')
+                                        {
+                                            $shiping_addres =$bill_address;
+                                        }else
+                                        {
+                                            $shiping_addres =  @$receipt_dtl['delivery_address'];
+                                        }
+                                        ?>
                                               <?php
-                                                $bill_address = '';
-                                                if(isset($receipt_dtl['village']) && $receipt_dtl['village'] !=='')
-                                                {
-                                                  $bill_address.= "Village - ".$receipt_dtl['village'].",";  
-                                                }
-                                                 
-                                                if(isset($receipt_dtl['city']) && $receipt_dtl['city'] !=='')
-                                                {
-                                                     
-                                                      $bill_address.=" Tehsil - ".(($receipt_dtl['city']=='Other')?$receipt_dtl['other_city']:$receipt_dtl['city']).",";  
-                                                    
-                                                  
-                                                }
                                                 
-                                                if(isset($receipt_dtl['district']) && $receipt_dtl['district'] !=='')
-                                                {
-                                                   
-                                                      $bill_address.=" District - ".(($receipt_dtl['district']=='Other')?$receipt_dtl['other_district']:$receipt_dtl['district']).","; 
-                                                } 
-                                                 
-                                                if(isset($receipt_dtl['state']) && $receipt_dtl['state'] !=='')
-                                                {
-                                                   
-                                                      $bill_address.=" State - ".(($receipt_dtl['state']=='Other')?$receipt_dtl['other_state']:$receipt_dtl['state']).","; 
-                                                }
-                                                 
-                                                if(isset($receipt_dtl['pincode']) && $receipt_dtl['pincode'] !=='')
-                                                {
-                                                   
-                                                      $bill_address.=" Pincode - ".($receipt_dtl['pincode']).","; 
-                                                }
+                                                
                                                 
                                                 echo  $bill_address;
                                               ?>
@@ -366,7 +350,7 @@
                                             <div class="col-10">
                                               <?php
                                                  
-                                                echo  $bill_address;
+                                                echo  $shiping_addres;
                                               ?>
                                              
 
