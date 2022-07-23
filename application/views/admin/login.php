@@ -8,7 +8,7 @@
   <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
   <meta content="Themesbrand" name="author" />
   <!-- App favicon -->
-  <link rel="shortcut icon" href="assets/admin/images/favicon.ico">
+  <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/admin/images/favicon.ico">
   <!-- Bootstrap Css -->
   <link href="<?php echo base_url(); ?>assets/admin/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
   <!-- Icons Css -->
