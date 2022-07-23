@@ -147,8 +147,7 @@
                                     $bill_address = '';
                                       $bill_address =$receipt_dtl['billing_address'] ;
                                     
-                                    ?>
-                                 <?php   
+                                     
                                     if(@$receipt_dtl['same_billing']=='yes')
                                     {
                                         $shiping_addres =$bill_address;

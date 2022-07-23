@@ -53,12 +53,12 @@
    }
    }
    #booking_agreement {
-   padding: 50px;
+   padding: 20px;
    }
    .invoice
    {
    background: #fff;
-   border: 1px solid rgba(0,0,0,.125);
+   /*border: 1px solid rgba(0,0,0,.125);*/
    position: relative;
    }
    @media print {
@@ -111,10 +111,10 @@
    padding: 0;
    }
    @page  {
-   size: auto;
+   size: A4;
    /* auto is the initial value */
-   margin: 0;
-   border: 1px solid #666;
+   /*margin: 0;*/
+   /*border: 1px solid #666;*/
    }
    @media  print {
    html,
@@ -186,7 +186,7 @@
                </div>
                <!-- /.card-header -->
                <div class="card-body " style='max-width: 920px; border: 1px solid #ccc; '>
-                  <div id="booking_agreement" class="section-to-print invoice mt-3">
+                  <div id="booking_agreement" class="section-to-print invoice ">
                      <div class="text-center image-header">
                         <table style="text-align: center;display: inline;">
                            <tr>
@@ -455,10 +455,6 @@
                         </div>
                      </div>
                      <div align="left">
-                        <br>
-                        <br>
-                        <br>
-                        <br>
                         <div class="text-center">
                            <img class="seal-img d-print-block" style="max-width: 120px;margin: auto;" src="<?php echo base_url()?>assets/admin/images/<?php echo @$company_details['logo'];?>" alt="logo">
                            <div style="font-size: 20px;"><strong><?php echo @$company_details['title'];?></strong></div>
