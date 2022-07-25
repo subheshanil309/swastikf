@@ -324,19 +324,19 @@ class Customer extends BaseController
             $config['full_tag_open'] = ' <ul class="pagination  justify-content-center mt-4" id="query-pagination">';
             $config['full_tag_close'] = '</ul> ';
              
-            $config['first_link'] = 'First&nbsp;Page';
+            $config['first_link'] = '<<';
             $config['first_tag_open'] = '<li class="page-item">  ';
             $config['first_tag_close'] = '</li>';
-             
-            $config['last_link'] = 'Last&nbsp;Page';
+            $config['num_links'] =7;
+            $config['last_link'] = '>>';
             $config['last_tag_open'] ='<li class="page-item">  ';
             $config['last_tag_close'] = '</li>';
              
-            $config['next_link'] = 'Next';
+            $config['next_link'] = '>';
             $config['next_tag_open'] = '<li class="page-item"> ';
             $config['next_tag_close'] = ' </li>';
  
-            $config['prev_link'] = 'Previous';
+            $config['prev_link'] = '<';
             $config['prev_tag_open'] = '<li class="page-item"> ';
             $config['prev_tag_close'] = '</li>';
  

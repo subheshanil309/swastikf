@@ -964,17 +964,22 @@ print_r($customer_call_dtl);  */
                               </tbody>
                            </table>
                         </div>
+                        
+                        <div class="row">
+                           
+                          <div class="col-sm-12">
+                            <?php echo $this->pagination->create_links(); ?>  
+                          </div>
+                        </div>
                         <div class="row">
                           <div class="col-sm-3">
-                              <ul class="pagination  justify-content-left mt-4"  >
+                              <ul class="pagination table table-responsive justify-content-left mt-4"  >
                                  <li class="">
                                     <p><?php echo @$pagination_total_count; ?> Inquiries. </p>
                                  </li>
                               </ul>
                           </div>
-                          <div class="col-sm-9">
-                            <?php echo $this->pagination->create_links(); ?>  
-                          </div>
+                          
                         </div>
                       </div>
                     </form>
