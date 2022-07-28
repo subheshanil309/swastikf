@@ -510,8 +510,9 @@
                            <div class="card-body ">
                               <input id="pending_bill" name="pending_bill" type="hidden" value="0">
                               <input id="gst" name="gst" type="hidden">
-                              <a  href="<?php echo base_url()?>admin/bookings" class="btn btn-warning w-md float-end">Cancel</a>
-                              <button type="submit" class="btn btn-primary w-md float-end mr-1">Save Details</button>
+                              <button type="submit" class="btn btn-info w-md btn-sm float-end mr-1">Save Details</button>
+                              <a  href="<?php echo base_url()?>admin/bookings" class="btn my-primary btn-sm w-md float-end">Cancel</a>
+                              
                               <input type="hidden" name="id" value="<?php if(isset($edit_data->id)){echo $edit_data->id;} ?>"/>
                            </div>
                         </div>

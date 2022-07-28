@@ -32,7 +32,7 @@
          }
       </style>
    </head>
-   <body data-sidebar="dark">
+   <body data-sidebar="dark"  >
       <div id="layout-wrapper">
       <header id="page-topbar">
          <div class="navbar-header">

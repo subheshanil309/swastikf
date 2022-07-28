@@ -25,25 +25,8 @@
 </style>
 <!-- Latest compiled and minified CSS -->
 <div class="page-content">
-   <div class="container-fluid">
-      <div class="row">
-         <div class="col-xl-12">
-            <div class="card">
-               <h5 class="card-header  text-white border-bottom p-0">
-                  <div class="row ">
-                     <div class="col-sm-12">
-                        <div class="d-flex flex-wrap gap-2 table-responsive">
-                           <div class="btn-group" role="group" aria-label="Basic example">
-                              <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/consultants/create">Create</a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </h5>
-            </div>
-         </div>
-      </div>
-   </div>
+   <?php include APPPATH.'views/admin/menu-strive.php';?>
+   
    <div class="container-fluid">
       <div class="row">
          <div class="col-12">
@@ -88,6 +71,7 @@
                                  Consultant
                               </div>
                               <div class="col-sm-2">
+                                 <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/consultants/create">Add New</a>
                                  <a href="<?php echo base_url()?>admin/consultants" class="btn btn-info btn-sm">Clear</a> 
                                  <button type="submit" name="submit_filter" id="submit_filter" value="Submit Filter"  class="btn btn-info btn-sm">
                                  <i class="bx bx-search-alt-2"></i> Submit Filter</button>
@@ -246,10 +230,10 @@
                                              </div>
                                           </div>
                                        </td>
-                                       <td><?php echo $bookings['id'];?></td>
+                                       <td><a href="<?php echo base_url()?>admin/consultants/<?php echo $bookings['id']; ?>/edit" ><?php echo $bookings['id'];?></a></td>
                                        <td><?php echo $bookings['calltypename'];?></td>
-                                       <td><?php echo $bookings['documentcategoryname'];?></td>
-                                       <td><?php echo $bookings['documentname'];?></td>
+                                       <td><a href="<?php echo base_url()?>admin/consultants/<?php echo $bookings['id']; ?>/edit" ><?php echo $bookings['documentcategoryname'];?></a></td>
+                                       <td><a href="<?php echo base_url()?>admin/consultants/<?php echo $bookings['id']; ?>/edit" ><?php echo $bookings['documentname'];?></a></td>
                                        <td><?php echo $bookings['farmer_id'];?></td>
                                        <td><?php echo $bookings['farmer_mobile'];?></td>
                                        <td><?php echo $bookings['farmer_name'];?></td>

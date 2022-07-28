@@ -389,11 +389,11 @@ class Consultants extends BaseController
 
  
 
-        $where = array();
+       /* $where = array();
         $where['status'] = '1';
-        $where['admin_type'] = '2';
-        $where['orderby'] = 'title';
-        $data['all_agents'] = $this->admin_model->findDynamic($where); 
+        $where['orderby'] = 'id';
+        $data['all_agents'] = $this->admin_model->findDynamic($where); */
+
 
 
           
@@ -536,7 +536,7 @@ class Consultants extends BaseController
                             $insertData['recommendation']               =  ($form_data['recommendation']);
                             $insertData['company_id']                   = $company_id;
                             $insertData['created_by']                   = $this->session->userdata('userId');
-                            $insertData['assigned_to']                  = $form_data['agent_id'];
+                            $insertData['assigned_to']                  = $this->session->userdata('userId');;
                             $insertData['date_at']                      = date("Y-m-d H:i:s");
 
                             $result_insert  = $this->consultant_model->save($insertData);
@@ -922,7 +922,6 @@ class Consultants extends BaseController
                             $insertData['recommendation']               = ($form_data['recommendation']);
                             $insertData['company_id']                   = $company_id;
                             $insertData['updated_by']                   = $this->session->userdata('userId');
-                            $insertData['assigned_to']                  = $form_data['agent_id'];
                             $insertData['update_at']                      = date("Y-m-d H:i:s");
 
                             $result_insert  = $this->consultant_model->save($insertData);

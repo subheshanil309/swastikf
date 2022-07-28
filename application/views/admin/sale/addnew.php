@@ -428,8 +428,9 @@
                            <div class="card-body ">
                               <input id="pending_bill" name="pending_bill" type="hidden" value="0">
                                
-                              <a  href="<?php echo base_url()?>admin/sales" class="btn btn-warning w-md float-end">Cancel</a>
-                              <button type="submit" class="btn btn-primary w-md float-end mr-1">Save Details</button>
+                              
+                              <button type="submit" class="btn btn-info w-md float-end mr-1">Save Details</button>
+                              <a  href="<?php echo base_url()?>admin/sales" class="btn my-primary w-md float-end">Cancel</a>
                            </div>
                         </div>
                      </div>
@@ -805,7 +806,14 @@ $('#sales_form').on("change", "#state", function (event) {
                   $('#contactid').val(data.id);
                   $('#farmer_id').val(data.id);
                   $('#pincode').val(data.pincode);
-                  $('#billing_address').val(data.village);
+                  if(btn=='searchBtnBooking')
+                  {
+
+                  }else
+                  {
+                     $('#billing_address').val(data.village);   
+                  }
+                  
                   checkSameBilling();
                   var stateCode = data.state_id;
                   var districtCode = data.district_id;
@@ -846,6 +854,7 @@ $('#sales_form').on("change", "#state", function (event) {
               hide_loader();
                 if(response)
                 {
+                  console.log(response);
                     var data = response;
                   $("#customer_id").val(data.farmer_id);
                   $("#booking_id").val(data.id);
@@ -853,6 +862,8 @@ $('#sales_form').on("change", "#state", function (event) {
                   var price = data.price
                   var discount = data.discount
                   var quantity = data.quantity
+                  $('#billing_address').val(data.billing_address); 
+                  $('#delivery_address').val(data.delivery_address); 
                   var same_billing = data.same_billing
                   var row = 1;
                   var centerState  = '<?php echo $company_data->state?>';
@@ -874,7 +885,7 @@ $('#sales_form').on("change", "#state", function (event) {
                   $(".select2").select2();     
 
 
-                  customerSearchForSale('searchBtn',"<?php echo base_url() ?>admin/farmers/single");
+                  customerSearchForSale('searchBtnBooking',"<?php echo base_url() ?>admin/farmers/single");
                   
                   //renderCart(centerState);
                      
@@ -1141,9 +1152,9 @@ $('#sales_form').on("change", "#state", function (event) {
       if ($("#same_billing").prop("checked") == true) {
             $('#delivery_address').val($('#billing_address').val());
             $('#delivery_address').attr('readonly', 'readonly');
-        } else {
-            $('#delivery_address').val('');
-            $('#delivery_address').removeAttr('readonly');
+        }else
+        {
+         $('#delivery_address').removeAttr('readonly');
         }
    }
    function renderChequeField() {

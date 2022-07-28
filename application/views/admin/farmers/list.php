@@ -11,6 +11,7 @@
    }
 </style>
 <div class="page-content">
+  <?php include APPPATH.'views/admin/menu-strive.php';?>
    <div class="container-fluid">
       <div class="row">
          <div class="col-12">

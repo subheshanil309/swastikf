@@ -250,6 +250,13 @@
                                                 }*/
                                                 
                                                  $bill_address = @$receipt_dtl['billing_address'];
+                                                 if(@$receipt_dtl['same_billing']=='yes')
+                                                {
+                                                    $shiping_addres = $bill_address;
+                                                }else
+                                                {
+                                                    $shiping_addres =  @$receipt_dtl['delivery_address'];
+                                                }
                                                 echo  $bill_address;
                                               ?>
                                              
@@ -268,7 +275,7 @@
                                                 <div class="col-10"><?php echo  @$receipt_dtl['customer_name'];?></div>
                                                 <div class="col-2">Address</div>
                                                 <div class="col-10">
-                                                    <?php   echo  $bill_address;?>
+                                                    <?php   echo  $shiping_addres;?>
                                                     
                                                 </div>
                                                 <div class="col-2">Mobile</div>

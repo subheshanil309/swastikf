@@ -494,7 +494,6 @@ echo "</pre>";  */
 
         $where = array();
         $where['status'] = '1';
-        $where['orderby'] = 'title';
         $data['contracts_status'] = $this->contract_status_model->findDynamic($where);
 
 
@@ -617,7 +616,6 @@ echo "</pre>";  */
 
         $where = array();
         $where['status'] = '1';
-        $where['orderby'] = 'title';
         $data['contracts_status'] = $this->contract_status_model->findDynamic($where); 
 
          $where = array();
@@ -1120,7 +1118,6 @@ echo "</pre>";  */
 
         $where = array();
         $where['status'] = '1';
-        $where['orderby'] = 'title';
         $data['contracts_status'] = $this->contract_status_model->findDynamic($where); 
 
         $where = array();

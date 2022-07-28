@@ -251,10 +251,15 @@ print_r($customer_call_dtl);  */
                                     <?php
                                        if(!empty($all_users))
                                        {
-                                           foreach ($all_users as $user) {
-                                               ?>
+                                           foreach ($all_users as $user) 
+                                           {
+                                            if( $user->status !=='0')
+                                            {
+                                              ?>
                                     <option value="<?php echo $user->id;?>" <?php if( $this->session->userdata('userId')==$user->id){echo "selected";}?> ><?php echo $user->id;?> <?php echo $user->title;?></option>
                                     <?php
+                                            }
+                                               
                                        }
                                        }
                                        ?>
@@ -307,7 +312,7 @@ print_r($customer_call_dtl);  */
                       <div class="card-body">
                            <div class="row ">
                               <div class="col-sm-12">
-                                  <button type="submit" class="btn btn-primary w-md float-end">Save</button>
+                                  <button type="submit" class="btn btn-info w-md float-end">Save</button>
                                   <input type="hidden" name="id" value="<?php if(isset($edit_data->id)){echo $edit_data->id;} ?>"/>
                               </div>
                            </div>
@@ -380,7 +385,7 @@ print_r($customer_call_dtl);  */
                       </div>
                      </div>
                      <div class="col-sm-2">
-                      <button type="button" class="btn btn-primary btn-sm exportbtn"> <i class="fa fa-file-export"></i>Export</button>  
+                      <button type="button" class="btn btn-info btn-sm exportbtn"> <i class="fa fa-file-export"></i>Export</button>  
                      </div>
                    </div>
                  </h5>
@@ -787,7 +792,7 @@ print_r($customer_call_dtl);  */
                                
                             
                             <a href="<?php echo base_url()?>admin/customer/addnew" class="btn btn-info btn-sm">Clear</a> 
-                            <button type="submit" class="btn btn-primary btn-sm"> <i class="fa fa-search"></i> Submit Filter</button>
+                            <button type="submit" class="btn btn-info btn-sm"> <i class="fa fa-search"></i> Submit Filter</button>
                             <input name="form_type" type="hidden" value="inquiry">
                             </div>
                            </div>
@@ -1208,9 +1213,13 @@ print_r($customer_call_dtl);  */
                                        if(!empty($all_users))
                                        {
                                            foreach ($all_users as $user) {
+                                            if($user->status !=0)
+                                            {
                                                ?>
                                     <option value="<?php echo $user->id;?>"  ><?php echo $user->id;?> <?php echo $user->title;?></option>
                                     <?php
+                                            }
+                                              
                                        }
                                        }
                                        ?>
@@ -1741,7 +1750,7 @@ function districtChangeUpdate(district_code = '',selected_city = '') {
               html_content+='<div class="flex-shrink-0 me-3"><i class="text-primary"></i></div>';
 
               html_content+='<div class="flex-grow-1"><div><div class="card border border-primary">';
-              html_content+='<span class="bg-primary badge badge-primary border-radius-0">'+data[i].date_at+'</span>';
+              html_content+='<span class="my-primary badge badge-primary border-radius-0">'+data[i].date_at+'</span>';
 
               html_content+='<div class="card-header bg-transparent border-bottom">';
               html_content+=data[i].calltype+' <strong>By</strong> '+data[i].user_createdby;

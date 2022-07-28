@@ -154,9 +154,9 @@
                         </div>
                         <div class="col-sm-3">
                            <div class="row">
-                              <label for="agent_id" class="col-sm-4 col-form-label">Assigning</label>
+                              <label for="agent_id" class="col-sm-4 col-form-label"> </label>
                               <div class="col-sm-8">
-                                 <select class=" form-control form-control-sm " id="agent_id" name="agent_id" aria-label="Floating label select example" >
+                                 <select hidden  class=" form-control form-control-sm " id="agent_id" name="agent_id" aria-label="Floating label select example" >
                                     <?php
                                        if(!empty($all_agents))
                                        {
@@ -322,7 +322,7 @@
                                              
                                           </div>
                                            <br>
-                                            <button type="button" id="add_more" class="btn btn-sm btn-success rounded" value="Add More Files">Add More</button>
+                                            <button type="button" id="add_more" class="btn btn-sm btn-info rounded" value="Add More Files">Add More</button>
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
@@ -362,9 +362,9 @@
                                  <div class="row">
                                     <div class="col-sm-12">
                                        <div class=" float-end">
-                                          <a  href="<?php echo base_url()?>admin/consultants" class="btn btn-sm btn-warning w-md  mr-1">Cancel</a>
+                                          <a  href="<?php echo base_url()?>admin/consultants" class="btn btn-sm my-primary w-md  mr-1">Cancel</a>
                                           <input type="hidden" name="id" value="<?php echo $edit_data->id?>" id="id" />
-                                          <button  name="Submit" id="submit"  type="submit" class="btn btn-sm btn-primary w-md  mr-1">Save Details</button>
+                                          <button  name="Submit" id="submit"  type="submit" class="btn btn-sm btn-info w-md  mr-1">Save Details</button>
                                        </div>
                                     </div>
                                  </div>

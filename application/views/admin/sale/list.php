@@ -25,24 +25,7 @@
 </style>
 <!-- Latest compiled and minified CSS -->
 <div class="page-content">
-   <div class="container-fluid">
-      <div class="row">
-         <div class="col-xl-12">
-            <div class="card">
-               <h5 class="card-header  text-white border-bottom p-0">
-                  <div class="row ">
-                     <div class="col-sm-12">
-                        <div class="d-flex flex-wrap gap-2 table-responsive">
-                           <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/sales/create">Add Sales</a>
-                           <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/sales/export?<?php echo $_SERVER['QUERY_STRING'];?>"><i class="fa fa-file" aria-hidden="true"></i> Export Sales</a>
-                        </div>
-                     </div>
-                  </div>
-               </h5>
-            </div>
-         </div>
-      </div>
-   </div>
+   <?php include APPPATH.'views/admin/menu-strive.php';?>
    <div class="container-fluid">
       <div class="row">
          <div class="col-12">
@@ -87,6 +70,8 @@
                               Sales
                            </div>
                            <div class="col-sm-3">
+                              <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/sales/create">Add Sales</a>
+                              <a  class="btn btn-info p-1" href="<?php echo base_url()?>admin/sales/export?<?php echo $_SERVER['QUERY_STRING'];?>"><i class="fa fa-file" aria-hidden="true"></i> Export Sales</a>
                               <a href="<?php echo base_url()?>admin/sales" class="btn btn-info btn-sm">Clear</a>
                               <button type="submit"  class="btn btn-info btn-sm">Submit Filter</button>
                                

@@ -6,14 +6,14 @@
     }
     .card-body .bx
     {
-        line-height: 111px;
+        line-height: 120px;
     }
  .card-body .display-2 {
     font-size: 3.5rem;
 }
 </style>
-
- <div class="page-content">
+<div class="page-content">
+    <?php include APPPATH.'views/admin/menu-strive.php';?>
     <div class="container-fluid">
         <!-- start page title -->
                         <div class="row">
@@ -65,7 +65,7 @@
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
                                             <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#cssModal">
-                                                <div class="card-body  p-1">
+                                                <div class="card-body icon-box ">
                                                     <div class="text-center">
                                                         <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
                                                             <i class="bx bxs-tree text-white display-2"></i>
@@ -80,7 +80,7 @@
                                         <div class="card mini-stats-wid">
                                             
                                             <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#salesModal">
-                                                <div class="card-body  p-1">
+                                                <div class="card-body icon-box ">
                                                     <div class="text-center">
                                                         <div class=" mini-stat-icon  rounded-circle bg-success mb-2">
                                                             <i class="bx bx-cart text-white display-2"></i>
@@ -93,7 +93,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
-                                            <div class="card-body  p-1">
+                                            <div class="card-body icon-box ">
                                                 <div class="text-center">
                                                     <div class=" mini-stat-icon  rounded-circle bg-info mb-2">
                                                         <i class="bx bxs-shopping-bag text-white display-2"></i>
@@ -106,7 +106,7 @@
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
                                             <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#productModal">
-                                                <div class="card-body  p-1">
+                                                <div class="card-body icon-box ">
                                                     <div class="text-center">
                                                         <div class=" mini-stat-icon  rounded-circle bg-success mb-2">
                                                             <i class="bx bxl-product-hunt text-white display-2"></i>
@@ -119,7 +119,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
-                                            <div class="card-body  p-1">
+                                            <div class="card-body icon-box ">
                                                 <div class="text-center">
                                                     <div class=" mini-stat-icon  rounded-circle bg-warning mb-2">
                                                         <i class="bx bx-dock-top text-white display-2"></i>
@@ -137,12 +137,26 @@
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
                                             <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#settingModal">
-                                                <div class="card-body  p-1">
+                                                <div class="card-body icon-box ">
                                                     <div class="text-center">
                                                         <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
                                                             <i class="bx bx-cog text-white display-2"></i>
                                                         </div>
                                                         <h6>Setting</h6>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="card mini-stats-wid">
+                                            <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#otherModal">
+                                                <div class="card-body icon-box ">
+                                                    <div class="text-center">
+                                                        <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                            <i class="bx bx-plus text-white display-2"></i>
+                                                        </div>
+                                                        <h6>Other</h6>
                                                     </div>
                                                 </div>
                                             </a>
@@ -286,8 +300,8 @@
                 <!-- start css modal -->
                 <div class="modal hide" id="cssModal" tabindex="-1" data-bs-backdrop="static"  aria-labelledby="cssModalLabel" aria-modal="true" role="dialog" style="display: none;">
                                                 <div class="modal-dialog">
-                                                    <div class="modal-content bordered border-primary">
-                                                        <div class="modal-header bg-primary mb-2">
+                                                    <div class="modal-content bordered border-success">
+                                                        <div class="modal-header bg-success mb-2">
                                                             <h5 class="modal-title text-white" id="cssModalLabel">CSS</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
@@ -350,8 +364,8 @@
                                             </div> <!-- start css modal -->
                                     <div class="modal hide" id="salesModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="salesModalLabel" aria-modal="true" role="dialog" style="display: none;">
                                                 <div class="modal-dialog">
-                                                    <div class="modal-content bordered border-primary">
-                                                        <div class="modal-header bg-primary mb-2">
+                                                    <div class="modal-content bordered border-success">
+                                                        <div class="modal-header bg-success mb-2">
                                                             <h5 class="modal-title text-white" id="salesModalLabel">Sales</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
@@ -413,8 +427,8 @@
                                             </div>
                                             <div class="modal hide" id="productModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="productModalLabel" aria-modal="true" role="dialog" style="display: none;">
                                                 <div class="modal-dialog">
-                                                    <div class="modal-content bordered border-primary">
-                                                        <div class="modal-header bg-primary mb-2">
+                                                    <div class="modal-content bordered border-success">
+                                                        <div class="modal-header bg-success mb-2">
                                                             <h5 class="modal-title text-white" id="productModalLabel">Product</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
@@ -477,8 +491,8 @@
                                             </div>
                                             <div class="modal hide" id="settingModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="settingModalLabel" aria-modal="true" role="dialog" style="display: none;">
                                                 <div class="modal-dialog">
-                                                    <div class="modal-content bordered border-primary">
-                                                        <div class="modal-header bg-primary mb-2">
+                                                    <div class="modal-content bordered border-success">
+                                                        <div class="modal-header bg-success mb-2">
                                                             <h5 class="modal-title text-white" id="settingModalLabel">Settings</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
@@ -572,6 +586,69 @@
                                                                             </div>
                                                                         </div> 
                                                                              
+                                                                    </div>     
+                                                                </div>     
+                                                            </div>     
+                                                           <!---->     
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal hide" id="otherModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="otherModalLabel" aria-modal="true" role="dialog" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content bordered border-success">
+                                                        <div class="modal-header bg-success mb-2">
+                                                            <h5 class="modal-title text-white" id="otherModalLabel">Other</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                           <!---->
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="row">
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                               <a href="#">
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon rounded-circle bg-primary mb-2">
+                                                                                                <i class="bx bxs-user-rectangle text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>Harvesting Management</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                                <a href="#">
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                                <i class="bx bx-flag text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>Delivery Management</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="card mini-stats-wid">
+                                                                                <a href="<?php echo ($role==1)?base_url().'admin/state':'#'?>">
+                                                                                    <div class="card-body">
+                                                                                        <div class="text-center">
+                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                                <i class="bx bx-grid-vertical text-white display-2"></i>
+                                                                                            </div>
+                                                                                            <h6>Premium Customer</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>     
                                                                 </div>     
                                                             </div>     

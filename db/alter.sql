@@ -699,6 +699,9 @@ CREATE TABLE IF NOT EXISTS `z_sales_dtl` (
 COMMIT;
 
 
+--28-07-2022--
+
+ALTER TABLE `z_farmers` ADD `is_premium` INT(5) NOT NULL DEFAULT '0';
 
 
 

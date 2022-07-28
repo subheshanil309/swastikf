@@ -415,14 +415,15 @@
                       
                   </div>
                    
-                  <div class="row">
-                     <div class="col-sm-12">
-                        <div class="card">
-                           <div class="card-body ">
+                  <div class="row justify-content-end">
+                     <div class="col-sm-3">
+                        <div class=" ">
+                           <div class="  ">
                               <input id="pending_bill" name="pending_bill" type="hidden" value="0">
-                              <button type="submit" class="btn btn-primary btn-sm w-md  mr-1">Save Details</button>
-                              <a  href="<?php echo base_url()?>admin/sales/invoice/<?php echo $edit_data->id;?>" class="btn btn-info btn-sm mr-2  "> Generate Invoice</a>
-                              <a  href="<?php echo base_url()?>admin/sales" class="btn btn-warning w-md  btn-sm ">Cancel</a>
+                              <a  href="<?php echo base_url()?>admin/sales" class="btn my-primary w-md  btn-sm ">Cancel</a>
+                              <a  href="<?php echo base_url()?>admin/sales/invoice/<?php echo $edit_data->id;?>" class="btn my-primary btn-sm mr-2  "> Generate Invoice</a>
+                              
+                              <button type="submit" class="btn btn-info btn-sm w-md  mr-1">Save Details</button>
                               <input type="hidden" name="sale_id" value="<?php if(isset($edit_data->id)){echo $edit_data->id;} ?>"/>
                            </div>
                         </div>

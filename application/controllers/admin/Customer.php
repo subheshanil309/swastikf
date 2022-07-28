@@ -460,10 +460,9 @@ class Customer extends BaseController
         $data['all_customers'] = $this->customer_model->findDynamic($where);
         
         $where = array();
-        $where['status'] = '1';
+        $where['id !='] = '0';
         $where['company_id'] = $company_id;
-
-        $where['field'] = 'id,name,title';
+        $where['field'] = 'id,name,title,status';
         $data['all_users'] = $this->admin_model->findDynamic($where);
 
 
@@ -1316,7 +1315,7 @@ class Customer extends BaseController
                 foreach ($result_array  as $value) 
                 {
                     $call_detail = array();
-                    $call_detail['date_at'] = date('d M Y',strtotime($value['date_at']));
+                    $call_detail['date_at'] = date('d F Y, h:i:s A',strtotime($value['date_at']));
                     $call_detail['call_back_date'] = (($value['call_back_date']=='0000-00-00' || $value['call_back_date'] == null)?'':date('d M Y',strtotime($value['call_back_date'])));
                     $call_detail['calltype'] =  $value['calltype'];
                     $call_detail['assigned'] =  $value['assigned'];

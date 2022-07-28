@@ -29,15 +29,14 @@
       <div class="row">
          <div class="col-xl-12">
             <div class="card">
-               <h5 class="card-header  bg-primary text-white border-bottom p-0">
+               <h5 class="card-header text-white border-bottom p-0">
                   <div class="row ">
                      <div class="col-sm-12">
                         <div class="d-flex flex-wrap gap-2 table-responsive">
                            <div class="btn-group" role="group" aria-label="Basic example">
-                              <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/create">Add Booking</a>
-                             <!--  <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/import" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg2">Import Booking</a> -->
-                              <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/export?<?php echo $_SERVER['QUERY_STRING'];?>">Export Booking</a>
-                              <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/bookings/advance" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-filter" aria-hidden="true"></i>Advance Search</a> 
+                              <a  class="btn my-primary px-4" href="<?php echo base_url()?>admin/bookings/create">Add Booking</a>
+                              <a  class="btn my-primary px-4" href="<?php echo base_url()?>admin/bookings/export?<?php echo $_SERVER['QUERY_STRING'];?>">Export Booking</a>
+                              <a  class="btn my-primary px-4" href="<?php echo base_url()?>admin/bookings/advance" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-filter" aria-hidden="true"></i>Advance Search</a> 
                            </div>
                         </div>
                      </div>
@@ -123,7 +122,7 @@
                                           
                                           
                                                       ?>
-                                       <a class="btn btn-outline-primary <?php echo $active ;?>" href="<?php echo base_url()?>admin/bookings?booking_status=<?php echo $filter_booking_status['slug']?>"> <span class="badge bg-warning text-white"><?php echo $filter_booking_status['count_booking']?> </span> <?php echo $filter_booking_status['title']?>
+                                       <a class="btn my-primary <?php echo $active ;?>" href="<?php echo base_url()?>admin/bookings?booking_status=<?php echo $filter_booking_status['slug']?>"> <span class="badge bg-warning text-white"><?php echo $filter_booking_status['count_booking']?> </span> <?php echo $filter_booking_status['title']?>
                                        </a>
                                        <?php
                                           }
@@ -458,7 +457,7 @@
                      </div>
                      <div class="row p-4">
                         <div class="col-sm-2">
-                           <button class="btn btn-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ShowSummary" aria-expanded="true" aria-controls="ShowSummary"><i class="bx bx-plus-medical"></i> Show Summary</button>
+                           <button class="btn my-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ShowSummary" aria-expanded="true" aria-controls="ShowSummary"><i class="bx bx-plus-medical"></i> Show Summary</button>
                         </div>
                         <div class="col-sm-10">
                         </div>

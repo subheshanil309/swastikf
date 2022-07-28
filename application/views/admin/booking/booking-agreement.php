@@ -1,22 +1,7 @@
-<?php 
-   /* $cocial_url = array();
-   
-    $facebook = array(
-        "title"=>"Facebook",
-        "url"=>"https://www.facebook.com"
-    );
-    $cocial_url[] = $facebook;
-    $youtube = array(
-        "title"=>"Youtube",
-        "url"=>"https://www.youtube.com"
-    );
-   
-    $cocial_url[] = $youtube;
-   
-   
-    echo json_encode($cocial_url);die; */
-   ?>
+ 
 <style type="text/css">
+
+   
    @page  {
    size: A4;
    margin: 2rem;
@@ -47,11 +32,7 @@
    #booking_agreement ol ol>li {
    padding-left: 10px;
    }
-   @media  print {
-   .pagebreak {
-   page-break-after: always;
-   }
-   }
+   
    #booking_agreement {
    padding: 20px;
    }
@@ -61,39 +42,7 @@
    /*border: 1px solid rgba(0,0,0,.125);*/
    position: relative;
    }
-   @media print {
-   .section-to-print>.image-header
-   {
-   text-align: center;
-   }
-   body * {
-   visibility: hidden;
-   }
-   .cart-table th,
-   .table th,
-   .cart-table td,
-   .table td {
-   /* border-color: #000; */
-   color: #000;
-   }
-   .section-to-print,
-   .section-to-print * {
-   visibility: visible;
-   }
-   .section-to-print p
-   {
-   margin: 0;
-   }
-   .section-to-print {
-   position: absolute;
-   left: 0;
-   top: 0;
-   right: 0;
-   }
-   .row>* {
-   position: unset;
-   }
-   } 
+
    .mtable {
    width: 100%;
    margin-bottom: 0;
@@ -116,8 +65,9 @@
    /*margin: 0;*/
    /*border: 1px solid #666;*/
    }
-   @media  print {
-   html,
+
+   @media print { 
+      html,
    body,
    div,
    span,
@@ -170,7 +120,42 @@
    td {
    font-size: 14px !important;
    }
+   
+         .pagebreak {page-break-after: always;}
+         
+      /*body * { visibility: hidden; }*/
+       
+      .section-to-print>.image-header{text-align: center;}
+  
+   .cart-table th,
+   .table th,
+   .cart-table td,
+   .table td {
+   /* border-color: #000; */
+   color: #000;
    }
+   .section-to-print,
+   .section-to-print * {
+   visibility: visible;
+   }
+   .section-to-print p
+   {
+   margin: 0;
+   }
+   .section-to-print {
+   /*position: absolute;*/
+   left: 0;
+   top: 0;
+   right: 0;
+   }
+   .row>* {
+   position: unset;
+   }
+   .card-footer{visibility: hidden;}
+
+   } 
+}
+ 
 </style>
 <div class="page-content">
    <div class="container-fluid">
@@ -185,7 +170,7 @@
                   </div>
                </div>
                <!-- /.card-header -->
-               <div class="card-body " style='max-width: 920px; border: 1px solid #ccc; '>
+               <div class="card-body " style='max-width: 920px; border: 1px solid #fff; '>
                   <div id="booking_agreement" class="section-to-print invoice ">
                      <div class="text-center image-header">
                         <table style="text-align: center;display: inline;">
@@ -274,7 +259,7 @@
                         <li><strong>कम्पनी के कार्यालय/नर्सरी/शाखा साईट से वितरण-</strong><br>
                            किसान इस बात से सहमत है कि पौध वितरण कम्पनी के कार्यालय/नर्सरी/शाखा साईट इत्यादि से होना है, कम्पनी पौधों या अन्य पदार्थाें को किसान के खेत तक पहंुचाती है तो उन्हें पहले से निर्धारित दर के आधार पर मूल्य भुगतान करना पडता है। कम्पनी परिवहन के दौरान पौधों या अन्य पदार्थाें के क्षति या उखडने, टूटने, सूखने, मुरझाने के मामले में जिम्मेदार होती है। और कम्पनी की जिम्मेदारी किसान को स्वस्थ पौधा खेत में पहंुचाने तक होती है। किसान को पौधा हस्तान्तरित होने के बाद कम्पनी की जिम्मेदारी समाप्त हो जाती है। 
                         </li>
-                        <li class="pagebreak"><strong>वितरण लेने में असफलता एवं मूल्य वापसी के विषय में-</strong><br>
+                        <li  ><strong>वितरण लेने में असफलता एवं मूल्य वापसी के विषय में-</strong><br>
                            कम्पनी द्वारा वितरण की सूचना के पश्चात किसान को वितरण को सात दिन के अंदर लेने की बाध्यता होती है, किसान द्वारा ऐसा करने में असफल होने के मामलों में कम्पनी पौधों को दूसरे पक्षकार को विक्रय करने का अधिकार रखती है। कम्पनी का यह प्रयास होता है कि वह इन पौधों या पदार्थाें को त्वरित रूप से किसानों को जिन्होनें अग्रिम बुंकिग की है, उनको दे दिया जाऐं। दूसरे पक्षों को विक्रय करने की स्थिति में यदि कोई नुकसान होता है तो वह किसान द्वारा जमा की गयी राशि से काट ली जाएगी तथा शेष राशि यदि बचती है तो वह किसानों को वापस कर दी जाऐगी। 
                         </li>
                         <li>
@@ -295,7 +280,7 @@
                               <li> कोई सुझाव/अवलोकन/वचन या वादा जो कम्पनी के प्रतिनिधि द्वारा या बाहय विशेषज्ञों के द्वारा किया जाता है, उसे कम्पनी की तरफ से भूलवंश भी बाध्यकारी वचनबद्धता नहीं समझा जायेगा। कम्पनी अपनी उपरोक्त सेवा सभाव पूर्वक, बिना किसी प्रतिफल या बिना संविदात्मक दायित्व के प्रदान करती है, ऐसे लोगों के ये अवलोकन या कथन समय समय पर अपने व्यक्तिगत या सामूहिक अनुभवों पर आधारित होते है, ये समस्याओं के लिए समुचित हो भी सकते है, और नही भी हो सकते है। इसलिए ये कथन/सुझाव/सलाह अवलोकन/निर्देशन ऐसे व्यक्तियों के द्वारा दिए गए उनके व्यक्तिगत कथन/सुझाव/सलाह/अवलोकन/निर्देशन हानिरहित कथन हो सकते है, ये अनुकूल वातावरणों में अच्छे और उच्च उत्पादन में सहायक हो सकते है।</li>
                            </ol>
                         </li>
-                        <li class="pagebreak">
+                        <li  >
                            <strong>दिए गए पौधे/बीज जैविक उत्पाद होते हुए भी स्वयं में कोई पूर्वानुमेयवृद्धि या उत्पादकता का प्रमाण प्रस्तुत नहीं करते,</strong>
                            <ol>
                               <li>यह एक सामान्य ज्ञान है कि पौधों/बीजों से अंतिम उत्पादन और वृद्धि अन्य उच्च रोपित पदार्थाें की तरह विभिन्न के परिवर्तनशील घटकों पर निर्भर हो सकते है, जिनमें से कुछ निम्नलिखित है:-</li>
@@ -337,7 +322,7 @@
                         <li><strong> विक्रेता का प्रमुख आधार पर स्वामी के साथ लेन-देनः-</strong>
                            कम्पनी के उत्पादोें के डीलर/कांट्रेक्टर स्वतंत्र व्यापारी है, वे कम्पनी के कर्मचारी अथवा प्रतिनिधि नहीं है। इसलिए कम्पनी उनके किसी भी कार्य/व्यवहार/छुपाव या असत्य कथन के लिए जिम्मेदार नहीं होगी।
                         </li>
-                        <li class="pagebreak">
+                        <li >
                            <strong>अंतिम उत्पाद के लिए बाई-बैंक अग्रीमेंट</strong>
                            <ol>
                               <li>
@@ -397,7 +382,9 @@
                            </ol>
                         </li>
                      </ol>
-                     <br>
+                     <div class="pagebreak" ></div>
+                     <br >
+
                      <img class="seal-img d-print-block" style="max-width: 206px;" src="<?php echo base_url()?>assets/admin/images/<?php echo @$company_details['seal_logo'];?>" alt="seal-logo">
                      <br>
                      <div class="row">
@@ -438,7 +425,7 @@
                      </div>
                      <br>
                      <br>
-                     <div class="row pagebreak">
+                     <div class="row  ">
                         <div class="col-7">
                            <ol start="2">
                               <li>

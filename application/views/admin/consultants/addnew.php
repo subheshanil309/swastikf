@@ -33,7 +33,7 @@
     font-size: 25px;
     top: -147px;
 }
-a img
+#booking_form a img
 {
    width: 163px;
     height: 125px;
@@ -193,20 +193,9 @@ a img
                         </div>
                         <div class="col-sm-3">
                            <div class="row">
-                              <label for="agent_id" class="col-sm-4 col-form-label">Assigning</label>
+                              <label for="agent_id" class="col-sm-4 col-form-label"></label>
                               <div class="col-sm-8">
-                                 <select class=" form-control form-control-sm " id="agent_id" name="agent_id" aria-label="Floating label select example" >
-                                    <?php
-                                       if(!empty($all_agents))
-                                       {
-                                           foreach ($all_agents as $all_agent) {
-                                               ?>
-                                    <option value="<?php echo $all_agent->id;?>" ><?php echo $all_agent->id;?> <?php echo $all_agent->title;?></option>
-                                    <?php
-                                       }
-                                       }
-                                       ?>
-                                 </select>
+                                  
                               </div>
                            </div>
                         </div>
@@ -324,24 +313,7 @@ a img
                                           </label>
                                           <input type="file" multiple id="images" name="upload_files[]"  class="input-file">
                                              
-                                          <?php
-                                             /*
-                                                <div class="row" id="pictureresult">
-                                             <div class="upload col-md-2 ">
-                                                 <input type="file" id="files1" name="upload_files[]" class="input-file" onchange="readURL(this)" accept='image/*'>
-                                                 <label for="files1" class="p-0">
-
-                                                     <img id="files1_src" src="<?php echo base_url('assets/admin/images/addmedia-upload.png')?>" style="height:100%;width:100%;">
-                                                 </label>
-                                                 <span class="invalid-feedback files1"></span>
-                                             </div>
-                                              
-                                         </div>
-                                         <br>
-                                         <button type="button" id="add_more" class="btn btn-sm btn-success rounded" value="Add More Files">Add More</button>
-                                             */
-                                          ?>
-                                          
+                                           
                                           <div class="row uploads">
                                                 
                                           </div>
@@ -377,8 +349,8 @@ a img
                                  <div class="row">
                                     <div class="col-sm-12">
                                        <div class=" float-end">
-                                          <a  href="<?php echo base_url()?>admin/consultants" class="btn btn-sm btn-warning w-md  mr-1">Cancel</a>
-                                          <button  name="Submit" id="submit"  type="submit" class="btn btn-sm btn-primary w-md  mr-1">Save Details</button>
+                                          <a  href="<?php echo base_url()?>admin/consultants" class="btn btn-sm my-primary w-md  mr-1">Cancel</a>
+                                          <button  name="Submit" id="submit"  type="submit" class="btn btn-sm btn-info w-md  mr-1">Save Details</button>
                                        </div>
                                     </div>
                                  </div>

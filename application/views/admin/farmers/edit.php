@@ -261,7 +261,15 @@
                               </div>
                              
                            </div>
-                           </div> 
+                           </div>
+                    <div class="col-sm-3">
+                      <div class="row">
+                        <label for="is_premium" class="col-sm-4 col-form-label">Is Premium</label>
+                        <div class="col-sm-8">
+                          <input type="checkbox"  id="is_premium"  name="is_premium" value="1" <?php if($edit_data->is_premium==1){ echo "checked"; } ?> >
+                        </div>
+                      </div>
+                    </div> 
                   </div>
                  
                    
