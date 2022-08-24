@@ -213,7 +213,7 @@
                                         <p class="text-center"><strong>Billing Address</strong></p>
                                         <div class="row">
                                             <div class="col-2">Name</div>
-                                            <div class="col-10"><?php echo  @$receipt_dtl['customer_name'];?></div>
+                                            <div class="col-10"><?php echo  @$receipt_dtl['customername'];?></div>
                                             <div class="col-2">Address</div>
                                             <div class="col-10">
                                               <?php
@@ -264,22 +264,22 @@
                                                                                                  
                                             </div>
                                             <div class="col-2">Mobile</div>
-                                            <div class="col-10"><?php echo $receipt_dtl['customer_mobile'];?></div>
+                                            <div class="col-10"><?php echo $receipt_dtl['customermobile'];?></div>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <p class="text-center"><strong>Delivery Address</strong></p>
-                                        <div style="padding-left:50px;">
+                                        <div  >
                                             <div class="row">
                                                 <div class="col-2">Name</div>
-                                                <div class="col-10"><?php echo  @$receipt_dtl['customer_name'];?></div>
+                                                <div class="col-10"><?php echo  @$receipt_dtl['customername'];?></div>
                                                 <div class="col-2">Address</div>
                                                 <div class="col-10">
                                                     <?php   echo  $shiping_addres;?>
                                                     
                                                 </div>
                                                 <div class="col-2">Mobile</div>
-                                                <div class="col-10"><?php echo $receipt_dtl['customer_alter_mobile'];?></div>
+                                                <div class="col-10"><?php echo $receipt_dtl['customeraltmobile'];?></div>
                                             </div>
                                         </div>
                                     </div>
@@ -307,12 +307,12 @@
                                                      <?php echo number_format($receipt_dtl['price'],2);?>
                                                 </td>
                                                 <td style="padding-bottom:80px;" class="pr-2 text-right">
-                                                   <?php echo number_format($receipt_dtl['total'],2);?> </td>
+                                                   <?php echo number_format(($receipt_dtl['price']*$receipt_dtl['quantity']),2);?>  </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="4" class="pr-2 text-right">Total</td>
+                                                <td colspan="4" class="pr-2 text-right">Sub Total</td>
                                                 <td class="pr-2 text-right">
-                                                    <?php echo number_format($receipt_dtl['total'],2);?> 
+                                                    <?php echo number_format(($receipt_dtl['price']*$receipt_dtl['quantity']),2);?> 
                                                 </td>
                                             </tr>
                                             <tr>

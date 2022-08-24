@@ -93,7 +93,7 @@
                             <div class="row">
                               <label for="name" class="col-sm-4 col-form-label">Name<span class="text-danger">*</span></label>
                               <div class="col-sm-8"> 
-                                 <input type="text" maxlength="12" class="form-control form-control-sm" id="name" name="name" placeholder="Enter State Name*" value="<?php echo $edit_data->name; ?>" required="">
+                                 <input type="text"  class="form-control form-control-sm" id="name" name="name" placeholder="Enter State Name*" value="<?php echo $edit_data->name; ?>" required="">
                               </div>
                            </div>
                        </div>

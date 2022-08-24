@@ -82,20 +82,36 @@
                                                
                                           <?php } ?>
                                 <div class="p-2">
-                                    <form class="form-horizontal" action="<?php echo base_url(); ?>admin/login/loginMe" method="post" autocomplete="off" >
+                                    <form class="form-horizontal custom-validation" action="<?php echo base_url(); ?>admin/login/loginMe" method="post" autocomplete="off" novalidate >
         
                                         
                                         <div class="mb-3">
-                                            <label for="username" class="form-label">Username</label>
-                                            <input type="text" name="email" required  class="form-control" id="email" placeholder="Enter Email" autocomplete="off">
+                                            <label for="email" class="form-label">Email</label>
+
+                                            <div class="row">
+                                              <div class="col-sm-12">
+                                                <input type="email" name="email" required  class="form-control" parsley-type="email" required  id="email" placeholder="Enter Email" autocomplete="off" value="<?php echo set_value('email',$this->session->userdata('login_email'));?>">
+                                              </div>
+                                              
+                                            </div>
                                         </div>
                 
                                         <div class="mb-3">
-                                            <label class="form-label">Password</label>
-                                            <div class="input-group auth-pass-inputgroup">
-                                                <input type="password" class="form-control" placeholder="Enter password" name="password" id="password" aria-label="Password" aria-describedby="password-addon" autocomplete="off">
+                                            <label for="password" class="form-label">Password</label>
+                                            
+                                            <div class="row">
+                                              <div class="col-sm-10 col-10 ">
+                                                <input type="password" class="form-control" required placeholder="Enter password" name="password" id="password" aria-label="Password" aria-describedby="password-addon" autocomplete="off" value="<?php echo set_value('password',$this->session->userdata('login_password'));?>">
+                                              </div>
+                                              <div class="col-sm-2 col-2 ">
+                                                <div class="input-group auth-pass-inputgroup">
                                                 <button class="btn btn-light "  onclick="password_toggle('password','login_eye')"  type="button"  ><i id="login_eye" class="fas fa-eye"></i></button>
+                                               </div>    
+                                              </div>
                                             </div>
+
+
+                                            
                                         </div>
                                         <div class="mt-3 d-grid">
                                             <button class="btn btn-primary waves-effect waves-light" type="submit">Log In</button>
@@ -125,7 +141,9 @@
         <script src="<?php echo base_url(); ?>assets/admin/libs/metismenu/metisMenu.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/admin/libs/simplebar/simplebar.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/admin/libs/node-waves/waves.min.js"></script>
-        
+        <script src="<?php echo base_url(); ?>assets/admin/libs/parsleyjs/parsley.min.js"></script>
+         
+
         <!-- App js -->
         <script src="<?php echo base_url(); ?>assets/admin/js/app.js"></script>
         <script type="text/javascript">
@@ -142,6 +160,9 @@
             togglePassword.classList.toggle('fa-eye-slash');
              
           }
+          $(document).ready(function(){
+            $(".custom-validation").parsley()
+          });
         </script>
     </body>
 

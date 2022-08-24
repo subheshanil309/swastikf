@@ -24,6 +24,9 @@ class Customer extends BaseController
         $this->load->model('admin/crop_model');
 
         $this->perPage =200; 
+
+
+        
     }
 
     
@@ -45,6 +48,18 @@ class Customer extends BaseController
     {
     
             $this->isLoggedIn();
+
+
+        $this->global['module_id']      = get_module_byurl('admin/customer/addnew');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(empty($action_requred))
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
+
             
             $data = array();
 
@@ -60,7 +75,7 @@ class Customer extends BaseController
             $form_type  = $this->input->get('form_type');
             $conditions = array(); 
             $where_search = array();
-                
+            $current_date = ( @$this->input->get('last_follow_date'))?(@$this->input->get('last_follow_date')):date('Y-m-d');
 
          if($data['section']=='booking')
          {
@@ -214,6 +229,10 @@ class Customer extends BaseController
                 if(!empty($search_customer_id))
                 {
                     $where_search['farmer_id'] =  $search_customer_id;
+                } 
+                if(!empty($current_date))
+                {
+                    $where_search['current_date'] =  $current_date;
                 }
                  if(!empty($stat_type))
                 {
@@ -375,7 +394,7 @@ class Customer extends BaseController
                     
                 $data['customers'] = $this->customer_model->getRows($conditions);
                 $data['pagination_total_count'] =  $totalRec;
-                   
+
  
 
          }
@@ -511,13 +530,13 @@ class Customer extends BaseController
                  $userid = $this->session->userdata('userId');
             }
 
-            $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type');
-             
-           // print_r($data['count_call_summary']);    
-//die;
+           
 
+            $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type',$current_date);
+              
+           
             $where = array();
-            $where['last_follow_date'] =  $current_date = date('Y-m-d');
+            $where['last_follow_date'] =  $current_date  ;
             if($userid !=='all')
             {
                 $where['assigned_to'] =  $userid;    
@@ -529,7 +548,7 @@ class Customer extends BaseController
             $data['total_calls'] = count($total_calls);
 
             $where = array();
-            $where['last_follow_date'] =  $current_date = date('Y-m-d');
+            $where['last_follow_date'] =  $current_date ;
             if($userid !=='all')
             {
                 $where['assigned_to'] =  $userid;    
@@ -554,6 +573,7 @@ class Customer extends BaseController
             $where['create_date >='] =  $booded_start_date;
             $where['create_date <='] =  $booded_end_date;
             $where['field'] = 'id';
+            $where['company_id'] = $company_id;
             $week_booking  = $this->booking_model->findDynamic($where);; 
             $data['week_booking'] = count($week_booking);
 
@@ -567,6 +587,7 @@ class Customer extends BaseController
             $where['create_date >='] =  $booded_start_date;
             $where['create_date <='] =  $booded_end_date;
             $where['field'] = 'id';
+            $where['company_id'] = $company_id;
             $this_month_booking  = $this->booking_model->findDynamic($where);; 
             $data['this_month_booking'] = count($this_month_booking);
 
@@ -581,6 +602,7 @@ class Customer extends BaseController
             $where['create_date >='] =  $booded_start_date;
             $where['create_date <='] =  $end_date;
             $where['field'] = 'id';
+            $where['company_id'] = $company_id;
             $previous_month_booking  = $this->booking_model->findDynamic($where);; 
             $data['previous_month_booking'] = count($previous_month_booking);
 
@@ -589,24 +611,27 @@ class Customer extends BaseController
             $data_param = array();
             $data_param['userid']       =  $userid;
             $data_param['stat_type']    = 'followup';
+            $data_param['current_date']    = $current_date;
             $data_param['followup_type']= 'yesterday'; 
             $data_param['calltype']= $data['calltypes']; 
             $result =   $this->customer_call_model->callSummary($data_param);
             $follow_up_missed = count($result);
             $data['follow_up_missed'] = $follow_up_missed ; 
-            $data['follow_up_missed_sub'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'followup','yesterday');
+            $data['follow_up_missed_sub'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'followup',$current_date,'yesterday');
               
             $data_param = array();
             $data_param['userid']       =  $userid;
+             $data_param['current_date']    = $current_date;
             $data_param['stat_type']    = 'followup';
             $data_param['followup_type']= 'today'; 
             $result =   $this->customer_call_model->callSummary($data_param);
             $follow_up_due_today = count($result);
               $data['follow_up_due_today'] = $follow_up_due_today ; 
-              $data['follow_up_due_today_sub'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'followup','today');
+              $data['follow_up_due_today_sub'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'followup',$current_date,'today');
              
             $data_param = array();
             $data_param['userid']       =  $userid;
+             $data_param['current_date']    = $current_date;
             $data_param['stat_type']    = 'followup';
             $data_param['followup_type']= 'tomorrow'; 
             $result =   $this->customer_call_model->callSummary($data_param);
@@ -614,10 +639,10 @@ class Customer extends BaseController
 
             $follow_up_due_tomorrow = count($result);
             $data['follow_up_due_tomorrow'] = $follow_up_due_tomorrow ;
-            $data['follow_up_due_tomorrow_sub'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'followup','tomorrow'); 
+            $data['follow_up_due_tomorrow_sub'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'followup',$current_date,'tomorrow'); 
             
             
-             
+          
             
         $this->global['pageTitle'] = 'Add New customer';
         $this->loadViews("admin/customer/addnew", $this->global, $data , NULL);
@@ -628,6 +653,16 @@ class Customer extends BaseController
     public function insertnow()
     {
         $this->isLoggedIn();
+         
+         $this->global['module_id']      = get_module_byurl('admin/customer/addnew');
+            $role_id                        = $this->session->userdata('role_id');
+            $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+            if(@$action_requred->create !=='create')
+            {
+                $this->session->set_flashdata('error', 'Un-autherise Access');
+                redirect(base_url());
+            }
+
 
         $userid         = $this->session->userdata('userId');
         $company_id     = $this->session->userdata('company_id');
@@ -1449,7 +1484,7 @@ class Customer extends BaseController
         $where['orderby'] = 'city';
         if(!empty($district_id))
         {
-            $where['district_id'] = $district_id;
+             $where['district_id'] = $district_id;
         }
         $cities = $this->city_model->findDynamic($where);
         $html_content = '<option value="">Choose Tehsil</option>';
@@ -1518,24 +1553,33 @@ class Customer extends BaseController
             }
             if(!empty($from_date))
             {
-                $where_search['from_date']      =  $from_date;
+                $where_search['exp_from_date']      =  $from_date;
             } 
             if(!empty($to_date))
             {
-                $where_search['to_date']        =  $to_date;
-            }
-
+                $where_search['exp_to_date']        =  $to_date;
+            } 
             if(!empty($assigned_to))
             {
-                $conditions['userid']           = $assigned_to; 
+                $where_search['assigned_to']        =  $assigned_to;
+                  
             }
- 
 
+          /*  if(!empty($assigned_to))
+            {
+                $conditions['uid']           = $assigned_to; 
+            }
+ */
+                 $conditions = array( 
+                
+                'where' => $where_search
+                 
+                ); 
  
 
 
             $resultfound = $this->customer_model->getRows($conditions);
-
+            
             $content = "Call Date,Customer Id,Customer name,Mobile,District,State,Call Direction,Call Type,Followup date,Emp Name,Assigned to,Assigned by,Comment,Customer Reg Date,Call Count,Entry made by,Entry Date,Entry Update Date,Last Follower,Last Call Type \n";
              
             if(!empty($resultfound))
@@ -1556,8 +1600,8 @@ class Customer extends BaseController
 
                     $content.= str_replace(",", " ", date('d M Y',strtotime($value['date_at']))).",";
                     $content.= str_replace(",", " ", $value['farmer_id']).",";
-                    $content.= str_replace(",", " ", $value['customer_name']).",";
-                    $content.= str_replace(",", " ", $value['customer_mobile']).",";
+                    $content.= str_replace(",", " ", $value['farmername']).",";
+                    $content.= str_replace(",", " ", $value['farmermobile']).",";
                     $content.= str_replace(",", " ", $value['district']).",";
                     $content.= str_replace(",", " ", $value['state']).",";
                     $content.= str_replace(",", " ", $value['calldir']).",";

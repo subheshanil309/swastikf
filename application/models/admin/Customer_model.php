@@ -194,7 +194,7 @@ class Customer_model extends Base_model
         {
            
 
-                $this->db->select('c.*, farmer.name  as farmername, farmer.mobile  as farmermobile,farmer.alt_mobile  as farmeraltmobile,cit.city as city, sta.name as state, ftype.title as farmertype, crop.title as cropname, dist.name as district, ctype.title as calltype,   calldirection.title as calldir,   admin.title as createdby,   admin2.title as assignedto,   admin3.title as lastfollower,   admin3.title as lastfollower,   last_ctype.title as lastcalltype');
+                $this->db->select('c.*, farmer.name  as farmername,farmer.is_premium  as premium, farmer.mobile  as farmermobile,farmer.alt_mobile  as farmeraltmobile,cit.city as city, sta.name as state, ftype.title as farmertype, crop.title as cropname, dist.name as district, ctype.title as calltype,   calldirection.title as calldir,   admin.title as createdby,   admin2.title as assignedto,   admin3.title as lastfollower,   admin3.title as lastfollower,   last_ctype.title as lastcalltype');
                 $this->db->from($this->table. ' as c'); 
                 $this->db->join('z_farmers as farmer', 'farmer.id = c.farmer_id', 'left');
                 $this->db->join('z_states as sta', 'sta.id = farmer.state_id', 'left');
@@ -214,6 +214,7 @@ class Customer_model extends Base_model
                  
                     $role = $this->session->userdata('role');
                     $company_id = $this->session->userdata('company_id');
+                    $current_date = date("Y-m-d");
                     if($role ==1)
                     {
                         $where.= "( c.status = 1 AND c.farmer_id !='')";
@@ -247,7 +248,7 @@ class Customer_model extends Base_model
                 {
                      
                     foreach($params['where'] as $key => $val){ 
-                     if($key =='customer_title' || $key =='farmer_type' || $key =='crop_id' || $key =='customer_mobile'  || $key =='customer_alt_mobile' || $key =='state' || $key =='stat_type' ||   $key =='from_date' || $key =='to_date' )
+                     if($key =='customer_title' || $key =='farmer_type' || $key =='crop_id' || $key =='customer_mobile'  || $key =='customer_alt_mobile' || $key =='state' || $key =='stat_type' ||   $key =='from_date' || $key =='to_date' || $key =='current_date'  || $key =='exp_from_date'  || $key =='exp_to_date' )
                     {
 
                     
@@ -255,8 +256,14 @@ class Customer_model extends Base_model
                         $where.= " AND ( c.".$key." = '".$val."' )";
                     }
 
-                } 
+                }
+                
 
+                    if(isset($params['where']['current_date']))
+                    {
+
+                         $current_date = $params['where']['current_date'];
+                    } 
                     if(isset($params['where']['customer_title']))
                     {
 
@@ -303,7 +310,14 @@ class Customer_model extends Base_model
                     $fromdate = $params['where']['from_date'];
                     $to_date = $params['where']['to_date'];
 
-                    $where.= " AND (c.date_at > '".$current_date."' AND c.date_at < '".$to_date."' )";
+                    $where.= " AND (c.date_at >= '".$fromdate."' AND c.date_at <= '".$to_date."' )";
+                  } 
+                  if(isset($params['where']['exp_from_date']) && isset($params['where']['exp_to_date']))
+                {
+                    $fromdate = $params['where']['exp_from_date'];
+                    $to_date = $params['where']['exp_to_date'];
+
+                    $where.= " AND (c.last_follow_date >= '".$fromdate."' AND c.last_follow_date <= '".$to_date."' )";
                   }
                 if(isset($params['where']['stat_type']))
                 {
@@ -312,7 +326,7 @@ class Customer_model extends Base_model
                          
 
                          
-                         $back_date = date('Y-m-d');
+                         $back_date = $current_date;
                         /*$where.= "  AND c.last_call_back_date < '".$back_date."'"; */
                          $where.= "  AND (c.last_call_back_date <'".$back_date."' AND  c.last_call_back_date != '0000-00-00')";  
 
@@ -321,7 +335,7 @@ class Customer_model extends Base_model
                     {
                          
 
-                        $back_date = date('Y-m-d');
+                        $back_date =  $current_date;
                         $where.= "  AND c.last_call_back_date='".$back_date."'"; 
 
 
@@ -329,24 +343,24 @@ class Customer_model extends Base_model
                     {
                          
 
-                         $back_date = date('Y-m-d',strtotime("+1 days"));
+                         $back_date = date('Y-m-d',strtotime("+1 days",strtotime( $current_date )));
                         $where.= "  AND c.last_call_back_date='".$back_date."'"; 
 
 
                     }else if($params['where']['stat_type'] =='call_type2')
                     {
-                        $current_date = date('Y-m-d');
+                        $current_date = $current_date;
                         $where.= " AND (c.last_follow_date='".$current_date."')";
                     }else if($params['where']['stat_type'] =='all')
                     {
-                        $current_date = date('Y-m-d');
+                        $current_date = $current_date;
                         $where.= " AND (c.last_follow_date='".$current_date."')";
                          
 
                           
                     }else if($params['where']['stat_type'] =='allcall')
                     {
-                        $current_date = date('Y-m-d');
+                        $current_date =  $current_date;
                         $where.= " AND (c.last_follow_date='".$current_date."')";
                     }
                      

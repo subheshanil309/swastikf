@@ -1,3 +1,9 @@
+<?php
+        $role_id = $this->session->userdata('role_id');
+        $action_requred = get_module_role($module_id['id'],$role_id);
+?>
+
+
  
  <link href="<?php echo base_url(); ?>assets/admin/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo base_url(); ?>assets/admin/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -63,9 +69,11 @@
                            <div class="col-sm-3 ">
   
 
-                          
-                         <a class="btn btn-primary  float-end btn-sm" href="<?php echo base_url(); ?>admin/company/addnew"><i class="fa fa-plus"></i> Add New</a>
-
+                          <?php 
+                              $add_btn = (@$action_requred->create=='create')?'<a class="btn btn-primary  float-end btn-sm" href="'.base_url().'admin/company/addnew"><i class="fa fa-plus"></i> Add New</a>':"";
+                              echo $add_btn;
+                            ?>
+ 
                             </div>
                          </div>
                        </h5>

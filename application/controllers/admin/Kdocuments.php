@@ -19,6 +19,8 @@ class Kdocuments extends BaseController
        $this->load->model('admin/document_model');
        $this->load->model('admin/document_category_model');
        $this->load->model('admin/crop_model');
+
+         
     }
 
 
@@ -28,6 +30,17 @@ class Kdocuments extends BaseController
     public function index()
     {
         $this->isLoggedIn();
+        $this->global['module_id']      = get_module_byurl('admin/kdocuments');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(empty($action_requred))
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
+
+
         $this->global['pageTitle'] = 'Product';
         $this->loadViews("admin/document/list", $this->global, NULL , NULL);
         
@@ -37,6 +50,17 @@ class Kdocuments extends BaseController
     public function addnew()
     {
 		$this->isLoggedIn();
+
+        $this->global['module_id']      = get_module_byurl('admin/kdocuments');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(@$action_requred->create !=='create')
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
+
         $data = array();
         // category  
         $where = array(); 
@@ -180,6 +204,10 @@ class Kdocuments extends BaseController
 		
 		$data = array();
         $no =(isset($_POST['start']))?$_POST['start']:'';
+        $this->global['module_id']      = get_module_byurl('admin/kdocuments');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+
         $role = $this->session->userdata('role');
         foreach ($list as $currentObj) {
 
@@ -198,17 +226,12 @@ class Kdocuments extends BaseController
             $row[] =  $currentObj->cropname;
             $row[] =  $currentObj->category;
             $row[] =  $currentObj->title;
-            $row[] =   $btn;;
-            $row[] = $date_at;
+            $row[] =  $btn;;
+            $row[] =  $date_at;
              
-         $delete_btn = ' ';
-        if($role==1)
-        {
-              
-              $delete_btn = '<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';
-        } 
-            
-            $row[] = '<a title="'.$currentObj->slug.'" class="btn btn-sm btn-info" href="'.base_url().'admin/kdocuments/edit/'.$currentObj->id.'"><i class="fa fa-pen"></i></a>'. $delete_btn;
+            $edit_btn =(@$action_requred->edit=='edit')?'<a class="btn btn-sm btn-info" href="'.base_url().'admin/kdocuments/edit/'.$currentObj->id.'" title="Edit" ><i class="fa fa-pen"></i></a>&nbsp;':'';
+            $delete_btn =(@$action_requred->delete=='delete')?'<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>':'';
+            $row[] = $edit_btn."".$delete_btn;
             $data[] = $row;
         }
  
@@ -228,12 +251,23 @@ class Kdocuments extends BaseController
     public function edit($id = NULL)
     {
         $this->isLoggedIn();
+
+         $this->global['module_id']      = get_module_byurl('admin/kdocuments');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(@$action_requred->edit !=='edit')
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
+
+
 		if($id == null)
         {
             redirect('admin/kdocuments');
         }
-        $this->isLoggedIn();
-        $data = array();
+         $data = array();
         // category  
         $where = array(); 
         $where['status'] = '1'; 

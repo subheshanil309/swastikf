@@ -100,9 +100,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 */
 
-$route['default_controller'] = "index";
+$route['default_controller'] = "admin/Dashboard/index";
 
-$route['404_override'] = '';
+$route['404_override'] = 'admin/Dashboard/pageNotFound';
 
 $route['translate_uri_dashes'] = FALSE;
 
@@ -155,6 +155,8 @@ $route['admin/sales/(:num)/add_payment'] 	= 'admin/sales/add_payment/$1';
 $route['admin/sales/(:num)/add_refund'] 	= 'admin/sales/add_refund/$1';
 $route['admin/sales/(:num)/edit_payment'] 	= 'admin/sales/edit_payment/$1';
 $route['admin/sales/(:num)/delete_payment/(:num)'] 	= 'admin/sales/delete_payment/$1/$2';
+$route['admin/harvesting_management'] 	= 'admin/bookings/harvesting';
+$route['admin/delivery_management'] 	= 'admin/bookings/delivery';
  
 
 $route['user'] 	= 'user/dashboard';

@@ -18,6 +18,8 @@ class Product extends BaseController
        parent::__construct();
        $this->load->model('admin/product_model');
        $this->load->model('admin/category_model');
+
+         
     }
 
 
@@ -27,6 +29,17 @@ class Product extends BaseController
     public function index()
     {
         $this->isLoggedIn();
+
+         $this->global['module_id']      = get_module_byurl('admin/product');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if( empty($action_requred) )
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
+
         $this->global['pageTitle'] = 'Product';
         $this->loadViews("admin/product/list", $this->global, NULL , NULL);
         
@@ -36,6 +49,14 @@ class Product extends BaseController
     public function addnew()
     {
 		$this->isLoggedIn();
+        $this->global['module_id']      = get_module_byurl('admin/product');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(@$action_requred->create !=='create')
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
         $data = array();
         // category  
         $where['status'] = '1'; 
@@ -168,6 +189,10 @@ class Product extends BaseController
 		
 		$data = array();
         $no =(isset($_POST['start']))?$_POST['start']:'';
+        $this->global['module_id']      = get_module_byurl('admin/product');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+
         $role = $this->session->userdata('role');
         foreach ($list as $currentObj) {
 
@@ -196,14 +221,13 @@ class Product extends BaseController
             $row[] =   $btn;;
             $row[] = $date_at;
              
-         $delete_btn = ' ';
-        if($role==1)
-        {
-              
-              $delete_btn = '<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';
-        } 
+        
+
+          $edit_btn =(@$action_requred->edit=='edit')?'<a class="btn btn-sm btn-info" href="'.base_url().'admin/product/edit/'.$currentObj->id.'" title="Edit" ><i class="fa fa-pen"></i></a>&nbsp;':'';
+            $delete_btn =(@$action_requred->delete=='delete')?'<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>':'';
+        
             
-            $row[] = '<a title="'.$currentObj->slug.'" class="btn btn-sm btn-info" href="'.base_url().'admin/product/edit/'.$currentObj->id.'"><i class="fa fa-pen"></i></a>'. $delete_btn;
+            $row[] = $edit_btn."".$delete_btn;
             $data[] = $row;
         }
  
@@ -223,6 +247,16 @@ class Product extends BaseController
     public function edit($id = NULL)
     {
         $this->isLoggedIn();
+
+        $this->global['module_id']      = get_module_byurl('admin/product');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(@$action_requred->edit !=='edit')
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
 		if($id == null)
         {
             redirect('admin/product');

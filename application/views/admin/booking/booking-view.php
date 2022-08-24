@@ -187,7 +187,7 @@
                               </tr>
                               <tr>
                                  <td> <?php echo (@$receipt_dtl['farmer_id']);?></td>
-                                 <td> <?php echo  @$receipt_dtl['customer_name']; ?></td>
+                                 <td> <?php echo  @$receipt_dtl['customername']; ?></td>
                                  <td colspan="2" rowspan="3"><?php echo (@$bill_address);?></td>
                                  <td  colspan="2" rowspan="3"><?php  echo $shiping_addres; ?></td>
                               </tr>
@@ -196,7 +196,7 @@
                                  <td><strong> </strong></td>
                               </tr>
                               <tr>
-                                 <td><?php echo  @$receipt_dtl['customer_mobile'];?></td>
+                                 <td><?php echo  @$receipt_dtl['customermobile'];?></td>
                                  <td></td>
                               </tr>
                            </table>

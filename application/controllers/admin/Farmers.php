@@ -18,12 +18,28 @@ class Farmers extends BaseController
        $this->load->model('admin/farmer_type_model');
 
        $this->perPage =100; 
+ 
     }
+     
 
     
     public function index()
     {
         $this->isLoggedIn();
+
+
+        $this->global['module_id']      = get_module_byurl('admin/farmers');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        $action_requred2                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(!empty($action_requred) || !empty($action_requred2))
+        {
+            
+        }else
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
 
         $data = array();
 
@@ -38,12 +54,17 @@ class Farmers extends BaseController
             $whatsapp               = @$this->input->get('whatsapp');
             $alt_mobile             = @$this->input->get('alt_mobile');
             $farmer_type             = @$this->input->get('farmer_type');
+            $is_premium             = @$this->input->get('is_premium');
 
 
 
                 if(!empty($search_name))
                 {
                     $where_search['name'] =  $search_name;
+                }  
+                if(strlen($is_premium)>0)
+                {
+                    $where_search['is_premium'] =  $is_premium;
                 } 
                 if(!empty($farmer_id))
                 {
@@ -100,7 +121,7 @@ class Farmers extends BaseController
             $config['last_link'] = 'Last&nbsp;Page';
             $config['last_tag_open'] ='<li class="page-item">  ';
             $config['last_tag_close'] = '</li>';
-             
+            $config['num_links'] =10;
             $config['next_link'] = 'Next';
             $config['next_tag_open'] = '<li class="page-item"> ';
             $config['next_tag_close'] = ' </li>';
@@ -152,7 +173,8 @@ class Farmers extends BaseController
 
 
          //pagination end 
-
+ 
+        
         $this->global['pageTitle'] = 'Farmers';
         $this->loadViews("admin/farmers/list", $this->global, $data , NULL);
         
@@ -163,6 +185,16 @@ class Farmers extends BaseController
     {
     
         $this->isLoggedIn();
+
+        $this->global['module_id']      = get_module_byurl('admin/farmers');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(@$action_requred->create !=='create')
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
         $data = array();
             
             $where  = array();
@@ -184,6 +216,14 @@ class Farmers extends BaseController
 
         
         
+        $this->global['module_id']  = get_module_byurl('admin/farmers');
+        $role_id                    = $this->session->userdata('role_id');
+        $action_requred             = get_module_role($this->global['module_id']['id'],$role_id);
+        if(empty($action_requred->create))
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
 
         $this->global['pageTitle'] = 'Add New Farmer';
         $this->loadViews("admin/farmers/addnew", $this->global, $data , NULL);
@@ -243,6 +283,7 @@ class Farmers extends BaseController
             $insertData['village']      = $form_data['village'];
             $insertData['address']      = $form_data['address'];
             $insertData['farmer_type']      = $form_data['farmer_type'];
+             $insertData['is_premium']      = (isset($form_data['is_premium']) && $form_data['is_premium'] !=='')?$form_data['is_premium']:0;
              $insertData['created_by']      = $userid;
                  
     			$result = $this->farmers_model->save($insertData);
@@ -335,6 +376,24 @@ class Farmers extends BaseController
         else { echo(json_encode(array('status'=>FALSE))); }
         exit;
     } 
+  // Status Change
+ 
+    public function isPremium($id = NULL)
+    {
+        $this->isLoggedIn();
+        if($_POST['id'] == null)
+        {
+            redirect('admin/farmers');
+        }
+        $insertData = array();
+
+        $insertData['id'] = $_POST['id'];
+        $insertData['is_premium'] = $_POST['is_premium'];
+        $result = $this->farmers_model->save($insertData);
+        if ($result > 0) { echo(json_encode(array('status'=>TRUE))); }
+        else { echo(json_encode(array('status'=>FALSE))); }
+        exit;
+    } 
 
     // Edit
  
@@ -347,6 +406,18 @@ class Farmers extends BaseController
         {
             redirect('admin/farmers');
         }
+
+
+        $this->global['module_id']  = get_module_byurl('admin/farmers');
+        $role_id                    = $this->session->userdata('role_id');
+        $action_requred             = get_module_role($this->global['module_id']['id'],$role_id);
+        if(empty($action_requred->edit))
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
+
         $data = array();
         $data['edit_data'] = $this->farmers_model->find($id);
 
@@ -445,6 +516,7 @@ class Farmers extends BaseController
             $insertData['village']      = $form_data['village'];
             $insertData['address']      = $form_data['address'];
             $insertData['farmer_type']      = $form_data['farmer_type'];
+            $insertData['is_premium']      = (isset($form_data['is_premium']) && $form_data['is_premium'] !=='')?$form_data['is_premium']:0;
              $insertData['update_by']      = $userid;
 
                  

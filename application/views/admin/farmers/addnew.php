@@ -262,6 +262,19 @@
                              
                            </div>
                            </div> 
+                            <div class="col-sm-3">
+                                 <div class="row">
+                                    <label  class="col-sm-4 col-form-label"> </label>
+                                    <div class="col-sm-8">
+                                       <div class="form-check form-check-primary mb-3">
+                                          <input class="form-check-input" type="checkbox" id="is_premium" name="is_premium"  value="1"  >
+                                          <label class="form-check-label" for="is_premium"  >
+                                          Is Premium
+                                          </label>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
                   </div>
                  
                    

@@ -15,6 +15,7 @@ class Login extends CI_Controller
     {
         parent::__construct();
         $this->load->model('admin/login_model');
+        $this->load->model('admin/admin_role_model');
     }
 
     /**
@@ -66,7 +67,8 @@ class Login extends CI_Controller
         {
             $email = $this->input->post('email');
             $password = $this->input->post('password');
-             
+            $this->session->set_userdata('login_email',$email);
+            $this->session->set_userdata('login_password',$password);
             
             $result = $this->login_model->loginMe($email, $password);
              
@@ -76,17 +78,31 @@ class Login extends CI_Controller
                 {
                     if($res->status==1)
                     {
-                        $sessionArray = array('userId'=>$res->id,                    
+                        $role_id = 0;
+                        $where = array();
+                        $where['status']        = 1;
+                        /*$where['company_id']    = $res->company_id;*/
+                        $where['user_id']       = $res->id;
+                        $result = $this->admin_role_model->findDynamic($where);
+                        if(!empty($result))
+                        {
+                            $role_id = $result[0]->role_id;
+                        }
+                        $sessionArray = array(
+                                            'userId'=>$res->id,                    
                                             'role'=> $res->admin_type,
                                             'email'=>$res->email,
                                             'phone'=>$res->phone,
                                             'name'=>$res->name,
                                             'company_id'=>$res->company_id,
+                                            'role_id'=>$role_id,
                                             'isLoggedIn' => TRUE
-                                    );
+                                        );
                                     
                     $this->session->set_userdata($sessionArray);
-                    
+                    $this->session->unset_userdata('login_email');
+                    $this->session->unset_userdata('login_password');
+
                     
                     redirect(base_url()."admin/dashboard");
                     //redirect('/admin/dashboard');

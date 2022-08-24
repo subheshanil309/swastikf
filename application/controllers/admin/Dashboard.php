@@ -26,9 +26,7 @@ class Dashboard extends BaseController
      */
     public function index()
     {
-
-         
-
+        $this->global['page_auth'] = 'admin/dashboard';
         $this->global['pageTitle'] = 'Customert Support Dashboard';
          $userid = $this->session->userdata('userId');
 
@@ -331,7 +329,7 @@ class Dashboard extends BaseController
     {
         $this->global['pageTitle'] = 'Ale-izba : 404 - Page Not Found';
         
-        $this->loadViews("404", $this->global, NULL, NULL);
+        $this->loadViews("errors/html/error_404", $this->global, NULL, NULL);
     }
 }
 

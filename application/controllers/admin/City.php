@@ -31,11 +31,13 @@ class City extends BaseController
         $this->isLoggedIn();
 
         $data = array();
+        
         $this->global['pageTitle'] = 'City';
         $this->loadViews("admin/city/list", $this->global, $data , NULL);
         
     }
-
+   
+   
     // Add New 
     public function addnew()
     {
@@ -165,7 +167,7 @@ class City extends BaseController
 
 
            $row[] = $currentObj->city;
-            $row[] = $btn;
+             $row[] = $btn;
             $row[] = $edit_btn.$delete_btn;;
            /* $row[] = '<a class="btn btn-sm btn-info" href="'.base_url().'admin/city/edit/'.$currentObj->id.'" title="Edit" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';*/
             $data[] = $row;

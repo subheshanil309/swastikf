@@ -1,3 +1,9 @@
+<?php
+        $role_id = $this->session->userdata('role_id');
+        $action_requred = get_module_role($module_id['id'],$role_id);
+?>
+
+
 <style>
    #socialresult .remove {
    position: relative;

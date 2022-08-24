@@ -181,6 +181,29 @@ class User_model extends Base_model
             return $this->db->count_all_results();
 
         }
+/*
+        public function menu_with_auth($parent_id = '')
+        {
+            $userid = $this->session->userdata('userId');
+            $this->db->select('admin_role.role_id as admin_role_role_id,admin_role.user_id as user_id,module_role.module_id as module_role_module_id, module_role.role_id as module_role_role_id,module.module_name as menu_title,module.module_url as menu_url,module.icon_name as icon_class,module.target as with_target');
+            $this->db->from('z_module_role as module_role '); 
+            $this->db->join('z_admin_role as admin_role', 'admin_role.role_id = module_role.role_id' );
+            $this->db->join('z_module_m as module', 'module.id = module_role.module_id');
+            if($parent_id >0)
+            {
+                $this->db->where('module.parent_id',$parent_id);    
+            }else
+            {
+                $this->db->where('module.parent_id !=',$parent_id); 
+            }
+             
+             $this->db->where('admin_role.user_id',$userid); 
+             $this->db->order_by('module.orders_with','ASC'); 
+
+                $query = $this->db->get();
+                return $result = $query->result_array();
+        }
+         */
 
 
 

@@ -32,7 +32,7 @@
          }
       </style>
    </head>
-   <body data-sidebar="dark"  >
+   <body data-sidebar="dark"  class="sidebar-enable vertical-collpsed">
       <div id="layout-wrapper">
       <header id="page-topbar">
          <div class="navbar-header">
@@ -150,7 +150,107 @@
             <div id="sidebar-menu">
                <!-- Left Menu Start -->
                <ul class="metismenu list-unstyled" id="side-menu">
-                  <li>
+
+                  <?php
+
+                        $userid = $this->session->userdata('userId');
+
+                        $menu_data =  menu_with_auth(0,$userid );
+                        $maped_manu =  array();
+
+                        if(!empty($menu_data))
+                        {
+                            $i = 0;
+                            foreach ($menu_data as $key) 
+                            {
+                              $menu_data2 =  menu_with_auth($key['moduleid'],$userid );
+ 
+                                ?>
+                                 <li>
+                                       <a  href="<?php echo ($key['menu_url'] !=="#") ? (base_url()."".$key['menu_url']) : ('javascript: void(0);');?>"   <?php if(!empty($menu_data2)){ ?> class="has-arrow waves-effect"   <?php } ?> >
+                                          <?php echo ((strlen($key['icon_class'])>0) ? ('<i class="'.$key['icon_class'].'"></i>') : (''));?>
+                                          <span key="t-ecommerce"><?php echo $key['menu_title']; ?></span>
+                                       </a>
+                                       <?php 
+                                          if(!empty($menu_data2))
+                                            {
+
+                                             ?>
+                                             <ul class="sub-menu" aria-expanded="false">
+                                             <?php
+                                                $j= 0;
+                                               
+                                                foreach ($menu_data2 as $key2) 
+                                                {
+                                                   $menu_data3 =  menu_with_auth($key2['moduleid'],$userid );
+                                                   ?>
+
+                                                         <li>
+                                                             <a  href="<?php echo ($key2['menu_url'] !=="#") ? (base_url()."".$key2['menu_url']) : ('javascript: void(0);');?>"  key="t-products" <?php if(!empty($menu_data3)){ ?> class="has-arrow"  <?php } ?> >
+                                                               <?php echo (strlen($key2['icon_class']) >0) ? ('<i class="'.$key2['icon_class'].'"></i>') : ('');?>
+                                                                <?php echo $key2['menu_title']; ?> 
+                                                            </a>
+
+                                                            <?php
+
+                                                               if(!empty($menu_data3))
+                                                                 {
+
+                                                                  ?>
+                                                                  <ul class="sub-menu" aria-expanded="false">
+                                                                  <?php
+                                                                     $j= 0;
+                                                                    
+                                                                     foreach ($menu_data3 as $key3) 
+                                                                     {
+                                                                         
+                                                                        ?>
+
+                                                                              <li>
+                                                                                  <a  href="<?php echo ($key3['menu_url'] !=="#") ? (base_url()."".$key3['menu_url']) : ('javascript: void(0);');?>"  key="t-products"  >
+                                                                                    <?php echo (strlen($key3['icon_class']) >0 ) ? ('<i class="'.$key3['icon_class'].'"></i>') : ('');?>
+                                                                                     <?php echo $key3['menu_title']; ?> 
+                                                                                 </a>
+
+
+                                                                              </li>
+                                                                              
+                                                                           
+                                                                        <?php
+                                                                     }
+
+                                                                     ?>
+                                                                        </ul>
+                                                                     <?php
+                                                                      
+                                                                 }
+
+                                                             ?>
+                                                         </li>
+                                                         
+                                                      
+                                                   <?php
+                                                }
+
+                                                ?>
+                                                   </ul>
+                                                <?php
+                                                 
+                                            }
+                                       ?>
+                                    </li>
+                                <?php
+                                 
+                                 
+                                 
+                                
+                            }
+                        }
+                          
+                      
+
+                  ?>
+                  <!-- <li>
                      <a  href="<?php echo base_url()?>admin/dashboard"   class="waves-effect">
                      <i class="bx bx-home-circle"></i>
                      <span key="t-dashboards"> Dashboard</span>
@@ -166,7 +266,7 @@
                         <li><a  href="#" key="t-products">Delivery Management</a></li>
                         <li><a  href="<?php echo base_url()?>admin/consultants" key="t-products">Consultation</a></li>
                         <li><a  href="#" key="t-products">Harvesting Management</a></li>
-                        <li><a   key="t-products">Premium Customer</a></li>
+                        <li><a  href="<?php echo base_url()?>admin/farmers?is_premium=1"  key="t-products">Premium Customer</a></li>
                      </ul>
                   </li>
                   <li>
@@ -224,7 +324,14 @@
                      <span key="t-ecommerce">Settings</span>
                      </a>
                      <ul class="sub-menu" aria-expanded="false">
-                        <li><a   href="#" key="t-products">Access Mgt</a></li>
+                        <li>
+                           <a   href="javascript: void(0);" key="t-products"  class="has-arrow" >Access Mgt</a>
+                           <ul class="sub-menu" aria-expanded="true" style="">
+                              <li><a href="<?php echo base_url('admin/modules');?>" >Manage Modeule</a></li>
+                              <li><a href="<?php echo base_url('admin/roles');?>" >Manage Role</a></li>
+                              <li><a href="<?php echo base_url('admin/user_role');?>" >Manage User Role</a></li>
+                           </ul>
+                        </li>
                         <li><a   href="<?php echo base_url('admin/company');?>" key="t-products">Company</a></li>
                         <li><a   href="<?php echo base_url('admin/category');?>" key="t-products">Category</a></li>
                         <li><a   href="<?php echo base_url('admin/product');?>" key="t-products">Product</a></li>
@@ -261,7 +368,7 @@
                         <li><a href="<?php echo base_url('admin/profile/edit');?>" key="t-products">Edit Profile</a></li>
                         <li><a href="<?php echo base_url('admin/profile/change_passowrd');?>" key="t-products">Change Password</a></li>
                      </ul>
-                  </li>
+                  </li> -->
                </ul>
             </div>
             <!-- Sidebar -->

@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	h1 {
 		color: #fff;
-		background-color: #dd4814;
+		background-color: #8ec142;
 		border-bottom: 1px solid #d0d0d0;
 		font-size: 22px;
 		font-weight: bold;
@@ -78,9 +78,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
 	<div id="container">
-		<h1><?php echo $heading; ?></h1>
+		<h1><?php echo @$heading; ?></h1>
 		<div id="body">
-			<?php echo $message; ?>
+			<?php echo @$message; ?>
 		</div>
 	</div>
 </body>

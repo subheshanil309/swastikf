@@ -1,3 +1,9 @@
+<?php
+        $role_id = $this->session->userdata('role_id');
+        $action_requred = get_module_role($module_id['id'],$role_id);
+
+        
+?> 
 <style type="text/css">
    .table>:not(caption)>*>* {
    border: 1px solid #3a863e;
@@ -70,7 +76,10 @@
                               Sales
                            </div>
                            <div class="col-sm-3">
-                              <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/sales/create">Add Sales</a>
+                               <?php 
+                                 $add_btn = (@$action_requred->create=='create')?'<a class="btn btn-primary p-1" href="'.base_url().'admin/sales/create"><i class="fa fa-plus"></i> Add Sales</a>':"";
+                                 echo $add_btn;
+                               ?>
                               <a  class="btn btn-info p-1" href="<?php echo base_url()?>admin/sales/export?<?php echo $_SERVER['QUERY_STRING'];?>"><i class="fa fa-file" aria-hidden="true"></i> Export Sales</a>
                               <a href="<?php echo base_url()?>admin/sales" class="btn btn-info btn-sm">Clear</a>
                               <button type="submit"  class="btn btn-info btn-sm">Submit Filter</button>
@@ -187,30 +196,28 @@
                                              Action<i class="mdi mdi-chevron-down"></i>
                                              </span>
                                              <div class="dropdown-menu" style="">
-                                                
-                                                <a class="dropdown-item btn" href="<?php echo base_url()?>admin/sales/<?php echo $bookings['id']; ?>/edit" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
-                                                <a hidden  class="dropdown-item btn text-danger" href="<?php echo base_url()?>admin/sales/<?php echo $bookings['id']; ?>/return" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-undo" aria-hidden="true"></i> Return Sale</a>
-                                                <a class="dropdown-item btn" target="_BLANK" href="<?php echo base_url()?>admin/sales/invoice/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Generate Invoice</a>
-                                                <a class="dropdown-item btn"  target="_BLANK" href="<?php echo base_url()?>admin/sales/view/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-eye" aria-hidden="true"></i> View Transaction Details</a>
-                                                 
-                                                
-                                                
-                                                <?php
-                                                   $userid = $this->session->userdata('role');
-                                                   if($userid==1)
-                                                   {
-                                                     ?>
-                                                <a class="dropdown-item text-danger deletebtn" href="#" data-userid="<?php echo $bookings['id']; ?>">Delete</a>
-                                                <?php    
-                                                   }
-                                                   ?>
+                                                <?php 
+                                 $edit_btn = (@$action_requred->edit=='edit')?'<a class="dropdown-item btn" href="'.base_url().'admin/sales/'.$bookings['id'].'/edit" data-userid="'.$bookings['id'].'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>':"";
+                                 echo $edit_btn;
+                               
+                                 $view_invoice_btn = (@$action_requred->view=='view')?'<a class="dropdown-item btn" target="_BLANK" href="'.base_url().'admin/sales/invoice/'.$bookings['id'].'" data-userid="'.$bookings['id'].'"><i class="fa fa-eye" aria-hidden="true"></i> Generate Invoice</a>':"";
+                                 echo $view_invoice_btn;
+                                  $transaction_invoice_btn = (@$action_requred->view=='view')?'<a class="dropdown-item btn"  target="_BLANK" href="'.base_url().'admin/sales/view/'.$bookings['id'].'" data-userid="'.$bookings['id'].'"><i class="fa fa-eye" aria-hidden="true"></i> View Transaction Details</a>':"";
+                                 echo $transaction_invoice_btn;
+
+                                 $dlete_btn = (@$action_requred->delete=='delete')?'<a class="dropdown-item text-danger deletebtn" href="#" data-userid="'.$bookings['id'].'">Delete</a>':"";
+                                 echo $dlete_btn;
+
+                                 $edit_btn2 = (@$action_requred->edit=='edit')?'<a href="'.base_url().'admin/sales/'.$bookings['id'].'/edit">'.$bookings['id'].'</a>':$bookings['id'];
+                                 
+                                 ?>
                                              </div>
                                           </div>
                                        </td>
                                         
                                        
                                        <td><?php echo ($bookings['create_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['create_date'])) :'';?></td>
-                                       <td><a  href="<?php echo base_url()?>admin/sales/<?php echo $bookings['id']; ?>/edit"  >  <?php echo $bookings['id'];?></a></td>
+                                       <td><?php echo $edit_btn2;?></td>
                                        <td><?php echo $bookings['farmer_id'];?></td>
                                        <td><?php echo $bookings['customer_name'];?></td>
                                        <td><?php echo $bookings['customer_mobile'];?></td>

@@ -1,3 +1,32 @@
+<?php
+    $role_id = $this->session->userdata('role_id');
+
+    $getKDocModule = get_module_byurl('admin/kdocuments');
+    $actionKDocRequred = get_module_role($getKDocModule['id'],$role_id);
+
+    $getProdcutModule = get_module_byurl('admin/product');
+    $actionProdcutRequred = get_module_role($getProdcutModule['id'],$role_id);
+
+    $getAgentModule = get_module_byurl('admin/agents');
+    $actionAgentRequred = get_module_role($getAgentModule['id'],$role_id);
+
+    $getCountryModule = get_module_byurl('admin/country');
+    $actionCountryRequred = get_module_role($getCountryModule['id'],$role_id);
+
+    $getStateModule = get_module_byurl('admin/state');
+    $actionStateRequred = get_module_role($getStateModule['id'],$role_id);
+
+    $getCompanyModule = get_module_byurl('admin/company');
+    $actionCompanyRequred = get_module_role($getCompanyModule['id'],$role_id);
+
+    $getCityModule = get_module_byurl('admin/city');
+    $actionCityRequred = get_module_role($getCityModule['id'],$role_id);
+
+    $getDistrictModule = get_module_byurl('admin/district');
+    $actionDistrictRequred = get_module_role($getDistrictModule['id'],$role_id);
+
+//actionCompanyRequred actionCityRequred actionDistrictRequred
+?>
 <style type="text/css">
    .card-body .rounded-circle
     {
@@ -65,9 +94,9 @@
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
                                             <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#cssModal">
-                                                <div class="card-body icon-box ">
+                                                <div class="my-card-body icon-box ">
                                                     <div class="text-center">
-                                                        <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                        <div class="mini-stat-icon  rounded-circle1 bg-primary mb-2">
                                                             <i class="bx bxs-tree text-white display-2"></i>
                                                         </div>
                                                         <h6>CSS</h6>
@@ -80,9 +109,9 @@
                                         <div class="card mini-stats-wid">
                                             
                                             <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#salesModal">
-                                                <div class="card-body icon-box ">
+                                                <div class="my-card-body icon-box ">
                                                     <div class="text-center">
-                                                        <div class=" mini-stat-icon  rounded-circle bg-success mb-2">
+                                                        <div class=" mini-stat-icon  rounded-circle2 bg-success mb-2">
                                                             <i class="bx bx-cart text-white display-2"></i>
                                                         </div>
                                                         <h6>SALES</h6>
@@ -93,9 +122,9 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
-                                            <div class="card-body icon-box ">
+                                            <div class="my-card-body icon-box ">
                                                 <div class="text-center">
-                                                    <div class=" mini-stat-icon  rounded-circle bg-info mb-2">
+                                                    <div class=" mini-stat-icon  rounded-circle3 bg-info mb-2">
                                                         <i class="bx bxs-shopping-bag text-white display-2"></i>
                                                     </div>
                                                     <h6>PURCHASE</h6>
@@ -106,9 +135,9 @@
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
                                             <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#productModal">
-                                                <div class="card-body icon-box ">
+                                                <div class="my-card-body icon-box ">
                                                     <div class="text-center">
-                                                        <div class=" mini-stat-icon  rounded-circle bg-success mb-2">
+                                                        <div class=" mini-stat-icon  rounded-circle4 bg-success mb-2">
                                                             <i class="bx bxl-product-hunt text-white display-2"></i>
                                                         </div>
                                                         <h6>PRODUCT</h6>
@@ -119,9 +148,9 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
-                                            <div class="card-body icon-box ">
+                                            <div class="my-card-body icon-box ">
                                                 <div class="text-center">
-                                                    <div class=" mini-stat-icon  rounded-circle bg-warning mb-2">
+                                                    <div class=" mini-stat-icon  rounded-circle5 bg-warning mb-2">
                                                         <i class="bx bx-dock-top text-white display-2"></i>
                                                     </div>
                                                     <h6>PO</h6>
@@ -137,9 +166,9 @@
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
                                             <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#settingModal">
-                                                <div class="card-body icon-box ">
+                                                <div class="my-card-body icon-box ">
                                                     <div class="text-center">
-                                                        <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                        <div class="mini-stat-icon  rounded-circle6 bg-primary mb-2">
                                                             <i class="bx bx-cog text-white display-2"></i>
                                                         </div>
                                                         <h6>Setting</h6>
@@ -151,9 +180,9 @@
                                     <div class="col-md-2">
                                         <div class="card mini-stats-wid">
                                             <a href="javascript: void(0)" data-bs-toggle="modal" data-bs-target="#otherModal">
-                                                <div class="card-body icon-box ">
+                                                <div class="my-card-body icon-box ">
                                                     <div class="text-center">
-                                                        <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                        <div class="mini-stat-icon  rounded-circle7 bg-primary mb-2">
                                                             <i class="bx bx-plus text-white display-2"></i>
                                                         </div>
                                                         <h6>Other</h6>
@@ -189,7 +218,7 @@
                                                     </tr>
                                                     <tr>
                                                         <th scope="row"><strong><i class="fa fa-map-marker-alt"></i> Center</strong></th>
-                                                        <td><p><?php echo $admin->address;?></p></td>
+                                                        <td><p><?php echo wordwrap($admin->address,50,"<br>\n");?></p></td>
                                                     </tr>
                                                     <tr>
                                                         <th scope="row"><strong><i class="fa fa-calendar-alt"></i> Date Of Join</strong></th>
@@ -211,90 +240,7 @@
                 </div>
                 <!-- End Page-content -->
 
-                <!-- Transaction Modal -->
-                <div class="modal fade transaction-detailModal" tabindex="-1" role="dialog" aria-labelledby="transaction-detailModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="transaction-detailModalLabel">Order Details</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p class="mb-2">Product id: <span class="text-primary">#SK2540</span></p>
-                                <p class="mb-4">Billing Name: <span class="text-primary">Neal Matthews</span></p>
-
-                                <div class="table-responsive">
-                                    <table class="table align-middle table-nowrap">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Product</th>
-                                                <th scope="col">Product Name</th>
-                                                <th scope="col">Price</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row">
-                                                    <div>
-                                                        <img src="<?php echo base_url(); ?>assets/admin/images/product/img-7.png" alt="" class="avatar-sm">
-                                                    </div>
-                                                </th>
-                                                <td>
-                                                    <div>
-                                                        <h5 class="text-truncate font-size-14">Wireless Headphone (Black)</h5>
-                                                        <p class="text-muted mb-0">$ 225 x 1</p>
-                                                    </div>
-                                                </td>
-                                                <td>$ 255</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">
-                                                    <div>
-                                                        <img src="<?php echo base_url(); ?>assets/admin/images/product/img-4.png" alt="" class="avatar-sm">
-                                                    </div>
-                                                </th>
-                                                <td>
-                                                    <div>
-                                                        <h5 class="text-truncate font-size-14">Phone patterned cases</h5>
-                                                        <p class="text-muted mb-0">$ 145 x 1</p>
-                                                    </div>
-                                                </td>
-                                                <td>$ 145</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2">
-                                                    <h6 class="m-0 text-right">Sub Total:</h6>
-                                                </td>
-                                                <td>
-                                                    $ 400
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2">
-                                                    <h6 class="m-0 text-right">Shipping:</h6>
-                                                </td>
-                                                <td>
-                                                    Free
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2">
-                                                    <h6 class="m-0 text-right">Total:</h6>
-                                                </td>
-                                                <td>
-                                                    $ 400
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                 
                 <?php $role = $this->session->userdata('role');?>
                 <!-- end modal -->
                 <!-- start css modal -->
@@ -312,10 +258,10 @@
                                                                     <div class="row">
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="<?php echo base_url()?>admin/customer/addnew">
-                                                                                    <div class="card-body">
+                                                                                <a href="<?php echo (!empty($actionEnquiryRequred))?base_url().'admin/customer/addnew':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                            <div class="mini-stat-icon  rounded-circle1 bg-primary mb-2">
                                                                                                 <i class="bx bx-phone-call text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Inquiry</h6>
@@ -325,10 +271,10 @@
                                                                             </div>
                                                                         </div> <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="<?php echo base_url()?>admin/consultants"  >
-                                                                                    <div class="card-body">
+                                                                                <a href="<?php echo (!empty($actionConsultantsRequred))?base_url().'admin/consultants':'javascript:void();'?>"  >
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-success">
+                                                                                            <div class="mini-stat-icon  rounded-circle2 bg-success">
                                                                                                 <i class="bx bxs-user-voice text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Consultation</h6>
@@ -339,10 +285,10 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="<?php echo ($role==1)?base_url().'admin/kdocuments':'#'?>">
-                                                                                    <div class="card-body">
+                                                                                <a href="<?php echo (!empty($actionKDocRequred))?base_url().'admin/kdocuments':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-warning">
+                                                                                            <div class="mini-stat-icon  rounded-circle3 bg-warning">
                                                                                                 <i class="bx bxs-file-doc text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>K Document</h6>
@@ -376,10 +322,10 @@
                                                                     <div class="row">
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="<?php echo base_url()?>admin/sales">
-                                                                                    <div class="card-body">
+                                                                                <a href="<?php echo (!empty($actionSalesRequred))?base_url().'admin/sales':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                            <div class="mini-stat-icon  rounded-circle1 bg-primary mb-2">
                                                                                                 <i class="bx bx-cart text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Sales</h6>
@@ -390,10 +336,10 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="<?php echo base_url()?>admin/bookings">
-                                                                                    <div class="card-body">
+                                                                                <a href="<?php echo (!empty($actionBookingRequred))?base_url().'admin/bookings':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-success mb-2">
+                                                                                            <div class="mini-stat-icon  rounded-circle3 bg-success mb-2">
                                                                                                 <i class="bx bx-book-bookmark text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Booking</h6>
@@ -404,10 +350,10 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="<?php echo ($role==1)?base_url().'admin/kdocuments':'#'?>" >
-                                                                                    <div class="card-body">
+                                                                                <a href="<?php echo (!empty($actionKDocRequred))?base_url().'admin/kdocuments':'javascript:void();'?>" >
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-warning">
+                                                                                            <div class="mini-stat-icon  rounded-circle2 bg-warning">
                                                                                                 <i class="bx bxs-file-doc text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>K Document</h6>
@@ -439,10 +385,10 @@
                                                                     <div class="row">
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                               <a href="<?php echo base_url()?>admin/product">
-                                                                                    <div class="card-body">
+                                                                               <a href="<?php echo (!empty($actionProdcutRequred))?base_url().'admin/product':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon rounded-circle bg-primary mb-2">
+                                                                                            <div class="mini-stat-icon rounded-circle1 bg-primary mb-2">
                                                                                                 <i class="bx bxl-product-hunt text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Product</h6>
@@ -453,10 +399,10 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="<?php echo base_url()?>admin/sales">
-                                                                                    <div class="card-body">
+                                                                                <a href="<?php echo (!empty($actionSalesRequred))?base_url().'admin/sales':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                            <div class="mini-stat-icon  rounded-circle2 bg-primary mb-2">
                                                                                                 <i class="bx bxs-cart text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Sales</h6>
@@ -467,10 +413,10 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="<?php echo base_url()?>admin/farmers">
-                                                                                    <div class="card-body">
+                                                                                <a href="<?php echo (!empty($actionFarmerRequred))?base_url().'admin/farmers':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                            <div class="mini-stat-icon  rounded-circle3 bg-primary mb-2">
                                                                                                 <i class="bx bx-group text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Farmer</h6>
@@ -503,10 +449,10 @@
                                                                     <div class="row">
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                               <a href="<?php echo ($role==1)?base_url().'admin/agents':'#'?>">
-                                                                                    <div class="card-body">
+                                                                               <a href="<?php echo (!empty($actionAgentRequred))?base_url().'admin/agents':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon rounded-circle bg-primary mb-2">
+                                                                                            <div class="mini-stat-icon rounded-circle1 bg-primary mb-2">
                                                                                                 <i class="bx bxs-user-rectangle text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Agents</h6>
@@ -517,10 +463,10 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="<?php echo ($role==1)?base_url().'admin/country':'#'?>">
-                                                                                    <div class="card-body">
+                                                                                <a href="<?php echo (!empty($actionCountryRequred))?base_url().'admin/country':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                            <div class="mini-stat-icon  rounded-circle2 bg-primary mb-2">
                                                                                                 <i class="bx bx-flag text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Country</h6>
@@ -531,10 +477,10 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="<?php echo ($role==1)?base_url().'admin/state':'#'?>">
-                                                                                    <div class="card-body">
+                                                                                <a href="<?php echo (!empty($actionStateRequred))?base_url().'admin/state':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                            <div class="mini-stat-icon  rounded-circle3 bg-primary mb-2">
                                                                                                 <i class="bx bx-grid-vertical text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>State</h6>
@@ -545,10 +491,10 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="<?php echo ($role==1)?base_url().'admin/district':'#'?>">
-                                                                                    <div class="card-body">
+                                                                                <a href="<?php echo (!empty($actionDistrictRequred))?base_url().'admin/district':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                            <div class="mini-stat-icon  rounded-circle4 bg-primary mb-2">
                                                                                                 <i class="bx bx-grid-horizontal text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>District</h6>
@@ -559,10 +505,10 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="<?php echo ($role==1)?base_url().'admin/city':'#'?>">
-                                                                                    <div class="card-body">
+                                                                                <a href="<?php echo (!empty($actionCityRequred))?base_url().'admin/city':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                            <div class="mini-stat-icon  rounded-circle5 bg-primary mb-2">
                                                                                                 <i class="bx bx-dialpad  text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Tehsil</h6>
@@ -573,10 +519,10 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="<?php echo ($role==1)?base_url().'admin/company':'#'?>">
-                                                                                    <div class="card-body">
+                                                                                <a href="<?php echo (!empty($actionCompanyRequred))?base_url().'admin/company':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                            <div class="mini-stat-icon  rounded-circle6 bg-primary mb-2">
                                                                                                 <i class="bx bxs-bank text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Company</h6>
@@ -609,10 +555,10 @@
                                                                     <div class="row">
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                               <a href="#">
-                                                                                    <div class="card-body">
+                                                                               <a href="<?php echo (!empty($actionHarvestRequred))?base_url().'admin/harvesting_management':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon rounded-circle bg-primary mb-2">
+                                                                                            <div class="mini-stat-icon rounded-circle1 bg-primary mb-2">
                                                                                                 <i class="bx bxs-user-rectangle text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Harvesting Management</h6>
@@ -623,10 +569,10 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="#">
-                                                                                    <div class="card-body">
+                                                                                <a href="<?php echo (!empty($actionDeliveryRequred))?base_url().'admin/delivery_management':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                            <div class="mini-stat-icon  rounded-circle3 bg-primary mb-2">
                                                                                                 <i class="bx bx-flag text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Delivery Management</h6>
@@ -637,10 +583,11 @@
                                                                         </div>
                                                                         <div class="col-md-4">
                                                                             <div class="card mini-stats-wid">
-                                                                                <a href="<?php echo ($role==1)?base_url().'admin/state':'#'?>">
-                                                                                    <div class="card-body">
+                                                                                
+                                                                                <a href="<?php echo (!empty($actionPremCustRequred))?base_url().'admin/farmers?is_premium=1':'javascript:void();'?>">
+                                                                                    <div class="my-card-body">
                                                                                         <div class="text-center">
-                                                                                            <div class="mini-stat-icon  rounded-circle bg-primary mb-2">
+                                                                                            <div class="mini-stat-icon  rounded-circle2 bg-primary mb-2">
                                                                                                 <i class="bx bx-grid-vertical text-white display-2"></i>
                                                                                             </div>
                                                                                             <h6>Premium Customer</h6>

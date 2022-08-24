@@ -20,6 +20,17 @@ class Document_category extends BaseController
        $this->load->model('admin/document_model');
        $this->load->model('admin/product_model');
         $this->load->model('admin/crop_model');
+
+
+         $this->global['module_id']      = get_module_byurl('admin/document_category');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(empty($action_requred))
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
     }
 
     /**
@@ -27,6 +38,16 @@ class Document_category extends BaseController
      */
     public function index()
     {
+
+         $this->global['module_id']      = get_module_byurl('admin/document_category');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(@$action_requred->view !=='view')
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
         $this->isLoggedIn();
         $this->global['pageTitle'] = 'Document Category';
         $this->loadViews("admin/doc-category/list", $this->global, NULL , NULL);
@@ -37,6 +58,15 @@ class Document_category extends BaseController
     public function addnew()
     {
         $this->isLoggedIn();
+
+         $this->global['module_id']      = get_module_byurl('admin/document_category');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(@$action_requred->create !=='create')
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
 
         $where = array(); 
         $where['status'] = '1'; 

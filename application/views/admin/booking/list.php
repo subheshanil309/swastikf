@@ -1,3 +1,7 @@
+ <?php
+        $role_id = $this->session->userdata('role_id');
+        $action_requred = get_module_role($module_id['id'],$role_id);
+ ?> 
 <style type="text/css">
    .table>:not(caption)>*>* {
    border: 1px solid #3a863e;
@@ -34,7 +38,10 @@
                      <div class="col-sm-12">
                         <div class="d-flex flex-wrap gap-2 table-responsive">
                            <div class="btn-group" role="group" aria-label="Basic example">
-                              <a  class="btn my-primary px-4" href="<?php echo base_url()?>admin/bookings/create">Add Booking</a>
+                               <?php 
+                              $add_btn = (@$action_requred->create=='create')?'<a class="btn my-primary px-4 " href="'.base_url().'admin/bookings/create"><i class="fa fa-plus"></i> Add Booking</a>':"";
+                              echo $add_btn;
+                            ?>
                               <a  class="btn my-primary px-4" href="<?php echo base_url()?>admin/bookings/export?<?php echo $_SERVER['QUERY_STRING'];?>">Export Booking</a>
                               <a  class="btn my-primary px-4" href="<?php echo base_url()?>admin/bookings/advance" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg"><i class="fa fa-filter" aria-hidden="true"></i>Advance Search</a> 
                            </div>
@@ -359,22 +366,30 @@
                                              Action<i class="mdi mdi-chevron-down"></i>
                                              </span>
                                              <div class="dropdown-menu" style="">
-                                                <a class="dropdown-item btn changestatusbtn" data-bs-toggle="modal" data-bs-target="#exampleModal"  data-userid="<?php echo $bookings['id']; ?>"  data-farmer_id="<?php echo $bookings['farmer_id']; ?>" data-status_title="<?php echo $bookings['booked_status'];?>"  ><i class="fa fa-wrench" aria-hidden="true"></i> Change Status</a>
-                                                <a class="dropdown-item btn historybooking" data-bs-toggle="modal" data-bs-target="#exampleModalFullscreen" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-history" aria-hidden="true"></i> View History</a>
-                                                <a class="dropdown-item btn" target="_BLANK" href="<?php echo base_url()?>admin/bookings/receipt/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Generate Receipt</a>
-                                                <a class="dropdown-item btn"  target="_BLANK" href="<?php echo base_url()?>admin/bookings/view/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-eye" aria-hidden="true"></i> View Order Details</a>
-                                                <a class="dropdown-item btn"  target="_BLANK" href="<?php echo base_url()?>admin/bookings/agreement/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-file-excel" aria-hidden="true"></i> Generate Agreement</a>
-                                                <a class="dropdown-item btn text-danger" href="<?php echo base_url()?>admin/bookings/<?php echo $bookings['id']; ?>/return" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-undo" aria-hidden="true"></i> Return Booking</a>
-                                                <a class="dropdown-item btn" href="<?php echo base_url()?>admin/bookings/<?php echo $bookings['id']; ?>/edit" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Order</a>
                                                 <?php
-                                                   $userid = $this->session->userdata('role');
-                                                   if($userid==1)
-                                                   {
-                                                     ?>
-                                                <a class="dropdown-item text-danger deletebtn" href="#" data-userid="<?php echo $bookings['id']; ?>">Delete</a>
-                                                <?php    
+                                                   if(@$action_requred->edit =='edit'){
+                                                      ?>
+                                                         <a class="dropdown-item btn changestatusbtn" data-bs-toggle="modal" data-bs-target="#exampleModal"  data-userid="<?php echo $bookings['id']; ?>"  data-farmer_id="<?php echo $bookings['farmer_id']; ?>" data-status_title="<?php echo $bookings['booked_status'];?>"  ><i class="fa fa-wrench" aria-hidden="true"></i> Change Status</a>
+                                                          <a class="dropdown-item btn" href="<?php echo base_url()?>admin/bookings/<?php echo $bookings['id']; ?>/edit" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit Order</a>
+                                                      <?php
+                                                   } 
+                                                    if(@$action_requred->view =='view'){
+                                                      ?>
+                                                          <a class="dropdown-item btn historybooking" data-bs-toggle="modal" data-bs-target="#exampleModalFullscreen" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-history" aria-hidden="true"></i> View History</a>
+
+                                                         <a class="dropdown-item btn" target="_BLANK" href="<?php echo base_url()?>admin/bookings/receipt/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-eye" aria-hidden="true"></i> Generate Receipt</a>
+                                                         <a class="dropdown-item btn"  target="_BLANK" href="<?php echo base_url()?>admin/bookings/view/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-eye" aria-hidden="true"></i> View Order Details</a>
+                                                         <a class="dropdown-item btn"  target="_BLANK" href="<?php echo base_url()?>admin/bookings/agreement/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-file-excel" aria-hidden="true"></i> Generate Agreement</a>
+                                                      <?php
                                                    }
-                                                   ?>
+                                                   if(@$action_requred->edit =='edit'){
+                                                      ?>
+                                                         <a class="dropdown-item text-danger deletebtn" href="#" data-userid="<?php echo $bookings['id']; ?>">Delete</a>
+                                                      <?php
+                                                   } 
+                                                ?>
+                                                
+                                                
                                              </div>
                                           </div>
                                        </td>
@@ -386,11 +401,11 @@
                                        <td><span class="badge bg-<?php echo $bookings['booked_badges'];?> "><?php echo $bookings['booked_status'];?></span></td>
                                        <td><?php echo $bookings['cropstatusname'];?></td>
                                        <td><?php echo $bookings['farmer_id'];?></td>
-                                       <td><?php echo $bookings['customer_name'];?></td>
+                                       <td><?php echo $bookings['customername'];?></td>
                                        <td><?php echo $bookings['executive'];?></td>
                                        <td><?php echo $bookings['productname'];?></td>
-                                       <td><?php echo $bookings['customer_mobile'];?></td>
-                                       <td><?php echo $bookings['customer_alter_mobile'];?></td>
+                                       <td><?php echo $bookings['customermobile'];?></td>
+                                       <td><?php echo $bookings['customeraltmobile'];?></td>
                                        <td><?php echo $bookings['billing_address'];?></td>
                                        <td><?php echo (isset($bookings['other_state']) && !empty($bookings['other_state']))?($bookings['other_state']):($bookings['state']);?></td>
                                        <td><?php echo (isset($bookings['other_district']) && !empty($bookings['other_district']))?($bookings['other_district']):($bookings['district']);?></td>

@@ -87,7 +87,7 @@
          <div class="card">
             <h5 class="card-header bg-success text-white border-bottom p-1">Add New Booking</h5>
             <div class="card card-body">
-               <form autocomplete="off" action="<?php echo base_url() ?>admin/bookings/insertnow" method="post" role="form" enctype="multipart/form-data" id="booking_form" class="custom-validation">
+               <form autocomplete="off" action="<?php echo base_url() ?>admin/bookings/insertnow" method="post" role="form" enctype="multipart/form-data" id="booking_form" class="custom-validation" novalidate>
                   <div class="row">
                      <div class="col-sm-3">
                         <input type="hidden" name="farmer_id" id="farmer_id" value="">
@@ -148,9 +148,9 @@
                      </div>
                      <div class="col-sm-3">
                         <div class="row">
-                           <label for="state" class="col-sm-4 col-form-label"> State</label>
+                           <label for="state" class="col-sm-4 col-form-label"> State<span class="text-danger">*</span></label>
                            <div class="col-sm-8">
-                              <select class=" form-control select2 " id="state" name="state" aria-label="Floating label select example" onchange="stateChange()">
+                              <select class=" form-control select2 " id="state" name="state" aria-label="Floating label select example" onchange="stateChange()" required>
                                  <option value="" selected>Choose State</option>
                                  <?php
                                     if(!empty($states))
@@ -167,9 +167,9 @@
                            </div>
                         </div>
                         <div class="row">
-                           <label for="city" class="col-sm-4 col-form-label">District</label>
+                           <label for="city" class="col-sm-4 col-form-label">District<span class="text-danger">*</span></label>
                            <div class="col-sm-8">
-                              <select class=" form-control select2 " id="district" name="district" aria-label="Floating label select example" onchange="districtChange()">
+                              <select class=" form-control select2 " id="district" name="district" aria-label="Floating label select example" onchange="districtChange()"  required>
                                  <option value="" selected>Choose District</option>
                                  <?php
                                     /* if(!empty($districts))
@@ -186,9 +186,9 @@
                            </div>
                         </div>
                         <div class="row">
-                           <label for="city" class="col-sm-4 col-form-label">Tehsil</label>
+                           <label for="city" class="col-sm-4 col-form-label">Tehsil<span class="text-danger">*</span></label>
                            <div class="col-sm-8">
-                              <select class=" form-control  select2 " id="city" name="city" aria-label="Floating label select example"  onchange="cityChange()">
+                              <select class=" form-control  select2 " id="city" name="city" aria-label="Floating label select example"  onchange="cityChange()"  required>
                                  <option value="" selected>Choose Tehsil</option>
                                  <?php
                                     /* if(!empty($cities))
@@ -205,15 +205,15 @@
                            </div>
                         </div>
                         <div class="row">
-                           <label for="village" class="col-sm-4 col-form-label">Village</label>
+                           <label for="village" class="col-sm-4 col-form-label">Village<span class="text-danger">*</span></label>
                            <div class="col-sm-8">
-                              <input type="text" class="form-control form-control-sm" id="village" name="village" placeholder="Village"   value="">
+                              <input type="text" class="form-control form-control-sm" id="village" name="village" placeholder="Village"   value=""  required style="text-transform: capitalize;">
                            </div>
                         </div>
                         <div class="row">
-                           <label for="pincode" class="col-sm-4 col-form-label">Pincode</label>
+                           <label for="pincode" class="col-sm-4 col-form-label">Pincode<span class="text-danger">*</span></label>
                            <div class="col-sm-8">
-                              <input type="text" class="form-control form-control-sm" id="pincode" name="pincode" placeholder="Pincode"   value="" onkeypress="return onlyNumberKey(event)">
+                              <input type="text" maxlength="6" class="form-control form-control-sm" id="pincode" name="pincode" placeholder="Pincode"   value="" onkeypress="return onlyNumberKey(event)"  required>
                            </div>
                         </div>
                         <div class="row">
@@ -243,9 +243,9 @@
                      </div>
                      <div class="col-sm-3">
                         <div class="row">
-                           <label for="delivery_date" class="col-sm-4 col-form-label">Delivery Date</label>
+                           <label for="delivery_date" class="col-sm-4 col-form-label">Delivery Date<span class="text-danger">*</span></label>
                            <div class="col-sm-8"> 
-                              <input type="date" class="form-control form-control-sm" id="delivery_date" name="delivery_date"  value="" />
+                              <input type="date" class="form-control form-control-sm" id="delivery_date" name="delivery_date"  value=""  required />
                            </div>
                         </div>
                         <div class="row">
@@ -329,7 +329,7 @@
                         <div class="card">
                            <h5 class="card-header bg-success text-white border-bottom p-1">Billing address </h5>
                            <div class="card-body p-1">
-                              <textarea name="billing_address" class="form-control form-control-sm" id="billing_address" cols="50"></textarea>
+                              <textarea name="billing_address" class="form-control form-control-sm" id="billing_address" cols="50" style="text-transform: capitalize;"></textarea>
                            </div>
                         </div>
                      </div>
@@ -339,7 +339,7 @@
                               <input type="checkbox" name="same_billing" id="same_billing" value="yes"> <small>Same as billing</small>
                            </h5>
                            <div class="card-body p-1">
-                              <textarea name="delivery_address" class="form-control form-control-sm" id="delivery_address" cols="50"></textarea>
+                              <textarea name="delivery_address" class="form-control form-control-sm" id="delivery_address" cols="50" style="text-transform: capitalize;"></textarea>
                            </div>
                         </div>
                      </div>
@@ -543,6 +543,7 @@
 <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/admin/libs/daterange/daterangepicker.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/parsleyjs/parsley.min.js"></script>
 <script type="text/javascript">
    var deliveryStart = moment();
            var deliveryEnd = moment();
@@ -709,7 +710,9 @@
       
       
            //$('#example').DataTable();
-       
+         
+            $(".custom-validation").parsley();
+          
             jQuery(document).on("click", ".side_modal", function(){
                 var userId = $(this).data("userid");
                 $("#exampleModalScrollable").modal('show');
@@ -958,6 +961,7 @@
                   stateChange(stateCode,districtCode);
                   districtChange(districtCode,cityCode);
                   renderCart(centerState);
+
                      
                 }else
                 {

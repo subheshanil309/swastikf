@@ -10,6 +10,11 @@
    max-height: 455px;
    }
 </style>
+
+<?php
+        $role_id = $this->session->userdata('role_id');
+        $action_requred = get_module_role($module_id['id'],$role_id);
+?>
 <div class="page-content">
   <?php include APPPATH.'views/admin/menu-strive.php';?>
    <div class="container-fluid">
@@ -55,8 +60,11 @@
                               Farmers List
                            </div>
                            <div class="col-sm-3 ">
-                              <a class="btn btn-primary  float-end btn-sm" href="<?php echo base_url(); ?>admin/farmers/addnew"><i class="fa fa-plus"></i> Add New</a>
-                           </div>
+                            <?php 
+                              $add_btn = (@$action_requred->create=='create')?'<a class="btn btn-primary  float-end btn-sm" href="'.base_url().'admin/farmers/addnew"><i class="fa fa-plus"></i> Add New</a>':"";
+                              echo $add_btn;
+                            ?>
+                            </div>
                         </div>
                      </h5>
                      <form>
@@ -82,9 +90,14 @@
                            <table class="table table-striped align-middle table-nowrap mb-0" cellspacing="0" width="100%" id="example">
                               <thead>
                                  <tr class=" bg-success">
-                                    <th  style="width: 60px;">
-                                       <input class="form-control-sm" type="text" name="farmer_id" id="farmer_id" placeholder="Farmer ID" >
+                                  <th  >
+                                       <input class="form-control-sm" type="text" name="farmer_id" id="farmer_id" placeholder="Farmer ID"  style="width: 78px;">
                                     </th>
+                                   <th style="width: 60px;">Is Premium</th>
+                                    <th style="width: 100px;">Status</th>
+                                    
+                                    <th class="text-center"  style="width: 60px;">Actions</th>
+                                    
                                     <th> <input class="form-control-sm" type="text" name="name" id="name" placeholder="Name" ></th>
                                     <th><input class="form-control-sm" type="text" name="mobile" id="mobile" placeholder="Mobile" ></th>
                                     <th><input class="form-control-sm" type="text" name="father_name" id="father_name" placeholder="Father Name" ></th>
@@ -113,22 +126,64 @@
                                     <th>Pincode</th>
                                     <th>Source</th>
                                     <th>Date</th>
-                                    <th style="width: 60px;">Status</th>
-                                    <th class="text-center"  style="width: 60px;">Actions</th>
+                                     
                                  </tr>
                               </thead>
                               <tbody>
                                  <?php
+                                     
+                                      
+                                   
+
+                                   /*echo (@$action_requred->edit=='edit') ? ('edit') : ('not edit');die;*/
                                     if(!empty($farmers))
                                     {
                                       
                                       foreach ($farmers as $key => $value) {
-                                        $edit_btn = '<a class="" href="'.base_url().'admin/farmers/edit/'.$value['id'].'" title="Edit" >'.$value['name'].'</a>&nbsp;';
-                                    
+                                         $edit_btn_name = (@$action_requred->edit=='edit')?('<a class="" href="'.base_url().'admin/farmers/edit/'.$value['id'].'" title="Edit" >'.$value['name'].'</a>&nbsp;'):($value['name']);
+
+                                          $edit_btn_farmerid = (@$action_requred->edit=='edit')?('<a class="" href="'.base_url().'admin/farmers/edit/'.$value['id'].'" title="Edit" >'.$value['id'].'</a>&nbsp;'):($value['id']);
+                                        
+                                        $isdisabled_prem = (@$action_requred->edit=='edit')?(''):('disabled');  
                                         ?>
                                  <tr>
-                                    <td><?php echo $value['id'];?></td'];>
-                                    <td><?php echo $edit_btn;?></td>
+                                  <td><?php echo $edit_btn_farmerid;?></td'>
+                                  <td>
+
+                                       <div class="form-check form-check-primary mb-3">
+
+                                          <input class="form-check-input is_premium" <?php echo $isdisabled_prem; ?> data-userid="<?php echo $value['id'];?>" type="checkbox"   <?php if($value['is_premium'] ==1){ ?> checked="true" <?php } ?> value="1"  >
+                                           
+                                       </div>
+                                    </td>
+                                    <td>
+                                      <?php 
+                                          $actives = ($value['status'] == 1)?" selected ":"";
+                                          $inactives = ($value['status'] == 0)?" selected ":"";
+                                          $btn = '<select class="form-control form-control-sm statusBtn" name="statusBtn" style="width: 65px;" data-id="'.$value['id'].'">';
+                                          $btn .= '<option value="1" '.$actives.' >Active</option>';
+                                          $btn .= '<option value="0" '.$inactives.' >Inactive</option>';
+                                          $btn .= '</select>';
+
+                                           $btn = (@$action_requred->edit=='edit')?($btn):('');
+                                          echo $btn;
+                                      ?>
+
+                                      <?php 
+                                      
+                                      /*echo (isset($value['status']) && $value['status']==1)?('<span class="badge bg-success">Active</span>'):'<span class="badge bg-danger">In-active</span>';*/
+
+                                      ?></td>
+                                    <td> <?php
+
+
+                                    $delete_btn = (@$action_requred->delete=='delete')?'<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$value['id'].'"><i class="fa fa-trash"></i></a>':"";
+                                    $edit_btn = (@$action_requred->edit=='edit')?'<a class="btn btn-sm btn-info" href="'.base_url().'admin/farmers/edit/'.$value['id'].'" title="Edit" ><i class="fa fa-pen"></i></a>&nbsp;':"";
+
+                                    echo $edit_btn." ".$delete_btn;
+                                       ?></td>
+                                    
+                                    <td><?php echo $edit_btn_name;?></td>
                                     <td><?php echo $value['mobile'];?></td>
                                     <td><?php echo $value['father_name'];?></td>
                                     <td><?php echo $value['alt_mobile'];?></td>
@@ -142,26 +197,7 @@
                                     <td><?php echo $value['pincode'];?></td>
                                     <td><?php echo $value['source'];?></td>
                                     <td><?php echo date('d M Y',strtotime($value['date_at']));?></td>
-                                    <td><?php echo (isset($value['status']) && $value['status']==1)?('<span class="badge bg-success">Active</span>'):'<span class="badge bg-danger">In-active</span>';?></td>
-                                    <td> <?php
-
-
-
-
-                                                   $userid = $this->session->userdata('role');
-                                                   if($userid==1)
-                                                   {
-                                                     $delete_btn =  '<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$value['id'].'"><i class="fa fa-trash"></i></a>';  
-                                                   }else
-                                                   {
-                                                    $delete_btn = '';
-                                                   }
-                                                    
-                                       $edit_btn = '<a class="btn btn-sm btn-info" href="'.base_url().'admin/farmers/edit/'.$value['id'].'" title="Edit" ><i class="fa fa-pen"></i></a>&nbsp;';
-                                       
-                                       
-                                       echo $edit_btn." ".$delete_btn;
-                                       ?></td>
+                                    
                                  </tr>
                                  <?php
                                     }
@@ -202,6 +238,26 @@
 </div>
 </div>
 <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/toastr/build/toastr.min.js"></script>
+<script type="text/javascript">
+   toastr.options = {
+     "closeButton": true,
+     "debug": false,
+     "newestOnTop": false,
+     "progressBar": false,
+     "positionClass": "toast-top-right",
+     "preventDuplicates": false,
+     "onclick": null,
+     "showDuration": "300",
+     "hideDuration": "10000",
+     "timeOut": "5000",
+     "extendedTimeOut": "1000",
+     "showEasing": "swing",
+     "hideEasing": "linear",
+     "showMethod": "fadeIn",
+     "hideMethod": "fadeOut"
+   }
+</script>
 <!-- Delete Script-->
 <script type="text/javascript">
    jQuery(document).ready(function(){
@@ -221,7 +277,14 @@
            type : "POST",
            dataType : "json",
            url : hitURL,
-           data : { id : userId } 
+           data : { id : userId },
+
+            beforeSend: function(){
+               show_loader();
+            },
+            complete: function(){
+               hide_loader();
+            } 
            }).done(function(data){           
              currentRow.parents('tr').remove();
              if(data.status = true) { alert("successfully deleted"); 
@@ -236,35 +299,56 @@
    
 </script>
 <!-- Get Databse List -->
-<script type="text/javascript">
-   var table;
-    
-   $(document).ready(function() {
-    
-       //datatables
-    /*   table = $('#example').DataTable({ 
-            "pageLength": 25,
-           "processing": true, //Feature control the processing indicator.
-           "serverSide": true, //Feature control DataTables' server-side processing mode.
-           "order": [], //Initial no order.
-    
-           // Load data for the table's content from an Ajax source
-           "ajax": {
-               "url": "<?php echo site_url('admin/farmers/ajax_list')?>",
-               "type": "POST"
-           },
-    
-           //Set column definition initialisation properties.
-           "columnDefs": [
-           { 
-               "targets": [ 0 ], //first column / numbering column
-               "orderable": false, //set not orderable
-           },
-           ],
-    
-       });*/
-    
-   });
+ <script type="text/javascript">
+    jQuery(document).ready(function(){
+        //$('#example').DataTable();
+
+         jQuery(document).on("click", ".is_premium", function(){
+
+          var userId = $(this).data("userid");
+          
+          var value  = ($(this).is(':checked'))?(1):0;
+          var hitURL = "<?php echo base_url() ?>admin/farmers/isPremium";
+              
+            jQuery.ajax({
+            type : "POST",
+            dataType : "json",
+            url : hitURL,
+            data : { id : userId,is_premium : value },
+             beforeSend: function(){
+               show_loader();
+            },
+            complete: function(){
+               hide_loader();
+            },
+
+             success: function (data) {
+               
+               if(data.status == true) { 
+                 
+                 toastr.success("Premium set successfully.");
+              }
+              else if(data.status == false) 
+                {
+                toastr.error("Failed To Update Premium.");
+                 
+            }
+              else {
+               
+               toastr.error("Access denied..!");
+             }
+                
+             },
+            error: function (request, status, error) {
+               
+            }
+
+
+            });
+           
+    });
+    });
+   
 </script>
 <!-- Status Change -->
 <script type="text/javascript">
@@ -284,14 +368,30 @@
            type : "POST",
            dataType : "json",
            url : hitURL,
-           data : { id : userId, status : value } 
-           }).done(function(data){           
-             //currentRow.parents('tr').remove();
-             if(data.status = true) { alert("successfully status changed"); }
-             else if(data.status = false) { alert("status failed failed"); }
-             else { alert("Access denied..!"); }
+           data : { id : userId, status : value },
+            beforeSend: function(){
+               show_loader();
+            },
+            complete: function(){
+               hide_loader();
+            },
+           success: function(data){
+              if(data.status == true) { 
+                 
+                 toastr.success("Status Change successfully.");
+              }
+              else if(data.status == false) 
+                {
+                toastr.error("Failed To Change Status Change.");
+                 
+            }
+              else {
+               
+               toastr.error("Access denied..!");
+             }
+           }
+
            });
-         
    });
    });
    

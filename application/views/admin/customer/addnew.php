@@ -1,3 +1,7 @@
+ <?php
+        $role_id = $this->session->userdata('role_id');
+        $action_requred = get_module_role($module_id['id'],$role_id);
+ ?> 
 
 <style type="text/css">
   .mytablestyle {
@@ -348,10 +352,10 @@ print_r($customer_call_dtl);  */
                <form action='' method="get">
                   <h5 class="card-header bg-success text-white border-bottom ">
                    <div class="row ">
-                     <div class="col-sm-7">
+                     <div class="col-sm-4">
                       Inquiry Stat
                      </div>
-                     <div class="col-sm-3">
+                     <div class="col-sm-6">
                           <div class="input-group input-group-sm">
                                <select class="form-control form-control-sm " id="uid" name="uid" aria-label="Floating label select example">
                            
@@ -362,7 +366,7 @@ print_r($customer_call_dtl);  */
                                   $userid = $_GET['uid'];
                                 }else
                                 {
-                                  $userid = $this->session->userdata('userId');;
+                                  $userid = $this->session->userdata('userId');
                                 }
 
                              if(!empty($all_users))
@@ -379,8 +383,12 @@ print_r($customer_call_dtl);  */
                              ?>
                            <option value="all" <?php if( isset($userid) && $userid=='all'){echo "selected";}?> >All Users</option>   
                        </select>
+                        <input type="date" class="form-control form-control-sm "  name="last_follow_date" id="last_follow_date" value="<?php echo ((isset($_GET['last_follow_date']))?($_GET['last_follow_date']):(date('Y-m-d')))?>">
                           <div class="input-group-append">
-                              <button type="submit" class="btn btn-info btn-sm">Filter</button>                                    
+                              <button type="submit" class="btn btn-info btn-sm ">Filter</button>                                    
+                          </div>
+                          <div class="input-group-append">
+                              <a href="<?php echo base_url()?>admin/customer/addnew" class="btn btn-info btn-sm ">Reset</a>                                    
                           </div>
                       </div>
                      </div>
@@ -402,7 +410,7 @@ print_r($customer_call_dtl);  */
                               {
                                  
 
-                                $uuid = "&uid=".((isset($_GET['uid']))?($_GET['uid']):$this->session->userdata('userId'));
+                                $uuid = "&uid=".((isset($_GET['uid']))?($_GET['uid']):$this->session->userdata('userId'))."&last_follow_date=".((isset($_GET['last_follow_date']))?($_GET['last_follow_date']):(date('Y-m-d')));
                                  foreach ($count_call_summary as $key => $value) 
                                 {
                                      ?>
@@ -923,26 +931,30 @@ print_r($customer_call_dtl);  */
                                             Action<i class="mdi mdi-chevron-down"></i>
                                             </span>
                                             <div class="dropdown-menu" style="">
-                                            <a class="dropdown-item btn side_modal" data-userid="<?php echo $customer['id']; ?>">View</a>
-                                            <a hidden class="dropdown-item btn editbtn" href="#" data-userid="<?php echo $customer['id']; ?>">Edit</a>
-                                            <?php
 
-                                              $userid = $this->session->userdata('role');
-                                              if($userid==1)
+                                            <?php
+                                              if(@$action_requred->view=='view')
                                               {
-                                                ?>
-                                                  
-                                                  <a class="dropdown-item text-danger deletebtn" href="#" data-userid="<?php echo $customer['id']; ?>">Delete</a>
-                                                  
-                                                <?php    
+                                              ?>
+                                                <a class="dropdown-item btn side_modal" data-userid="<?php echo $customer['id']; ?>">View</a>
+                                              <?php  
                                               }
+                                              if(@$action_requred->delete=='delete')
+                                              {
+                                              ?>
+                                               <a class="dropdown-item text-danger deletebtn" href="#" data-userid="<?php echo $customer['id']; ?>">Delete</a>
+                                              <?php  
+                                              }
+                                             
+  $view_btn =(@$action_requred->view=='view')?'<a class="side_modal"  data-userid="'.$customer['id'].'" href="javascript:void(0)">'.$customer['farmername'].'</a>':$customer['farmername'];
+                                               
                                             ?>
                                             
                                           </div>
                                           </div></td>
                                         <td><?php echo date('d M Y',strtotime($customer['last_follow_date']));?></td>
                                         <td><?php echo $customer['farmer_id'];?></td>
-                                        <td><a class="side_modal"  data-userid="<?php echo $customer['id']; ?>" href="javascript:void(0)"><?php echo $customer['farmername'];?></a></td>
+                                        <td><?php echo $view_btn;?><?php if($customer['premium']==1){ ?> <span class="badge bg-danger" title="Premium Customer" style="line-height: 1;">Premium</span><?php } ?></td>
                                         <td><?php echo $customer['farmermobile'];?></td>
                                         <td><?php echo $customer['farmeraltmobile'];?></td>
                                         <td><?php echo  ($customer['state']);?></td>

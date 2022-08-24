@@ -43,6 +43,19 @@ class Sales extends BaseController
 
 
         $this->isLoggedIn();
+
+
+        $this->global['module_id']      = get_module_byurl('admin/sales');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(empty($action_requred))
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
+
+
           $data = array();
 
             $uid         = $this->input->get('uid');
@@ -367,8 +380,7 @@ echo "</pre>";  */
 
 
 
-        $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type'); 
- 
+  
         
 
        /* echo "<pre>";
@@ -385,7 +397,18 @@ echo "</pre>";  */
     {
     
             $this->isLoggedIn();
-            
+                
+
+     $this->global['module_id']      = get_module_byurl('admin/sales');
+    $role_id                        = $this->session->userdata('role_id');
+    $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+    if(@$action_requred->create !=='create')
+    {
+        $this->session->set_flashdata('error', 'Un-autherise Access');
+        redirect(base_url());
+    }
+
+
             $data = array();
             $userid = $this->session->userdata('userId');
             $company_id = $this->session->userdata('company_id');
@@ -747,6 +770,14 @@ echo "</pre>";  */
 
         $this->isLoggedIn();
 
+        $this->global['module_id']      = get_module_byurl('admin/sales');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(@$action_requred->edit !=='edit')
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
 
         $data = array();
         $userid = $this->session->userdata('userId');

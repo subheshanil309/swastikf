@@ -31,6 +31,14 @@ class Company extends BaseController
     public function index()
     {
         $this->isLoggedIn();
+        $this->global['module_id']      = get_module_byurl('admin/company');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(empty($action_requred))
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
 
         $data = array();
         $this->global['pageTitle'] = 'Company';
@@ -42,11 +50,17 @@ class Company extends BaseController
     public function addnew()
     {
         $role = $this->session->userdata('role');
-         
-        
-
-    
         $this->isLoggedIn();
+
+        $this->global['module_id']      = get_module_byurl('admin/company');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(@$action_requred->create !=='create')
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
         $data = array();
             
             $where  = array();
@@ -207,7 +221,11 @@ class Company extends BaseController
          
 
 		$list = $this->company_model->get_datatables();
-		
+		$this->global['module_id']      = get_module_byurl('admin/company');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+         
+
 		$data = array();
         $no =(isset($_POST['start']))?$_POST['start']:'';
         $role = $this->session->userdata('role');
@@ -226,16 +244,13 @@ class Company extends BaseController
             $temp_date = $currentObj->date_at;
             $dateAt = date("d-m-Y H:ia", strtotime($temp_date));
 
-            $edit_btn = '<a class="btn btn-sm btn-info" href="'.base_url().'admin/company/edit/'.$currentObj->id.'" title="Edit" ><i class="fa fa-pen"></i></a>&nbsp;';
-            $delete_btn =  '';
-            if($role==1)
-            {
-                $delete_btn =  '<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';
-            }
+            $edit_btn =(@$action_requred->edit=='edit')?'<a class="btn btn-sm btn-info" href="'.base_url().'admin/company/edit/'.$currentObj->id.'" title="Edit" ><i class="fa fa-pen"></i></a>&nbsp;':'';
+            $delete_btn =(@$action_requred->delete=='delete')?'<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>':'';
+            
 
             $social_urls = '';
             $social_url = json_decode($currentObj->social_url);
-            if(!empty($social_url))
+            if(!empty($social_url)) 
             {
                 foreach ($social_url as  $value) {
                     
@@ -328,6 +343,16 @@ class Company extends BaseController
         $this->isLoggedIn();
         $role = $this->session->userdata('role');
          
+        $this->global['module_id']      = get_module_byurl('admin/company');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(@$action_requred->edit !=='edit')
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
+
         
 
         if($id == null)

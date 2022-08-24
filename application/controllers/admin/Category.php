@@ -16,8 +16,18 @@ class Category extends BaseController
     public function __construct()
     {
         parent::__construct();
-       $this->load->model('admin/category_model');
-       $this->load->model('admin/product_model');
+        $this->load->model('admin/category_model');
+        $this->load->model('admin/product_model');
+
+        $this->global['module_id']      = get_module_byurl('admin/category');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(empty($action_requred))
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
     }
 
     /**
@@ -26,6 +36,15 @@ class Category extends BaseController
     public function index()
     {
         $this->isLoggedIn();
+      
+         $this->global['module_id']      = get_module_byurl('admin/category');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(@$action_requred->view !=='view')
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
         $this->global['pageTitle'] = 'Category';
         $this->loadViews("admin/category/list", $this->global, NULL , NULL);
         
@@ -36,6 +55,17 @@ class Category extends BaseController
     {
     
         $this->isLoggedIn();
+
+         $this->global['module_id']      = get_module_byurl('admin/category');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(@$action_requred->create !=='create')
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
+
         $this->global['pageTitle'] = 'Add New Category';
         $this->loadViews("admin/category/addnew", $this->global, NULL , NULL);
         
@@ -136,6 +166,9 @@ class Category extends BaseController
 		
 		$data = array();
         $no =(isset($_POST['start']))?$_POST['start']:'';
+        $this->global['module_id']      = get_module_byurl('admin/category');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
         $role = $this->session->userdata('role');
         foreach ($list as $currentObj) {
 
@@ -168,12 +201,12 @@ class Category extends BaseController
             $row[] = $btn;
             $row[] = $date_at;
              $delete_btn = ' ';
-        if($role==1)
-        {
-              
-              $delete_btn = '<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>';
-        } 
-            $row[] = '<a class="btn btn-sm btn-info" href="'.base_url().'admin/category/edit/'.$currentObj->id.'" title="Edit" ><i class="fa fa-pen"></i></a>'.$delete_btn;
+              $edit_btn =(@$action_requred->edit=='edit')?'<a class="btn btn-sm btn-info" href="'.base_url().'admin/category/edit/'.$currentObj->id.'" title="Edit" ><i class="fa fa-pen"></i></a>&nbsp;':'';
+            $delete_btn =(@$action_requred->delete=='delete')?'<a class="btn btn-sm btn-danger deletebtn" href="#" data-userid="'.$currentObj->id.'"><i class="fa fa-trash"></i></a>':'';
+
+
+         
+            $row[] = $edit_btn.$delete_btn;
             $data[] = $row;
         }
  
@@ -195,6 +228,16 @@ class Category extends BaseController
         
 
         $this->isLoggedIn();
+         $this->global['module_id']      = get_module_byurl('admin/category');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(@$action_requred->edit !=='edit')
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
+
         if($id == null)
         {
             redirect(base_url().'admin/category');

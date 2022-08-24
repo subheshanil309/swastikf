@@ -195,9 +195,11 @@ class Booking_log_model extends Base_model
           /*  $this->db->select('*'); 
             $this->db->from($this->table); */
 
-                $this->db->select('c.*, cit.city as city, sta.name as state, dist.name as district,    admin.title as createdby, bookstatus.title as booked_status, bookstatus.badges as booked_badges, executive.title as executive, product.title as productname, paymentmode.title as paymentmodename, contractstatus.title as contractstatusname,admin2.title as assignedto, cropstatus.title as cropstatusname');
+
+                $this->db->select('c.*,farmer.alt_mobile as customeraltmobile ,farmer.mobile as customermobile ,farmer.name as customername, cit.city as city, sta.name as state, dist.name as district,    admin.title as createdby, bookstatus.title as booked_status, bookstatus.badges as booked_badges, executive.title as executive, product.title as productname, paymentmode.title as paymentmodename, contractstatus.title as contractstatusname,admin2.title as assignedto, cropstatus.title as cropstatusname');
                 $this->db->from($this->table. ' as c'); 
                 $this->db->join('z_states as sta', 'sta.id = c.state', 'left');
+                $this->db->join('z_farmers as farmer', 'farmer.id = c.farmer_id', 'left');
                 $this->db->join('z_district as dist', 'dist.id = c.district', 'left');
                 $this->db->join('z_cities as cit', 'cit.id = c.city', 'left');
                 $this->db->join('z_crop_status as cropstatus', 'cropstatus.slug = c.crop_status', 'left'); 

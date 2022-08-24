@@ -1,708 +1,257 @@
--- date 06-06-2022
-ALTER TABLE `z_booking` ADD `status` INT NOT NULL DEFAULT '1';
-ALTER TABLE `z_booking` ADD `created_by` INT NOT NULL;
-ALTER TABLE `z_booking` ADD `date_at` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP;
-ALTER TABLE `z_booking` CHANGE `booking_date` `booking_date` DATE NULL DEFAULT CURRENT_TIMESTAMP;
-ALTER TABLE `z_booking` ADD `document` TEXT NOT NULL;
-ALTER TABLE `z_booking` ADD `assigned_to` INT NOT NULL DEFAULT '1';
-ALTER TABLE `z_booking` CHANGE `req_delivery_date` `req_delivery_date` DATE NULL DEFAULT CURRENT_TIMESTAMP, CHANGE `delivery_date` `delivery_date` DATE NULL DEFAULT CURRENT_TIMESTAMP;
-ALTER TABLE `z_booking` CHANGE `created_by` `created_by` INT(11) NOT NULL DEFAULT '1';
 
-ALTER TABLE `z_booking` ADD `stage` VARCHAR(10) NOT NULL DEFAULT 'Created';
-ALTER TABLE `z_booking_status` ADD `badges` VARCHAR(10) NOT NULL DEFAULT 'primary';
-ALTER TABLE `z_call_type` ADD `slug` VARCHAR(200) NOT NULL;
-
-
--- new updated
-ALTER TABLE `z_booking_status` CHANGE `badges` `badges` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'primary';
-
-ALTER TABLE `z_booking` ADD `delivery_expect_start_date` DATE NULL, ADD `delivery_expect_end_date` DATE NULL;
-
-
-
--- date 06-06-2022
-UPDATE `z_booking_status` SET `badges` = 'warning' WHERE `z_booking_status`.`id` = 5;
-
-
-CREATE TABLE `z_booking_log` (
-  `id` int(11) NOT NULL,
-  `booking_id` int(11) NOT NULL,
-  `stage` varchar(10) NOT NULL DEFAULT 'Created',
-  `customer_id` int(11) DEFAULT NULL,
-  `customer_name` varchar(200) DEFAULT NULL,
-  `customer_mobile` varchar(40) DEFAULT NULL,
-  `customer_alter_mobile` varchar(40) DEFAULT NULL,
-  `father_name` varchar(50) DEFAULT NULL,
-  `state` int(11) DEFAULT NULL,
-  `other_state` varchar(25) DEFAULT NULL,
-  `district` int(11) DEFAULT NULL,
-  `other_district` varchar(25) DEFAULT NULL,
-  `city` int(11) DEFAULT NULL,
-  `other_city` varchar(25) DEFAULT NULL,
-  `village` varchar(200) DEFAULT NULL,
-  `pincode` varchar(200) DEFAULT NULL,
-  `booking_date` date DEFAULT current_timestamp(),
-  `req_delivery_date` date DEFAULT current_timestamp(),
-  `delivery_date` date DEFAULT current_timestamp(),
-  `supply_address` varchar(200) DEFAULT NULL,
-  `vehicle_no` varchar(50) DEFAULT NULL,
-  `agent_id` int(11) DEFAULT NULL,
-  `crates` varchar(200) DEFAULT NULL,
-  `bank_trans_id` varchar(200) DEFAULT NULL,
-  `contract` varchar(20) DEFAULT NULL,
-  `productive_plants` varchar(200) DEFAULT NULL,
-  `driver_name` varchar(200) DEFAULT NULL,
-  `booking_status` varchar(50) DEFAULT NULL,
-  `crop_status` varchar(50) DEFAULT NULL,
-  `billing_address` text DEFAULT NULL,
-  `same_billing` varchar(10) DEFAULT NULL,
-  `delivery_address` text DEFAULT NULL,
-  `advance` float DEFAULT NULL,
-  `create_date` date DEFAULT NULL,
-  `balance` double DEFAULT NULL,
-  `payment_mode` varchar(20) DEFAULT NULL,
-  `cheque_no` varchar(200) DEFAULT NULL,
-  `bank_name` varchar(200) DEFAULT NULL,
-  `bank_branch` varchar(200) DEFAULT NULL,
-  `product_id` int(11) DEFAULT NULL,
-  `uom` varchar(20) DEFAULT NULL,
-  `price` float DEFAULT NULL,
-  `quantity` float DEFAULT NULL,
-  `cgst_rate` float DEFAULT NULL,
-  `sgst_rate` float DEFAULT NULL,
-  `igst_rate` float DEFAULT NULL,
-  `cgst_amount` float DEFAULT NULL,
-  `sgst_amount` float DEFAULT NULL,
-  `igst_amount` float DEFAULT NULL,
-  `discount` float DEFAULT NULL,
-  `total` float DEFAULT NULL,
-  `pending_bill` float DEFAULT NULL,
-  `product_set` text DEFAULT NULL,
-  `status` int(11) NOT NULL DEFAULT 1,
-  `created_by` int(11) NOT NULL DEFAULT 1,
-  `date_at` date NOT NULL DEFAULT current_timestamp(),
-  `document` text NOT NULL,
-  `assigned_to` int(11) NOT NULL DEFAULT 1,
-  `delivery_expect_start_date` date DEFAULT NULL,
-  `delivery_expect_end_date` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
- 
-ALTER TABLE `z_booking_log`
-  ADD PRIMARY KEY (`id`);
- 
-ALTER TABLE `z_booking_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
-
-ALTER TABLE `z_booking` ADD `update_at` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP;
-ALTER TABLE `z_booking_log` ADD `update_at` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP;
-
-ALTER TABLE `z_booking` ADD `company_id` INT NOT NULL DEFAULT '1';
-ALTER TABLE `z_booking_log` ADD `company_id` INT NOT NULL DEFAULT '1';
- 
- 
- --date 10-06-2022
- 
- 
- 
-DROP TABLE IF EXISTS `z_company`;
-CREATE TABLE IF NOT EXISTS `z_company` (
+---date 02-07-2022 --
+DROP TABLE IF EXISTS `z_admin_profile`;
+CREATE TABLE IF NOT EXISTS `z_admin_profile` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) NOT NULL,
-  `title` varchar(200) NOT NULL,
-  `slug` varchar(200) NOT NULL,
-  `nursury_address` varchar(300) NOT NULL DEFAULT 'Nagla Mohiuddin Pur Old GT Road Khurja Bulandshahr , Uttar Pradesh 203131 India',
-  `office_address` varchar(300) NOT NULL DEFAULT 'H.No. 80, Block-B, Ganga Nagar Colony, Distt. Bulandshahr-203001, U.P. India',
-  `state` int(11) NOT NULL,
-  `district` int(11) NOT NULL,
-  `city` int(11) NOT NULL,
-  `status` int(11) NOT NULL,
-  `date_at` date NOT NULL,
-  `update_at` date NOT NULL,
-  `phone` varchar(200) NOT NULL,
-  `email` varchar(200) NOT NULL,
-  `website` varchar(200) NOT NULL,
-  `gst_no` varchar(200) NOT NULL,
-  `pan_no` varchar(200) NOT NULL,
-  `bank_name` varchar(200) NOT NULL,
-  `bank_account_number` varchar(200) NOT NULL,
-  `bank_holder_name` varchar(200) NOT NULL,
-  `bank_ifsc_code` varchar(200) NOT NULL,
-  `bank_branch_address` varchar(200) NOT NULL,
-  `seal_logo` varchar(200) NOT NULL DEFAULT 'seal-logo.png',
-  `logo` varchar(200) NOT NULL DEFAULT 'logo.png',
-  `social_url` text NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `z_company`
---
-
-INSERT INTO `z_company` (`id`, `name`, `title`, `slug`, `nursury_address`, `office_address`, `state`, `district`, `city`, `status`, `date_at`, `update_at`, `phone`, `email`, `website`, `gst_no`, `pan_no`, `bank_name`, `bank_account_number`, `bank_holder_name`, `bank_ifsc_code`, `bank_branch_address`, `seal_logo`, `logo`, `social_url`) VALUES
-(1, 'swastik agro biotech & plantation', 'Swastik Agro Biotech & Plantation', 'swastik-agro-biotech-plantation', 'Nagla Mohiuddin Pur Old GT Road Khurja Bulandshahr , Uttar Pradesh 203131 India', 'H.No. 80, Block-B, Ganga Nagar Colony, Distt. Bulandshahr-203001, U.P. India', 1, 1, 1, 1, '2022-06-07', '2022-06-07', '+918868999198', 'swastikagrobiotech2016@gmail.com', 'https://swastikfarming.com', '09AALCM6341E1ZD', 'CVBPK2998B', 'Axis bank (Current Account)', '919020084408047', 'Swastik Agro Biotech & Plantaion', 'UTIB0001177', 'khurja Uttar Pradesh', 'seal-logo.png', 'logo.png', '[{\"title\":\"Facebook\",\"url\":\"https:\\/\\/www.facebook.com\"},{\"title\":\"Youtube\",\"url\":\"https:\\/\\/www.youtube.com\"}]');
-COMMIT;
-
-
-
-ALTER TABLE `z_booking` CHANGE `date_at` `date_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
-
-
-ALTER TABLE `z_booking` ADD `tax_rate` INT NOT NULL DEFAULT '0';
-
-
-
-
-
-
-
-
-
---dated on  14-06-2020
---
-
-ALTER TABLE `z_admin` CHANGE `admin_type` `admin_type` INT(11) NOT NULL COMMENT '1-Role Admin\r\n2-Role Agent\r\n3-Role User';
-
-
-DROP TABLE IF EXISTS `z_payment_type`;
-CREATE TABLE IF NOT EXISTS `z_payment_type` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
-  `title` varchar(100) NOT NULL,
-  `slug` varchar(200) NOT NULL,
-  `status` int(11) DEFAULT 1,
-  `date_at` date NOT NULL DEFAULT current_timestamp(),
-  `update_at` date NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO `z_payment_type` (`id`, `name`, `title`, `slug`, `status`, `date_at`, `update_at`) VALUES
-(1, 'payment', 'Payment', 'payment', 1, '2022-06-01', '2022-06-01'),
-(2, 'refund', 'Refund', 'refund', 1, '2022-06-01', '2022-06-01'),
-(3, 'cancellation charge', 'Cancellation Charge', 'cancellation-charge', 1, '2022-06-01', '2022-06-01'),
-(4, 'other', 'other', 'other', 1, '2022-06-01', '2022-06-01');
-COMMIT;
-
-
-
-DROP TABLE IF EXISTS `z_booking_payments`;
-CREATE TABLE IF NOT EXISTS `z_booking_payments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `booking_id` int(11) DEFAULT NULL,
-  `payment_type` varchar(100) DEFAULT 'payment',
-  `payment_mode` varchar(100) DEFAULT NULL,
-  `payment_date` datetime NOT NULL DEFAULT current_timestamp(),
-  `amount` int(11) NOT NULL,
-  `bank_transaction_id` varchar(200) NOT NULL,
-  `date_at` datetime NOT NULL,
-  `update_at` datetime NOT NULL,
-  `created_by` int(11) NOT NULL,
-  `status` int(11) NOT NULL,
-  `customer_id` int(11) NOT NULL,
-  `cheque_no` varchar(200) DEFAULT NULL,
-  `bank_name` varchar(200) DEFAULT NULL,
-  `bank_branch` varchar(200) DEFAULT NULL,
-  `company_id` int(11) DEFAULT 1,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
-
---date 15-06-2022--
-
-ALTER TABLE `z_booking` ADD `outstanding_amount` INT NULL DEFAULT '0' AFTER `balance`;
-ALTER TABLE `z_booking_log` ADD `outstanding_amount` INT NULL DEFAULT '0' AFTER `balance`;
-
-ALTER TABLE `z_booking` ADD `total_paid_amount` INT NOT NULL DEFAULT '0' AFTER `outstanding_amount`;
-ALTER TABLE `z_booking_log` ADD `total_paid_amount` INT NOT NULL DEFAULT '0' AFTER `outstanding_amount`;
-
-ALTER TABLE `z_booking_payments` CHANGE `payment_date` `payment_date` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP;
-ALTER TABLE `z_booking_payments` ADD `update_by` INT NULL AFTER `created_by`;
-
-
- ALTER TABLE `z_booking` ADD `refunded_amount` INT NOT NULL DEFAULT '0' AFTER `total_paid_amount`;
- ALTER TABLE `z_booking_log` ADD `refunded_amount` INT NOT NULL DEFAULT '0' AFTER `total_paid_amount`;
-
-
- ALTER TABLE `z_booking` ADD `cancellation_charge` INT NOT NULL , ADD `cancellation_reason` VARCHAR(400) NOT NULL , ADD `cancellation_date` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP  , ADD `cancel_by` INT NOT NULL;
- ALTER TABLE `z_booking_log` ADD `cancellation_charge` INT NOT NULL , ADD `cancellation_reason` VARCHAR(400) NOT NULL , ADD `cancellation_date` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP  , ADD `cancel_by` INT NOT NULL;
-
-
-
-
- ----16-06-2022
-
-
- ALTER TABLE `z_customer` ADD `last_call_back_date` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP;
- ALTER TABLE `z_customer` CHANGE `other_state` `other_state` VARCHAR(100) NULL DEFAULT NULL, CHANGE `other_city` `other_city` VARCHAR(100) NULL DEFAULT NULL, CHANGE `other_district` `other_district` VARCHAR(100) NULL DEFAULT NULL;
-
-----17-06-2022
-
-
-DROP TABLE IF EXISTS `z_farmers`;
-CREATE TABLE IF NOT EXISTS `z_farmers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) NOT NULL,
-  `mobile` varchar(20) NOT NULL,
-  `alt_mobile` varchar(20) NOT NULL,
-  `father_name` varchar(200) NOT NULL,
-  `whatsapp` varchar(20) NOT NULL,
-  `village` varchar(200) NOT NULL,
-  `address` varchar(200) NOT NULL,
-  `state_id` int(11) DEFAULT NULL,
-  `district_id` int(11) DEFAULT NULL,
-  `city_id` int(11) DEFAULT NULL,
-  `pincode` int(11) DEFAULT NULL,
-  `source` int(11) DEFAULT NULL,
-  `date_at` date DEFAULT current_timestamp(),
-  `update_at` date DEFAULT current_timestamp(),
-  `created_by` int(11) NOT NULL DEFAULT 1,
-  `update_by` int(11) NOT NULL DEFAULT 1,
-  `company_id` int(11) NOT NULL DEFAULT 1,
-  `status` int(11) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
-DROP TABLE IF EXISTS `z_lead_source`;
-CREATE TABLE IF NOT EXISTS `z_lead_source` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
-  `title` varchar(100) NOT NULL,
-  `slug` varchar(200) NOT NULL,
-  `status` int(11) DEFAULT 1,
-  `date_at` date NOT NULL DEFAULT current_timestamp(),
-  `update_at` date NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
-
-ALTER TABLE `z_farmers` ADD `other_state` VARCHAR(100) , ADD `other_district` VARCHAR(100) , ADD `other_city` VARCHAR(100);
-ALTER TABLE `z_farmers` CHANGE `source` `source` VARCHAR(100) NULL DEFAULT NULL;
-
-
-ALTER TABLE `z_admin` ADD `created_by` INT NULL DEFAULT NULL , ADD `update_by` INT NULL DEFAULT NULL;
-
-
-ALTER TABLE `z_admin` ADD `state_id` INT NULL , ADD `district_id` INT NULL , ADD `city_id` INT NULL , ADD `other_state` VARCHAR(100) NOT NULL , ADD `other_district` VARCHAR(100)NOT NULL; 
-
-ALTER TABLE `z_admin` ADD `other_city` VARCHAR(100) NULL ;
-
-
-ALTER TABLE `z_admin` CHANGE `created_by` `created_by` INT(11) NULL DEFAULT '1';
-
-ALTER TABLE `z_admin` ADD `pincode` INT(25) NOT NULL AFTER `other_city` ;
-
-
-
-
-
-----20-06-2022
-
-ALTER TABLE `z_admin` ADD `company_id` INT NOT NULL DEFAULT '1';
-
-ALTER TABLE `z_customer` ADD `farmer_id` INT NULL AFTER `id`;
-ALTER TABLE `z_customer` ADD `current_conversation` TEXT NULL;
-ALTER TABLE `z_customer` ADD `update_by` INT NOT NULL DEFAULT '1';
-
-ALTER TABLE `z_customer` CHANGE `update_at` `update_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
-
-----21-06-2022
-
-ALTER TABLE `z_booking` ADD `farmer_id` INT NULL DEFAULT NULL AFTER `id`;
-ALTER TABLE `z_booking_payments` ADD `farmer_id` INT NULL DEFAULT NULL AFTER `id`;
-ALTER TABLE `z_booking_log` ADD `farmer_id` INT NULL DEFAULT NULL AFTER `id`;
-
-
-
-
-
-----22-06-2022
-ALTER TABLE `z_company` ADD `other_state` VARCHAR(200) NULL DEFAULT NULL  , ADD `other_district` VARCHAR(200) NULL DEFAULT NULL , ADD `other_city` VARCHAR(200) NULL DEFAULT NULL  , ADD `created_by` INT NOT NULL DEFAULT '1' , ADD `updated_by` INT NOT NULL DEFAULT '1';
-
-ALTER TABLE `z_customer` ADD `company_id` INT NULL DEFAULT '1';
-ALTER TABLE `z_customer_call` ADD `company_id` INT NULL DEFAULT '1';
-
-
-
-----23-06-2022
-ALTER TABLE `z_product_category` ADD `description` TEXT NULL, ADD `update_by` INT NULL;
-
-----24-06-2022
-
-ALTER TABLE `z_admin` ADD `date_join` DATE NULL DEFAULT CURRENT_TIMESTAMP;
-
-
-----24-06-2022
-
-ALTER TABLE `z_customer_call` CHANGE `call_back_date` `call_back_date` DATE NULL DEFAULT NULL;
-
-
-
-
-
-
-
-
--- 29-06-2022
-
-DROP TABLE IF EXISTS `z_consultant_ticket_status`;
-CREATE TABLE IF NOT EXISTS `z_consultant_ticket_status` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
-  `title` varchar(100) NOT NULL,
-  `slug` varchar(200) NOT NULL,
-  `status` int(11) DEFAULT 1,
-  `date_at` date NOT NULL DEFAULT current_timestamp(),
-  `update_at` date NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO `z_consultant_ticket_status` (`id`, `name`, `title`, `slug`, `status`, `date_at`, `update_at`) VALUES
-(1, 'open', 'Open', 'open', 1, '2022-06-01', '2022-06-01'),
-(2, 'pending', 'Pending', 'pending', 1, '2022-06-01', '2022-06-01'),
-(3, 'resolved', 'Resolved', 'resolved', 1, '2022-06-01', '2022-06-01'),
-(4, 'closed', 'Closed', 'closed', 1, '2022-06-01', '2022-06-01');
-COMMIT;
-
-
-DROP TABLE IF EXISTS `z_consultant_call_type`;
-CREATE TABLE IF NOT EXISTS `z_consultant_call_type` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  `title` varchar(50) DEFAULT NULL,
-  `status` int(11) DEFAULT 1,
-  `date_at` date DEFAULT NULL,
-  `update_at` date DEFAULT NULL,
-  `slug` varchar(200) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO `z_consultant_call_type` (`id`, `name`, `title`, `status`, `date_at`, `update_at`, `slug`) VALUES
-(1, 'consultation', 'Consultation', 1, '2022-05-19', '2022-05-19', 'consultation'),
-(2, 'inquiry', 'Inquiry', 1, '2022-05-19', '2022-05-19', 'inquiry');
-COMMIT;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-DROP TABLE IF EXISTS `z_document_category`;
-CREATE TABLE IF NOT EXISTS `z_document_category` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) NOT NULL,
-  `title` varchar(200) NOT NULL,
-  `slug` varchar(300) NOT NULL,
-  `status` int(11) NOT NULL DEFAULT 1,
-  `date_at` date NOT NULL DEFAULT current_timestamp(),
-  `update_at` date NOT NULL DEFAULT current_timestamp(),
-  `created_by` int(11) NOT NULL DEFAULT 1,
-  `description` text DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `crop_id` int(10) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-COMMIT;
-
-
- 
- 
-
-DROP TABLE IF EXISTS `z_document`;
-CREATE TABLE IF NOT EXISTS `z_document` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) NOT NULL,
-  `title` varchar(200) NOT NULL,
-  `slug` varchar(300) NOT NULL,
-  `crop_id` int(10) NOT NULL DEFAULT 1,
-  `document_cat_id` int(10) NOT NULL DEFAULT 1,
-  `status` int(11) NOT NULL DEFAULT 1,
-  `date_at` date NOT NULL DEFAULT current_timestamp(),
-  `update_at` date NOT NULL DEFAULT current_timestamp(),
-  `created_by` int(11) NOT NULL DEFAULT 1,
-  `images` text DEFAULT NULL,
-  `treatment` text DEFAULT NULL,
-  `root_cause` text DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-COMMIT;
-
- 
-
-
-
- ----30-06-2022
-
-DROP TABLE IF EXISTS `z_consultants`;
-CREATE TABLE IF NOT EXISTS `z_consultants` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ticket_title` varchar(250) DEFAULT NULL,
-  `ticket_status` varchar(30) DEFAULT NULL,
-  `farmer_id` int(11) DEFAULT NULL,
-  `farmer_name` varchar(250) DEFAULT NULL,
-  `farmer_mobile` varchar(20) DEFAULT NULL,
-  `address` varchar(300) DEFAULT NULL,
-  `crop_id` int(11) DEFAULT NULL,
-  `crop_status` varchar(15) DEFAULT 'Active',
-  `crop_area` varchar(300) DEFAULT NULL,
-  `assign_to` int(11) DEFAULT NULL,
-  `call_type` int(11) DEFAULT NULL,
-  `follow_up_date` date DEFAULT current_timestamp(),
-  `document_category_id` int(11) DEFAULT NULL,
-  `document_id` int(11) DEFAULT NULL,
-  `root_cause` text DEFAULT NULL,
-  `recommendation` text DEFAULT NULL,
-  `images` text DEFAULT NULL,
-  `screenshot` varchar(200) DEFAULT NULL,
-  `date_at` datetime DEFAULT NULL,
-  `update_at` datetime DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `company_id` int(11) DEFAULT 1,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-COMMIT;
-
-
-DROP TABLE IF EXISTS `z_crop`;
-CREATE TABLE IF NOT EXISTS `z_crop` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) DEFAULT NULL,
-  `title` varchar(250) DEFAULT NULL,
-  `status` int(11) DEFAULT 1,
-  `date_at` datetime DEFAULT NULL,
-  `update_at` datetime DEFAULT NULL,
-  `created_by` int(11) DEFAULT 1,
-  `updated_by` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
- 
-INSERT INTO `z_crop` (`id`, `name`, `title`, `status`, `date_at`, `update_at`, `created_by`, `updated_by`) VALUES
-(1, 'papaya', 'Papaya', 1, '2022-07-01 09:52:22', '2022-07-01 09:52:22', 1, NULL),
-(2, 'lemon', 'Lemon', 1, '2022-07-01 09:52:22', '2022-07-01 09:52:22', 1, NULL);
-COMMIT;
- 
-
-
--------04-07-2022
-
-INSERT INTO `z_call_type` (`id`, `name`, `title`, `status`, `date_at`, `update_at`, `slug`) VALUES (NULL, 'consultation call', 'Consultation Call', '1', '2022-05-19', '2022-05-19', 'cunsultation-call');
-
-
-
-
--------06-07-2022
-
-ALTER TABLE `z_booking` CHANGE `agent_id` `agent_id` INT(11) NULL DEFAULT '0';
-
-INSERT INTO `z_admin` (`id`, `name`, `title`, `admin_type`, `email`, `phone`, `address`, `password`, `date_at`, `update_at`, `status`, `otp`, `created_by`, `update_by`, `state_id`, `district_id`, `city_id`, `other_state`, `other_district`, `other_city`, `pincode`, `company_id`, `date_join`) VALUES
- (0, 'Direct', 'Direct', '2', '', '', '', '', '2018-04-10 00:00:00', '0000-00-00 00:00:00', '2', '', NULL, NULL, NULL, NULL, NULL, '', '', NULL, '0', '1', '2022-06-24');
- UPDATE `z_booking` SET  create_date=date_at WHERE 1;
-
-
-
-
-
--------08-07-2022
-
-ALTER TABLE `z_farmers` ADD `farmer_type` INT NULL DEFAULT '1';
-
-DROP TABLE IF EXISTS `z_farmer_type`;
-CREATE TABLE IF NOT EXISTS `z_farmer_type` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  `title` varchar(50) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  `full_name` varchar(200) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `permanent_address` text DEFAULT NULL,
+  `date_of_birth` datetime DEFAULT current_timestamp(),
   `status` int(11) DEFAULT 1,
   `date_at` datetime DEFAULT current_timestamp(),
   `update_at` datetime DEFAULT current_timestamp(),
-  `slug` varchar(200) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
-INSERT INTO `z_farmer_type` (`id`, `name`, `title`, `status`, `date_at`, `update_at`, `slug`) VALUES
-(1, 'farmer', 'Farmer', 1, '2022-07-08 12:42:11', '2022-07-08 12:42:11', 'farmer'),
-(2, 'dealer', 'Dealer', 1, '2022-07-08 12:42:19', '2022-07-08 12:42:19', 'dealer'),
-(3, 'entrepreneur', 'Entrepreneur', 1, '2022-07-08 12:43:03', '2022-07-08 12:43:03', 'entrepreneur'),
-(4, 'manufacturer', 'Manufacturer', 1, '2022-07-08 12:43:13', '2022-07-08 12:43:13', 'manufacturer'),
-(5, 'societies', 'Societies', 1, '2022-07-08 12:43:25', '2022-07-08 12:43:25', 'societies');
-COMMIT;
-
-
-----updated
-
-
-ALTER TABLE `z_crop` ADD `slug` VARCHAR(300) NULL DEFAULT NULL;
-ALTER TABLE `z_farmers` ADD `crop_id` INT NULL DEFAULT '1';
-
- 
-
-DROP TABLE IF EXISTS `z_crop`;
-CREATE TABLE IF NOT EXISTS `z_crop` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) DEFAULT NULL,
-  `title` varchar(250) DEFAULT NULL,
-  `status` int(11) DEFAULT 1,
-  `date_at` datetime DEFAULT NULL,
-  `update_at` datetime DEFAULT NULL,
-  `created_by` int(11) DEFAULT 1,
+  `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
-  `slug` varchar(300) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
- 
-
-INSERT INTO `z_crop` (`id`, `name`, `title`, `status`, `date_at`, `update_at`, `created_by`, `updated_by`, `slug`) VALUES
-(1, 'papaya', 'Papaya', 1, '2022-07-08 14:11:34', '2022-07-08 14:13:44', 1, NULL, 'papaya'),
-(2, 'lemon', 'Lemon', 1, '2022-07-08 14:12:48', NULL, 1, NULL, 'lemon'),
-(3, 'tiwan pink guava', 'Tiwan Pink Guava', 1, '2022-07-08 14:14:45', NULL, 1, NULL, 'tiwan-pink-guava'),
-(4, 'g9 banana', 'G9 Banana', 1, '2022-07-08 14:15:12', NULL, 1, NULL, 'g9-banana'),
-(5, 'apple ber', 'Apple Ber', 1, '2022-07-08 14:15:28', NULL, 1, NULL, 'apple-ber'),
-(6, 'fig', 'Fig', 1, '2022-07-08 14:16:34', NULL, 1, NULL, 'fig');
-COMMIT;
- 
-
-
-
-
-
-
-
-------13-07-2022
-
-ALTER TABLE `z_consultants` CHANGE `call_type` `call_type` VARCHAR(20) NULL DEFAULT NULL;
-
-------14-07-2022
-
-ALTER TABLE `z_consultant_ticket_status` ADD `badge_color` VARCHAR(200) NOT NULL DEFAULT 'primary';
-UPDATE `z_consultant_ticket_status` SET `badge_color` = 'warning' WHERE `z_consultant_ticket_status`.`id` = 2;
-UPDATE `z_consultant_ticket_status` SET `badge_color` = 'success' WHERE `z_consultant_ticket_status`.`id` = 3;
-UPDATE `z_consultant_ticket_status` SET `badge_color` = 'danger' WHERE `z_consultant_ticket_status`.`id` = 4;
-
-
-
-
-------15-07-2022
-
-ALTER TABLE `z_booking_payments` ADD `transaction_type` VARCHAR(20) NULL DEFAULT 'booking';
-
-DROP TABLE IF EXISTS `z_sales`;
-CREATE TABLE IF NOT EXISTS `z_sales` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `farmer_id` int(11) DEFAULT NULL,
-  `stage` varchar(10) NOT NULL DEFAULT 'Created',
-  `customer_id` int(11) DEFAULT NULL,
-  `customer_name` varchar(200) DEFAULT NULL,
-  `customer_mobile` varchar(40) DEFAULT NULL,
-  `customer_alter_mobile` varchar(40) DEFAULT NULL,
-  `state` int(11) DEFAULT NULL,
-  `district` int(11) DEFAULT NULL,
-  `city` int(11) DEFAULT NULL,
-  `supply_address` varchar(200) DEFAULT NULL,
-  `vehicle_no` varchar(50) DEFAULT NULL,
-  `bank_trans_id` varchar(200) DEFAULT NULL,
-  `booking_status` varchar(50) DEFAULT NULL,
-  `billing_address` text DEFAULT NULL,
-  `same_billing` varchar(10) DEFAULT NULL,
-  `delivery_address` text DEFAULT NULL,
-  `advance` float DEFAULT NULL,
-  `balance` double DEFAULT NULL,
-  `outstanding_amount` int(11) DEFAULT 0,
-  `total_paid_amount` int(11) NOT NULL DEFAULT 0,
-  `refunded_amount` int(11) NOT NULL DEFAULT 0,
-  `payment_mode` varchar(20) DEFAULT NULL,
-  `cheque_no` varchar(200) DEFAULT NULL,
-  `bank_name` varchar(200) DEFAULT NULL,
-  `bank_branch` varchar(200) DEFAULT NULL,
-  `total` float DEFAULT NULL,
-  `pending_bill` float DEFAULT NULL,
-  `status` int(11) NOT NULL DEFAULT 1,
-  `created_by` int(11) NOT NULL DEFAULT 1,
-  `agent_id` int(11) DEFAULT NULL,
-  `assigned_to` int(11) NOT NULL DEFAULT 1,
-  `cancel_by` int(11) NOT NULL,
-  `booking_date` date DEFAULT current_timestamp(),
-  `date_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `create_date` date DEFAULT NULL,
-  `update_at` date NOT NULL DEFAULT current_timestamp(),
-  `company_id` int(11) NOT NULL DEFAULT 1,
-  `cancellation_charge` int(11) NOT NULL,
-  `cancellation_reason` varchar(400) NOT NULL,
-  `cancellation_date` date NOT NULL DEFAULT current_timestamp(),
-  `product_set` text DEFAULT NULL,
-  `comment` text DEFAULT NULL,
-  `trans_desctription` text DEFAULT NULL,
-  `reverse_charge` varchar(50) NOT NULL,
-  `booking_id` int(11) DEFAULT NULL,
-  `transport_type` varchar(50) NOT NULL,
-  `supply_date` date NOT NULL DEFAULT current_timestamp(),
-  `discount_amount` float DEFAULT 0,
-  `gst_amount` float DEFAULT 0,
+  `company_id` int(11) DEFAULT 1,
+  `state_id` int(11) DEFAULT NULL,
+  `district_id` int(11) DEFAULT NULL,
+  `city_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 COMMIT;
 
 
-
-DROP TABLE IF EXISTS `z_sales_dtl`;
-CREATE TABLE IF NOT EXISTS `z_sales_dtl` (
+DROP TABLE IF EXISTS `z_role`;
+CREATE TABLE IF NOT EXISTS `z_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sale_id` int(11) DEFAULT NULL,
-  `booking_id` int(11) DEFAULT NULL,
-  `farmer_id` int(11) DEFAULT NULL,
-  `product_id` int(11) DEFAULT NULL,
-  `tax_rate` float DEFAULT 0,
-  `tax_amount` float DEFAULT 0,
-  `cgst_rate` float DEFAULT 0,
-  `cgst_amount` float DEFAULT 0,
-  `sgst_rate` float DEFAULT 0,
-  `sgst_amount` float DEFAULT 0,
-  `igst_rate` float DEFAULT 0,
-  `igst_amount` float DEFAULT 0,
-  `price` float DEFAULT 0,
-  `quantity` float DEFAULT 0,
-  `discount` float DEFAULT 0,
-  `status` int(5) DEFAULT 1,
-  `sub_total_amount` float DEFAULT 0,
-  `created_by` int(20) DEFAULT NULL,
-  `updated_by` int(20) DEFAULT NULL,
+  `title` varchar(200) DEFAULT NULL,
+  `name` varchar(200) DEFAULT NULL,
+  `slug_url` varchar(200) DEFAULT NULL,
   `date_at` datetime DEFAULT current_timestamp(),
-  `update_at` datetime DEFAULT NULL,
-  `company_id` int(10) DEFAULT 1,
-  `data_set` text DEFAULT NULL,
+  `update_at` datetime DEFAULT current_timestamp(),
+  `created_by` int(11) DEFAULT NULL,
+  `update_by` int(11) DEFAULT NULL,
+  `company_id` int(11) DEFAULT 1,
+  `status` int(11) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+INSERT INTO `z_role` (`id`, `title`, `name`, `slug_url`, `date_at`, `update_at`, `created_by`, `update_by`, `company_id`, `status`) VALUES
+(1, 'Admin', 'admin', 'admin', '2022-08-02 11:05:53', '2022-08-03 10:09:27', 1, 1, 1, 1),
+(2, 'Employee', 'employee', 'employee', '2022-08-02 11:05:53', '2022-08-16 12:45:34', 1, 1, 1, 1);
 COMMIT;
 
 
---28-07-2022--
+DROP TABLE IF EXISTS `z_admin_role`;
+CREATE TABLE IF NOT EXISTS `z_admin_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `created_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT current_timestamp(),
+  `updated_by` int(11) DEFAULT NULL,
+  `company_id` int(11) DEFAULT 1,
+  `status` int(11) DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+ 
+INSERT INTO `z_admin_role` (`id`, `user_id`, `role_id`, `created_at`, `created_by`, `updated_at`, `updated_by`, `company_id`, `status`) VALUES
+(1, 1, 1, '2022-08-02 14:04:38', 1, '2022-08-03 18:03:37', 1, 1, 1);
+COMMIT;
 
-ALTER TABLE `z_farmers` ADD `is_premium` INT(5) NOT NULL DEFAULT '0';
+
+
+
+DROP TABLE IF EXISTS `z_module_role`;
+CREATE TABLE IF NOT EXISTS `z_module_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `module_id` int(11) DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL,
+  `date_at` datetime DEFAULT current_timestamp(),
+  `created_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT current_timestamp(),
+  `updated_by` int(11) DEFAULT NULL,
+  `company_id` int(11) DEFAULT 1,
+  `status` int(11) DEFAULT 1,
+  `action_required` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+INSERT INTO `z_module_role` (`id`, `module_id`, `role_id`, `date_at`, `created_by`, `updated_at`, `updated_by`, `company_id`, `status`, `action_required`) VALUES
+(null, 1, 1, '2022-08-02 13:55:06', 1, '2022-08-24 17:48:17', 1, 1, 1, '[]'),
+(null, 2, 1, '2022-08-02 13:55:06', 1, '2022-08-24 17:48:17', 1, 1, 1, '[]'),
+(null, 3, 1, '2022-08-02 13:55:06', 1, '2022-08-24 17:48:17', 1, 1, 1, '[]'),
+(null, 10, 1, '2022-08-02 13:55:06', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null, 11, 1, '2022-08-02 13:55:06', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null, 12, 1, '2022-08-03 13:35:30', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null, 13, 1, '2022-08-03 13:35:30', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null, 14, 1, '2022-08-03 13:35:30', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null, 15, 1, '2022-08-03 13:35:30', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  16, 1, '2022-08-03 13:35:30', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  4, 1, '2022-08-03 13:35:30', 1, '2022-08-24 17:48:17', 1, 1, 1, '[]'),
+(null,  5, 1, '2022-08-03 13:35:30', 1, '2022-08-24 17:48:17', 1, 1, 1, '[]'),
+(null,  6, 1, '2022-08-03 13:35:30', 1, '2022-08-24 17:48:17', 1, 1, 1, '[]'),
+(null,  7, 1, '2022-08-03 13:35:30', 1, '2022-08-24 17:48:17', 1, 1, 1, '[]'),
+(null,  17, 1, '2022-08-03 13:35:30', 1, '2022-08-24 17:48:17', 1, 1, 1, '[]'),
+(null,  18, 1, '2022-08-03 13:35:30', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  19, 1, '2022-08-03 13:35:30', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  8, 1, '2022-08-03 13:35:30', 1, '2022-08-24 17:48:17', 1, 1, 1, '[]'),
+(null,  9, 1, '2022-08-03 13:35:30', 1, '2022-08-24 17:48:17', 1, 1, 1, '[]'),
+(null,  20, 1, '2022-08-03 13:51:53', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  21, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  22, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  23, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  24, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  25, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  26, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  27, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  28, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  29, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  31, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  32, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  33, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  34, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  35, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  36, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  37, 1, '2022-08-03 14:20:42', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  38, 1, '2022-08-03 14:24:13', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  39, 1, '2022-08-05 11:38:58', 1, '2022-08-24 17:48:17', 1, 1, 1, '[]'),
+(null,  40, 1, '2022-08-05 11:38:58', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}'),
+(null,  41, 1, '2022-08-05 11:38:58', 1, '2022-08-24 17:48:17', 1, 1, 1, '{\"lists\":\"lists\",\"create\":\"create\",\"edit\":\"edit\",\"delete\":\"delete\",\"view\":\"view\"}');
 
 
 
 
+DROP TABLE IF EXISTS `z_module_m`;
+CREATE TABLE IF NOT EXISTS `z_module_m` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `module_name` varchar(200) DEFAULT NULL,
+  `module_url` varchar(300) DEFAULT '#',
+  `created_at` datetime DEFAULT current_timestamp(),
+  `created_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT current_timestamp(),
+  `updated_by` int(11) DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
+  `icon_name` varchar(100) DEFAULT NULL,
+  `orders_with` int(10) DEFAULT 1,
+  `status` int(11) DEFAULT 1,
+  `parent_id` int(11) DEFAULT 0,
+  `target` varchar(100) DEFAULT NULL,
+  `slug_url` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `orders_with` (`orders_with`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ 
+
+INSERT INTO `z_module_m` (`id`, `module_name`, `module_url`, `created_at`, `created_by`, `updated_at`, `updated_by`, `company_id`, `icon_name`, `orders_with`, `status`, `parent_id`, `target`, `slug_url`) VALUES
+(1, 'Dashboard', 'admin/dashboard', '2022-08-02 11:56:53', 1, '2022-08-02 11:56:53', 1, 1, 'bx bx-home-circle', 1, 1, 0, NULL, NULL),
+(2, 'Customer Support', '#', '2022-08-02 11:56:53', 1, '2022-08-02 11:56:53', 1, 1, 'bx bx-support', 2, 1, 0, NULL, NULL),
+(3, 'Sales', '#', '2022-08-02 12:15:00', 1, '2022-08-02 12:15:00', 1, 1, 'bx bxs-cart', 3, 1, 0, NULL, NULL),
+(4, 'Purchase', '#', '2022-08-02 12:15:00', 1, '2022-08-02 12:15:00', 1, 1, 'bx bxs-shopping-bag', 4, 1, 0, NULL, NULL),
+(5, 'Farmers', '#', '2022-08-02 12:20:05', 1, '2022-08-02 12:20:05', 1, 1, 'bx bx-group', 5, 1, 0, NULL, NULL),
+(6, 'Documents', '#', '2022-08-02 12:20:05', 1, '2022-08-02 12:20:05', 1, 1, 'bx bxs-file-doc', 6, 1, 0, NULL, NULL),
+(7, 'Settings', '#', '2022-08-02 12:20:05', 1, '2022-08-02 12:20:05', 1, 1, 'bx bx-cog', 7, 1, 0, NULL, NULL),
+(8, 'Type', '#', '2022-08-02 12:20:05', 1, '2022-08-02 12:20:05', 1, 1, 'bx bx-duplicate', 8, 1, 0, NULL, NULL),
+(9, 'Profile', '#', '2022-08-02 12:20:05', 1, '2022-08-02 12:20:05', 1, 1, 'bx bx-user', 9, 1, 0, NULL, NULL),
+(10, 'Bookings', 'admin/bookings', '2022-08-02 12:30:52', 1, '2022-08-02 12:30:52', 1, 1, NULL, 21, 1, 2, NULL, NULL),
+(11, 'Delivery Management', 'admin/delivery_management', '2022-08-02 12:30:52', 1, '2022-08-02 12:30:52', 1, 1, NULL, 22, 1, 2, NULL, NULL),
+(12, 'Consultation', 'admin/consultants', '2022-08-02 12:30:52', 1, '2022-08-02 12:30:52', 1, 1, NULL, 23, 1, 2, NULL, NULL),
+(13, 'Harvesting Management', 'admin/harvesting_management', '2022-08-02 12:30:52', 1, '2022-08-02 12:30:52', 1, 1, NULL, 24, 1, 2, NULL, NULL),
+(14, 'Premium Customer', 'admin/farmers?is_premium=1', '2022-08-02 12:30:52', 1, '2022-08-02 12:30:52', 1, 1, NULL, 25, 1, 2, NULL, NULL),
+(15, 'Sales', 'admin/sales', '2022-08-02 12:30:52', 1, '2022-08-02 12:30:52', 1, 1, NULL, 31, 1, 3, NULL, NULL),
+(16, 'RazorPay Sales', 'admin/razorpay_sales', '2022-08-02 12:30:52', 1, '2022-08-02 12:30:52', 1, 1, NULL, 32, 1, 3, NULL, NULL),
+(17, 'Access Mgt', '#', '2022-08-03 11:58:32', 1, '2022-08-03 12:11:31', 1, 1, '', 71, 1, 7, NULL, NULL),
+(18, 'Manage Module', 'admin/modules', '2022-08-03 12:14:24', 1, '2022-08-03 13:47:26', 1, 1, '', 711, 1, 17, NULL, NULL),
+(19, 'Manage Role', 'admin/roles', '2022-08-03 12:15:04', 1, '2022-08-03 13:47:55', 1, 1, '', 712, 1, 17, NULL, NULL),
+(20, 'Add New Farmers', 'admin/customer/addnew', '2022-08-03 13:51:35', 1, '2022-08-03 13:52:31', 1, 1, '', 51, 1, 5, NULL, NULL),
+(21, 'Farmers', 'admin/farmers', '2022-08-03 13:55:24', 1, '2022-08-03 13:55:24', NULL, 1, '', 52, 1, 5, NULL, NULL),
+(22, 'K Documents', 'admin/kdocuments', '2022-08-03 13:57:41', 1, '2022-08-03 13:57:41', NULL, 1, '', 61, 1, 6, NULL, NULL),
+(23, 'Company', 'admin/company', '2022-08-03 14:00:36', 1, '2022-08-03 14:00:36', NULL, 1, '', 72, 1, 7, NULL, NULL),
+(24, 'Category', 'admin/category', '2022-08-03 14:02:12', 1, '2022-08-03 14:02:12', NULL, 1, '', 73, 1, 7, NULL, NULL),
+(25, 'Product', 'admin/product', '2022-08-03 14:08:01', 1, '2022-08-03 14:08:01', NULL, 1, '', 74, 1, 7, NULL, NULL),
+(26, 'Agent Mgt', 'admin/agents', '2022-08-03 14:08:52', 1, '2022-08-03 14:09:16', 1, 1, '', 75, 1, 7, NULL, NULL),
+(27, 'Country', 'admin/country', '2022-08-03 14:09:59', 1, '2022-08-03 14:09:59', NULL, 1, '', 76, 1, 7, NULL, NULL),
+(28, 'State', 'admin/state', '2022-08-03 14:11:22', 1, '2022-08-03 14:11:22', NULL, 1, '', 77, 1, 7, NULL, NULL),
+(29, 'District', 'admin/district', '2022-08-03 14:12:06', 1, '2022-08-03 14:12:06', NULL, 1, '', 78, 1, 7, NULL, NULL),
+(31, 'Tehsil', 'admin/city', '2022-08-03 14:13:31', 1, '2022-08-03 14:13:31', NULL, 1, '', 79, 1, 7, NULL, NULL),
+(32, 'K Doduments Category', 'admin/document_category', '2022-08-03 14:14:47', 1, '2022-08-03 14:14:47', NULL, 1, '', 80, 1, 7, NULL, NULL),
+(33, 'Farmer Type', 'admin/farmer_type', '2022-08-03 14:17:14', 1, '2022-08-03 14:17:14', NULL, 1, '', 81, 1, 8, NULL, 'farmer-type'),
+(34, 'Call Type', 'admin/call_type', '2022-08-03 14:17:47', 1, '2022-08-03 14:17:47', NULL, 1, '', 82, 1, 8, NULL, 'call-type'),
+(35, 'Crop Type', 'admin/crop_type', '2022-08-03 14:18:45', 1, '2022-08-03 14:18:45', NULL, 1, '', 83, 1, 8, NULL, 'crop-type'),
+(36, 'Edit Profile', 'admin/profile/edit', '2022-08-03 14:19:38', 1, '2022-08-03 14:19:38', NULL, 1, '', 91, 1, 9, NULL, 'edit-profile'),
+(37, 'Change Password', 'admin/profile/change_passowrd', '2022-08-03 14:20:20', 1, '2022-08-03 14:20:20', NULL, 1, '', 92, 1, 9, NULL, 'change-password'),
+(38, 'Manage User Role', 'admin/admin_roles', '2022-08-03 14:23:53', 1, '2022-08-03 17:24:02', 1, 1, '', 713, 1, 17, '', 'manage-user-role'),
+(39, 'Attendance', '#', '2022-08-04 13:25:43', 1, '2022-08-04 13:28:07', 1, 1, 'bx bx-fingerprint', 10, 1, 0, '', 'attendance'),
+(40, 'Attendance Form', 'admin/attendance/addnew', '2022-08-04 13:31:13', 1, '2022-08-04 13:31:13', NULL, 1, '', 101, 1, 39, '', 'attendance-form'),
+(41, 'Attendance Log', 'admin/attendance', '2022-08-04 13:31:58', 1, '2022-08-04 13:31:58', NULL, 1, '', 102, 1, 39, '', 'attendance-log');
+COMMIT;
+
+DROP TABLE IF EXISTS `z_village_pin`;
+CREATE TABLE IF NOT EXISTS `z_village_pin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `pincode` varchar(255) NOT NULL,
+  `city_id` int(11) NOT NULL,
+  `state_id` int(11) NOT NULL,
+  `district_id` int(11) NOT NULL,
+  `country_id` int(11) DEFAULT NULL,
+  `date_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `update_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `status` int(200) DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `city_id` (`city_id`),
+  KEY `state_id` (`state_id`),
+  KEY `country_id` (`country_id`),
+  KEY `district_id` (`district_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `z_village_pin`
+--
+
+INSERT INTO `z_village_pin` (`id`, `name`, `pincode`, `city_id`, `state_id`, `district_id`, `country_id`, `date_at`, `update_at`, `status`) VALUES
+(1, 'Bhikhamapur', '221404', 998, 33, 229, 105, '2022-08-22 14:58:52', '2022-08-22 14:58:52', 1),
+(2, 'Purani Bazar', '221406', 998, 33, 229, 105, '2022-08-22 15:08:20', '2022-08-22 15:08:20', 1),
+(3, 'Ekouni', '221404', 998, 33, 229, 105, '2022-08-22 15:09:13', '2022-08-22 15:09:13', 1),
+(4, 'Matethu', '221404', 998, 33, 229, 105, '2022-08-22 15:20:38', '2022-08-22 15:20:38', 1),
+(5, 'Mondh', '221406', 998, 33, 229, 105, '2022-08-22 15:28:13', '2022-08-22 15:28:13', 1),
+(6, 'Suriyawan', '221404', 998, 33, 229, 105, '2022-08-22 15:33:35', '2022-08-22 15:33:35', 1),
+(7, 'Bhori', '221404', 998, 33, 229, 105, '2022-08-22 15:37:51', '2022-08-22 15:37:51', 1),
+(8, 'Abarana', '221404', 998, 33, 229, 105, '2022-08-22 15:43:47', '2022-08-22 15:43:47', 1),
+(9, 'Abholi', '221404', 998, 33, 229, 105, '2022-08-22 15:45:21', '2022-08-22 15:45:21', 1),
+(10, 'Kador', '221404', 998, 33, 229, 105, '2022-08-22 15:51:20', '2022-08-22 15:51:20', 1),
+(11, 'Achhawar', '221404', 998, 33, 229, 105, '2022-08-22 15:57:15', '2022-08-22 16:07:22', 1),
+(12, 'Swaipur', '311603', 635, 29, 140, 105, '2022-08-22 16:20:46', '2022-08-22 16:20:46', 1),
+(13, 'Padri', '272151', 940, 33, 180, 105, '2022-08-22 16:21:45', '2022-08-22 16:21:45', 1),
+(14, 'Ghinauna', '207124', 5926, 33, 680, 105, '2022-08-22 16:24:36', '2022-08-22 16:24:36', 1),
+(15, 'Akola', '444004', 3991, 21, 533, 105, '2022-08-22 16:25:17', '2022-08-23 09:01:59', 1),
+(16, 'Asaithapatati', '223103', 984, 33, 202, 105, '2022-08-22 16:25:54', '2022-08-22 16:25:54', 1),
+(17, 'Madapur', '202129', 754, 33, 168, 105, '2022-08-22 16:26:23', '2022-08-22 16:26:23', 1),
+(18, 'Kuthond', '285125', 852, 33, 201, 105, '2022-08-22 16:26:58', '2022-08-22 16:26:58', 1),
+(19, 'Bishunpur Anant', '843101', 1201, 5, 260, 105, '2022-08-22 16:27:38', '2022-08-22 16:27:38', 1),
+(20, 'Maghagai', '262902', 6028, 33, 685, 105, '2022-08-22 16:29:57', '2022-08-22 16:29:57', 1),
+(21, 'Rasoolpur Mithiberi', '246763', 354, 34, 96, 105, '2022-08-22 16:30:33', '2022-08-22 16:30:33', 1),
+(22, 'Karsua', '202001', 755, 33, 168, 105, '2022-08-22 16:33:21', '2022-08-22 16:33:21', 1),
+(23, 'Madhapithu', '281307', 760, 33, 200, 105, '2022-08-22 16:34:17', '2022-08-22 16:34:17', 1),
+(24, 'Hardua', '485334', 3462, 20, 490, 105, '2022-08-22 16:35:12', '2022-08-22 16:35:12', 1),
+(25, 'Deori Hardo Patti', '230001', 881, 33, 224, 105, '2022-08-22 16:35:54', '2022-08-22 16:35:54', 1),
+(26, 'Kakra Kalan', '243503', 789, 33, 179, 105, '2022-08-22 16:37:22', '2022-08-22 16:37:22', 1),
+(27, 'Ambapura', '222129', 393, 29, 139, 105, '2022-08-22 17:37:29', '2022-08-22 17:37:29', 1),
+(28, 'Ghatari', '321408', 512, 29, 139, 105, '2022-08-22 18:02:45', '2022-08-22 18:02:45', 1),
+(29, 'Ahiraura', '231301', 921, 33, 174, 105, '2022-08-22 18:06:35', '2022-08-22 18:06:35', 1),
+(32, 'Asaithapatat', '223103', 984, 33, 202, 105, '2022-08-23 09:03:10', '2022-08-23 09:03:10', 1),
+(33, 'Karsua', '202001', 754, 33, 168, 105, '2022-08-23 09:06:19', '2022-08-23 09:06:19', 1),
+(34, 'Barkagaon', '825311', 2657, 16, 391, 105, '2022-08-23 09:14:44', '2022-08-23 09:14:44', 1),
+(35, 'Barkagaon', '825311', 2653, 16, 391, 105, '2022-08-23 09:16:06', '2022-08-23 09:16:06', 1),
+(36, 'Chheoki', '212105', 890, 33, 169, 105, '2022-08-23 09:17:47', '2022-08-23 09:17:47', 1),
+(37, 'Chheoki', '212105', 888, 33, 169, 105, '2022-08-23 12:04:25', '2022-08-23 12:04:25', 1),
+(38, 'Soraon', '212502', 888, 33, 169, 105, '2022-08-23 12:07:28', '2022-08-23 12:07:28', 1);
+COMMIT;
+
+ALTER TABLE `z_booking` ADD `village_pin_id` INT NULL DEFAULT NULL;

@@ -32,8 +32,15 @@ class Bookings extends BaseController
         $this->load->model('admin/customer_call_model');
         $this->load->model('admin/user_model');
         $this->load->model('admin/admin_model');
+        $this->load->model('admin/village_pin_model');
 
         $this->perPage =100; 
+        $this->perPageHarvest =100; 
+        $this->perPageDelivery =100; 
+
+
+
+
     }
 
     
@@ -44,6 +51,17 @@ class Bookings extends BaseController
 
 
         $this->isLoggedIn();
+
+         $this->global['module_id']      = get_module_byurl('admin/bookings');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(empty($action_requred))
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
+
           $data = array();
 
             $uid         = $this->input->get('uid');
@@ -548,8 +566,7 @@ echo "</pre>";  */
 
 
 
-        $data['count_call_summary'] = $this->customer_call_model->getCallsummary($data['calltypes'],$userid,'call_type'); 
-        $data['show_summary'] = $this->booking_model->getBookedSummary(); 
+         $data['show_summary'] = $this->booking_model->getBookedSummary(); 
 
         
 
@@ -561,6 +578,492 @@ echo "</pre>";  */
         
     }
 
+    public function harvesting()
+    {
+
+
+        $this->isLoggedIn();
+
+         $this->global['module_id']      = get_module_byurl('admin/harvesting_management');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(empty($action_requred))
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+          $data = array();
+
+            $uid         = $this->input->get('uid');
+            if(isset($uid) && $uid !=='')
+            {
+                 $userid   = $uid;
+            }else
+            {
+                $userid = $this->session->userdata('userId');
+            }
+
+            
+            
+ 
+            $conditions = array(); 
+            $where_search = array();
+
+            $data['edit_data'] = array();
+            $data['customer_call_dtl'] = array();
+
+            $form_type  = $this->input->get('form_type');
+            
+                
+        
+
+                $where_search =  array();
+                $search_farmer_id  = @$this->input->get('farmer_id');
+                $search_name         = @$this->input->get('customer_name');
+                $search_mobile       = @$this->input->get('customer_mobile');
+                $search_alt_mobile   = @$this->input->get('customer_alter_mobile');
+                $state2              = @$this->input->get('state2');
+                $other_state         = @$this->input->get('other_state');
+                $district2           = @$this->input->get('district2');
+                $other_district      = @$this->input->get('other_district');
+                $city2               = @$this->input->get('city2');
+                $other_city          = @$this->input->get('other_city');
+                $call_direction2     = @$this->input->get('call_direction2');
+                $call_type2          = @$this->input->get('call_type2'); 
+                $booking_no          = @$this->input->get('booking_no'); 
+                $booking_date        = @$this->input->get('booking_date'); 
+                $booking_status      = @$this->input->get('booking_status'); 
+                $crop_status         = @$this->input->get('crop_status'); 
+                $agent_id            = @$this->input->get('agent_id'); 
+                $product_id          = @$this->input->get('product_id'); 
+                $address             = @$this->input->get('address'); 
+                $pincode             = @$this->input->get('pincode'); 
+                $quantity            = @$this->input->get('quantity'); 
+                $unit_price          = @$this->input->get('unit_price'); 
+                $discount            = @$this->input->get('discount'); 
+                $outstanding_amount  = @$this->input->get('outstanding_amount'); 
+                $req_delivery_date   = @$this->input->get('req_delivery_date'); 
+                $delivery_date       = @$this->input->get('delivery_date'); 
+                $vehicle_no          = @$this->input->get('vehicle_no'); 
+                $contract            = @$this->input->get('contract'); 
+                $start_date          = @$this->input->get('start_date'); 
+                $end_date            = @$this->input->get('end_date'); 
+                $search_type            = @$this->input->get('search_type'); 
+                $advance_booking_status_value = @$this->input->get('advance_booking_status_value'); 
+                $advance_crop_status_value = @$this->input->get('advance_crop_status_value'); 
+                $advance_agent_id_value = @$this->input->get('advance_agent_id_value'); 
+                $advance_product_id_value = @$this->input->get('advance_product_id_value'); 
+                $advance_state_value = @$this->input->get('advance_state_value'); 
+                $advance_district_value = @$this->input->get('advance_district_value'); 
+                $advance_city_value = @$this->input->get('advance_city_value'); 
+                $advance_plan_rate            = @$this->input->get('advance_plan_rate'); 
+                $plant_rate_amount            = @$this->input->get('plant_rate_amount'); 
+                $advance_plan_quantity        = @$this->input->get('advance_plan_quantity'); 
+                $advance_plant_quantity_amount= @$this->input->get('advance_plant_quantity_amount'); 
+                $advance_oustanding= @$this->input->get('advance_oustanding'); 
+                $oustanding_amount= @$this->input->get('oustanding_amount'); 
+                $advance_recieved= @$this->input->get('advance_recieved'); 
+                $advance_recieved_amount= @$this->input->get('advance_recieved_amount'); 
+                $advance_discount= @$this->input->get('advance_discount'); 
+                $advance_discount_amount= @$this->input->get('advance_discount_amount'); 
+                if(!empty($start_date))
+                {
+                     $where_search['start_date'] =  $start_date;
+                 } if(!empty($end_date))
+                {
+                     $where_search['end_date'] =  $end_date;
+                 } if(!empty($contract))
+                {
+                     $where_search['contract'] =  $contract;
+                 }
+                 if(!empty($vehicle_no))
+                {
+                     $where_search['vehicle_no'] =  $vehicle_no;
+                 }
+                 if(!empty($delivery_date))
+                {
+                     $where_search['delivery_date'] =  $delivery_date;
+                 }
+                 if(!empty($quantity))
+                {
+                     $where_search['quantity'] =  $quantity;
+                 }
+                 if(!empty($discount))
+                {
+                     $where_search['discount'] =  $discount;
+                 }if(strlen($outstanding_amount) >0)
+                {
+                     $where_search['outstanding_amount'] =  $outstanding_amount;
+                 }if(strlen($unit_price) >0)
+                {
+                     $where_search['price'] =  $unit_price;
+                 }
+                 if(!empty($pincode))
+                {
+                     $where_search['pincode'] =  $pincode;
+                 }
+                 if(!empty($other_state))
+                {
+                     $where_search['other_state'] =  $other_state;
+                 }
+                 if(!empty($other_district))
+                {
+                     $where_search['other_district'] =  $other_district;
+                 }
+                   if(!empty($other_city))
+                {
+                     $where_search['other_city'] =  $other_city;
+                 }
+
+                 if(!empty($address))
+                {
+                     $where_search['billing_address'] =  $address;
+                 }
+                 if(!empty($product_id))
+                {
+                     $where_search['product_id'] =  $product_id;
+                 }
+                
+                if(strlen($agent_id)>0)
+                {
+                     $where_search['agent_id'] =  $agent_id;
+                      
+                }
+                if(!empty($crop_status))
+                {
+                      $where_search['crop_status'] =  $crop_status;
+                }
+                if(!empty($booking_status) && $booking_status !=='all')
+                {
+                     $where_search['booking_status'] =  $booking_status;
+                }
+                if(!empty($booking_date))
+                {
+                     $where_search['booking_date'] =  $booking_date;
+                }
+                if(!empty($booking_no))
+                {
+                    $where_search['id'] =  $booking_no;
+                }
+                if(!empty($search_farmer_id))
+                {
+                    $where_search['farmer_id'] =  $search_farmer_id;
+                }
+                if(!empty($search_name))
+                {
+                    $where_search['customer_title'] =  $search_name;
+                } 
+                
+                if(!empty($search_mobile))
+                {
+                    $where_search['customer_mobile'] =  $search_mobile;
+                }
+                if(!empty($search_alt_mobile))
+                {
+                    $where_search['customer_alter_mobile'] =  $search_alt_mobile;
+                }
+                if(!empty($state2))
+                {
+                    $where_search['state'] =  $state2;
+                }
+                
+                if(!empty($district2))
+                {
+                    $where_search['district'] =  $district2;
+                }
+                if(!empty($city2))
+                {
+                    $where_search['city'] =  $city2;
+                }
+                if(!empty($search_type))
+                {
+                    $where_search['search_type'] =  $search_type;
+                } 
+                 if(!empty($advance_booking_status_value))
+                {
+                    $where_search['advance_booking_status_value'] =  $advance_booking_status_value;
+                } 
+
+                 if(!empty($advance_crop_status_value))
+                {
+                    $where_search['advance_crop_status_value'] =  $advance_crop_status_value;
+                } 
+
+                if(!empty($advance_agent_id_value))
+                {
+                    $where_search['advance_agent_id_value'] =  $advance_agent_id_value;
+                } 
+                if(!empty($advance_product_id_value))
+                {
+                    $where_search['advance_product_id_value'] =  $advance_product_id_value;
+                } 
+                if(!empty($advance_state_value))
+                {
+                    $where_search['advance_state_value'] =  $advance_state_value;
+                } 
+                
+                if(!empty($advance_district_value))
+                {
+                    $where_search['advance_district_value'] =  $advance_district_value;
+                } 
+                if(!empty($advance_city_value))
+                {
+                    $where_search['advance_city_value'] =  $advance_city_value;
+                } 
+
+                
+                 
+                    $where_search['advance_plan_rate'] =  $advance_plan_rate;
+                    $where_search['plant_rate_amount'] =  $plant_rate_amount;
+                    $where_search['advance_plan_quantity'] =  $advance_plan_quantity;
+                    $where_search['advance_plant_quantity_amount'] =  $advance_plant_quantity_amount;
+                    $where_search['oustanding_amount'] =  $oustanding_amount;
+                    $where_search['advance_oustanding'] =  $advance_oustanding;
+                    $where_search['advance_recieved'] =  $advance_recieved;
+                    $where_search['advance_recieved_amount'] =  $advance_recieved_amount;
+                    $where_search['advance_discount'] =  $advance_discount;
+                    $where_search['advance_discount_amount'] =  $advance_discount_amount;
+                    $where_search['manage_booking_type'] =  'harvesting';
+
+            $conditions['returnType'] = 'count'; 
+            $conditions['userid'] = $userid; 
+            $conditions['form_type'] = $form_type; 
+            $conditions['where'] = $where_search; 
+            $totalRec = $this->booking_model->getRows($conditions);
+
+             
+
+
+
+
+
+            $this->load->library('pagination'); 
+
+                $conditions = array(); 
+                
+                $uriSegment = 3; 
+
+                // Get record count 
+                
+
+                // Pagination configuration 
+                $config['base_url']    = base_url().'admin/harvesting_management'; 
+                $config['uri_segment'] = $uriSegment; 
+                $config['total_rows']  = $totalRec; 
+                $config['per_page']    = $this->perPageHarvest; 
+                $config['use_page_numbers'] = TRUE;
+                $config['reuse_query_string'] = TRUE;
+             
+
+ 
+  
+
+
+            $config['full_tag_open'] = ' <ul class="pagination  justify-content-center mt-4" id="query-pagination">';
+            $config['full_tag_close'] = '</ul> ';
+             
+            $config['first_link'] = 'First&nbsp;Page';
+            $config['first_tag_open'] = '<li class="page-item">  ';
+            $config['first_tag_close'] = '</li>';
+             
+            $config['last_link'] = 'Last&nbsp;Page';
+            $config['last_tag_open'] ='<li class="page-item">  ';
+            $config['last_tag_close'] = '</li>';
+             
+            $config['next_link'] = 'Next';
+            $config['next_tag_open'] = '<li class="page-item"> ';
+            $config['next_tag_close'] = ' </li>';
+ 
+            $config['prev_link'] = 'Previous';
+            $config['prev_tag_open'] = '<li class="page-item"> ';
+            $config['prev_tag_close'] = '</li>';
+ 
+            $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link active">';
+            $config['cur_tag_close'] = '</a></li>';
+ 
+            $config['num_tag_open'] = '<li class="page-item"> ';
+            $config['num_tag_close'] = ' </li>';
+
+                // Initialize pagination library 
+                $this->pagination->initialize($config); 
+                
+              
+
+                // Define offset 
+                $page = $this->uri->segment($uriSegment); 
+                $offset = (!$page)?0:$page; 
+
+                if($offset != 0){
+                    $offset = ($offset-1) * $this->perPageHarvest;
+                }
+
+ 
+                // Get records 
+                $conditions = array( 
+                'start' => $offset, 
+                'where' => $where_search, 
+                'userid' =>  $userid, 
+                'form_type' => $form_type, 
+                'limit' => $this->perPageHarvest 
+                ); 
+
+                
+                    /*$conditions['userid'] = $userid;
+                $conditions['form_type'] = $form_type;  echo "<pre>";
+                    print_r( $conditions);
+                    echo "</pre>"; */
+
+                 $data['bookings']   = $this->booking_model->getRows($conditions); 
+
+
+ 
+                $data['pagination'] = $this->pagination->create_links(); 
+ 
+                $data['pagination_total_count'] =  $totalRec;
+ 
+                   
+
+/* 
+  echo "<pre>";
+print_r($this->db->last_query());  
+echo "</pre>";  */
+
+
+
+         $form_type  = $this->input->get('form_type');
+         if($form_type =='search')
+         {
+            $customer_id    = $this->input->get('customer_id');
+            $mobile         = $this->input->get('mobile');
+
+            
+
+            if($customer_id !=='' || $mobile !=='')
+            {   
+                $isserch = false;
+                $where = array();
+                if(!empty($customer_id))
+                {   
+                    $isserch = true;
+
+                     $where['sku_id'] = $customer_id;
+                }
+
+                if(!empty($mobile))
+                {
+                    $isserch = true;
+                     $where['customer_mobile'] = $mobile;
+                }
+
+                if($isserch)
+                {
+
+                    $customer = $this->customer_model->findDynamic($where);
+                    if(!empty($customer))
+                    {
+                        $data['edit_data'] = $customer[0];
+
+
+                        $where = array();
+                        $where['customer'] = $data['edit_data']->id;
+                        //$data['customer_call_dtl'] =$this->customer_call_detail($data['edit_data']->id);
+                       // $data['customer_call_dtl'] = $this->customer_call_model->findDynamic($where);
+                    }
+                    
+
+
+                     
+                }
+
+
+
+                
+                 
+                 
+                
+            }
+
+         }
+         
+
+
+
+        $where = array();
+        $where['status'] = '1';
+        $where['field'] = 'id,customer_name,customer_title,sku_id';
+        $data['all_customers'] = $this->customer_model->findDynamic($where);
+        
+        $where = array();
+        $where['status'] = '1';
+        $where['field'] = 'id,name,title';
+        $data['all_users'] = $this->admin_model->findDynamic($where);
+
+                $where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'name';
+        $data['states'] = $this->state_model->findDynamic($where);
+
+        /*$where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'name';
+        $data['districts'] = $this->district_model->findDynamic($where);
+
+        $where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'city';
+        $data['cities'] = $this->city_model->findDynamic($where);*/
+
+        $where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'title';
+        $data['payments_types'] = $this->payment_type_model->findDynamic($where);
+
+        
+
+        $where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'id';
+        $data['calltypes'] = $this->call_type_model->findDynamic($where);
+
+        $where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'title';
+        $data['bookings_status'] = $this->booking_status_model->findDynamic($where); 
+
+        $where = array();
+        $where['status !='] = '0';
+        $where['orderby'] = '-id';
+        $data['all_agents'] = $this->admin_model->findDynamic($where);
+        
+
+        $where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'title';
+        $data['crops_status'] = $this->crop_status_model->findDynamic($where);
+
+        $where = array();
+        $where['status'] = '1';
+        $data['contracts_status'] = $this->contract_status_model->findDynamic($where);
+
+
+        $where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'title';
+        $where['field'] = 'id,name,title';
+        $data['all_products'] = $this->product_model->findDynamic($where); 
+ 
+
+         $where = array();
+        $where['status'] = '1';
+        $where['orderby'] = 'title';
+        $data['calldirections'] = $this->call_direction_model->findDynamic($where); 
+
+         
+        $this->global['pageTitle'] = 'Harvesting';
+        $this->loadViews("admin/booking/harvesting", $this->global, $data , NULL);
+        
+    }
+
     // Add New 
 
     public function create()
@@ -568,6 +1071,17 @@ echo "</pre>";  */
     
             $this->isLoggedIn();
             
+
+             $this->global['module_id']      = get_module_byurl('admin/bookings');
+            $role_id                        = $this->session->userdata('role_id');
+            $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+            if(@$action_requred->create !=='create')
+            {
+                $this->session->set_flashdata('error', 'Un-autherise Access');
+                redirect(base_url());
+            }
+
+
             $data = array();
             $userid = $this->session->userdata('userId');
             $company_id = $this->session->userdata('company_id');
@@ -659,6 +1173,11 @@ echo "</pre>";  */
         $this->form_validation->set_rules('customer_name','customer_name','trim|required');
         $this->form_validation->set_rules('customer_mobile','customer_mobile','trim|required');
         $this->form_validation->set_rules('product_id','product_id','trim|required');
+        $this->form_validation->set_rules('state','Select State','trim|required');
+        $this->form_validation->set_rules('district','Select District','trim|required');
+        $this->form_validation->set_rules('city','Select Tehsile','trim|required');
+        $this->form_validation->set_rules('village','Enter Village','trim|required');
+        $this->form_validation->set_rules('pincode','Enter Pincode','trim|required');
         
          $company_id = $this->session->userdata('company_id');
         
@@ -711,48 +1230,17 @@ echo "</pre>";  */
                             $insertData['other_state']  = $form_data['other_state'];
                             $insertData['other_district']= $form_data['other_district'];
                             $insertData['district_id']  = $form_data['district'];
-                            $insertData['date_at']      = date("Y-m-d H:i:s");;
+                            $insertData['date_at']      = date("Y-m-d H:i:s");
                             $insertData['status']       =  1;
                             $insertData['village']      = $form_data['village'];
                             $insertData['created_by']   = $this->session->userdata('userId');
 
                             $get_farmerid = $this->farmers_model->save($insertData);
 
-                            /*$insertData['customer_name']         = $form_data['customer_name'];
-                            $insertData['customer_title']        = ucfirst($form_data['customer_name']);
-                            $insertData['customer_mobile']       = $form_data['customer_mobile'];
-                            $insertData['customer_alter_mobile'] = $form_data['customer_alter_mobile'];
-                            $insertData['state']                 = $form_data['state'];
-                            $insertData['other_state']           = $form_data['other_state'];
-                            $insertData['district']              = $form_data['district'];
-                            $insertData['other_district']        = $form_data['other_district'];
-                            $insertData['city']                  = $form_data['city'];
-                            $insertData['other_city']            = $form_data['other_city'];
-                            $insertData['status']                = '1';
-                            $insertData['date_at']               = date("Y-m-d H:i:s");
-                            $insertData['created_by']            = $this->session->userdata('userId');
-                            $insertData['assigned_to']           = $this->session->userdata('userId');
-                            $insertData['last_call_direction']   = 0;
-                            $insertData['last_call_type']        = 0;
-                            $insertData['last_follow_date']      = date("Y-m-d H:i:s");
-                            $insertData['last_follower']         = $this->session->userdata('userId');
-                            $insertData['last_follow_call_type'] = 0;
-
-                            $get_customerid = $this->customer_model->save($insertData);*/
-
                         }
-                        
+                    }
 
-
-                    
-                }
-
-
-
-
-
-
-                //$get_customerid
+                    //$get_customerid
 
                             $insertData = array();
 
@@ -792,6 +1280,40 @@ echo "</pre>";  */
                                 $start_date = null;
                                 $end_date   = null;
                             }
+
+
+                            /*linked pincode tracking*/
+                            $form_data['village'] = strtolower(ltrim(rtrim($form_data['village'])));;
+                            $form_data['village'] = ucwords($form_data['village']);
+
+                            $where = array();
+                            $where['name']          =  $form_data['village'];
+                            $where['pincode']       =  $form_data['pincode'];
+                            $where['country_id']      =105;
+                            $where['state_id']      = $form_data['state'];
+                            $where['district_id']   = $form_data['district'];
+                            $where['city_id']       = $form_data['city'];
+
+                            $returnData = $this->village_pin_model->findDynamic($where);
+
+                            if(!empty($returnData)){
+                                $village_pin_id = $returnData[0]->id;
+                                
+                            }else{
+                                $insertDataVill = array();
+                                $insertDataVill['name']         = $form_data['village'];
+                                $insertDataVill['pincode']      = $form_data['pincode'];
+                                $insertDataVill['country_id']   = 105;
+                                $insertDataVill['state_id']     = $form_data['state'];
+                                $insertDataVill['district_id']  = $form_data['district'];
+                                $insertDataVill['city_id']      = $form_data['city'];
+                                $insertDataVill['date_at']      = date("Y-m-d H:i:s");;
+                                $insertDataVill['status']       = 1;
+
+                                $village_pin_id = $this->village_pin_model->save($insertDataVill);
+                            }
+                            /*linked pincode tracking*/
+
                            
 
                             $insertData['farmer_id']                    = $get_farmerid;
@@ -807,6 +1329,7 @@ echo "</pre>";  */
                             $insertData['other_city']                   = $form_data['other_city'];
                             $insertData['village']                      = $form_data['village'];
                             $insertData['pincode']                      = $form_data['pincode'];
+                            $insertData['village_pin_id']               = $village_pin_id;
                             $insertData['booking_date']                 = (isset($form_data['booking_date']) && $form_data['booking_date'] !=='')?$form_data['booking_date']:date("Y-m-d H:i:s");
                             $insertData['req_delivery_date']            = $form_data['req_delivery_date'];
                             $insertData['delivery_expect_start_date']   = $start_date;
@@ -1057,6 +1580,15 @@ echo "</pre>";  */
 
             $this->isLoggedIn();
 
+        $this->global['module_id']      = get_module_byurl('admin/bookings');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(@$action_requred->edit !=='edit')
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+
 
             $data = array();
               $userid = $this->session->userdata('userId');
@@ -1188,6 +1720,12 @@ echo "</pre>";  */
         $this->form_validation->set_rules('product_id','product_id','trim|required');
         $this->form_validation->set_rules('farmer_id','Farmer ','trim|required');
         
+
+        $this->form_validation->set_rules('state','Select State','trim|required');
+        $this->form_validation->set_rules('district','Select District','trim|required');
+        $this->form_validation->set_rules('city','Select Tehsile','trim|required');
+        $this->form_validation->set_rules('village','Enter Village','trim|required');
+        $this->form_validation->set_rules('pincode','Enter Pincode','trim|required');
         
         
         //form data 
@@ -1322,6 +1860,43 @@ echo "</pre>";  */
 
 
 
+
+
+                            /*linked pincode tracking*/
+                            $form_data['village'] = strtolower(ltrim(rtrim($form_data['village'])));
+                            $form_data['village'] = ucwords($form_data['village']);
+
+                            $where = array();
+                            $where['name']          =  $form_data['village'];
+                            $where['pincode']       =  $form_data['pincode'];
+                            $where['state_id']      = $form_data['state'];
+                            $where['country_id']      =105;
+                            $where['district_id']   = $form_data['district'];
+                            $where['city_id']       = $form_data['city'];
+
+                            $returnData = $this->village_pin_model->findDynamic($where);
+
+                            if(!empty($returnData)){
+                                $village_pin_id = $returnData[0]->id;
+                                
+                            }else{
+                                $insertDataVill = array();
+                                $insertDataVill['name']         = $form_data['village'];
+                                $insertDataVill['pincode']      = $form_data['pincode'];
+                                $insertDataVill['country_id']   = 105;
+                                $insertDataVill['state_id']     = $form_data['state'];
+                                $insertDataVill['district_id']  = $form_data['district'];
+                                $insertDataVill['city_id']      = $form_data['city'];
+                                $insertDataVill['date_at']      = date("Y-m-d H:i:s");;
+                                $insertDataVill['status']       = 1;
+
+                                $village_pin_id = $this->village_pin_model->save($insertDataVill);
+                            }
+                            /*linked pincode tracking*/
+
+
+
+
                             $insertData['id']                       = $form_data['id'];
                             $insertData['stage']                        = "Update";
                             $insertData['farmer_id']                  = $get_farmer_id;
@@ -1337,6 +1912,8 @@ echo "</pre>";  */
                             $insertData['other_city']                   = $form_data['other_city'];
                             $insertData['village']                      = $form_data['village'];
                             $insertData['pincode']                      = $form_data['pincode'];
+                            $insertData['village_pin_id']                      = $village_pin_id;
+
                             $insertData['booking_date']                 = (isset($form_data['booking_date']) && $form_data['booking_date'] !=='')?$form_data['booking_date']:date("Y-m-d H:i:s");
                             $insertData['req_delivery_date']            = $form_data['req_delivery_date'];
                             $insertData['delivery_expect_start_date']   = $start_date;
@@ -2097,9 +2674,9 @@ echo "</pre>";  */
                     $arra_empt2['booking_id']            =$bookin_log['booking_id'];
                     $arra_empt2['stage']                 =$bookin_log['stage'];
                     $arra_empt2['farmer_id']           =$bookin_log['farmer_id'];
-                    $arra_empt2['customer_name']         =$bookin_log['customer_name'];
-                    $arra_empt2['customer_mobile']       =$bookin_log['customer_mobile'];
-                    $arra_empt2['customer_alter_mobile'] =$bookin_log['customer_alter_mobile'];
+                    $arra_empt2['customer_name']         =$bookin_log['customername'];
+                    $arra_empt2['customer_mobile']       =$bookin_log['customermobile'];
+                    $arra_empt2['customer_alter_mobile'] =$bookin_log['customeraltmobile'];
                     $arra_empt2['father_name']           =$bookin_log['father_name'];
                     $arra_empt2['state']                 =$bookin_log['state'];
                     $arra_empt2['other_state']           =$bookin_log['other_state'];
@@ -2346,6 +2923,7 @@ echo "</pre>";  */
                 $end_date            = @$this->input->get('end_date'); 
                 $search_type            = @$this->input->get('search_type'); 
                 $advance_booking_status_value            = @$this->input->get('advance_booking_status_value'); 
+                $manage_booking_type            = @$this->input->get('manage_booking_type'); 
                 if(!empty($start_date))
                 {
                      $where_search['start_date'] =  $start_date;
@@ -2465,6 +3043,10 @@ echo "</pre>";  */
                 {
                     $where_search['advance_booking_status_value'] =  $advance_booking_status_value;
                 }  
+                 if(!empty($manage_booking_type))
+                {
+                    $where_search['manage_booking_type'] =  $manage_booking_type;
+                }  
                 
                 
             
@@ -2502,7 +3084,7 @@ echo "</pre>";  */
                     $delivery_address =str_replace("\n", " ", $delivery_address);
                     $delivery_address =str_replace("\r", " ", $delivery_address);
                      
-                    $customer_alter_mobile =str_replace(",", " ", $value['customer_alter_mobile']);
+                    $customer_alter_mobile =str_replace(",", " ", $value['customeraltmobile']);
                      
 
                     $content.= str_replace(",", " ", $value['id']).",";
@@ -2510,10 +3092,10 @@ echo "</pre>";  */
                     $content.= str_replace(",", " ", $value['booked_status']).",";
                     $content.= str_replace(",", " ", $value['cropstatusname']).",";
                     $content.= str_replace(",", " ", $value['farmer_id']).",";
-                    $content.= str_replace(",", " ", $value['customer_name']).",";
+                    $content.= str_replace(",", " ", $value['customername']).",";
                     $content.= str_replace(",", " ", $value['executive']).",";
                     $content.= str_replace(",", " ", $value['productname']).",";
-                    $content.= str_replace(",", " ", $value['customer_mobile']).",";
+                    $content.= str_replace(",", " ", $value['customermobile']).",";
                     $content.= str_replace(",", " ", $customer_alter_mobile).",";
                     $content.= str_replace(",", " ", $billing_address).",";
                     $content.= str_replace(",", " ", ($value['city']=='Other')?$value['other_city']:$value['city']).",";
@@ -2670,7 +3252,188 @@ echo "</pre>";  */
         echo  json_encode($single_arr);
     }  
     
-    
+   public function delivery()
+   {
+
+         $this->isLoggedIn();
+        $this->global['module_id']      = get_module_byurl('admin/harvesting_management');
+        $role_id                        = $this->session->userdata('role_id');
+        $action_requred                 = get_module_role($this->global['module_id']['id'],$role_id);
+        if(empty($action_requred))
+        {
+            $this->session->set_flashdata('error', 'Un-autherise Access');
+            redirect(base_url());
+        }
+            //$current_year = date("Y-m-d",strtotime('2023-12-01'));
+            $current_date = date("Y-m-d");
+            $get_finacial_year_range =  get_finacial_year_range($current_date);
+        
+
+            $data  = array();
+            $list_date_ranges  = array();
+        
+
+            $start = $month = strtotime($get_finacial_year_range['start_date']);
+            $end = strtotime($get_finacial_year_range['end_date']);
+            while($month < $end)
+            {
+                  
+
+              
+                
+                $list_date_ranges2 =  array();
+                 $last_date_of_month =  ($month);
+                  $lastGetDate = date('Y-m-d',strtotime(date("Y-m-t", $last_date_of_month )));
+                  
+                 $list_date_ranges2[]  = array(
+                    'start_date'=> date('Y-m-d',strtotime((date('Y', $month)).'-'.(date('m', $month)).'-01')),
+                    'end_date'=> date('Y-m-d',strtotime((date('Y', $month)).'-'.(date('m', $month)).'-15'))
+                );
+                $list_date_ranges2[]  = array(
+                    'start_date'=> date('Y-m-d',strtotime((date('Y', $month)).'-'.(date('m', $month)).'-16')),
+                    'end_date'=> $lastGetDate
+                );
+                $list_date_ranges[] = $list_date_ranges2;
+
+
+                 $month = strtotime("+1 month", $month);
+
+            }
+
+             
+
+              $section  = $this->input->get('section');
+                if(@$section=='booking')
+                {
+
+                $where_search =  array();
+                $city2                = @$this->input->get('city');
+                 
+                $delivery_start_date          = @$this->input->get('start_date'); 
+                $delivery_end_date            = @$this->input->get('end_date'); 
+                
+                if(!empty($delivery_start_date))
+                {
+                     $where_search['delivery_start_date'] =  $delivery_start_date;
+                 } if(!empty($delivery_end_date))
+                {
+                     $where_search['delivery_end_date'] =  $delivery_end_date;
+                 }
+                
+                 
+                if(!empty($city2))
+                {
+                    $where_search['city'] =  $city2;
+                }
+                $where_search['manage_booking_type'] =  'delivery';
+
+            $conditions['returnType'] = 'count'; 
+            $conditions['where'] = $where_search; 
+            $totalRec = $this->booking_model->getRows($conditions);
+
+             
+
+
+
+
+
+            $this->load->library('pagination'); 
+
+                $conditions = array(); 
+                
+                $uriSegment = 3; 
+
+                // Get record count 
+                
+
+                // Pagination configuration 
+                $config['base_url']    = base_url().'admin/delivery_management'; 
+                $config['uri_segment'] = $uriSegment; 
+                $config['total_rows']  = $totalRec; 
+                $config['per_page']    = $this->perPageDelivery; 
+                $config['use_page_numbers'] = TRUE;
+                $config['reuse_query_string'] = TRUE;
+             
+
+ 
+  
+
+
+            $config['full_tag_open'] = ' <ul class="pagination  justify-content-center mt-4" id="query-pagination">';
+            $config['full_tag_close'] = '</ul> ';
+             
+            $config['first_link'] = 'First&nbsp;Page';
+            $config['first_tag_open'] = '<li class="page-item">  ';
+            $config['first_tag_close'] = '</li>';
+             
+            $config['last_link'] = 'Last&nbsp;Page';
+            $config['last_tag_open'] ='<li class="page-item">  ';
+            $config['last_tag_close'] = '</li>';
+             
+            $config['next_link'] = 'Next';
+            $config['next_tag_open'] = '<li class="page-item"> ';
+            $config['next_tag_close'] = ' </li>';
+ 
+            $config['prev_link'] = 'Previous';
+            $config['prev_tag_open'] = '<li class="page-item"> ';
+            $config['prev_tag_close'] = '</li>';
+ 
+            $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link active">';
+            $config['cur_tag_close'] = '</a></li>';
+ 
+            $config['num_tag_open'] = '<li class="page-item"> ';
+            $config['num_tag_close'] = ' </li>';
+
+                // Initialize pagination library 
+                $this->pagination->initialize($config); 
+                
+              
+
+                // Define offset 
+                $page = $this->uri->segment($uriSegment); 
+                $offset = (!$page)?0:$page; 
+
+                if($offset != 0){
+                    $offset = ($offset-1) * $this->perPageDelivery;
+                }
+
+ 
+                // Get records 
+                $conditions = array( 
+                'start' => $offset, 
+                'where' => $where_search, 
+                'limit' => $this->perPageDelivery 
+                ); 
+
+                
+                   
+
+                 $data['bookings']   = $this->booking_model->getRows($conditions); 
+
+                 $data['pagination'] = $this->pagination->create_links(); 
+ 
+                $data['pagination_total_count'] =  $totalRec;
+                 /*print_r($this->db->last_query());    */
+
+
+                }
+                
+        
+
+        
+      
+        
+
+        $data['list_date_ranges'] = $list_date_ranges;
+        $data['current_date'] = $current_date;
+ 
+     
+
+        $this->global['pageTitle'] = 'Delivery Management';
+        $this->loadViews("admin/booking/delivery", $this->global, $data , NULL);
+   }
+
+   
     
 }
 

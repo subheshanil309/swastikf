@@ -213,14 +213,9 @@ class Consultant_model extends Base_model
                 
 
                     $company_id = $this->session->userdata('company_id');
-                    if($role ==1)
-                    {
-                        $where.= "( c.status = 1 )";
-                    }else
-                    {
-                        $where.= "( c.status = 1 AND c.company_id=".$company_id." )";  
-                    }
                     
+                        $where.= "( c.status = 1 AND c.company_id=".$company_id." )";  
+                     
               
                     
 

@@ -195,9 +195,10 @@ class Booking_model extends Base_model
           /*  $this->db->select('*'); 
             $this->db->from($this->table); */
 
-                $this->db->select('c.*, cit.city as city, sta.name as state, dist.name as district,    admin.title as createdby, bookstatus.title as booked_status, bookstatus.badges as booked_badges, executive.title as executive, product.title as productname, paymentmode.title as paymentmodename, contractstatus.title as contractstatusname,admin2.title as assignedto, cropstatus.title as cropstatusname');
+                $this->db->select('c.*,farmer.alt_mobile as customeraltmobile ,farmer.mobile as customermobile ,farmer.name as customername, cit.city as city, sta.name as state, dist.name as district,    admin.title as createdby, bookstatus.title as booked_status, bookstatus.badges as booked_badges, executive.title as executive, product.title as productname, paymentmode.title as paymentmodename, contractstatus.title as contractstatusname,admin2.title as assignedto, cropstatus.title as cropstatusname');
                 $this->db->from($this->table. ' as c'); 
                 $this->db->join('z_states as sta', 'sta.id = c.state', 'left');
+                $this->db->join('z_farmers as farmer', 'farmer.id = c.farmer_id', 'left');
                 $this->db->join('z_district as dist', 'dist.id = c.district', 'left');
                 $this->db->join('z_cities as cit', 'cit.id = c.city', 'left');
                 $this->db->join('z_crop_status as cropstatus', 'cropstatus.slug = c.crop_status', 'left'); 
@@ -252,8 +253,13 @@ class Booking_model extends Base_model
                 {
 
                     $not_array = array();
+                    $not_array[] = 'manage_booking_type';
+                    $not_array[] = 'delivery_start_date';
+                    $not_array[] = 'delivery_end_date';
                     $not_array[] = 'booking_type';
-                    $not_array[] = 'customer_name';
+                    $not_array[] = 'customer_title';
+                    $not_array[] = 'customer_mobile';
+                    $not_array[] = 'customer_alter_mobile';
                     $not_array[] = 'billing_address';
                     $not_array[] = 'other_city';
                     $not_array[] = 'other_district';
@@ -347,11 +353,48 @@ class Booking_model extends Base_model
                     
                 } 
 
-                 if(isset($params['where']['customer_name']))
+                 if(isset($params['where']['customer_title']))
                 {
                      
-                    $this->db->or_like('customer_name', $params['where']['customer_name']);
+                    $this->db->or_like('farmer.name', $params['where']['customer_title']);
                      //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
+                }
+                 if(isset($params['where']['customer_mobile']))
+                {
+                     
+                    $this->db->where('farmer.mobile', $params['where']['customer_mobile']);
+                     //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
+                } 
+                if(isset($params['where']['customer_alter_mobile']))
+                {
+                     
+                    $this->db->where('farmer.alt_mobile', $params['where']['customer_alter_mobile']);
+                     //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
+                }
+                if(isset($params['where']['manage_booking_type']) && $params['where']['manage_booking_type'] =='harvesting')
+                {
+                     
+                    //$this->db->('customer_name', $params['where']['customer_name']);
+                    $names = array('under-harvesting', 'delivered','under-production','ready-harvest','marketed');
+                    $this->db->where_in('booking_status', $names);
+                     //$where.= " (c.customer_title like '%".$params['where']['customer_title']."%')";
+                } 
+                if(isset($params['where']['manage_booking_type']) && $params['where']['manage_booking_type'] =='delivery')
+                {
+
+
+                    
+                    if(isset($params['where']['delivery_start_date']) && isset($params['where']['delivery_end_date']))
+                    {
+                        $start_date = $params['where']['delivery_start_date'];
+                        $end_date = $params['where']['delivery_end_date'];
+                        $where.= " AND ( c.delivery_date  >='".$start_date."' AND c.delivery_date  <='".$end_date."' )";    
+                    }
+
+
+
+                    
+                    
                 } 
 
                 if(isset($params['where']['billing_address']))
@@ -710,13 +753,14 @@ class Booking_model extends Base_model
         $globl_arr = [];
         $start_date = '';
         $end_date = '';
+         $company_id = $this->session->userdata('company_id');
          if(isset($types['month_wise']) && $types['month_wise'] !=='')
         {
             $exploded = explode('-', $types['month_wise']);
             $start_date = $exploded[0]."-".$exploded[1]."-01";
             $end_date = $exploded[0]."-".$exploded[1]."-31";
         } 
- 
+    
         foreach ($variable as $key => $value1) {
 
 
@@ -735,6 +779,7 @@ class Booking_model extends Base_model
                 $where['product_id']= $types['product_id'];    
             }
             $where['booking_status']= $booking_status;
+            $where['company_id'] = $company_id;
             $booked_no_of_booking   = 0;
             $no_of_plant            = 0;
 
@@ -827,16 +872,6 @@ class Booking_model extends Base_model
 
     }
 
-}
+     
 
-
-
-
-
-
-
-
-
-
-
-  
+}  

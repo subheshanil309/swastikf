@@ -1,4 +1,9 @@
+<?php 
+/*echo "<pre>";
+print_r($ccityList);
+echo "</pre>";*/
  
+?> 
  <link href="<?php echo base_url(); ?>assets/admin/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo base_url(); ?>assets/admin/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
  <style type="text/css">
@@ -58,7 +63,7 @@
   
 
                           
-                         <a class="btn btn-primary  float-end btn-sm" href="<?php echo base_url(); ?>admin/city/addnew"><i class="fa fa-plus"></i> Add New</a>
+                          <a class="btn btn-primary  float-end btn-sm" href="<?php echo base_url(); ?>admin/city/addnew"><i class="fa fa-plus"></i> Add New</a>
 
                             </div>
                          </div>
@@ -75,8 +80,8 @@
                                     <th>Country</th>                                            
                                     <th>State</th>                                            
                                     <th>District</th>                                            
-                                    <th>Tehsil</th>                                            
-                                     <th  style="width: 60px;">Status</th>                                            
+                                    <th>Tehsil</th>
+                                    <th  style="width: 60px;">Status</th>                                            
                                     <th class="text-center"  style="width: 60px;">Actions</th>
                                   </tr>
                                   </thead>
@@ -98,9 +103,31 @@
       </div>
     </div>
 </div>
+ 
 
  
 <script src="<?php echo base_url(); ?>assets/admin/libs/jquery/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/admin/libs/toastr/build/toastr.min.js"></script>
+<!--  Large modal example -->
+<script type="text/javascript">
+   toastr.options = {
+     "closeButton": true,
+     "debug": false,
+     "newestOnTop": false,
+     "progressBar": false,
+     "positionClass": "toast-top-right",
+     "preventDuplicates": false,
+     "onclick": null,
+     "showDuration": "300",
+     "hideDuration": "10000",
+     "timeOut": "5000",
+     "extendedTimeOut": "1000",
+     "showEasing": "swing",
+     "hideEasing": "linear",
+     "showMethod": "fadeIn",
+     "hideMethod": "fadeOut"
+   }
+</script>
 
 <!-- Delete Script-->
   <script type="text/javascript">
@@ -189,10 +216,38 @@ $(document).ready(function() {
               else { alert("Access denied..!"); }
             });
           
+    }); 
+
+         jQuery(document).on("click", ".updatelatlng", function(){
+
+           
+            var ccityList = JSON.parse('<?=$ccityList?>');
+               var update_data = [];
+            for (var i = 0; i < ccityList.length; i++) {
+               var getlatlogng = getLocation(ccityList[i].city);
+ 
+              
+                  update_data.push({id: ccityList[i].city, city: ccityList[i].city,latlong:getlatlogng});
+
+                 
+                  
+
+            }
+            console.log(update_data);
+
+
+            
+          
     });
     });
-   
-</script>
+
+ 
+
+</script> 
+
+
+
+
 
 
 

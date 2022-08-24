@@ -201,7 +201,7 @@ class Customer_call_model extends Base_model
                 $userid = $data_param['userid'];
             }
 
-            $current_date  = date('Y-m-d');
+                $current_date  = $data_param['current_date'];date('Y-m-d');
                 $where     = array();
                 $this->db->select('z_customer.id');
                 $this->db->from('z_customer');
@@ -251,19 +251,19 @@ class Customer_call_model extends Base_model
 
                     if($data_param['followup_type']=='yesterday')
                     {
-                         $current_date = date('Y-m-d');
+                         
                         $where.= "  AND (z_customer.last_call_back_date < '".$current_date."' AND  last_call_back_date != '0000-00-00')"; 
 
                         
 
                     }else if($data_param['followup_type']=='today')
                     {
-                        $current_date = date('Y-m-d');
+                        
                         $where.= "  AND z_customer.last_call_back_date='".$current_date."'";    
                     }
                     else if($data_param['followup_type']=='tomorrow')
                     {
-                        $tomorrow = date('Y-m-d',strtotime("+1 days"));
+                        $tomorrow = date('Y-m-d',strtotime("+1 days",strtotime($current_date)));
                         $where.= "  AND z_customer.last_call_back_date='".$tomorrow."'";    
                     }
                     
@@ -280,7 +280,7 @@ class Customer_call_model extends Base_model
                 return $result = $query->result();
         }
 
-        public function getCallsummary($alltype, $userid, $stat_type, $followup_type='')
+        public function getCallsummary($alltype, $userid, $stat_type, $current_date, $followup_type='')
         {
 
             $array = array();
@@ -297,6 +297,7 @@ class Customer_call_model extends Base_model
                 $data_param['stat_type']    = $stat_type;
                 $data_param['call_type']    = $value->id;
                 $data_param['followup_type']= $followup_type;
+                $data_param['current_date']= $current_date;
                 
                 $result             =   $this->callSummary($data_param);
                 $sec_arr['id']      = $value->id; 

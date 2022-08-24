@@ -184,7 +184,7 @@
                         <br>
                      </div>
                      <p>यह एग्रीमेंट <strong><?php echo strtoupper(@$company_details['title']);?></strong> (जैसा कि यहाँ पर “कंपनी” निर्दिष्ट
-                        किया गया है) प्रथम पक्ष, और श्री/ श्रीमति/ मिस <strong><?php echo  ucwords($receipt_dtl['customer_name']);?></strong>
+                        किया गया है) प्रथम पक्ष, और श्री/ श्रीमति/ मिस <strong><?php echo  ucwords($receipt_dtl['customername']);?></strong>
                         <?php
                            if(!empty($receipt_dtl['father_name']))
                            {
@@ -367,7 +367,7 @@
                            <ol>
                               <li>
                                  यह करार दिनांक (<strong> <?php echo @date('d M Y',strtotime($receipt_dtl['booking_date']));?> </strong>) को पक्षकारों ने अपनी मुहर/हस्ताक्षर के साथ खूब सोच समझकर, शांत चित्त मन से, अपने नफे नुकसान को ध्यान में रखकर अपने-अपने गवाहों की उपस्थिति में हस्ताक्षरित किया है। कम्पनी की तरफ से निदेशक श्री नीरज कुमार जो कि कम्पनी के द्वारा अधिकृत किये गए है, और दूसरी तरफ <strong>श्री/</strong> <strong>श्रीमति/</strong>
-                                 <strong>मिस </strong><?php echo  ucwords($receipt_dtl['customer_name']);?>  
+                                 <strong>मिस </strong><?php echo  ucwords($receipt_dtl['customername']);?>  
                                  <p> <?php
                                     if(!empty($receipt_dtl['father_name']))
                                     {

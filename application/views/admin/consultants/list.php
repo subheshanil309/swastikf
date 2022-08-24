@@ -1,3 +1,7 @@
+ <?php
+        $role_id = $this->session->userdata('role_id');
+        $action_requred = get_module_role($module_id['id'],$role_id);
+ ?> 
 <style type="text/css">
    .table>:not(caption)>*>* {
    border: 1px solid #3a863e;
@@ -71,8 +75,11 @@
                                  Consultant
                               </div>
                               <div class="col-sm-2">
-                                 <a  class="btn btn-primary p-1" href="<?php echo base_url()?>admin/consultants/create">Add New</a>
-                                 <a href="<?php echo base_url()?>admin/consultants" class="btn btn-info btn-sm">Clear</a> 
+                                  <?php 
+                              $add_btn = (@$action_requred->create=='create')?'<a class="btn btn-primary p-1" href="'.base_url().'admin/consultants/create"><i class="fa fa-plus"></i> Add New</a>':"";
+                              echo $add_btn;
+                            ?>
+                                  <a href="<?php echo base_url()?>admin/consultants" class="btn btn-info btn-sm">Clear</a> 
                                  <button type="submit" name="submit_filter" id="submit_filter" value="Submit Filter"  class="btn btn-info btn-sm">
                                  <i class="bx bx-search-alt-2"></i> Submit Filter</button>
                                  <input name="form_type" type="hidden" value="inquiry">
@@ -217,23 +224,29 @@
                                              Action<i class="mdi mdi-chevron-down"></i>
                                              </span>
                                              <div class="dropdown-menu" style="">
-                                                <a class="dropdown-item btn" href="<?php echo base_url()?>admin/consultants/<?php echo $bookings['id']; ?>/edit" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
-                                                <?php
-                                                   $userid = $this->session->userdata('role');
-                                                   if($userid==1)
-                                                   {
-                                                     ?>
-                                                <a class="dropdown-item text-danger deletebtn" href="#" data-userid="<?php echo $bookings['id']; ?>">Delete</a>
-                                                <?php    
+                                                <?php 
+                                                   if(@$action_requred->edit=='edit'){
+                                                      ?>
+                                                      <a class="dropdown-item btn" href="<?php echo base_url()?>admin/consultants/<?php echo $bookings['id']; ?>/edit" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+                                                      <?php
                                                    }
-                                                   ?>
+
+                                                   if(@$action_requred->delete=='delete')
+                                                   {
+                                                      ?>
+                                                     <a class="dropdown-item text-danger deletebtn" href="#" data-userid="<?php echo $bookings['id']; ?>">Delete</a>
+                                                      <?php
+                                                   }
+                                                ?>
+                                                 
                                              </div>
                                           </div>
                                        </td>
-                                       <td><a href="<?php echo base_url()?>admin/consultants/<?php echo $bookings['id']; ?>/edit" ><?php echo $bookings['id'];?></a></td>
+                                       <td><?php echo (@$action_requred->edit=='edit')?'<a href="'.base_url().'admin/consultants/'.$bookings['id'].'/edit" >'.$bookings['id'].'</a>':$bookings['id'];?></td>
                                        <td><?php echo $bookings['calltypename'];?></td>
-                                       <td><a href="<?php echo base_url()?>admin/consultants/<?php echo $bookings['id']; ?>/edit" ><?php echo $bookings['documentcategoryname'];?></a></td>
-                                       <td><a href="<?php echo base_url()?>admin/consultants/<?php echo $bookings['id']; ?>/edit" ><?php echo $bookings['documentname'];?></a></td>
+                                       <td><?php echo (@$action_requred->edit=='edit')?'<a href="'.base_url().'admin/consultants/'.$bookings['id'].'/edit" >'.$bookings['documentcategoryname'].'</a>':$bookings['documentcategoryname'];?></td>
+                                       <td><?php echo (@$action_requred->edit=='edit')?'<a href="'.base_url().'admin/consultants/'.$bookings['id'].'/edit" >'.$bookings['documentname'].'</a>':$bookings['documentname'];?></td>
+                                       
                                        <td><?php echo $bookings['farmer_id'];?></td>
                                        <td><?php echo $bookings['farmer_mobile'];?></td>
                                        <td><?php echo $bookings['farmer_name'];?></td>
