@@ -100,7 +100,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 */
 
-$route['default_controller'] = "admin/Dashboard/index";
+$route['default_controller'] = "Index";
+/*$route['default_controller'] = "admin/Dashboard/index";*/
 
 $route['404_override'] = 'admin/Dashboard/pageNotFound';
 
