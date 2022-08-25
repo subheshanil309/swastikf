@@ -33,7 +33,7 @@ class Index extends CI_Controller
     public function index()
     {
     
-        //header("location:".base_url().'admin');
+            header("location:".base_url().'admin');
             // Onload Comon Page Data ============================= 
             $data = array();
             // Define =========================== 
