@@ -254,6 +254,7 @@ class Booking_model extends Base_model
 
                     $not_array = array();
                     $not_array[] = 'manage_booking_type';
+                    $not_array[] = 'booking_delivery_status';
                     $not_array[] = 'delivery_start_date';
                     $not_array[] = 'delivery_end_date';
                     $not_array[] = 'booking_type';
@@ -386,10 +387,19 @@ class Booking_model extends Base_model
                     
                     if(isset($params['where']['delivery_start_date']) && isset($params['where']['delivery_end_date']))
                     {
-                        $start_date = $params['where']['delivery_start_date'];
-                        $end_date = $params['where']['delivery_end_date'];
+                        $start_date     = $params['where']['delivery_start_date'];
+                        $end_date       = $params['where']['delivery_end_date'];
                         $where.= " AND ( c.delivery_date  >='".$start_date."' AND c.delivery_date  <='".$end_date."' )";    
                     }
+
+                    if(isset($params['where']['booking_delivery_status']) && $params['where']['booking_delivery_status'] =='delivered')
+                    {
+                     $where.= " AND ( c.booking_status ='delivered')";       
+                    }else{
+                        $where.= " AND ( c.booking_status !='delivered')";       
+                    }
+
+
 
 
 

@@ -205,6 +205,35 @@ if(!function_exists('booking_roots')){
  
   }
 }
+
+if(!function_exists('get_booking_date_between'))
+{
+  function get_booking_date_between(array $datarange,$status='')
+  {
+    $start_date = $datarange['start_date'];
+    $end_date = $datarange['end_date'];
+      $ci =& get_instance();
+      $ci->load->database();
+      $ci->db->select("b.id");
+      $ci->db->from('z_booking as b'); 
+ 
+       $ci->db->where( " ( b.delivery_date  >='".$start_date."' AND b.delivery_date  <='".$end_date."')");
+
+      if($status !=='')
+      {
+        $ci->db->where( "b.booking_status",'delivered');      
+      }else
+      {
+        $ci->db->where( "b.booking_status !=",'delivered');      
+      }
+ 
+      $query = $ci->db->get(); 
+      $result = ($query->num_rows() > 0)?$query->num_rows():0; 
+
+              return $result; 
+   
+  }
+}
 if(!function_exists('to_be_deliver')){
   function to_be_deliver($route_id,$city_id,$start_date,$end_date,$status)
   {

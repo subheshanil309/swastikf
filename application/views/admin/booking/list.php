@@ -382,7 +382,7 @@
                                                          <a class="dropdown-item btn"  target="_BLANK" href="<?php echo base_url()?>admin/bookings/agreement/<?php echo $bookings['id']; ?>" data-userid="<?php echo $bookings['id']; ?>"><i class="fa fa-file-excel" aria-hidden="true"></i> Generate Agreement</a>
                                                       <?php
                                                    }
-                                                   if(@$action_requred->edit =='edit'){
+                                                   if(@$action_requred->delete =='delete'){
                                                       ?>
                                                          <a class="dropdown-item text-danger deletebtn" href="#" data-userid="<?php echo $bookings['id']; ?>">Delete</a>
                                                       <?php

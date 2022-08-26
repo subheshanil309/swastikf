@@ -243,9 +243,9 @@
                      </div>
                      <div class="col-sm-3">
                         <div class="row">
-                           <label for="delivery_date" class="col-sm-4 col-form-label">Delivery Date<span class="text-danger">*</span></label>
+                           <label for="delivery_date" class="col-sm-4 col-form-label">Delivery Date</label>
                            <div class="col-sm-8"> 
-                              <input type="date" class="form-control form-control-sm" id="delivery_date" name="delivery_date"  value=""  required />
+                              <input type="date" class="form-control form-control-sm" id="delivery_date" name="delivery_date"  value="" />
                            </div>
                         </div>
                         <div class="row">

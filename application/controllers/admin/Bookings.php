@@ -3311,8 +3311,13 @@ echo "</pre>";  */
                  
                 $delivery_start_date          = @$this->input->get('start_date'); 
                 $delivery_end_date            = @$this->input->get('end_date'); 
+                $status                       = @$this->input->get('status'); 
                 
-                if(!empty($delivery_start_date))
+                if(!empty($status))
+                {
+                     $where_search['booking_delivery_status'] =  $status;
+                 }
+                  if(!empty($delivery_start_date))
                 {
                      $where_search['delivery_start_date'] =  $delivery_start_date;
                  } if(!empty($delivery_end_date))

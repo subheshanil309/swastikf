@@ -116,8 +116,14 @@
                                                    $active_start_date   = $values['start_date'];
                                                    $active_end_date     = $values['end_date'];
                                                 }
-                                    
-                                                
+                                                  
+                                                  $datarange_betw = array();
+                                                  $datarange_betw['start_date']   = $values['start_date'];
+                                                  $datarange_betw['end_date']     = $values['end_date'];
+
+                                                $get_count_booking_of_date            = get_booking_date_between($datarange_betw);
+                                                $get_count_booking_of_date_delivered  = get_booking_date_between($datarange_betw,'delivered');
+
                                                 ?>
                                  <li class="event-list" style="padding: 0 0 5px 30px;">
                                     <div class="event-timeline-dot">
@@ -127,7 +133,9 @@
                                        <div class="flex-shrink-0 me-3">
                                           <h5 class="font-size-13  ">
                                              <a href="<?php echo base_url()?>admin/delivery_management?date_tab=1&start_date=<?php echo $values['start_date'];?>&end_date=<?php echo $values['end_date'];?>"><?php echo date('d M',strtotime($values['start_date']));?> To <?php echo date('d M',strtotime($values['end_date']));?> <?php echo date('Y',strtotime($values['start_date']));?></a>
+                                             &nbsp;<?php if($get_count_booking_of_date_delivered >0) { ?><span class="badge rounded-pill bg-success"><?php echo @$get_count_booking_of_date_delivered;?></span> <?php }  if($get_count_booking_of_date>0){?><span class="badge rounded-pill bg-warning"><?php echo @$get_count_booking_of_date;?></span><?php } ?>
                                           </h5>
+
                                        </div>
                                     </div>
                                  </li>
@@ -228,12 +236,13 @@
 
                                                        ?></td>
                                                        <td>
-                                                        <a href="<?php echo base_url()?>admin/delivery_management?date_tab=<?php echo $this->input->get('date_tab');?>&start_date=<?php echo $this->input->get('start_date');?>&end_date=<?php echo $this->input->get('end_date');?>&active_root_id=<?php echo $active_root_id;?>&section=booking&city=<?php echo $value['city_id'];?>"><?php echo count($to_be_deliver);?></a>
+                                                        <a href="<?php echo base_url()?>admin/delivery_management?date_tab=<?php echo $this->input->get('date_tab');?>&start_date=<?php echo $this->input->get('start_date');?>&end_date=<?php echo $this->input->get('end_date');?>&active_root_id=<?php echo $active_root_id;?>&section=booking&city=<?php echo $value['city_id'];?>"><span class="badge rounded-pill bg-success"><?php echo count($to_be_deliver);?></span></a>
                                                        </td>
 
-                                                       <td><?php //print_r($to_be_deliver);
-                                                        echo count($delivered);
-                                                       ?></td>
+                                                       <td>
+                                                        <a href="<?php echo base_url()?>admin/delivery_management?date_tab=<?php echo $this->input->get('date_tab');?>&start_date=<?php echo $this->input->get('start_date');?>&end_date=<?php echo $this->input->get('end_date');?>&active_root_id=<?php echo $active_root_id;?>&section=booking&status=delivered&city=<?php echo $value['city_id'];?>"><span class="badge rounded-pill bg-success"><?php echo count($delivered);?></span></a>
+
+                                                        </td>
                                                      </tr>
                                                   <?php
                                                 }  
@@ -269,6 +278,16 @@
                                        <th class="align-middle bg-success text-white">Stage</th>
                                        <th class="align-middle bg-success text-white">Booking No.</th>
                                        <th class="align-middle bg-success text-white">Booking Date.</th>
+
+                                       <th class="align-middle bg-success text-white">Expected Delivery Date </th>
+                                       <th class="align-middle bg-success text-white">Actual Delivery Date</th>
+                                       <th class="align-middle bg-success text-white">Vehicle No.</th>
+                                       <th class="align-middle bg-success text-white">Choose State</th>
+                                       <th class="align-middle bg-success text-white">Choose District</th>
+                                       <th class="align-middle bg-success text-white">Choose Tehsil</th>
+                                       <th class="align-middle bg-success text-white">Pin Code</th>
+
+
                                        <th class="align-middle bg-success text-white">Order Status</th>
                                        <th class="align-middle bg-success text-white">Crop Status</th>
                                        <th class="align-middle bg-success text-white">Farmer ID</th>
@@ -278,10 +297,9 @@
                                        <th class="align-middle bg-success text-white">Primary Number</th>
                                        <th class="align-middle bg-success text-white">Number</th>
                                        <th class="align-middle bg-success text-white">Billing Address</th>
-                                       <th class="align-middle bg-success text-white">Choose State</th>
-                                       <th class="align-middle bg-success text-white">Choose District</th>
-                                       <th class="align-middle bg-success text-white">Choose Tehsil</th>
-                                       <th class="align-middle bg-success text-white">Pin Code</th>
+
+                                       
+
                                        <th class="align-middle bg-success text-white">Payment Mode</th>
                                        <th class="align-middle bg-success text-white">Bank Trxn ID</th>
                                        <th class="align-middle bg-success text-white">Crates</th>
@@ -291,9 +309,7 @@
                                        <th class="align-middle bg-success text-white">Discrount Amount</th>
                                        <th class="align-middle bg-success text-white">Recieved Amount</th>
                                        <th class="align-middle bg-success text-white">Out standing Amount</th>
-                                       <th class="align-middle bg-success text-white">Expected Delivery Date </th>
-                                       <th class="align-middle bg-success text-white">Actual Delivery Date</th>
-                                       <th class="align-middle bg-success text-white">Vehicle No.</th>
+                                       
                                        <th class="align-middle bg-success text-white">Contract Status</th>
                                        <th class="align-middle bg-success text-white">Productive Plants</th>
                                        <th class="align-middle bg-success text-white">Document</th>
@@ -342,28 +358,7 @@
                                        </td>
                                        <td><?php echo $bookings['id'];?></td>
                                        <td><?php echo ($bookings['booking_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['booking_date'])) :'';?></td>
-                                       <td><span class="badge bg-<?php echo $bookings['booked_badges'];?> "><?php echo $bookings['booked_status'];?></span></td>
-                                       <td><?php echo $bookings['cropstatusname'];?></td>
-                                       <td><?php echo $bookings['farmer_id'];?></td>
-                                       <td><?php echo $bookings['customername'];?></td>
-                                       <td><?php echo $bookings['executive'];?></td>
-                                       <td><?php echo $bookings['productname'];?></td>
-                                       <td><?php echo $bookings['customermobile'];?></td>
-                                       <td><?php echo $bookings['customeraltmobile'];?></td>
-                                       <td><?php echo $bookings['billing_address'];?></td>
-                                       <td><?php echo (isset($bookings['other_state']) && !empty($bookings['other_state']))?($bookings['other_state']):($bookings['state']);?></td>
-                                       <td><?php echo (isset($bookings['other_district']) && !empty($bookings['other_district']))?($bookings['other_district']):($bookings['district']);?></td>
-                                       <td><?php echo (isset($bookings['other_city']) && !empty($bookings['other_city']))?($bookings['other_city']):($bookings['city']);?></td>
-                                       <td><?php echo $bookings['pincode'];?></td>
-                                       <td><?php echo $bookings['paymentmodename'];?></td>
-                                       <td><?php echo $bookings['bank_trans_id'];?></td>
-                                       <td><?php echo $bookings['crates'];?></td>
-                                       <td><?php echo $bookings['quantity'];?></td>
-                                       <td><?php echo $bookings['price'];?></td>
-                                       <td><?php echo $bookings['total'];?></td>
-                                       <td><?php echo $bookings['discount'];?></td>
-                                       <td><?php echo $bookings['total_paid_amount'];?></td>
-                                       <td><span class='<?php if($bookings['outstanding_amount'] <0){ echo "text-danger";}?>'><?php echo $bookings['outstanding_amount'];?></span></td>
+
                                        <td>
                                           <?php 
                                              if(isset($bookings['delivery_expect_start_date']) && isset($bookings['delivery_expect_end_date']))
@@ -373,8 +368,36 @@
                                              }
                                              ?>
                                        </td>
+
                                        <td><?php echo ($bookings['delivery_date']!=='0000-00-00')? date('d M Y',strtotime($bookings['delivery_date'])) :'';?> </td>
                                        <td><?php echo $bookings['vehicle_no'];?></td>
+                                       <td><?php echo (isset($bookings['other_state']) && !empty($bookings['other_state']))?($bookings['other_state']):($bookings['state']);?></td>
+                                       <td><?php echo (isset($bookings['other_district']) && !empty($bookings['other_district']))?($bookings['other_district']):($bookings['district']);?></td>
+                                       <td><?php echo (isset($bookings['other_city']) && !empty($bookings['other_city']))?($bookings['other_city']):($bookings['city']);?></td>
+                                       <td><?php echo $bookings['pincode'];?></td>
+
+
+                                       <td><span class="badge bg-<?php echo $bookings['booked_badges'];?> "><?php echo $bookings['booked_status'];?></span></td>
+                                       <td><?php echo $bookings['cropstatusname'];?></td>
+                                       <td><?php echo $bookings['farmer_id'];?></td>
+                                       <td><?php echo $bookings['customername'];?></td>
+                                       <td><?php echo $bookings['executive'];?></td>
+                                       <td><?php echo $bookings['productname'];?></td>
+                                       <td><?php echo $bookings['customermobile'];?></td>
+                                       <td><?php echo $bookings['customeraltmobile'];?></td>
+                                       <td><?php echo $bookings['billing_address'];?></td>
+                                       
+                                       <td><?php echo $bookings['paymentmodename'];?></td>
+                                       <td><?php echo $bookings['bank_trans_id'];?></td>
+                                       <td><?php echo $bookings['crates'];?></td>
+                                       <td><?php echo $bookings['quantity'];?></td>
+                                       <td><?php echo $bookings['price'];?></td>
+                                       <td><?php echo $bookings['total'];?></td>
+                                       <td><?php echo $bookings['discount'];?></td>
+                                       <td><?php echo $bookings['total_paid_amount'];?></td>
+                                       <td><span class='<?php if($bookings['outstanding_amount'] <0){ echo "text-danger";}?>'><?php echo $bookings['outstanding_amount'];?></span></td>
+                                       
+                                       
                                        <td><?php echo $bookings['contractstatusname'];?></td>
                                        <td><?php echo $bookings['productive_plants'];?></td>
                                        <td>
